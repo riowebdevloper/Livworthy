@@ -10,6 +10,7 @@ import { TaxRegistry } from './src/engines/tax/tax-registry';
 import { SalaryWorthCalculator } from './src/engines/calculator-core/salary-worth';
 import { ComparisonEngine } from './src/engines/calculator-core/compare';
 import { SalaryNeededCalculator } from './src/engines/calculator-core/salary-needed';
+import { CostOfLivingEngine } from './src/engines/col/col-engine';
 import { AuthService } from './src/lib/auth';
 import { COUNTRIES, CITIES } from './src/data/locations';
 import { EVIDENCE_REGISTRY } from './src/data/evidence-registry';
@@ -20,24 +21,37 @@ const PORT = parseInt(process.env.PORT || '3000', 10);
 const START_TIME = Date.now();
 const CRON_SECRET = env.CRON_SECRET;
 
-async function startServer() {
-  try {
-    console.log(`[Database] Initializing in ${dbService.mode} mode...`);
-    const migRes = await dbService.runMigrations();
-    console.log(`[Database] Migrations verified (executed: ${migRes.executedCount})`);
-    const seedRes = await dbService.seedData();
-    console.log(`[Database] Seed verified (${seedRes.countriesCount} countries, ${seedRes.citiesCount} cities)`);
-  } catch (dbErr: any) {
-    const isProduction = process.env.NODE_ENV === 'production';
-    if (isProduction || dbService.mode === 'PRODUCTION_POSTGRES') {
-      console.error('[Database] Fatal startup failure: Database initialization or migration failed.');
-      process.exit(1);
-    } else {
-      console.warn('[Database] Startup initialization notice:', dbErr.message);
-    }
-  }
+let dbInitialized = false;
+let dbInitPromise: Promise<void> | null = null;
 
-  const app = express();
+export async function ensureDatabaseReady(): Promise<void> {
+  if (dbInitialized) return;
+  if (!dbInitPromise) {
+    dbInitPromise = (async () => {
+      try {
+        console.log(`[Database] Initializing in ${dbService.mode} mode...`);
+        const migRes = await dbService.runMigrations();
+        console.log(`[Database] Migrations verified (executed: ${migRes.executedCount})`);
+        const seedRes = await dbService.seedData();
+        console.log(`[Database] Seed verified (${seedRes.countriesCount} countries, ${seedRes.citiesCount} cities)`);
+        dbInitialized = true;
+      } catch (dbErr: any) {
+        const isProduction = process.env.NODE_ENV === 'production';
+        if (isProduction || dbService.mode === 'PRODUCTION_POSTGRES') {
+          console.error('[Database] Fatal startup failure: Database initialization or migration failed.');
+          process.exit(1);
+        } else {
+          console.warn('[Database] Startup initialization notice:', dbErr.message);
+        }
+      }
+    })();
+  }
+  return dbInitPromise;
+}
+
+export const app = express();
+
+function configureApp() {
 
   // Security Headers Middleware
   app.use((req, res, next) => {
@@ -295,6 +309,83 @@ async function startServer() {
       });
     } catch (err: any) {
       res.status(500).json({ error: 'SALARY_NEEDED_ERROR', message: err.message });
+    }
+  });
+
+  // Authoritative Tax Calculation / Estimation
+  const handleTaxEstimate = async (req: express.Request, res: express.Response) => {
+    try {
+      const {
+        grossSalaryMinor,
+        currency,
+        countryId,
+        regionId,
+        cityId,
+        taxJurisdictionId,
+        filingStatus,
+        dependentsCount,
+        taxYear,
+      } = req.body;
+
+      if (typeof grossSalaryMinor !== 'number' || !countryId) {
+        return res.status(400).json({
+          error: 'INVALID_PAYLOAD',
+          message: 'grossSalaryMinor and countryId are required.',
+        });
+      }
+
+      const curr = (currency || COUNTRIES[countryId]?.defaultCurrency || 'USD') as any;
+      const grossMoney = fromMinor(grossSalaryMinor, curr);
+      const profile = {
+        filingStatus: filingStatus || 'single',
+        dependentsCount: typeof dependentsCount === 'number' ? dependentsCount : 0,
+        taxYear: typeof taxYear === 'number' ? taxYear : 2024,
+      };
+      const location = {
+        countryId,
+        regionId,
+        cityId,
+        taxJurisdictionId,
+      };
+
+      const result = TaxRegistry.calculate(grossMoney, profile, location);
+      const support = TaxRegistry.getCountrySupport(countryId);
+
+      res.json({
+        success: true,
+        data: result,
+        verificationStatus: support.verificationStatus,
+        isStatutorilyVerified: support.isStatutorilyVerified,
+        notes: support.notes,
+      });
+    } catch (err: any) {
+      console.error('Tax calculation error:', err);
+      res.status(500).json({ error: 'TAX_CALCULATION_ERROR', message: err.message });
+    }
+  };
+
+  app.post('/api/tax/estimate', rateLimit(60, 60), handleTaxEstimate);
+  app.post('/api/tax/calculate', rateLimit(60, 60), handleTaxEstimate);
+
+  // Authoritative Cost of Living Calculation
+  app.post('/api/cost-of-living', rateLimit(60, 60), async (req, res) => {
+    try {
+      const { cityId, household, overrides } = req.body;
+      if (!cityId || !household) {
+        return res.status(400).json({
+          error: 'INVALID_PAYLOAD',
+          message: 'cityId and household profile are required.',
+        });
+      }
+
+      const result = CostOfLivingEngine.calculate(cityId, household, overrides);
+      res.json({
+        success: true,
+        data: result,
+      });
+    } catch (err: any) {
+      console.error('Cost of living error:', err);
+      res.status(500).json({ error: 'COL_CALCULATION_ERROR', message: err.message });
     }
   });
 
@@ -584,6 +675,12 @@ async function startServer() {
     const summary = await dbService.getWebVitalsSummary();
     res.json({ vitals: summary });
   });
+}
+
+configureApp();
+
+export async function startServer() {
+  await ensureDatabaseReady();
 
   // Vite middleware for development vs static build in production
   if (process.env.NODE_ENV !== 'production') {
@@ -605,4 +702,9 @@ async function startServer() {
   });
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;
+

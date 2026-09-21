@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { CustomizationDrawer } from './components/calculator/CustomizationDrawer';
 import { EvidenceDrawer } from './components/calculator/EvidenceDrawer';
 import { SalaryWorthView } from './components/calculator/SalaryWorthView';
@@ -15,9 +15,11 @@ import { SystemDiagnosticsModal } from './components/system/SystemDiagnosticsMod
 import { CITIES } from './data/locations';
 import { DEFAULT_NYC_100K_SCENARIO } from './data/presets';
 import { createMoney, toMajor } from './lib/money';
-import { HouseholdProfile } from './types/col';
-import { LivWorthScenario } from './types/scenario';
-import { TaxProfile } from './types/tax';
+import { HouseholdProfile, CostOfLivingResult } from './types/col';
+import { LivWorthCalculationOutcome, LivWorthScenario } from './types/scenario';
+import { TaxProfile, TaxResult } from './types/tax';
+import { ComparisonResult } from './engines/calculator-core/compare';
+import { SalaryNeededResult } from './engines/calculator-core/salary-needed';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('salary-worth');
@@ -26,14 +28,36 @@ export default function App() {
   const [scenario, setScenario] = useState<LivWorthScenario>(DEFAULT_NYC_100K_SCENARIO);
   const [actualRentMajor, setActualRentMajor] = useState<number | undefined>(undefined);
 
+  // Dynamic calculation metadata returned by authoritative backend services
+  const [calculationMetadata, setCalculationMetadata] = useState<{
+    evidenceSourceIds: string[];
+    ruleVersions: { taxRuleVersion?: string; colDate?: string };
+  }>({
+    evidenceSourceIds: [
+      'us-irs-tax-2024',
+      'us-ssa-fica-2024',
+      'us-nys-tax-2024',
+      'us-nyc-tax-2024',
+      'us-hud-nyc-fmr-2024',
+      'us-bls-cpi-nyc-2024',
+      'us-mta-nyc-transit-2024',
+    ],
+    ruleVersions: {
+      taxRuleVersion: 'US-FED-NY-NYC-2024.1',
+      colDate: '2024-12',
+    },
+  });
+
   // Modals & Drawers state
   const [isCustomizerOpen, setIsCustomizerOpen] = useState<boolean>(false);
   const [isEvidenceOpen, setIsEvidenceOpen] = useState<boolean>(false);
   const [isMethodologyOpen, setIsMethodologyOpen] = useState<boolean>(false);
   const [isDiagnosticsOpen, setIsDiagnosticsOpen] = useState<boolean>(false);
 
-  // Sync state with URL parameters on mount
-  useEffect(() => {
+  const isInitialMount = useRef<boolean>(true);
+
+  // Sync state from current URL query parameters (supports deep links and Back/Forward)
+  const syncStateFromUrl = useCallback(() => {
     try {
       if (typeof window === 'undefined') return;
       const params = new URLSearchParams(window.location.search);
@@ -83,15 +107,36 @@ export default function App() {
         });
         if (rentNum && !isNaN(rentNum)) {
           setActualRentMajor(rentNum);
+        } else {
+          setActualRentMajor(undefined);
         }
       }
     } catch {
-      // Ignore if iframe restriction prevents url reading
+      // Graceful fallback if URL manipulation is restricted
     }
   }, []);
 
-  // Update URL state when parameters change
+  // Initial mount: read URL and register popstate listener for browser Back/Forward
   useEffect(() => {
+    syncStateFromUrl();
+
+    const handlePopState = () => {
+      syncStateFromUrl();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [syncStateFromUrl]);
+
+  // Sync state to URL query parameters
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     try {
       if (typeof window === 'undefined') return;
       const params = new URLSearchParams();
@@ -107,6 +152,18 @@ export default function App() {
       // Ignore in strict iframes
     }
   }, [scenario.location.id, scenario.compensation.baseSalary, activeTab, actualRentMajor]);
+
+  // Tab switching pushes new browser history state
+  const handleSelectTab = (tab: ActiveTab) => {
+    setActiveTab(tab);
+    try {
+      if (typeof window === 'undefined') return;
+      const params = new URLSearchParams(window.location.search);
+      params.set('tab', tab);
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.pushState(null, '', newUrl);
+    } catch {}
+  };
 
   // Updates from customizer
   const handleUpdateHousehold = (updatedHousehold: HouseholdProfile) => {
@@ -145,25 +202,83 @@ export default function App() {
       },
     }));
     setActiveTab('salary-worth');
+
+    try {
+      if (typeof window === 'undefined') return;
+      const params = new URLSearchParams();
+      params.set('city', targetCity.id);
+      params.set('salary', salaryMajor.toString());
+      params.set('tab', 'salary-worth');
+      if (actualRentMajor) {
+        params.set('rent', actualRentMajor.toString());
+      }
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.pushState(null, '', newUrl);
+    } catch {}
   };
 
-  // Compile list of evidence source IDs for the active location
-  const evidenceSourceIds = [
-    'irs-rev-proc-2023-34',
-    'ssa-wage-base-2024',
-    'nys-it-201-i-2024',
-    'nyc-admin-code-11-1701',
-    'hud-fmr-2024',
-    'bls-cex-metro-2023',
-    'census-acs-5yr-2022',
-  ];
+  // Dynamic evidence update callbacks from calculator views
+  const handleSalaryWorthOutcome = useCallback((outcome: LivWorthCalculationOutcome) => {
+    setCalculationMetadata({
+      evidenceSourceIds: outcome.evidenceSourceIds,
+      ruleVersions: {
+        taxRuleVersion: outcome.taxRuleVersion || outcome.tax?.taxRuleVersion,
+        colDate: outcome.colDate || outcome.costOfLiving?.datasetVersion,
+      },
+    });
+  }, []);
+
+  const handleSalaryNeededResult = useCallback((result: SalaryNeededResult) => {
+    if (result.outcomeWithRequiredSalary) {
+      setCalculationMetadata({
+        evidenceSourceIds: result.outcomeWithRequiredSalary.evidenceSourceIds,
+        ruleVersions: {
+          taxRuleVersion: result.outcomeWithRequiredSalary.taxRuleVersion || result.outcomeWithRequiredSalary.tax?.taxRuleVersion,
+          colDate: result.outcomeWithRequiredSalary.colDate || result.outcomeWithRequiredSalary.costOfLiving?.datasetVersion,
+        },
+      });
+    }
+  }, []);
+
+  const handleTaxResult = useCallback((tax: TaxResult) => {
+    setCalculationMetadata((prev) => ({
+      evidenceSourceIds: tax.evidenceSourceIds,
+      ruleVersions: {
+        ...prev.ruleVersions,
+        taxRuleVersion: tax.taxRuleVersion,
+      },
+    }));
+  }, []);
+
+  const handleColResult = useCallback((col: CostOfLivingResult) => {
+    setCalculationMetadata((prev) => ({
+      evidenceSourceIds: col.evidenceSourceIds,
+      ruleVersions: {
+        ...prev.ruleVersions,
+        colDate: col.datasetVersion,
+      },
+    }));
+  }, []);
+
+  const handleComparisonResult = useCallback((comp: ComparisonResult) => {
+    const combinedEvidence = Array.from(
+      new Set([...comp.outcomeA.evidenceSourceIds, ...comp.outcomeB.evidenceSourceIds])
+    );
+    setCalculationMetadata({
+      evidenceSourceIds: combinedEvidence,
+      ruleVersions: {
+        taxRuleVersion: `${comp.outcomeA.taxRuleVersion || comp.outcomeA.tax.taxRuleVersion} / ${comp.outcomeB.taxRuleVersion || comp.outcomeB.tax.taxRuleVersion}`,
+        colDate: comp.outcomeA.colDate || comp.outcomeA.costOfLiving.datasetVersion,
+      },
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F7F8F5] text-[#102A2E] flex flex-col font-sans antialiased selection:bg-[#DDF2EC] selection:text-[#102A2E]">
       {/* Top Navigation */}
       <Header
         activeTab={activeTab}
-        onSelectTab={setActiveTab}
+        onSelectTab={handleSelectTab}
         onOpenMethodology={() => setIsMethodologyOpen(true)}
         onOpenEvidence={() => setIsEvidenceOpen(true)}
         onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
@@ -179,7 +294,8 @@ export default function App() {
             onUpdateRentOverride={handleUpdateRentOverride}
             onOpenCustomizer={() => setIsCustomizerOpen(true)}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
-            onNavigateToCompare={() => setActiveTab('compare')}
+            onNavigateToCompare={() => handleSelectTab('compare')}
+            onCalculationOutcome={handleSalaryWorthOutcome}
           />
         )}
 
@@ -189,6 +305,7 @@ export default function App() {
             onOpenCustomizer={() => setIsCustomizerOpen(true)}
             onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
+            onCalculationResult={handleSalaryNeededResult}
           />
         )}
 
@@ -196,6 +313,7 @@ export default function App() {
           <SalaryAfterTaxView
             onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
+            onCalculationResult={handleTaxResult}
           />
         )}
 
@@ -206,6 +324,7 @@ export default function App() {
             onUpdateRentOverride={handleUpdateRentOverride}
             onOpenCustomizer={() => setIsCustomizerOpen(true)}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
+            onCalculationResult={handleColResult}
           />
         )}
 
@@ -213,6 +332,7 @@ export default function App() {
           <CompareView
             initialScenarioA={scenario}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
+            onComparisonResult={handleComparisonResult}
           />
         )}
 
@@ -220,6 +340,7 @@ export default function App() {
           <JobOfferCompareView
             initialScenario={scenario}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
+            onComparisonResult={handleComparisonResult}
           />
         )}
 
@@ -228,7 +349,7 @@ export default function App() {
             onOpenCustomizer={() => setIsCustomizerOpen(true)}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
             onOpenMethodology={() => setIsMethodologyOpen(true)}
-            onNavigateToCompare={() => setActiveTab('compare')}
+            onNavigateToCompare={() => handleSelectTab('compare')}
           />
         )}
       </main>
@@ -238,7 +359,7 @@ export default function App() {
         onOpenMethodology={() => setIsMethodologyOpen(true)}
         onOpenEvidence={() => setIsEvidenceOpen(true)}
         onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
-        onSelectTab={setActiveTab}
+        onSelectTab={handleSelectTab}
       />
 
       {/* Drawers and Modals */}
@@ -256,11 +377,8 @@ export default function App() {
       <EvidenceDrawer
         isOpen={isEvidenceOpen}
         onClose={() => setIsEvidenceOpen(false)}
-        sourceIds={evidenceSourceIds}
-        ruleVersions={{
-          taxRuleVersion: 'US-FED-NY-NYC-2024.1',
-          colDate: '2024-Q3',
-        }}
+        sourceIds={calculationMetadata.evidenceSourceIds}
+        ruleVersions={calculationMetadata.ruleVersions}
       />
 
       <MethodologyModal

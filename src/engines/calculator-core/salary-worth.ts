@@ -77,6 +77,8 @@ export class SalaryWorthCalculator {
       savingsCapacityMonthly: fromMinor(savingsCapacityMonthlyMinor, currency),
       savingsRatePercentage: Math.round(savingsRate * 10) / 10,
       evidenceSourceIds: allEvidenceSources,
+      taxRuleVersion: taxResult.taxRuleVersion,
+      colDate: colResult.datasetVersion,
     };
   }
 }

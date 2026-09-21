@@ -155,8 +155,9 @@ export class UsTaxAdapter implements TaxAdapter {
     let localTaxMinor = 0;
     let stateMarginal = 0;
     let localMarginal = 0;
-    const isNewYorkState = context.regionId === 'US-NY';
-    const isNycResident = context.cityId === 'nyc';
+    const reg = (context.regionId || '').toUpperCase();
+    const isNewYorkState = reg === 'US-NY' || reg === 'NY' || context.cityId === 'nyc' || context.taxJurisdictionId?.includes('NY');
+    const isNycResident = context.cityId === 'nyc' || context.taxJurisdictionId === 'US-FED-NY-NYC' || context.taxJurisdictionId === 'tax-us-ny-nyc';
 
     let nysTaxableMinor = 0;
 
@@ -173,7 +174,7 @@ export class UsTaxAdapter implements TaxAdapter {
         localTaxMinor = localCalc.taxMinor;
         localMarginal = localCalc.topMarginalRate;
       }
-    } else if (context.regionId === 'US-CA') {
+    } else if (reg === 'US-CA' || reg === 'CA') {
       // California Franchise Tax Board 2024
       const caTaxable = Math.max(0, adjustedGrossMinor - 5363_00);
       const caCalc = calculateGraduatedTax(caTaxable, [
@@ -187,17 +188,17 @@ export class UsTaxAdapter implements TaxAdapter {
       ]);
       stateTaxMinor = caCalc.taxMinor;
       stateMarginal = caCalc.topMarginalRate;
-    } else if (context.regionId === 'US-IL') {
+    } else if (reg === 'US-IL' || reg === 'IL') {
       // Illinois flat individual income tax rate 4.95%
       const ilTaxable = Math.max(0, adjustedGrossMinor - 2775_00);
       stateTaxMinor = Math.round(ilTaxable * 0.0495);
       stateMarginal = 0.0495;
-    } else if (context.regionId === 'US-MA') {
+    } else if (reg === 'US-MA' || reg === 'MA') {
       // Massachusetts flat personal income tax 5.0%
       const maTaxable = Math.max(0, adjustedGrossMinor - 4400_00);
       stateTaxMinor = Math.round(maTaxable * 0.05);
       stateMarginal = 0.05;
-    } else if (context.regionId === 'US-DC') {
+    } else if (reg === 'US-DC' || reg === 'DC') {
       // District of Columbia progressive tax
       const dcTaxable = Math.max(0, adjustedGrossMinor - 14600_00);
       const dcCalc = calculateGraduatedTax(dcTaxable, [
@@ -211,7 +212,7 @@ export class UsTaxAdapter implements TaxAdapter {
       stateTaxMinor = dcCalc.taxMinor;
       stateMarginal = dcCalc.topMarginalRate;
     }
-    // Texas (US-TX), Washington (US-WA), and Florida (US-FL) have 0% state personal income tax
+    // Texas (US-TX/TX), Washington (US-WA/WA), and Florida (US-FL/FL) have 0% state personal income tax
 
     const totalIncomeTaxMinor = federalTaxMinor + stateTaxMinor + localTaxMinor;
     const totalDeductionsAndTaxesMinor = totalIncomeTaxMinor + totalFicaMinor;

@@ -90,8 +90,8 @@ export class CostOfLivingEngine {
       annualEstimate: fromMinor(foodMonthlyMinor * 12, currency),
       confidence: 'High',
       sourceDate: benchmark.sourceDate,
-      evidenceSourceId: 'us-bls-cpi-nyc-2024',
-      notes: 'Based on BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights.',
+      evidenceSourceId: cityId === 'nyc' ? 'us-bls-cpi-nyc-2024' : benchmark.evidenceSourceId,
+      notes: cityId === 'nyc' ? 'Based on BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights.' : 'Official statistics consumer price index regional food-at-home and dining expenditure weights.',
     };
 
     // 3. Utilities & Connectivity
@@ -113,7 +113,7 @@ export class CostOfLivingEngine {
       annualEstimate: fromMinor(utilitiesMinor * 12, currency),
       confidence: 'High',
       sourceDate: benchmark.sourceDate,
-      evidenceSourceId: 'us-bls-cpi-nyc-2024',
+      evidenceSourceId: cityId === 'nyc' ? 'us-bls-cpi-nyc-2024' : benchmark.evidenceSourceId,
       notes: 'Includes seasonal weighted energy, municipal water, high-speed broadband, and cellular plans.',
     };
 
@@ -140,15 +140,15 @@ export class CostOfLivingEngine {
     const transportItem: CostEstimateItem = {
       id: 'transportation',
       category: 'transport',
-      label: `Transportation (${household.transportMode.replace(/_/g, ' ')})`,
+      label: `Transportation (${(household.transportMode || 'public_transit').replace(/_/g, ' ')})`,
       monthlyEstimate: fromMinor(transportMinor, currency),
       monthlyLow: fromMinor(Math.round(transportMinor * 0.9), currency),
       monthlyHigh: fromMinor(Math.round(transportMinor * 1.15), currency),
       annualEstimate: fromMinor(transportMinor * 12, currency),
       confidence: 'High',
       sourceDate: benchmark.sourceDate,
-      evidenceSourceId: 'us-mta-nyc-transit-2024',
-      notes: 'MTA 30-day passes or vehicle amortization, gas, insurance, and routine maintenance.',
+      evidenceSourceId: cityId === 'nyc' ? 'us-mta-nyc-transit-2024' : benchmark.evidenceSourceId,
+      notes: cityId === 'nyc' ? 'MTA 30-day passes or vehicle amortization, gas, insurance, and routine maintenance.' : 'Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance.',
     };
 
     // 5. Healthcare
@@ -166,7 +166,7 @@ export class CostOfLivingEngine {
       annualEstimate: fromMinor(healthcareMinor * 12, currency),
       confidence: 'High',
       sourceDate: benchmark.sourceDate,
-      evidenceSourceId: 'us-bls-cpi-nyc-2024',
+      evidenceSourceId: cityId === 'nyc' ? 'us-bls-cpi-nyc-2024' : benchmark.evidenceSourceId,
       notes: 'Typical employer plan payroll deduction plus standard prescription and office copays.',
     };
 
@@ -194,21 +194,22 @@ export class CostOfLivingEngine {
     }
 
     // 7. Lifestyle & Personal Discretionary
-    const lifestyleBase = benchmark.lifestyleBasePerAdult[household.lifestyleLevel];
+    const effectiveLifestyle = household.lifestyleLevel || 'moderate';
+    const lifestyleBase = benchmark.lifestyleBasePerAdult[effectiveLifestyle] || benchmark.lifestyleBasePerAdult.moderate;
     const lifestyleMajor = household.adults * lifestyleBase;
     const lifestyleMinor = Math.round(lifestyleMajor * 100);
 
     const lifestyleItem: CostEstimateItem = {
       id: 'lifestyle-discretionary',
       category: 'lifestyle',
-      label: `Discretionary Lifestyle (${household.lifestyleLevel})`,
+      label: `Discretionary Lifestyle (${effectiveLifestyle})`,
       monthlyEstimate: fromMinor(lifestyleMinor, currency),
       monthlyLow: fromMinor(Math.round(lifestyleMinor * 0.8), currency),
       monthlyHigh: fromMinor(Math.round(lifestyleMinor * 1.3), currency),
       annualEstimate: fromMinor(lifestyleMinor * 12, currency),
       confidence: 'Moderate',
       sourceDate: benchmark.sourceDate,
-      evidenceSourceId: 'us-bls-cpi-nyc-2024',
+      evidenceSourceId: cityId === 'nyc' ? 'us-bls-cpi-nyc-2024' : benchmark.evidenceSourceId,
       notes: 'Clothing, recreation, fitness, personal grooming, entertainment subscriptions.',
     };
     items.push(lifestyleItem);
@@ -242,7 +243,7 @@ export class CostOfLivingEngine {
 
     const assumptionsSummary = `${household.adults} adult${household.adults > 1 ? 's' : ''}${
       household.children > 0 ? `, ${household.children} child` : ''
-    } · ${household.housingType} · ${household.areaType} area · ${household.transportMode.replace(/_/g, ' ')} · ${household.lifestyleLevel} lifestyle`;
+    } · ${household.housingType || '1-bedroom'} · ${household.areaType || 'typical'} area · ${(household.transportMode || 'public_transit').replace(/_/g, ' ')} · ${effectiveLifestyle} lifestyle`;
 
     return {
       monthlyTotal: fromMinor(monthlyTotalMinor, currency),
@@ -255,6 +256,7 @@ export class CostOfLivingEngine {
       discretionaryMonthly: fromMinor(lifestyleMinor, currency),
       confidenceScore: 'High-confidence estimate',
       evidenceSourceIds: Array.from(new Set(items.map((i) => i.evidenceSourceId))),
+      datasetVersion: benchmark.sourceDate,
       assumptionsSummary,
     };
   }

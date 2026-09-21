@@ -56,5 +56,6 @@ export interface CostOfLivingResult {
   discretionaryMonthly: Money;
   confidenceScore: 'High-confidence estimate' | 'Moderate data coverage' | 'Limited local data';
   evidenceSourceIds: string[];
+  datasetVersion: string;
   assumptionsSummary: string;
 }

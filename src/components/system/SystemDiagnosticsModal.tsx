@@ -75,11 +75,28 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({
       });
   }, [isOpen, refreshTrigger]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
     <div
       id="system-diagnostics-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="System Diagnostics"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
       className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6"
     >
       <div className="bg-[#FFFFFF] border border-[#DCE3E0] rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]">

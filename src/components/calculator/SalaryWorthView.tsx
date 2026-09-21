@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { ArrowRight, Sparkles, Building2, MapPin, SlidersHorizontal, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ArrowRight, Sparkles, Building2, MapPin, SlidersHorizontal, ShieldCheck, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 import { CITIES } from '../../data/locations';
 import { PRESET_LIST } from '../../data/presets';
-import { SalaryWorthCalculator } from '../../engines/calculator-core/salary-worth';
-import { createMoney, toMajor } from '../../lib/money';
+import { calculateSalaryWorth } from '../../api/calculators';
+import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { HouseholdProfile } from '../../types/col';
-import { LivWorthScenario } from '../../types/scenario';
+import { LivWorthCalculationOutcome, LivWorthScenario } from '../../types/scenario';
 import { CurrencyInput } from '../ui/CurrencyInput';
 import { AssumptionPills } from './AssumptionPills';
 import { LivingCostBreakdownCard } from './LivingCostBreakdownCard';
@@ -20,6 +20,7 @@ interface SalaryWorthViewProps {
   onOpenCustomizer: () => void;
   onOpenEvidence: () => void;
   onNavigateToCompare: () => void;
+  onCalculationOutcome?: (outcome: LivWorthCalculationOutcome) => void;
 }
 
 export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
@@ -30,15 +31,64 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   onOpenCustomizer,
   onOpenEvidence,
   onNavigateToCompare,
+  onCalculationOutcome,
 }) => {
   const [salaryInputMajor, setSalaryInputMajor] = useState<number>(
     toMajor(scenario.compensation.baseSalary)
   );
+  const [outcome, setOutcome] = useState<LivWorthCalculationOutcome | null>(null);
+  const [isCalculating, setIsCalculating] = useState<boolean>(true);
+  const [calcError, setCalcError] = useState<string | null>(null);
 
   const currentCity = scenario.location;
   const currency = currentCity.currency;
 
-  const currentOutcome = SalaryWorthCalculator.calculate(scenario);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Synchronize local input state if scenario changes externally
+  useEffect(() => {
+    setSalaryInputMajor(toMajor(scenario.compensation.baseSalary));
+  }, [scenario.compensation.baseSalary]);
+
+  // Execute authoritative backend calculation whenever scenario changes
+  useEffect(() => {
+    // Cancel any ongoing calculation in flight
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    setIsCalculating(true);
+    setCalcError(null);
+
+    const timer = setTimeout(async () => {
+      try {
+        const response = await calculateSalaryWorth(scenario, {
+          signal: controller.signal,
+        });
+
+        if (response.success && response.data) {
+          setOutcome(response.data);
+          onCalculationOutcome?.(response.data);
+        } else {
+          setCalcError('Failed to calculate income worth. Please verify inputs.');
+        }
+      } catch (err: any) {
+        if (err.errorCode === 'REQUEST_CANCELLED') {
+          return; // Ignore aborted requests
+        }
+        setCalcError(err.message || 'Unable to connect to calculation engine.');
+      } finally {
+        setIsCalculating(false);
+      }
+    }, 150); // Debounce to prevent race conditions during typing
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [scenario, onCalculationOutcome]);
 
   const handleSalaryChange = (newMajor: number) => {
     setSalaryInputMajor(newMajor);
@@ -87,7 +137,14 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   return (
     <div id="salary-worth-view" className="space-y-8">
       {/* 28. Hero Section: Calculator is the Hero */}
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
+        {isCalculating && (
+          <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full animate-pulse">
+            <Loader2 className="w-3 h-3 animate-spin" />
+            <span>Calculating...</span>
+          </div>
+        )}
+
         <div className="max-w-2xl">
           <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
             Global Income & Living Intelligence
@@ -180,31 +237,52 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
           <AssumptionPills
             household={scenario.household}
             actualRentOverridden={actualRentMajor !== undefined}
-            actualRentFormatted={actualRentMajor ? `$${actualRentMajor.toLocaleString()}` : undefined}
+            actualRentFormatted={actualRentMajor ? formatMoney(createMoney(actualRentMajor, currency), { hideDecimals: true }) : undefined}
             onOpenCustomizer={onOpenCustomizer}
             onQuickPresetChange={handleQuickPresetChange}
           />
         </div>
       </div>
 
-      {/* 29. Primary Result Summary Card */}
-      <ResultSummaryCard
-        outcome={currentOutcome}
-        onOpenCustomizer={onOpenCustomizer}
-        onCompareCity={onNavigateToCompare}
-        onOpenEvidence={onOpenEvidence}
-      />
+      {/* Error state if backend fails */}
+      {calcError && (
+        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 flex items-center justify-between text-xs">
+          <div className="flex items-center space-x-2">
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+            <span>{calcError}</span>
+          </div>
+          <button
+            onClick={() => onUpdateScenario({ ...scenario })}
+            className="flex items-center space-x-1 font-semibold text-red-900 underline hover:no-underline"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>Retry</span>
+          </button>
+        </div>
+      )}
 
-      {/* 30. Detailed Breakdowns: Taxes & Living Costs */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <TaxBreakdownCard tax={currentOutcome.tax} onOpenEvidence={onOpenEvidence} />
-        <LivingCostBreakdownCard
-          col={currentOutcome.costOfLiving}
-          actualRentMajor={actualRentMajor}
-          onOverrideRent={onUpdateRentOverride}
-          onOpenCustomizer={onOpenCustomizer}
-        />
-      </div>
+      {/* 29. Primary Result Summary Card */}
+      {outcome && (
+        <>
+          <ResultSummaryCard
+            outcome={outcome}
+            onOpenCustomizer={onOpenCustomizer}
+            onCompareCity={onNavigateToCompare}
+            onOpenEvidence={onOpenEvidence}
+          />
+
+          {/* 30. Detailed Breakdowns: Taxes & Living Costs */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <TaxBreakdownCard tax={outcome.tax} onOpenEvidence={onOpenEvidence} />
+            <LivingCostBreakdownCard
+              col={outcome.costOfLiving}
+              actualRentMajor={actualRentMajor}
+              onOverrideRent={onUpdateRentOverride}
+              onOpenCustomizer={onOpenCustomizer}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

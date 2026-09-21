@@ -33,6 +33,8 @@ export interface LivWorthCalculationOutcome {
   savingsRatePercentage: number;
   relocationYear1Costs?: Money;
   evidenceSourceIds: string[];
+  taxRuleVersion?: string;
+  colDate?: string;
 }
 
 // Brand migration aliases

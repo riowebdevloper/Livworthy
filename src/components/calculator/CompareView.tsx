@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
-import { ArrowLeftRight, ShieldCheck, Scale, Info } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ArrowLeftRight, ShieldCheck, Scale, Info, Loader2, AlertCircle } from 'lucide-react';
 import { CITIES } from '../../data/locations';
-import { ComparisonEngine, ComparisonResult } from '../../engines/calculator-core/compare';
+import { compareCities } from '../../api/calculators';
+import { ComparisonResult } from '../../engines/calculator-core/compare';
 import { createMoney, formatMoney, toMajor } from '../../lib/money';
-import { HouseholdProfile } from '../../types/col';
 import { CurrencyCode } from '../../types/money';
 import { LivWorthScenario } from '../../types/scenario';
 
 interface CompareViewProps {
   initialScenarioA: LivWorthScenario;
   onOpenEvidence: () => void;
+  onComparisonResult?: (result: ComparisonResult) => void;
 }
 
 export const CompareView: React.FC<CompareViewProps> = ({
   initialScenarioA,
   onOpenEvidence,
+  onComparisonResult,
 }) => {
   const [cityAId, setCityAId] = useState<string>(initialScenarioA.location.id);
   const [cityBId, setCityBId] = useState<string>('austin');
@@ -25,9 +27,14 @@ export const CompareView: React.FC<CompareViewProps> = ({
   const [salaryBMajor, setSalaryBMajor] = useState<number>(100000);
 
   const [displayCurrency, setDisplayCurrency] = useState<CurrencyCode>('USD');
+  const [comparison, setComparison] = useState<ComparisonResult | null>(null);
+  const [isComparing, setIsComparing] = useState<boolean>(true);
+  const [compareError, setCompareError] = useState<string | null>(null);
 
   const cityA = CITIES[cityAId] || CITIES.nyc;
   const cityB = CITIES[cityBId] || CITIES.austin;
+
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const scenarioA: LivWorthScenario = {
     ...initialScenarioA,
@@ -47,16 +54,53 @@ export const CompareView: React.FC<CompareViewProps> = ({
     },
   };
 
-  const comparison: ComparisonResult = ComparisonEngine.compare(
-    scenarioA,
-    scenarioB,
-    displayCurrency
-  );
+  useEffect(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    setIsComparing(true);
+    setCompareError(null);
+
+    const timer = setTimeout(async () => {
+      try {
+        const response = await compareCities(scenarioA, scenarioB, displayCurrency, undefined, {
+          signal: controller.signal,
+        });
+
+        if (response.success && response.data) {
+          setComparison(response.data);
+          onComparisonResult?.(response.data);
+        } else {
+          setCompareError('Comparison engine failed. Please verify selected cities.');
+        }
+      } catch (err: any) {
+        if (err.errorCode === 'REQUEST_CANCELLED') return;
+        setCompareError(err.message || 'Comparison service unavailable.');
+      } finally {
+        setIsComparing(false);
+      }
+    }, 150);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [cityAId, cityBId, salaryAMajor, salaryBMajor, displayCurrency, onComparisonResult]);
 
   return (
     <div id="compare-view" className="space-y-8">
       {/* Header */}
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
+        {isComparing && (
+          <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full animate-pulse">
+            <Loader2 className="w-3 h-3 animate-spin" />
+            <span>Comparing locations...</span>
+          </div>
+        )}
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
@@ -76,6 +120,8 @@ export const CompareView: React.FC<CompareViewProps> = ({
             {(['USD', 'EUR', 'GBP', 'AED', 'CAD', 'AUD', 'SGD'] as CurrencyCode[]).map((curr) => (
               <button
                 key={curr}
+                type="button"
+                id={`btn-currency-${curr.toLowerCase()}`}
                 onClick={() => setDisplayCurrency(curr)}
                 className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-colors whitespace-nowrap ${
                   displayCurrency === curr
@@ -89,254 +135,233 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
         </div>
 
-        {/* Popular Comparisons Quick Links */}
+        {/* Quick Comparisons */}
         <div className="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
-          <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap">
-            Popular Comparisons:
-          </span>
-          <div className="flex items-center space-x-1.5">
-            {[
-              { label: 'NYC vs. Austin ($100k)', a: 'nyc', salA: 100000, b: 'austin', salB: 100000 },
-              { label: 'London vs. Dubai (£80k vs 400k AED)', a: 'london', salA: 80000, b: 'dubai', salB: 400000 },
-              { label: 'Toronto vs. Vancouver (C$110k vs C$120k)', a: 'toronto', salA: 110000, b: 'vancouver', salB: 120000 },
-              { label: 'Sydney vs. Melbourne (A$130k vs A$125k)', a: 'sydney', salA: 130000, b: 'melbourne', salB: 125000 },
-              { label: 'Berlin vs. Munich (€75k vs €85k)', a: 'berlin', salA: 75000, b: 'munich', salB: 85000 },
-              { label: 'NYC vs. Singapore ($150k vs S$190k)', a: 'nyc', salA: 150000, b: 'singapore', salB: 190000 },
-            ].map((p, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => {
-                  setCityAId(p.a);
-                  setSalaryAMajor(p.salA);
-                  setCityBId(p.b);
-                  setSalaryBMajor(p.salB);
-                }}
-                className="text-xs px-2.5 py-1 rounded-full whitespace-nowrap transition-colors border bg-[#F7F8F5] text-[#102A2E] border-[#DCE3E0] hover:border-[#167D75]"
+          <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap">Popular Pairs:</span>
+          {[
+            { a: 'nyc', aSal: 100000, b: 'austin', bSal: 100000, label: 'NYC vs Austin ($100k)' },
+            { a: 'sf', aSal: 150000, b: 'seattle', bSal: 150000, label: 'SF vs Seattle ($150k)' },
+            { a: 'london', aSal: 85000, b: 'dubai', bSal: 300000, label: 'London (£85k) vs Dubai (AED 300k)' },
+            { a: 'toronto', aSal: 120000, b: 'vancouver', bSal: 120000, label: 'Toronto vs Vancouver (CAD $120k)' },
+          ].map((pair, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => {
+                setCityAId(pair.a);
+                setSalaryAMajor(pair.aSal);
+                setCityBId(pair.b);
+                setSalaryBMajor(pair.bSal);
+              }}
+              className="text-xs px-2.5 py-1 rounded-full whitespace-nowrap bg-[#F7F8F5] text-[#102A2E] border border-[#DCE3E0] hover:border-[#167D75] transition-colors"
+            >
+              {pair.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Error state */}
+      {compareError && (
+        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 flex items-center space-x-2 text-xs">
+          <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+          <span>{compareError}</span>
+        </div>
+      )}
+
+      {/* Comparison Inputs (City A vs City B) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* City A Input */}
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
+          <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
+            <span className="font-bold text-sm text-[#102A2E]">Location A (Baseline)</span>
+            <span className="text-xs bg-[#DDF2EC] text-[#0D625B] font-bold px-2 py-0.5 rounded">
+              {cityA.currency}
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            <div>
+              <label htmlFor="compare-city-a-select" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
+                Select City A
+              </label>
+              <select
+                id="compare-city-a-select"
+                aria-label="Select City A"
+                value={cityAId}
+                onChange={(e) => setCityAId(e.target.value)}
+                className="w-full text-base font-bold rounded-lg border border-[#DCE3E0] p-2.5 bg-white text-[#102A2E]"
               >
-                {p.label}
-              </button>
-            ))}
+                {Object.values(CITIES).map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} ({c.countryId})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="compare-salary-a-input" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
+                Annual Gross Salary ({cityA.currency})
+              </label>
+              <input
+                id="compare-salary-a-input"
+                aria-label={`Annual Gross Salary (${cityA.currency})`}
+                type="number"
+                value={salaryAMajor}
+                onChange={(e) => setSalaryAMajor(parseFloat(e.target.value) || 0)}
+                className="w-full text-base font-bold rounded-lg border border-[#DCE3E0] p-2.5 bg-white text-[#102A2E]"
+              />
+            </div>
           </div>
         </div>
 
-        {/* City & Salary Input Controls */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-[#F7F8F5]">
-          {/* Location A */}
-          <div className="p-4 rounded-xl bg-[#F7F8F5] border border-[#DCE3E0]">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#167D75] block mb-2">
-              Location A
+        {/* City B Input */}
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
+          <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
+            <span className="font-bold text-sm text-[#102A2E]">Location B (Target)</span>
+            <span className="text-xs bg-[#DDF2EC] text-[#0D625B] font-bold px-2 py-0.5 rounded">
+              {cityB.currency}
             </span>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label htmlFor="compare-city-a-select" className="text-[11px] font-semibold text-[#60706D] block mb-1">City</label>
-                <select
-                  id="compare-city-a-select"
-                  aria-label="City Location A"
-                  value={cityAId}
-                  onChange={(e) => setCityAId(e.target.value)}
-                  className="w-full text-xs font-bold border border-[#DCE3E0] rounded-lg p-2 bg-white"
-                >
-                  {Object.values(CITIES).map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label htmlFor="compare-salary-a-input" className="text-[11px] font-semibold text-[#60706D] block mb-1">
-                  Salary ({cityA.currency})
-                </label>
-                <input
-                  id="compare-salary-a-input"
-                  aria-label="Salary Location A"
-                  type="number"
-                  value={salaryAMajor}
-                  onChange={(e) => setSalaryAMajor(parseFloat(e.target.value) || 0)}
-                  className="w-full text-xs font-bold border border-[#DCE3E0] rounded-lg p-2 bg-white"
-                />
-              </div>
-            </div>
           </div>
 
-          {/* Location B */}
-          <div className="p-4 rounded-xl bg-[#F7F8F5] border border-[#DCE3E0]">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#167D75] block mb-2">
-              Location B
-            </span>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label htmlFor="compare-city-b-select" className="text-[11px] font-semibold text-[#60706D] block mb-1">City</label>
-                <select
-                  id="compare-city-b-select"
-                  aria-label="City Location B"
-                  value={cityBId}
-                  onChange={(e) => setCityBId(e.target.value)}
-                  className="w-full text-xs font-bold border border-[#DCE3E0] rounded-lg p-2 bg-white"
-                >
-                  {Object.values(CITIES).map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label htmlFor="compare-salary-b-input" className="text-[11px] font-semibold text-[#60706D] block mb-1">
-                  Salary ({cityB.currency})
-                </label>
-                <input
-                  id="compare-salary-b-input"
-                  aria-label="Salary Location B"
-                  type="number"
-                  value={salaryBMajor}
-                  onChange={(e) => setSalaryBMajor(parseFloat(e.target.value) || 0)}
-                  className="w-full text-xs font-bold border border-[#DCE3E0] rounded-lg p-2 bg-white"
-                />
-              </div>
+          <div className="space-y-3">
+            <div>
+              <label htmlFor="compare-city-b-select" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
+                Select City B
+              </label>
+              <select
+                id="compare-city-b-select"
+                aria-label="Select City B"
+                value={cityBId}
+                onChange={(e) => setCityBId(e.target.value)}
+                className="w-full text-base font-bold rounded-lg border border-[#DCE3E0] p-2.5 bg-white text-[#102A2E]"
+              >
+                {Object.values(CITIES).map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} ({c.countryId})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="compare-salary-b-input" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
+                Annual Gross Salary ({cityB.currency})
+              </label>
+              <input
+                id="compare-salary-b-input"
+                aria-label={`Annual Gross Salary (${cityB.currency})`}
+                type="number"
+                value={salaryBMajor}
+                onChange={(e) => setSalaryBMajor(parseFloat(e.target.value) || 0)}
+                className="w-full text-base font-bold rounded-lg border border-[#DCE3E0] p-2.5 bg-white text-[#102A2E]"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Objective Narrative Banner (No subjective winner) */}
-      <div className="bg-[#FFFFFF] p-5 rounded-2xl border border-[#DCE3E0] shadow-xs flex items-start space-x-3">
-        <Scale className="w-5 h-5 text-[#167D75] shrink-0 mt-0.5" />
-        <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-[#102A2E]">
-            Calculated Economic Comparison
-          </h4>
-          <p className="text-sm font-semibold text-[#102A2E] mt-1 leading-snug">
-            {comparison.delta.summaryNarrative}
-          </p>
-          <p className="text-xs text-[#60706D] mt-1">
-            Normalized using verified reference exchange rates ({comparison.fxSnapshotDate.slice(0, 10)}).
-          </p>
-        </div>
-      </div>
-
-      {/* Two-Column Side-by-Side Comparison Table */}
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs overflow-hidden">
-        {/* Table Header */}
-        <div className="grid grid-cols-3 bg-[#F7F8F5] p-4 border-b border-[#DCE3E0] text-xs font-bold text-[#102A2E]">
-          <div className="uppercase tracking-wider text-[#60706D]">Metric</div>
-          <div className="text-center">{cityA.name}</div>
-          <div className="text-center">{cityB.name}</div>
-        </div>
-
-        {/* Rows */}
-        <div className="divide-y divide-[#F7F8F5] text-xs">
-          {/* Gross */}
-          <div className="grid grid-cols-3 p-4 items-center">
+      {/* Comparison Results Card */}
+      {comparison && (
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F7F8F5] pb-4">
             <div>
-              <span className="font-bold text-[#102A2E]">Gross Compensation</span>
-              <span className="text-[11px] text-[#60706D] block">In {displayCurrency}</span>
-            </div>
-            <div className="text-center font-bold text-[#102A2E] font-tabular text-sm">
-              {formatMoney(comparison.convertedA.grossAnnual, { hideDecimals: true })}
-            </div>
-            <div className="text-center font-bold text-[#102A2E] font-tabular text-sm">
-              {formatMoney(comparison.convertedB.grossAnnual, { hideDecimals: true })}
-            </div>
-          </div>
-
-          {/* Taxes */}
-          <div className="grid grid-cols-3 p-4 items-center bg-[#F7F8F5]/30">
-            <div>
-              <span className="font-bold text-[#102A2E]">Total Tax & Contributions</span>
-              <span className="text-[11px] text-[#60706D] block">
-                {(comparison.outcomeA.tax.effectiveTaxRate * 100).toFixed(1)}% vs{' '}
-                {(comparison.outcomeB.tax.effectiveTaxRate * 100).toFixed(1)}%
+              <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
+                Normalized Comparison Delta
               </span>
+              <h3 className="text-xl font-extrabold text-[#102A2E]">
+                {cityA.name} vs {cityB.name}
+              </h3>
             </div>
-            <div className="text-center text-[#60706D] font-tabular font-semibold">
-              −{formatMoney(
-                createMoney(
-                  toMajor(comparison.convertedA.grossAnnual) - toMajor(comparison.convertedA.takeHomeAnnual),
-                  displayCurrency
-                ),
-                { hideDecimals: true }
-              )}
-            </div>
-            <div className="text-center text-[#60706D] font-tabular font-semibold">
-              −{formatMoney(
-                createMoney(
-                  toMajor(comparison.convertedB.grossAnnual) - toMajor(comparison.convertedB.takeHomeAnnual),
-                  displayCurrency
-                ),
-                { hideDecimals: true }
-              )}
+
+            <div className="flex items-center space-x-3 text-xs text-[#60706D]">
+              <span className="bg-[#F7F8F5] px-2.5 py-1 rounded-full border border-[#DCE3E0]">
+                All metrics converted to <strong className="text-[#102A2E]">{displayCurrency}</strong>
+              </span>
+              <button onClick={onOpenEvidence} className="text-[#167D75] font-semibold hover:underline flex items-center">
+                <ShieldCheck className="w-3.5 h-3.5 mr-1" /> Evidence Sources
+              </button>
             </div>
           </div>
 
-          {/* Take-Home */}
-          <div className="grid grid-cols-3 p-4 items-center">
-            <div>
-              <span className="font-bold text-[#167D75]">Annual Take-Home Pay</span>
-              <span className="text-[11px] text-[#60706D] block">Net spendable income</span>
-            </div>
-            <div className="text-center font-bold text-[#167D75] font-tabular text-sm">
-              {formatMoney(comparison.convertedA.takeHomeAnnual, { hideDecimals: true })}
-            </div>
-            <div className="text-center font-bold text-[#167D75] font-tabular text-sm">
-              {formatMoney(comparison.convertedB.takeHomeAnnual, { hideDecimals: true })}
-            </div>
+          {/* Objective Summary Narrative */}
+          <div className="p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0] text-xs leading-relaxed text-[#102A2E]">
+            <p className="font-medium">{comparison.delta.summaryNarrative}</p>
           </div>
 
-          {/* Living Costs */}
-          <div className="grid grid-cols-3 p-4 items-center bg-[#F7F8F5]/30">
-            <div>
-              <span className="font-bold text-[#102A2E]">Annual Living Costs</span>
-              <span className="text-[11px] text-[#60706D] block">Housing, food, transit, utilities</span>
-            </div>
-            <div className="text-center text-[#60706D] font-tabular font-semibold">
-              −{formatMoney(comparison.convertedA.livingCostsAnnual, { hideDecimals: true })}
-            </div>
-            <div className="text-center text-[#60706D] font-tabular font-semibold">
-              −{formatMoney(comparison.convertedB.livingCostsAnnual, { hideDecimals: true })}
-            </div>
-          </div>
+          {/* Table Breakdown */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-left">
+              <thead>
+                <tr className="border-b border-[#DCE3E0] text-[#60706D] font-bold">
+                  <th className="py-2.5">Financial Metric</th>
+                  <th className="py-2.5 text-right">{cityA.name}</th>
+                  <th className="py-2.5 text-right">{cityB.name}</th>
+                  <th className="py-2.5 text-right">Net Delta ({displayCurrency})</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#F7F8F5]">
+                <tr>
+                  <td className="py-3 font-semibold text-[#102A2E]">Gross Compensation</td>
+                  <td className="py-3 text-right font-tabular text-[#60706D]">
+                    {formatMoney(comparison.convertedA.grossAnnual, { hideDecimals: true })}
+                  </td>
+                  <td className="py-3 text-right font-tabular text-[#60706D]">
+                    {formatMoney(comparison.convertedB.grossAnnual, { hideDecimals: true })}
+                  </td>
+                  <td className="py-3 text-right font-bold font-tabular text-[#102A2E]">
+                    {comparison.delta.grossAnnualDiff.amountMinor >= 0 ? '+' : ''}
+                    {formatMoney(comparison.delta.grossAnnualDiff, { hideDecimals: true })}
+                  </td>
+                </tr>
 
-          {/* Money Remaining */}
-          <div className="grid grid-cols-3 p-4 items-center bg-[#DDF2EC]/20 border-y border-[#167D75]/20">
-            <div>
-              <span className="font-extrabold text-[#102A2E] text-sm">Annual Money Remaining</span>
-              <span className="text-[11px] text-[#167D75] font-semibold block">Disposable capacity</span>
-            </div>
-            <div className="text-center font-extrabold text-[#102A2E] font-tabular text-base sm:text-lg">
-              {formatMoney(comparison.convertedA.disposableAnnual, { hideDecimals: true })}
-            </div>
-            <div className="text-center font-extrabold text-[#102A2E] font-tabular text-base sm:text-lg">
-              {formatMoney(comparison.convertedB.disposableAnnual, { hideDecimals: true })}
-            </div>
-          </div>
+                <tr>
+                  <td className="py-3 font-semibold text-[#102A2E]">Net Take-Home (Post-Tax)</td>
+                  <td className="py-3 text-right font-tabular text-[#167D75] font-semibold">
+                    {formatMoney(comparison.convertedA.takeHomeAnnual, { hideDecimals: true })}
+                  </td>
+                  <td className="py-3 text-right font-tabular text-[#167D75] font-semibold">
+                    {formatMoney(comparison.convertedB.takeHomeAnnual, { hideDecimals: true })}
+                  </td>
+                  <td className="py-3 text-right font-bold font-tabular text-[#167D75]">
+                    {comparison.delta.takeHomeAnnualDiff.amountMinor >= 0 ? '+' : ''}
+                    {formatMoney(comparison.delta.takeHomeAnnualDiff, { hideDecimals: true })}
+                  </td>
+                </tr>
 
-          {/* Monthly Remaining */}
-          <div className="grid grid-cols-3 p-4 items-center">
-            <div>
-              <span className="font-bold text-[#102A2E]">Monthly Disposable Buffer</span>
-              <span className="text-[11px] text-[#60706D] block">Per month</span>
-            </div>
-            <div className="text-center font-bold text-[#102A2E] font-tabular">
-              {formatMoney(comparison.convertedA.disposableMonthly, { hideDecimals: true })}/mo
-            </div>
-            <div className="text-center font-bold text-[#102A2E] font-tabular">
-              {formatMoney(comparison.convertedB.disposableMonthly, { hideDecimals: true })}/mo
-            </div>
+                <tr>
+                  <td className="py-3 font-semibold text-[#102A2E]">Annual Living Expenses</td>
+                  <td className="py-3 text-right font-tabular text-[#60706D]">
+                    {formatMoney(comparison.convertedA.livingCostsAnnual, { hideDecimals: true })}
+                  </td>
+                  <td className="py-3 text-right font-tabular text-[#60706D]">
+                    {formatMoney(comparison.convertedB.livingCostsAnnual, { hideDecimals: true })}
+                  </td>
+                  <td className="py-3 text-right font-bold font-tabular text-[#60706D]">
+                    {comparison.delta.livingCostsAnnualDiff.amountMinor >= 0 ? '+' : ''}
+                    {formatMoney(comparison.delta.livingCostsAnnualDiff, { hideDecimals: true })}
+                  </td>
+                </tr>
+
+                <tr className="bg-[#DDF2EC]/40 font-bold text-sm">
+                  <td className="py-3.5 pl-2 rounded-l-lg text-[#102A2E]">Disposable Income Remaining</td>
+                  <td className="py-3.5 text-right font-tabular text-[#102A2E]">
+                    {formatMoney(comparison.convertedA.disposableAnnual, { hideDecimals: true })}
+                  </td>
+                  <td className="py-3.5 text-right font-tabular text-[#102A2E]">
+                    {formatMoney(comparison.convertedB.disposableAnnual, { hideDecimals: true })}
+                  </td>
+                  <td className="py-3.5 pr-2 rounded-r-lg text-right font-tabular font-extrabold text-[#167D75]">
+                    {comparison.delta.disposableIncomeAnnualDiff.amountMinor >= 0 ? '+' : ''}
+                    {formatMoney(comparison.delta.disposableIncomeAnnualDiff, { hideDecimals: true })}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-
-        {/* Footer */}
-        <div className="p-4 bg-[#F7F8F5] border-t border-[#DCE3E0] flex items-center justify-between text-xs text-[#60706D]">
-          <span className="flex items-center">
-            <Info className="w-3.5 h-3.5 mr-1 text-[#167D75]" /> Deterministic calculation. No subjective winner label.
-          </span>
-          <button onClick={onOpenEvidence} className="text-[#167D75] hover:underline font-semibold">
-            Inspect data sources
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
