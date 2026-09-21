@@ -338,14 +338,14 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
 
       {/* Action Footer */}
       <div className="bg-[#FFFFFF] px-6 py-4 border-t border-[#DCE3E0] flex flex-wrap items-center justify-between gap-3">
-        <div className="text-xs text-[#60706D] flex items-center space-x-1">
-          <span>Assumptions:</span>
-          <span className="font-medium text-[#102A2E] truncate max-w-xs sm:max-w-md">
+        <div className="text-xs text-[#60706D] flex items-center space-x-1 min-w-0">
+          <span className="shrink-0">Assumptions:</span>
+          <span className="font-medium text-[#102A2E] truncate max-w-xs sm:max-w-md bg-white">
             {outcome.costOfLiving.assumptionsSummary}
           </span>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 shrink-0">
           <button
             id="btn-copy-assessment"
             type="button"

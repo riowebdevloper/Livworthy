@@ -139,7 +139,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
       {/* 28. Hero Section: Calculator is the Hero */}
       <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
         {isCalculating && (
-          <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full animate-pulse">
+          <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
             <span>Calculating...</span>
           </div>

@@ -199,7 +199,7 @@ export const Footer: React.FC<FooterProps> = ({
               <span>City Salary Guides</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
-            <ul className="space-y-1.5 text-xs">
+            <ul className="space-y-1 text-xs">
               {POPULAR_GUIDES_LIST.slice(0, 8).map((guide) => (
                 <li key={guide.slug}>
                   <button
@@ -212,10 +212,10 @@ export const Footer: React.FC<FooterProps> = ({
                       }
                       scrollToTop();
                     }}
-                    className="hover:text-[#167D75] text-left transition-colors line-clamp-1 cursor-pointer"
+                    className="w-full min-h-[24px] py-1 flex items-center hover:text-[#167D75] text-left transition-colors cursor-pointer"
                     title={guide.title}
                   >
-                    {guide.title}
+                    <span className="line-clamp-1">{guide.title}</span>
                   </button>
                 </li>
               ))}
@@ -226,7 +226,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('nyc-100k-guide');
                     scrollToTop();
                   }}
-                  className="text-xs font-bold text-[#167D75] hover:underline cursor-pointer pt-1 flex items-center"
+                  className="text-xs font-bold text-[#167D75] hover:underline cursor-pointer min-h-[24px] py-1 flex items-center"
                 >
                   <span>Explore All {POPULAR_GUIDES_LIST.length}+ Country & City Guides →</span>
                 </button>

@@ -75,14 +75,14 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Navigation Tabs Bar */}
-        <nav className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none border-t border-[#F7F8F5]">
+        <nav className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none border-t border-[#F7F8F5] bg-white">
           <button
             id="tab-salary-worth"
             onClick={() => onSelectTab('salary-worth')}
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'salary-worth'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <Calculator className="w-3.5 h-3.5" />
@@ -95,7 +95,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'salary-needed'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <DollarSign className="w-3.5 h-3.5" />
@@ -108,7 +108,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'salary-after-tax'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <span>Salary After Tax</span>
@@ -120,7 +120,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'cost-of-living'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <Home className="w-3.5 h-3.5" />
@@ -133,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'compare'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <ArrowLeftRight className="w-3.5 h-3.5" />
@@ -146,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'job-offers'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <Scale className="w-3.5 h-3.5" />
@@ -159,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors border ${
               activeTab === 'nyc-100k-guide'
                 ? 'border-[#167D75] bg-[#DDF2EC] text-[#102A2E] font-semibold'
-                : 'border-dashed border-[#DCE3E0] text-[#167D75] hover:bg-[#F7F8F5]'
+                : 'border-dashed border-[#DCE3E0] bg-white text-[#167D75] hover:bg-[#F7F8F5]'
             }`}
           >
             <span>$100K in NYC Guide</span>
