@@ -4,6 +4,7 @@
   :root {
     --color-deep-ink: #102A2E;
     --color-brand-teal: #167D75;
+    --color-brand-teal-hover: #0D524D;
     --color-soft-mint: #DDF2EC;
     --color-background: #F7F8F5;
     --color-surface: #FFFFFF;
@@ -23,4 +24,89 @@
     font-feature-settings: "tnum" 1;
     font-variant-numeric: tabular-nums;
   }
+}
+
+/* Shared 5-Variant Button System for UI Consistency */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #167D75;
+  color: #FFFFFF;
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn-primary:hover {
+  background-color: #0D524D;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: #FFFFFF;
+  color: #102A2E;
+  border: 1px solid #DCE3E0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background-color: #F7F8F5;
+  border-color: #CBD5E1;
+}
+
+.btn-subtle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.5rem;
+  background-color: #DDF2EC;
+  color: #0D524D;
+  border: 1px solid rgba(22, 125, 117, 0.2);
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+.btn-subtle:hover {
+  background-color: #c9ece3;
+}
+
+.btn-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #167D75;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  padding: 0;
+}
+.btn-link:hover {
+  color: #0D524D;
+  text-decoration: underline;
 }

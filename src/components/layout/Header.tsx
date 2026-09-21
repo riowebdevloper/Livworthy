@@ -37,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
             title="LivWorthy - Home"
           >
             <LivWorthLogo size="sm" showTagline={true} />
-            <span className="hidden md:inline-block text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded-full bg-[#DDF2EC] text-[#0D625B] border border-[#167D75]/20">
+            <span className="hidden md:inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#DDF2EC] text-[#0D625B] border border-[#167D75]/20">
               Deterministic v1.2
             </span>
           </div>

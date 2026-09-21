@@ -96,10 +96,10 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
       <div className="bg-[#F7F8F5] px-6 py-4 border-b border-[#DCE3E0] flex flex-wrap items-center justify-between gap-3">
         <div>
           <div className="flex items-center space-x-2">
-            <h3 className="font-bold text-base text-[#102A2E]">
+            <h2 className="font-bold text-base text-[#102A2E]">
               {outcome.scenario.location.name} Living Worth Result
-            </h3>
-            <span className="text-[11px] font-semibold bg-[#DDF2EC] text-[#0D625B] px-2 py-0.5 rounded-full">
+            </h2>
+            <span className="text-xs font-semibold bg-[#DDF2EC] text-[#0D625B] px-2 py-0.5 rounded-full">
               {outcome.scenario.taxProfile.filingStatus.replace(/_/g, ' ')}
             </span>
           </div>
@@ -169,7 +169,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
               <span className="text-xs font-semibold uppercase tracking-wider text-[#167D75]">
                 Estimated Take-Home
               </span>
-              <span className="text-[11px] text-[#60706D]">
+              <span className="text-xs text-[#60706D]">
                 ({(outcome.tax.effectiveTaxRate * 100).toFixed(1)}% total tax & FICA)
               </span>
             </div>
@@ -259,7 +259,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
                 <BarChart3 className="w-3.5 h-3.5 text-[#167D75]" />
                 <span>Gross Compensation Allocation</span>
               </span>
-              <span className="text-[11px] text-[#60706D]">
+              <span className="text-xs text-[#60706D]">
                 Where every 100% of income goes
               </span>
             </div>
@@ -294,7 +294,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-2.5 text-[11px] text-[#60706D]">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-2.5 text-xs text-[#60706D]">
               <div className="flex items-center space-x-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#D9534F] shrink-0" />
                 <span>Taxes & FICA ({taxPct}%)</span>
@@ -328,7 +328,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
             </div>
             <button
               onClick={onOpenEvidence}
-              className="text-[#167D75] hover:underline font-medium inline-flex items-center text-[11px]"
+              className="text-[#167D75] hover:underline font-medium inline-flex items-center text-xs"
             >
               Inspect evidence & sources
             </button>

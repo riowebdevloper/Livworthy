@@ -58,25 +58,25 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
       {/* Summary Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
         <div className="bg-[#F7F8F5] p-3 rounded-xl">
-          <span className="text-[11px] text-[#60706D] block">Gross Income</span>
+          <span className="text-xs text-[#60706D] block">Gross Income</span>
           <span className="text-sm font-bold text-[#102A2E] font-tabular">
             {formatMoney(tax.grossIncome, { hideDecimals: true })}
           </span>
         </div>
         <div className="bg-[#F7F8F5] p-3 rounded-xl">
-          <span className="text-[11px] text-[#60706D] block">Total Taxes & FICA</span>
+          <span className="text-xs text-[#60706D] block">Total Taxes & FICA</span>
           <span className="text-sm font-bold text-[#102A2E] font-tabular">
             {formatMoney(tax.totalDeductionsAndTaxes, { hideDecimals: true })}
           </span>
         </div>
         <div className="bg-[#F7F8F5] p-3 rounded-xl">
-          <span className="text-[11px] text-[#60706D] block">Annual Take-Home</span>
+          <span className="text-xs text-[#60706D] block">Annual Take-Home</span>
           <span className="text-sm font-bold text-[#167D75] font-tabular">
             {formatMoney(tax.netIncome, { hideDecimals: true })}
           </span>
         </div>
         <div className="bg-[#F7F8F5] p-3 rounded-xl">
-          <span className="text-[11px] text-[#60706D] block">Combined Marginal Rate</span>
+          <span className="text-xs text-[#60706D] block">Combined Marginal Rate</span>
           <span className="text-sm font-bold text-[#102A2E] font-tabular">
             {(tax.marginalTaxRate * 100).toFixed(2)}%
           </span>
@@ -98,19 +98,19 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
               <div className="space-y-0.5">
                 <div className="flex items-center space-x-2">
                   <span className="text-xs font-bold text-[#102A2E]">{item.name}</span>
-                  <span className="text-[10px] text-[#60706D] bg-[#FFFFFF] px-1.5 py-0.5 rounded border border-[#DCE3E0]">
+                  <span className="text-xs text-[#60706D] bg-[#FFFFFF] px-2 py-0.5 rounded border border-[#DCE3E0]">
                     {item.authority}
                   </span>
                 </div>
                 {item.description && (
-                  <p className="text-[11px] text-[#60706D]">{item.description}</p>
+                  <p className="text-xs text-[#60706D]">{item.description}</p>
                 )}
               </div>
               <div className="text-right pl-3">
                 <div className="text-sm font-bold text-[#102A2E] font-tabular">
                   {formatMoney(item.amount)}
                 </div>
-                <div className="text-[10px] text-[#60706D]">
+                <div className="text-xs text-[#60706D]">
                   {pctOfGross.toFixed(1)}% of gross
                 </div>
               </div>
