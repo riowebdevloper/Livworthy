@@ -14,6 +14,7 @@ import { SeoArticlePage } from './components/seo/SeoArticlePage';
 import { SystemDiagnosticsModal } from './components/system/SystemDiagnosticsModal';
 import { CITIES } from './data/locations';
 import { DEFAULT_NYC_100K_SCENARIO } from './data/presets';
+import { SALARY_GUIDES } from './data/salary-guides';
 import { createMoney, toMajor } from './lib/money';
 import { HouseholdProfile, CostOfLivingResult } from './types/col';
 import { LivWorthCalculationOutcome, LivWorthScenario } from './types/scenario';
@@ -23,6 +24,7 @@ import { SalaryNeededResult } from './engines/calculator-core/salary-needed';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('salary-worth');
+  const [selectedGuideSlug, setSelectedGuideSlug] = useState<string>('nyc-100k');
 
   // Core Scenario state
   const [scenario, setScenario] = useState<LivWorthScenario>(DEFAULT_NYC_100K_SCENARIO);
@@ -84,6 +86,11 @@ export default function App() {
       const targetCity = cityParam && CITIES[cityParam] ? CITIES[cityParam] : undefined;
       const salaryNum = salaryParam ? parseFloat(salaryParam) : undefined;
       const rentNum = rentParam ? parseFloat(rentParam) : undefined;
+      const guideParam = params.get('guide');
+
+      if (guideParam && SALARY_GUIDES[guideParam]) {
+        setSelectedGuideSlug(guideParam);
+      }
 
       if (targetCity || (salaryNum && !isNaN(salaryNum)) || (rentNum && !isNaN(rentNum))) {
         setScenario((prev) => {
@@ -143,6 +150,9 @@ export default function App() {
       params.set('city', scenario.location.id);
       params.set('salary', toMajor(scenario.compensation.baseSalary).toString());
       params.set('tab', activeTab);
+      if (activeTab === 'nyc-100k-guide' && selectedGuideSlug) {
+        params.set('guide', selectedGuideSlug);
+      }
       if (actualRentMajor) {
         params.set('rent', actualRentMajor.toString());
       }
@@ -151,7 +161,7 @@ export default function App() {
     } catch {
       // Ignore in strict iframes
     }
-  }, [scenario.location.id, scenario.compensation.baseSalary, activeTab, actualRentMajor]);
+  }, [scenario.location.id, scenario.compensation.baseSalary, activeTab, selectedGuideSlug, actualRentMajor]);
 
   // Tab switching pushes new browser history state
   const handleSelectTab = (tab: ActiveTab) => {
@@ -273,19 +283,63 @@ export default function App() {
     });
   }, []);
 
+  const handleSelectGuide = (slug: string) => {
+    setSelectedGuideSlug(slug);
+    setActiveTab('nyc-100k-guide');
+    try {
+      if (typeof window === 'undefined') return;
+      const params = new URLSearchParams(window.location.search);
+      params.set('tab', 'nyc-100k-guide');
+      params.set('guide', slug);
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.pushState(null, '', newUrl);
+    } catch {}
+  };
+
+  const handleSelectCityFromLink = (cityId: string) => {
+    const targetCity = CITIES[cityId];
+    if (targetCity) {
+      setScenario((prev) => ({
+        ...prev,
+        location: targetCity,
+        compensation: {
+          ...prev.compensation,
+          baseSalary: createMoney(toMajor(prev.compensation.baseSalary), targetCity.currency),
+        },
+      }));
+      setActiveTab('salary-worth');
+      try {
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams();
+        params.set('city', targetCity.id);
+        params.set('salary', toMajor(scenario.compensation.baseSalary).toString());
+        params.set('tab', 'salary-worth');
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.pushState(null, '', newUrl);
+      } catch {}
+    }
+  };
+
+  const handleSelectCountryFromLink = (countryId: string) => {
+    const premierCity = Object.values(CITIES).find((c) => c.countryId === countryId);
+    if (premierCity) {
+      handleSelectCityFromLink(premierCity.id);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#F7F8F5] text-[#102A2E] flex flex-col font-sans antialiased selection:bg-[#DDF2EC] selection:text-[#102A2E]">
-      {/* Top Navigation */}
+    <div className="min-h-screen flex flex-col bg-[#F7F8F5]">
+      {/* Persistent Global Header with brand and live navigation */}
       <Header
         activeTab={activeTab}
         onSelectTab={handleSelectTab}
-        onOpenMethodology={() => setIsMethodologyOpen(true)}
         onOpenEvidence={() => setIsEvidenceOpen(true)}
+        onOpenMethodology={() => setIsMethodologyOpen(true)}
         onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      {/* Main Dynamic Calculator Workspace */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'salary-worth' && (
           <SalaryWorthView
             scenario={scenario}
@@ -303,8 +357,8 @@ export default function App() {
           <SalaryNeededView
             initialScenario={scenario}
             onOpenCustomizer={() => setIsCustomizerOpen(true)}
-            onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
+            onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
             onCalculationResult={handleSalaryNeededResult}
           />
         )}
@@ -346,10 +400,15 @@ export default function App() {
 
         {activeTab === 'nyc-100k-guide' && (
           <SeoArticlePage
+            initialGuideSlug={selectedGuideSlug}
             onOpenCustomizer={() => setIsCustomizerOpen(true)}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
             onOpenMethodology={() => setIsMethodologyOpen(true)}
             onNavigateToCompare={() => handleSelectTab('compare')}
+            onNavigateHome={() => handleSelectTab('salary-worth')}
+            onNavigateCity={handleSelectCityFromLink}
+            onNavigateCountry={handleSelectCountryFromLink}
+            onSelectGuide={handleSelectGuide}
           />
         )}
       </main>
@@ -360,6 +419,8 @@ export default function App() {
         onOpenEvidence={() => setIsEvidenceOpen(true)}
         onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
         onSelectTab={handleSelectTab}
+        onSelectGuide={handleSelectGuide}
+        onSelectCity={handleSelectCityFromLink}
       />
 
       {/* Drawers and Modals */}

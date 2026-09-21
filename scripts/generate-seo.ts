@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { COUNTRIES, CITIES, TAX_JURISDICTIONS } from '../src/data/locations';
+import { POPULAR_GUIDES_LIST } from '../src/data/salary-guides';
 
 const BASE_URL = 'https://livworthy.com';
 
@@ -312,23 +313,80 @@ export function runSeoGenerator() {
     });
   }
 
-  // 5. Guides
-  const guides = [
-    {
-      slug: '100k-salary-new-york',
-      title: 'Is $100K a Good Salary in New York City? (2026 Analysis)',
-      description: 'Comprehensive financial breakdown of a $100,000 salary in NYC. Take-home pay after federal, state, and city taxes, rent, and disposable savings.',
-    },
-  ];
+  // 5. Global City Salary Guides (All Interlinked with Clickable Breadcrumbs)
+  for (const g of POPULAR_GUIDES_LIST) {
+    const city = CITIES[g.cityId] || CITIES.nyc;
+    const country = COUNTRIES[g.countryId] || COUNTRIES.US;
 
-  for (const g of guides) {
+    const guideStructuredData = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
+            { '@type': 'ListItem', position: 2, name: country.name, item: `${BASE_URL}/countries/${country.id.toLowerCase()}` },
+            { '@type': 'ListItem', position: 3, name: city.name, item: `${BASE_URL}/cities/${city.id}` },
+            { '@type': 'ListItem', position: 4, name: g.title, item: `${BASE_URL}/guides/${g.slug}` },
+          ],
+        },
+        {
+          '@type': 'Article',
+          headline: g.title,
+          description: `${g.headlineSummary} Comprehensive financial analysis of a ${g.currency} ${g.salaryMajor.toLocaleString()} salary in ${city.name}.`,
+          publisher: { '@id': `${BASE_URL}/#organization` },
+          author: {
+            '@type': 'Organization',
+            name: 'LivWorthy Financial Research & Intelligence Team',
+          },
+        },
+      ],
+    };
+
     const guideBody = `
       <article class="max-w-4xl mx-auto px-4 py-8">
-        <nav class="text-sm text-slate-500 mb-6"><a href="/">Home</a> / <span class="text-slate-800">Guides</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">${g.title}</h1>
-        <p class="mt-2 text-slate-600">${g.description}</p>
-        <div class="mt-6">
-          <a href="/?city=nyc&salary=100000&tab=nyc-100k-guide" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Read Interactive Guide</a>
+        <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6 flex flex-wrap items-center gap-1.5">
+          <a href="/" class="hover:text-teal-700 font-medium">Home</a>
+          <span>/</span>
+          <a href="/countries/${country.id.toLowerCase()}" class="hover:text-teal-700 font-medium">${country.name}</a>
+          <span>/</span>
+          <a href="/cities/${city.id}" class="hover:text-teal-700 font-medium">${city.name}</a>
+          <span>/</span>
+          <span class="text-slate-800 font-bold">${g.title}</span>
+        </nav>
+
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold rounded-full mb-3">
+          <span>${country.name}</span> • <span>${city.name}</span> • <span>Verified Statutory Benchmark</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] tracking-tight leading-tight">
+          ${g.title}
+        </h1>
+
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          Comprehensive income intelligence analyzing take-home pay, statutory deductions, baseline housing costs, and uncommitted disposable savings in ${city.name}.
+        </p>
+
+        <div class="mt-6 p-6 bg-white border-l-4 border-l-teal-600 border border-slate-200 rounded-2xl shadow-xs space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-teal-700 block">Editorial Answer & Verdict</span>
+          <p class="text-base text-slate-900 leading-relaxed font-medium">
+            ${g.headlineSummary}
+          </p>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            ${g.lifestyleContext}
+          </p>
+          <p class="text-xs text-slate-500 pt-2 border-t border-slate-100">
+            Market Context: ${g.benchmarkContext}
+          </p>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="/?city=${city.id}&salary=${g.salaryMajor}&tab=nyc-100k-guide&guide=${g.slug}" class="px-5 py-2.5 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm rounded-xl shadow-xs transition-colors">
+            Launch Interactive Scenario (${g.currency} ${g.salaryMajor.toLocaleString()})
+          </a>
+          <a href="/cities/${city.id}" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium text-sm rounded-xl transition-colors">
+            Explore All ${city.name} Calculators
+          </a>
         </div>
       </article>
     `;
@@ -337,19 +395,28 @@ export function runSeoGenerator() {
       relativePath: `guides/${g.slug}/index.html`,
       canonicalUrl: `${BASE_URL}/guides/${g.slug}`,
       title: `${g.title} | LivWorthy`,
-      description: g.description,
+      description: `${g.headlineSummary} Comprehensive financial analysis of a ${g.currency} ${g.salaryMajor.toLocaleString()} salary in ${city.name}.`,
       robots: 'index, follow',
       bodyContent: guideBody,
-      structuredData: {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: g.title,
-        description: g.description,
-        publisher: { '@id': `${BASE_URL}/#organization` },
-      },
+      structuredData: guideStructuredData,
       changefreq: 'monthly',
-      priority: 0.7,
+      priority: 0.8,
     });
+
+    // Also support backward-compatible alias for 100k-salary-new-york
+    if (g.slug === 'nyc-100k') {
+      pages.push({
+        relativePath: `guides/100k-salary-new-york/index.html`,
+        canonicalUrl: `${BASE_URL}/guides/100k-salary-new-york`,
+        title: `${g.title} | LivWorthy`,
+        description: `${g.headlineSummary} Comprehensive financial analysis of a ${g.currency} ${g.salaryMajor.toLocaleString()} salary in ${city.name}.`,
+        robots: 'index, follow',
+        bodyContent: guideBody,
+        structuredData: guideStructuredData,
+        changefreq: 'monthly',
+        priority: 0.8,
+      });
+    }
   }
 
   // Write all static HTML files
