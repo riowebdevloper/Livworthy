@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import crypto from 'crypto';
-import { createServer as createViteServer } from 'vite';
 import { validateEnv } from './src/lib/env';
 import { dbService } from './src/db/client';
 import { cacheService } from './src/lib/redis';
@@ -16,10 +15,19 @@ import { COUNTRIES, CITIES } from './src/data/locations';
 import { EVIDENCE_REGISTRY } from './src/data/evidence-registry';
 import { createMoney, fromMinor } from './src/lib/money';
 
-const env = validateEnv();
+let env: any = null;
+try {
+  env = validateEnv();
+} catch (envErr: any) {
+  if (process.env.VERCEL) {
+    console.warn('[Vercel Serverless Notice]:', envErr.message);
+  } else {
+    throw envErr;
+  }
+}
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const START_TIME = Date.now();
-const CRON_SECRET = env.CRON_SECRET;
+const CRON_SECRET = env?.CRON_SECRET || process.env.CRON_SECRET;
 
 let dbInitialized = false;
 let dbInitPromise: Promise<void> | null = null;
@@ -37,7 +45,7 @@ export async function ensureDatabaseReady(): Promise<void> {
         dbInitialized = true;
       } catch (dbErr: any) {
         const isProduction = process.env.NODE_ENV === 'production';
-        if (isProduction || dbService.mode === 'PRODUCTION_POSTGRES') {
+        if (isProduction && !process.env.VERCEL && dbService.mode === 'PRODUCTION_POSTGRES') {
           console.error('[Database] Fatal startup failure: Database initialization or migration failed.');
           process.exit(1);
         } else {
@@ -684,6 +692,7 @@ export async function startServer() {
 
   // Vite middleware for development vs static build in production
   if (process.env.NODE_ENV !== 'production') {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
