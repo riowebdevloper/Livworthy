@@ -1,0 +1,46 @@
+<svg width="400" height="90" viewBox="0 0 400 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="globeGrad" x1="10" y1="10" x2="70" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#0B4B82" />
+      <stop offset="50%" stopColor="#0D6E78" />
+      <stop offset="100%" stopColor="#148D80" />
+    </linearGradient>
+    <linearGradient id="swooshGrad" x1="15" y1="65" x2="68" y2="25" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#0F5B78" />
+      <stop offset="50%" stopColor="#16A085" />
+      <stop offset="100%" stopColor="#2ECC71" />
+    </linearGradient>
+    <linearGradient id="humanGrad" x1="55" y1="40" x2="75" y2="20" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#16A085" />
+      <stop offset="100%" stopColor="#2ECC71" />
+    </linearGradient>
+  </defs>
+
+  <!-- Globe Mark -->
+  <g transform="translate(10, 5)">
+    <circle cx="40" cy="40" r="38" fill="url(#globeGrad)" />
+    <!-- Continents -->
+    <path d="M25 20C30 18 34 22 36 24C38 26 43 25 47 27C45 31 42 32 39 31C35 31 32 33 30 31C28 29 24 30 22 27C21 24 22 21 25 20Z" fill="#FFFFFF" fill-opacity="0.9" />
+    <path d="M21 34C24 33 28 36 29 39C30 42 27 46 24 48C23 49 21 45 21 43C22 40 20 37 21 34Z" fill="#FFFFFF" fill-opacity="0.9" />
+    <!-- White Rising Bar Chart Pillars -->
+    <path d="M32 52 L32 72 C35 73 37 73 40 73 L40 48 Z" fill="#FFFFFF" />
+    <path d="M43 46 L43 73 C47 73 50 72 53 71 L53 41 Z" fill="#FFFFFF" />
+    <path d="M56 40 L56 70 C59 68 62 66 65 63 L65 34 Z" fill="#FFFFFF" />
+    <!-- Rising Swoosh -->
+    <path d="M12 62 C24 59 36 51 51 39 C59 33 64 25 67 21 C65 25 56 37 44 45 C33 52 23 58 12 62 Z" fill="url(#swooshGrad)" />
+    <!-- Victorious Human -->
+    <circle cx="57" cy="25" r="4.8" fill="#2ECC71" />
+    <path d="M51 39 C53 35 57 32 60 29 C64 27 67 22 69 20 C67 25 63 34 56 39 Z" fill="url(#humanGrad)" />
+    <!-- Golden Star -->
+    <path d="M68 9 L69.5 14 L74.5 15.5 L69.5 17 L68 22 L66.5 17 L61.5 15.5 L66.5 14 Z" fill="#F59E0B" />
+    <circle cx="68" cy="15.5" r="1.5" fill="#FDE68A" />
+  </g>
+
+  <!-- Wordmark -->
+  <text x="108" y="52" font-family="Plus Jakarta Sans, system-ui, -apple-system, sans-serif" font-size="44" font-weight="900" fill="#102A2E">Liv</text>
+  <text x="168" y="52" font-family="Plus Jakarta Sans, system-ui, -apple-system, sans-serif" font-size="44" font-weight="900" fill="#167D75">Worth</text>
+  <text x="306" y="28" font-family="Plus Jakarta Sans, system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#102A2E">TM</text>
+
+  <!-- Tagline -->
+  <text x="110" y="72" font-family="Plus Jakarta Sans, system-ui, -apple-system, sans-serif" font-size="10.5" font-weight="800" fill="#102A2E" letter-spacing="0.25em">A BRIGHTER LIFE, ANYWHERE</text>
+</svg>

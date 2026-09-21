@@ -1,0 +1,51 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tileGrad" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#0F2E47" />
+      <stop offset="55%" stopColor="#0D6E78" />
+      <stop offset="100%" stopColor="#10B981" />
+    </linearGradient>
+    <linearGradient id="globeGradI" x1="15" y1="15" x2="113" y2="113" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#0B4B82" />
+      <stop offset="50%" stopColor="#0D6E78" />
+      <stop offset="100%" stopColor="#148D80" />
+    </linearGradient>
+    <linearGradient id="swooshGradI" x1="20" y1="90" x2="100" y2="35" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#0F5B78" />
+      <stop offset="50%" stopColor="#16A085" />
+      <stop offset="100%" stopColor="#2ECC71" />
+    </linearGradient>
+    <linearGradient id="humanGradI" x1="75" y1="55" x2="105" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#16A085" />
+      <stop offset="100%" stopColor="#2ECC71" />
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle Tile -->
+  <rect width="128" height="128" rx="28" fill="url(#tileGrad)" />
+
+  <!-- Inner Globe Content -->
+  <g transform="translate(4, 4)">
+    <circle cx="60" cy="60" r="50" fill="url(#globeGradI)" />
+    <!-- Continents -->
+    <path d="M38 30C45 27 50 32 52 35C55 38 62 36 68 40C66 45 61 47 57 46C51 45 47 48 44 45C41 42 35 44 33 39C32 35 34 31 38 30Z" fill="#FFFFFF" fill-opacity="0.9" />
+    <path d="M32 50C36 49 42 53 43 57C44 61 40 68 36 70C34 71 31 66 32 63C33 59 30 55 32 50Z" fill="#FFFFFF" fill-opacity="0.9" />
+    <path d="M68 28C74 27 80 32 82 37C78 40 73 39 71 35C69 32 67 30 68 28Z" fill="#FFFFFF" fill-opacity="0.9" />
+
+    <!-- White Rising Bar Chart Pillars -->
+    <path d="M48 76 L48 99 C52 100 56 100 60 100 L60 70 Z" fill="#FFFFFF" />
+    <path d="M64 68 L64 100 C69 100 73 99 77 98 L77 61 Z" fill="#FFFFFF" />
+    <path d="M81 59 L81 96 C85 94 89 91 93 88 L93 51 Z" fill="#FFFFFF" />
+
+    <!-- Rising Swoosh -->
+    <path d="M20 90 C36 86 54 75 75 58 C86 49 94 38 98 32 C95 38 82 55 64 67 C48 77 34 85 20 90 Z" fill="url(#swooshGradI)" />
+
+    <!-- Victorious Human -->
+    <circle cx="83" cy="38" r="6.5" fill="#2ECC71" />
+    <path d="M75 58 C78 52 83 47 88 43 C94 40 98 33 100 31 C98 38 92 50 82 58 Z" fill="url(#humanGradI)" />
+
+    <!-- Shining Golden Star -->
+    <path d="M99 15 L101 22 L108 24 L101 26 L99 33 L97 26 L90 24 L97 22 Z" fill="#F59E0B" />
+    <circle cx="99" cy="24" r="2" fill="#FDE68A" />
+  </g>
+</svg>
