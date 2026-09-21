@@ -69,7 +69,7 @@ function configureApp() {
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
     res.setHeader(
       'Content-Security-Policy',
-      "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https:;"
+      "default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'self'; object-src 'none';"
     );
     next();
   });
@@ -77,9 +77,36 @@ function configureApp() {
   // Body parser with strict size limits
   app.use(express.json({ limit: '512kb' }));
 
-  // CORS Middleware
+  // CORS Middleware - Strict for Admin/CMS, Open for Public Calculators
+  const trustedOrigins = [
+    'https://livworthy.com',
+    'https://www.livworthy.com',
+    'https://livworthy.vercel.app',
+  ];
+
   app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    const origin = req.headers.origin;
+    const isSensitivePath = req.path.startsWith('/api/admin') || req.path.startsWith('/api/cms');
+
+    if (isSensitivePath) {
+      if (
+        origin &&
+        (trustedOrigins.includes(origin) ||
+          origin.endsWith('.vercel.app') ||
+          origin.startsWith('http://localhost:') ||
+          origin.startsWith('http://127.0.0.1:'))
+      ) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+      } else if (!origin) {
+        // Direct server-side or same-origin request
+      } else {
+        res.setHeader('Access-Control-Allow-Origin', 'null');
+      }
+    } else {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
     if (req.method === 'OPTIONS') {
@@ -184,12 +211,22 @@ function configureApp() {
     // Critical dependency verification
     const isReady = dbStatus === 'connected' && (cacheStatus === 'connected' || (!isProduction && cacheStatus === 'degraded'));
 
+    const capabilities = {
+      salaryAfterTax: 'AVAILABLE',
+      salaryWorth: 'AVAILABLE',
+      salaryNeeded: 'AVAILABLE',
+      costOfLiving: 'AVAILABLE',
+      internationalCompare: fxStatus === 'unavailable' ? 'DEGRADED' : 'AVAILABLE',
+      internationalJobOffer: fxStatus === 'unavailable' ? 'DEGRADED' : 'AVAILABLE',
+    };
+
     if (isReady) {
       return res.status(200).json({
         ready: true,
         database: dbStatus,
         cache: cacheStatus,
         fx: fxStatus,
+        capabilities,
         adaptersLoaded: TaxRegistry.getSupportedCountryIds().length,
       });
     } else {
@@ -198,6 +235,7 @@ function configureApp() {
         database: dbStatus,
         cache: cacheStatus,
         fx: fxStatus,
+        capabilities,
       });
     }
   });

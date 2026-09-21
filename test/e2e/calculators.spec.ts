@@ -262,8 +262,11 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
 
     const verified = cData.countries.filter((c: any) => c.verificationStatus === 'VERIFIED');
     const limited = cData.countries.filter((c: any) => c.verificationStatus === 'LIMITED');
+    const provisional = cData.countries.filter((c: any) => c.verificationStatus === 'PROVISIONAL');
     expect(verified.length).toBe(10);
-    expect(limited.length).toBe(5);
+    expect(limited.length).toBe(25);
+    expect(provisional.length).toBe(4);
+    expect(cData.countries.length).toBe(39);
 
     // Verify tax calculate endpoint
     const taxRes = await request.post('/api/tax/estimate', {

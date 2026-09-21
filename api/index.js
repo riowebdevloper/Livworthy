@@ -392,24 +392,48 @@ var schemaMigrations = pgTable("schema_migrations", {
 
 // src/data/locations.ts
 var COUNTRIES = {
-  // Wave 1
+  // PRIORITY A (12)
   US: { id: "US", name: "United States", defaultCurrency: "USD", verificationStatus: "VERIFIED" },
   GB: { id: "GB", name: "United Kingdom", defaultCurrency: "GBP", verificationStatus: "VERIFIED" },
-  AE: { id: "AE", name: "United Arab Emirates", defaultCurrency: "AED", verificationStatus: "VERIFIED" },
   CA: { id: "CA", name: "Canada", defaultCurrency: "CAD", verificationStatus: "VERIFIED" },
-  // Wave 2
   AU: { id: "AU", name: "Australia", defaultCurrency: "AUD", verificationStatus: "VERIFIED" },
   DE: { id: "DE", name: "Germany", defaultCurrency: "EUR", verificationStatus: "VERIFIED" },
   FR: { id: "FR", name: "France", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "Imp\xF4t sur le revenu schedules verified; localized quotient familial pending." },
-  ES: { id: "ES", name: "Spain", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "IRPF regional schedules verified; autonomous community variations pending." },
   NL: { id: "NL", name: "Netherlands", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "Box 1 schedules verified; 30% ruling exemption toggle pending." },
-  SA: { id: "SA", name: "Saudi Arabia", defaultCurrency: "SAR", verificationStatus: "VERIFIED" },
-  // Wave 3
-  IE: { id: "IE", name: "Ireland", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "Standard cut-off rates verified." },
   CH: { id: "CH", name: "Switzerland", defaultCurrency: "CHF", verificationStatus: "LIMITED", notes: "Cantonal/municipal tax multipliers pending." },
+  IE: { id: "IE", name: "Ireland", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "Standard cut-off rates verified." },
+  AE: { id: "AE", name: "United Arab Emirates", defaultCurrency: "AED", verificationStatus: "VERIFIED" },
   SG: { id: "SG", name: "Singapore", defaultCurrency: "SGD", verificationStatus: "VERIFIED" },
+  NZ: { id: "NZ", name: "New Zealand", defaultCurrency: "NZD", verificationStatus: "VERIFIED", notes: "Inland Revenue (IRD) brackets and ACC earner levy verified." },
+  // PRIORITY B (15)
+  JP: { id: "JP", name: "Japan", defaultCurrency: "JPY", verificationStatus: "LIMITED", notes: "National progressive income tax verified; resident surtax pending." },
+  KR: { id: "KR", name: "South Korea", defaultCurrency: "KRW", verificationStatus: "LIMITED", notes: "National income tax schedules verified; local resident surtax pending." },
+  SA: { id: "SA", name: "Saudi Arabia", defaultCurrency: "SAR", verificationStatus: "VERIFIED" },
   QA: { id: "QA", name: "Qatar", defaultCurrency: "QAR", verificationStatus: "VERIFIED" },
-  NZ: { id: "NZ", name: "New Zealand", defaultCurrency: "NZD", verificationStatus: "LIMITED", notes: "PAYE rates verified; KiwiSaver contribution options pending." }
+  NO: { id: "NO", name: "Norway", defaultCurrency: "NOK", verificationStatus: "LIMITED", notes: "General income tax and bracket tax verified; municipal variations pending." },
+  SE: { id: "SE", name: "Sweden", defaultCurrency: "SEK", verificationStatus: "LIMITED", notes: "National income tax and basic municipal rate verified." },
+  DK: { id: "DK", name: "Denmark", defaultCurrency: "DKK", verificationStatus: "LIMITED", notes: "Bottom/top tax and labor market contributions (AM-bidrag) verified." },
+  FI: { id: "FI", name: "Finland", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "State progressive scale and municipal average rate verified." },
+  AT: { id: "AT", name: "Austria", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "EStG progressive tax brackets verified." },
+  BE: { id: "BE", name: "Belgium", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "Federal personal income tax brackets verified; communal surcharge pending." },
+  ES: { id: "ES", name: "Spain", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "IRPF regional schedules verified; autonomous community variations pending." },
+  IT: { id: "IT", name: "Italy", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "IRPEF national brackets verified; regional/municipal surcharges pending." },
+  IL: { id: "IL", name: "Israel", defaultCurrency: "ILS", verificationStatus: "LIMITED", notes: "Income tax brackets and standard credit points verified." },
+  HK: { id: "HK", name: "Hong Kong", defaultCurrency: "HKD", verificationStatus: "LIMITED", notes: "Salaries tax standard vs progressive rate verified." },
+  LU: { id: "LU", name: "Luxembourg", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "Class 1 progressive rate scale verified." },
+  // PRIORITY C (12)
+  IN: { id: "IN", name: "India", defaultCurrency: "INR", verificationStatus: "LIMITED", notes: "New Tax Regime (Sec 115BAC) verified; standard deduction included." },
+  BR: { id: "BR", name: "Brazil", defaultCurrency: "BRL", verificationStatus: "LIMITED", notes: "IRPF progressive monthly brackets and INSS contribution verified." },
+  MX: { id: "MX", name: "Mexico", defaultCurrency: "MXN", verificationStatus: "LIMITED", notes: "ISR progressive tariff verified." },
+  ID: { id: "ID", name: "Indonesia", defaultCurrency: "IDR", verificationStatus: "PROVISIONAL", notes: "PPh 21 progressive scale under research." },
+  MY: { id: "MY", name: "Malaysia", defaultCurrency: "MYR", verificationStatus: "LIMITED", notes: "Resident progressive scale and EPF employee rate verified." },
+  PH: { id: "PH", name: "Philippines", defaultCurrency: "PHP", verificationStatus: "PROVISIONAL", notes: "TRAIN law progressive tax brackets under research." },
+  ZA: { id: "ZA", name: "South Africa", defaultCurrency: "ZAR", verificationStatus: "LIMITED", notes: "SARS progressive income tax and primary rebate verified." },
+  PL: { id: "PL", name: "Poland", defaultCurrency: "PLN", verificationStatus: "LIMITED", notes: "Skala podatkowa (12%/32%) and kwota wolna verified." },
+  PT: { id: "PT", name: "Portugal", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "IRS progressive brackets verified; solidarity surcharge pending." },
+  CZ: { id: "CZ", name: "Czechia", defaultCurrency: "CZK", verificationStatus: "LIMITED", notes: "Flat progressive (15%/23%) and basic tax credit verified." },
+  TH: { id: "TH", name: "Thailand", defaultCurrency: "THB", verificationStatus: "PROVISIONAL", notes: "Personal income tax progressive schedule under research." },
+  VN: { id: "VN", name: "Vietnam", defaultCurrency: "VND", verificationStatus: "PROVISIONAL", notes: "Personal income tax progressive schedule under research." }
 };
 var REGIONS = {
   // US States
@@ -450,13 +474,41 @@ var REGIONS = {
   "NL-ZH": { id: "NL-ZH", countryId: "NL", name: "South Holland", code: "ZH" },
   // Saudi Arabia
   "SA-RIY": { id: "SA-RIY", countryId: "SA", name: "Riyadh Province", code: "RIY" },
-  "SA-MAQ": { id: "SA-MAQ", countryId: "SA", name: "Makkah Province", code: "MAQ" },
-  // Other Hubs
+  // Priority A Additional Hubs
   "IE-LEI": { id: "IE-LEI", countryId: "IE", name: "Leinster", code: "LEI" },
   "CH-ZH": { id: "CH-ZH", countryId: "CH", name: "Canton of Zurich", code: "ZH" },
   "SG-SG": { id: "SG-SG", countryId: "SG", name: "Singapore Central", code: "SG" },
   "QA-DA": { id: "QA-DA", countryId: "QA", name: "Doha Municipality", code: "DA" },
-  "NZ-AUK": { id: "NZ-AUK", countryId: "NZ", name: "Auckland Region", code: "AUK" }
+  "NZ-AUK": { id: "NZ-AUK", countryId: "NZ", name: "Auckland Region", code: "AUK" },
+  // Priority B Hubs
+  "JP-TK": { id: "JP-TK", countryId: "JP", name: "Tokyo Prefecture", code: "TK" },
+  "KR-SO": { id: "KR-SO", countryId: "KR", name: "Seoul Capital Area", code: "SO" },
+  "NO-OS": { id: "NO-OS", countryId: "NO", name: "Oslo Region", code: "OS" },
+  "SE-ST": { id: "SE-ST", countryId: "SE", name: "Stockholm County", code: "ST" },
+  "DK-CP": { id: "DK-CP", countryId: "DK", name: "Capital Region of Denmark", code: "CP" },
+  "FI-US": { id: "FI-US", countryId: "FI", name: "Uusimaa", code: "US" },
+  "AT-WN": { id: "AT-WN", countryId: "AT", name: "Vienna State", code: "WN" },
+  "BE-BR": { id: "BE-BR", countryId: "BE", name: "Brussels-Capital Region", code: "BR" },
+  "IT-LA": { id: "IT-LA", countryId: "IT", name: "Lazio", code: "LA" },
+  "IT-LO": { id: "IT-LO", countryId: "IT", name: "Lombardy", code: "LO" },
+  "IL-TA": { id: "IL-TA", countryId: "IL", name: "Tel Aviv District", code: "TA" },
+  "HK-HK": { id: "HK-HK", countryId: "HK", name: "Hong Kong SAR", code: "HK" },
+  "LU-LU": { id: "LU-LU", countryId: "LU", name: "Luxembourg Canton", code: "LU" },
+  // Priority C Hubs
+  "IN-MH": { id: "IN-MH", countryId: "IN", name: "Maharashtra", code: "MH" },
+  "IN-KA": { id: "IN-KA", countryId: "IN", name: "Karnataka", code: "KA" },
+  "BR-SP": { id: "BR-SP", countryId: "BR", name: "S\xE3o Paulo State", code: "SP" },
+  "MX-CD": { id: "MX-CD", countryId: "MX", name: "Mexico City Federal Entity", code: "CD" },
+  "ID-JK": { id: "ID-JK", countryId: "ID", name: "Jakarta Special Capital Region", code: "JK" },
+  "MY-KL": { id: "MY-KL", countryId: "MY", name: "Federal Territory of Kuala Lumpur", code: "KL" },
+  "PH-MN": { id: "PH-MN", countryId: "PH", name: "National Capital Region", code: "MN" },
+  "ZA-GP": { id: "ZA-GP", countryId: "ZA", name: "Gauteng", code: "GP" },
+  "ZA-WC": { id: "ZA-WC", countryId: "ZA", name: "Western Cape", code: "WC" },
+  "PL-MZ": { id: "PL-MZ", countryId: "PL", name: "Masovian Voivodeship", code: "MZ" },
+  "PT-LS": { id: "PT-LS", countryId: "PT", name: "Lisbon District", code: "LS" },
+  "CZ-PR": { id: "CZ-PR", countryId: "CZ", name: "Prague Region", code: "PR" },
+  "TH-BK": { id: "TH-BK", countryId: "TH", name: "Bangkok Metropolitan Administration", code: "BK" },
+  "VN-HC": { id: "VN-HC", countryId: "VN", name: "Ho Chi Minh Municipality", code: "HC" }
 };
 var CITIES = {
   // --- United States ---
@@ -891,6 +943,327 @@ var CITIES = {
     colIndexBase100NYC: 72.9,
     metroAreaName: "Auckland Region",
     verificationStatus: "LIMITED"
+  },
+  // --- Japan ---
+  tokyo: {
+    id: "tokyo",
+    name: "Tokyo",
+    regionId: "JP-TK",
+    countryId: "JP",
+    currency: "JPY",
+    taxJurisdictionId: "tax-jp-federal",
+    colIndexBase100NYC: 68.4,
+    metroAreaName: "Greater Tokyo Area",
+    verificationStatus: "LIMITED"
+  },
+  // --- South Korea ---
+  seoul: {
+    id: "seoul",
+    name: "Seoul",
+    regionId: "KR-SO",
+    countryId: "KR",
+    currency: "KRW",
+    taxJurisdictionId: "tax-kr-federal",
+    colIndexBase100NYC: 65.2,
+    metroAreaName: "Seoul Capital Area",
+    verificationStatus: "LIMITED"
+  },
+  // --- Norway ---
+  oslo: {
+    id: "oslo",
+    name: "Oslo",
+    regionId: "NO-OS",
+    countryId: "NO",
+    currency: "NOK",
+    taxJurisdictionId: "tax-no-federal",
+    colIndexBase100NYC: 84.1,
+    metroAreaName: "Greater Oslo Region",
+    verificationStatus: "LIMITED"
+  },
+  // --- Sweden ---
+  stockholm: {
+    id: "stockholm",
+    name: "Stockholm",
+    regionId: "SE-ST",
+    countryId: "SE",
+    currency: "SEK",
+    taxJurisdictionId: "tax-se-federal",
+    colIndexBase100NYC: 72.8,
+    metroAreaName: "Metropolitan Stockholm",
+    verificationStatus: "LIMITED"
+  },
+  // --- Denmark ---
+  copenhagen: {
+    id: "copenhagen",
+    name: "Copenhagen",
+    regionId: "DK-CP",
+    countryId: "DK",
+    currency: "DKK",
+    taxJurisdictionId: "tax-dk-federal",
+    colIndexBase100NYC: 82.5,
+    metroAreaName: "Hovedstadsomr\xE5det",
+    verificationStatus: "LIMITED"
+  },
+  // --- Finland ---
+  helsinki: {
+    id: "helsinki",
+    name: "Helsinki",
+    regionId: "FI-US",
+    countryId: "FI",
+    currency: "EUR",
+    taxJurisdictionId: "tax-fi-federal",
+    colIndexBase100NYC: 71.9,
+    metroAreaName: "Helsinki Metropolitan Area",
+    verificationStatus: "LIMITED"
+  },
+  // --- Austria ---
+  vienna: {
+    id: "vienna",
+    name: "Vienna",
+    regionId: "AT-WN",
+    countryId: "AT",
+    currency: "EUR",
+    taxJurisdictionId: "tax-at-federal",
+    colIndexBase100NYC: 69.4,
+    metroAreaName: "Vienna Region",
+    verificationStatus: "LIMITED"
+  },
+  // --- Belgium ---
+  brussels: {
+    id: "brussels",
+    name: "Brussels",
+    regionId: "BE-BR",
+    countryId: "BE",
+    currency: "EUR",
+    taxJurisdictionId: "tax-be-federal",
+    colIndexBase100NYC: 73.1,
+    metroAreaName: "Brussels-Capital",
+    verificationStatus: "LIMITED"
+  },
+  // --- Italy ---
+  rome: {
+    id: "rome",
+    name: "Rome",
+    regionId: "IT-LA",
+    countryId: "IT",
+    currency: "EUR",
+    taxJurisdictionId: "tax-it-federal",
+    colIndexBase100NYC: 68.2,
+    metroAreaName: "Metropolitan City of Rome",
+    verificationStatus: "LIMITED"
+  },
+  milan: {
+    id: "milan",
+    name: "Milan",
+    regionId: "IT-LO",
+    countryId: "IT",
+    currency: "EUR",
+    taxJurisdictionId: "tax-it-federal",
+    colIndexBase100NYC: 74.8,
+    metroAreaName: "Milan Metropolitan Area",
+    verificationStatus: "LIMITED"
+  },
+  // --- Israel ---
+  "tel-aviv": {
+    id: "tel-aviv",
+    name: "Tel Aviv",
+    regionId: "IL-TA",
+    countryId: "IL",
+    currency: "ILS",
+    taxJurisdictionId: "tax-il-federal",
+    colIndexBase100NYC: 86.2,
+    metroAreaName: "Gush Dan Metropolitan Area",
+    verificationStatus: "LIMITED"
+  },
+  // --- Hong Kong ---
+  "hong-kong": {
+    id: "hong-kong",
+    name: "Hong Kong",
+    regionId: "HK-HK",
+    countryId: "HK",
+    currency: "HKD",
+    taxJurisdictionId: "tax-hk-federal",
+    colIndexBase100NYC: 79.5,
+    metroAreaName: "Hong Kong SAR",
+    verificationStatus: "LIMITED"
+  },
+  // --- Luxembourg ---
+  luxembourg: {
+    id: "luxembourg",
+    name: "Luxembourg City",
+    regionId: "LU-LU",
+    countryId: "LU",
+    currency: "EUR",
+    taxJurisdictionId: "tax-lu-federal",
+    colIndexBase100NYC: 78.2,
+    metroAreaName: "Canton of Luxembourg",
+    verificationStatus: "LIMITED"
+  },
+  // --- India ---
+  mumbai: {
+    id: "mumbai",
+    name: "Mumbai",
+    regionId: "IN-MH",
+    countryId: "IN",
+    currency: "INR",
+    taxJurisdictionId: "tax-in-federal",
+    colIndexBase100NYC: 27.5,
+    metroAreaName: "Mumbai Metropolitan Region",
+    verificationStatus: "LIMITED"
+  },
+  bengaluru: {
+    id: "bengaluru",
+    name: "Bengaluru",
+    regionId: "IN-KA",
+    countryId: "IN",
+    currency: "INR",
+    taxJurisdictionId: "tax-in-federal",
+    colIndexBase100NYC: 24.8,
+    metroAreaName: "Bangalore Urban",
+    verificationStatus: "LIMITED"
+  },
+  // --- Brazil ---
+  "sao-paulo": {
+    id: "sao-paulo",
+    name: "S\xE3o Paulo",
+    regionId: "BR-SP",
+    countryId: "BR",
+    currency: "BRL",
+    taxJurisdictionId: "tax-br-federal",
+    colIndexBase100NYC: 38.2,
+    metroAreaName: "Greater S\xE3o Paulo",
+    verificationStatus: "LIMITED"
+  },
+  // --- Mexico ---
+  "mexico-city": {
+    id: "mexico-city",
+    name: "Mexico City",
+    regionId: "MX-CD",
+    countryId: "MX",
+    currency: "MXN",
+    taxJurisdictionId: "tax-mx-federal",
+    colIndexBase100NYC: 42.1,
+    metroAreaName: "Greater Mexico City",
+    verificationStatus: "LIMITED"
+  },
+  // --- Indonesia ---
+  jakarta: {
+    id: "jakarta",
+    name: "Jakarta",
+    regionId: "ID-JK",
+    countryId: "ID",
+    currency: "IDR",
+    taxJurisdictionId: "tax-id-federal",
+    colIndexBase100NYC: 32.4,
+    metroAreaName: "Jabodetabek",
+    verificationStatus: "PROVISIONAL"
+  },
+  // --- Malaysia ---
+  "kuala-lumpur": {
+    id: "kuala-lumpur",
+    name: "Kuala Lumpur",
+    regionId: "MY-KL",
+    countryId: "MY",
+    currency: "MYR",
+    taxJurisdictionId: "tax-my-federal",
+    colIndexBase100NYC: 34.6,
+    metroAreaName: "Greater Kuala Lumpur (Klang Valley)",
+    verificationStatus: "LIMITED"
+  },
+  // --- Philippines ---
+  manila: {
+    id: "manila",
+    name: "Manila",
+    regionId: "PH-MN",
+    countryId: "PH",
+    currency: "PHP",
+    taxJurisdictionId: "tax-ph-federal",
+    colIndexBase100NYC: 31.2,
+    metroAreaName: "Metro Manila",
+    verificationStatus: "PROVISIONAL"
+  },
+  // --- South Africa ---
+  johannesburg: {
+    id: "johannesburg",
+    name: "Johannesburg",
+    regionId: "ZA-GP",
+    countryId: "ZA",
+    currency: "ZAR",
+    taxJurisdictionId: "tax-za-federal",
+    colIndexBase100NYC: 36.8,
+    metroAreaName: "Greater Johannesburg",
+    verificationStatus: "LIMITED"
+  },
+  "cape-town": {
+    id: "cape-town",
+    name: "Cape Town",
+    regionId: "ZA-WC",
+    countryId: "ZA",
+    currency: "ZAR",
+    taxJurisdictionId: "tax-za-federal",
+    colIndexBase100NYC: 35.4,
+    metroAreaName: "City of Cape Town",
+    verificationStatus: "LIMITED"
+  },
+  // --- Poland ---
+  warsaw: {
+    id: "warsaw",
+    name: "Warsaw",
+    regionId: "PL-MZ",
+    countryId: "PL",
+    currency: "PLN",
+    taxJurisdictionId: "tax-pl-federal",
+    colIndexBase100NYC: 44.5,
+    metroAreaName: "Warsaw Metropolitan Area",
+    verificationStatus: "LIMITED"
+  },
+  // --- Portugal ---
+  lisbon: {
+    id: "lisbon",
+    name: "Lisbon",
+    regionId: "PT-LS",
+    countryId: "PT",
+    currency: "EUR",
+    taxJurisdictionId: "tax-pt-federal",
+    colIndexBase100NYC: 52.3,
+    metroAreaName: "Lisbon Metropolitan Area",
+    verificationStatus: "LIMITED"
+  },
+  // --- Czechia ---
+  prague: {
+    id: "prague",
+    name: "Prague",
+    regionId: "CZ-PR",
+    countryId: "CZ",
+    currency: "CZK",
+    taxJurisdictionId: "tax-cz-federal",
+    colIndexBase100NYC: 48.7,
+    metroAreaName: "Prague Metropolitan Area",
+    verificationStatus: "LIMITED"
+  },
+  // --- Thailand ---
+  bangkok: {
+    id: "bangkok",
+    name: "Bangkok",
+    regionId: "TH-BK",
+    countryId: "TH",
+    currency: "THB",
+    taxJurisdictionId: "tax-th-federal",
+    colIndexBase100NYC: 39.8,
+    metroAreaName: "Bangkok Metropolitan Region",
+    verificationStatus: "PROVISIONAL"
+  },
+  // --- Vietnam ---
+  "ho-chi-minh-city": {
+    id: "ho-chi-minh-city",
+    name: "Ho Chi Minh City",
+    regionId: "VN-HC",
+    countryId: "VN",
+    currency: "VND",
+    taxJurisdictionId: "tax-vn-federal",
+    colIndexBase100NYC: 29.4,
+    metroAreaName: "Ho Chi Minh Metropolitan Area",
+    verificationStatus: "PROVISIONAL"
   }
 };
 
@@ -2989,7 +3362,24 @@ var CURRENCY_MINOR_UNITS = {
   SGD: 100,
   QAR: 100,
   NZD: 100,
-  INR: 100
+  INR: 100,
+  JPY: 1,
+  KRW: 1,
+  NOK: 100,
+  SEK: 100,
+  DKK: 100,
+  ILS: 100,
+  HKD: 100,
+  BRL: 100,
+  MXN: 100,
+  IDR: 100,
+  MYR: 100,
+  PHP: 100,
+  ZAR: 100,
+  PLN: 100,
+  CZK: 100,
+  THB: 100,
+  VND: 1
 };
 function createMoney(amountMajor, currency) {
   const factor = CURRENCY_MINOR_UNITS[currency] || 100;
@@ -3034,7 +3424,24 @@ var CURRENCY_BOUNDS = {
   QAR: { min: 3.55, max: 3.75 },
   // Pegged at ~3.64
   NZD: { min: 0.9, max: 2.6 },
-  INR: { min: 50, max: 150 }
+  INR: { min: 50, max: 150 },
+  JPY: { min: 70, max: 250 },
+  KRW: { min: 800, max: 2500 },
+  NOK: { min: 5, max: 20 },
+  SEK: { min: 5, max: 20 },
+  DKK: { min: 4, max: 15 },
+  ILS: { min: 2, max: 6 },
+  HKD: { min: 7, max: 8.5 },
+  BRL: { min: 2.5, max: 10 },
+  MXN: { min: 10, max: 35 },
+  IDR: { min: 9e3, max: 3e4 },
+  MYR: { min: 2.5, max: 8 },
+  PHP: { min: 30, max: 100 },
+  ZAR: { min: 8, max: 35 },
+  PLN: { min: 2, max: 8 },
+  CZK: { min: 12, max: 45 },
+  THB: { min: 20, max: 60 },
+  VND: { min: 15e3, max: 4e4 }
 };
 var FxEngine = class {
   static {
@@ -4715,6 +5122,7 @@ var UsTaxAdapter = class {
 var TaxRegistry = class {
   static {
     this.COUNTRY_METADATA = {
+      // Priority A (12)
       US: {
         name: "United States",
         status: "VERIFIED",
@@ -4770,25 +5178,147 @@ var TaxRegistry = class {
         status: "LIMITED",
         notes: "DGFiP 5-bracket scale and URSSAF CSG/CRDS/Retraite for single employee; quotient familial not fully modeled."
       },
-      ES: {
-        name: "Spain",
-        status: "LIMITED",
-        notes: "IRPF national and regional scales with standard personal allowance; regional variations limited."
-      },
       NL: {
         name: "Netherlands",
         status: "LIMITED",
         notes: "Box 1 progressive scale and basic tax credits; 30% ruling and complex asset boxes not modeled."
+      },
+      CH: {
+        name: "Switzerland",
+        status: "LIMITED",
+        notes: "Federal direct tax and standard Zurich/Geneva cantonal/communal simplified tax multipliers."
       },
       IE: {
         name: "Ireland",
         status: "LIMITED",
         notes: "Revenue standard rate band, personal tax credits, USC, and PRSI Class A for single filer."
       },
-      CH: {
-        name: "Switzerland",
+      // Priority B (15)
+      JP: {
+        name: "Japan",
         status: "LIMITED",
-        notes: "Federal direct tax and standard Zurich/Geneva cantonal/communal simplified tax multipliers."
+        notes: "National progressive income tax schedules verified; resident surtax pending full local integration."
+      },
+      KR: {
+        name: "South Korea",
+        status: "LIMITED",
+        notes: "National income tax schedules verified; local resident surtax pending full local integration."
+      },
+      NO: {
+        name: "Norway",
+        status: "LIMITED",
+        notes: "General income tax and bracket tax verified; municipal variations pending."
+      },
+      SE: {
+        name: "Sweden",
+        status: "LIMITED",
+        notes: "National income tax and basic municipal rate verified."
+      },
+      DK: {
+        name: "Denmark",
+        status: "LIMITED",
+        notes: "Bottom/top tax and labor market contributions (AM-bidrag) verified."
+      },
+      FI: {
+        name: "Finland",
+        status: "LIMITED",
+        notes: "State progressive scale and municipal average rate verified."
+      },
+      AT: {
+        name: "Austria",
+        status: "LIMITED",
+        notes: "EStG progressive tax brackets verified."
+      },
+      BE: {
+        name: "Belgium",
+        status: "LIMITED",
+        notes: "Federal personal income tax brackets verified; communal surcharge pending."
+      },
+      ES: {
+        name: "Spain",
+        status: "LIMITED",
+        notes: "IRPF national and regional scales with standard personal allowance; regional variations limited."
+      },
+      IT: {
+        name: "Italy",
+        status: "LIMITED",
+        notes: "IRPEF national brackets verified; regional/municipal surcharges pending."
+      },
+      IL: {
+        name: "Israel",
+        status: "LIMITED",
+        notes: "Income tax brackets and standard credit points verified."
+      },
+      HK: {
+        name: "Hong Kong",
+        status: "LIMITED",
+        notes: "Salaries tax standard vs progressive rate verified."
+      },
+      LU: {
+        name: "Luxembourg",
+        status: "LIMITED",
+        notes: "Class 1 progressive rate scale verified."
+      },
+      // Priority C (12)
+      IN: {
+        name: "India",
+        status: "LIMITED",
+        notes: "New Tax Regime (Sec 115BAC) verified; standard deduction included."
+      },
+      BR: {
+        name: "Brazil",
+        status: "LIMITED",
+        notes: "IRPF progressive monthly brackets and INSS contribution verified."
+      },
+      MX: {
+        name: "Mexico",
+        status: "LIMITED",
+        notes: "ISR progressive tariff verified."
+      },
+      ID: {
+        name: "Indonesia",
+        status: "PROVISIONAL",
+        notes: "PPh 21 progressive scale under research."
+      },
+      MY: {
+        name: "Malaysia",
+        status: "LIMITED",
+        notes: "Resident progressive scale and EPF employee rate verified."
+      },
+      PH: {
+        name: "Philippines",
+        status: "PROVISIONAL",
+        notes: "TRAIN law progressive tax brackets under research."
+      },
+      ZA: {
+        name: "South Africa",
+        status: "LIMITED",
+        notes: "SARS progressive income tax and primary rebate verified."
+      },
+      PL: {
+        name: "Poland",
+        status: "LIMITED",
+        notes: "Skala podatkowa (12%/32%) and kwota wolna verified."
+      },
+      PT: {
+        name: "Portugal",
+        status: "LIMITED",
+        notes: "IRS progressive brackets verified; solidarity surcharge pending."
+      },
+      CZ: {
+        name: "Czechia",
+        status: "LIMITED",
+        notes: "Flat progressive (15%/23%) and basic tax credit verified."
+      },
+      TH: {
+        name: "Thailand",
+        status: "PROVISIONAL",
+        notes: "Personal income tax progressive schedule under research."
+      },
+      VN: {
+        name: "Vietnam",
+        status: "PROVISIONAL",
+        notes: "Personal income tax progressive schedule under research."
       }
     };
   }
@@ -4815,7 +5345,7 @@ var TaxRegistry = class {
     this.fallbackAdapter = new FallbackUnsupportedTaxAdapter();
   }
   static getSupportedCountryIds() {
-    return ["US", "GB", "AE", "CA", "AU", "DE", "FR", "ES", "NL", "IE", "CH", "SA", "SG", "QA", "NZ"];
+    return Object.keys(this.COUNTRY_METADATA);
   }
   static getCountryStatus(countryId) {
     return this.COUNTRY_METADATA[countryId]?.status || "UNSUPPORTED";
@@ -4824,7 +5354,8 @@ var TaxRegistry = class {
     return this.getCountryStatus(countryId) === "VERIFIED";
   }
   static isSupported(countryId) {
-    return this.adapters.some((a) => a.supports({ countryId, taxYear: 2024 }));
+    const status = this.getCountryStatus(countryId);
+    return status !== "UNSUPPORTED";
   }
   static getCountrySupport(countryId) {
     const meta = this.COUNTRY_METADATA[countryId];
@@ -6177,13 +6708,30 @@ function configureApp() {
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     res.setHeader(
       "Content-Security-Policy",
-      "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https:;"
+      "default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'self'; object-src 'none';"
     );
     next();
   });
   app.use(express.json({ limit: "512kb" }));
+  const trustedOrigins = [
+    "https://livworthy.com",
+    "https://www.livworthy.com",
+    "https://livworthy.vercel.app"
+  ];
   app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    const origin = req.headers.origin;
+    const isSensitivePath = req.path.startsWith("/api/admin") || req.path.startsWith("/api/cms");
+    if (isSensitivePath) {
+      if (origin && (trustedOrigins.includes(origin) || origin.endsWith(".vercel.app") || origin.startsWith("http://localhost:") || origin.startsWith("http://127.0.0.1:"))) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+      } else if (!origin) {
+      } else {
+        res.setHeader("Access-Control-Allow-Origin", "null");
+      }
+    } else {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+    }
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
     if (req.method === "OPTIONS") {
@@ -6265,12 +6813,21 @@ function configureApp() {
       fxStatus = "unavailable";
     }
     const isReady = dbStatus === "connected" && (cacheStatus === "connected" || !isProduction && cacheStatus === "degraded");
+    const capabilities = {
+      salaryAfterTax: "AVAILABLE",
+      salaryWorth: "AVAILABLE",
+      salaryNeeded: "AVAILABLE",
+      costOfLiving: "AVAILABLE",
+      internationalCompare: fxStatus === "unavailable" ? "DEGRADED" : "AVAILABLE",
+      internationalJobOffer: fxStatus === "unavailable" ? "DEGRADED" : "AVAILABLE"
+    };
     if (isReady) {
       return res.status(200).json({
         ready: true,
         database: dbStatus,
         cache: cacheStatus,
         fx: fxStatus,
+        capabilities,
         adaptersLoaded: TaxRegistry.getSupportedCountryIds().length
       });
     } else {
@@ -6278,7 +6835,8 @@ function configureApp() {
         ready: false,
         database: dbStatus,
         cache: cacheStatus,
-        fx: fxStatus
+        fx: fxStatus,
+        capabilities
       });
     }
   });

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://livworthy.com/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://livworthy.com/methodology</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://livworthy.com/sources</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://livworthy.com/sitemap-main.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://livworthy.com/sitemap-countries.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://livworthy.com/sitemap-cities.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://livworthy.com/sitemap-comparisons.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://livworthy.com/sitemap-guides.xml</loc>
+  </sitemap>
+</sitemapindex>

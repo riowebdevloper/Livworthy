@@ -1,0 +1,3 @@
+# LivWorthy Authorized Digital Sellers
+# Domain: livworthy.com
+# Authorized ad exchange specifications will be populated upon ad partner onboarding.

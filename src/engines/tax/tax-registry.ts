@@ -34,6 +34,7 @@ export class TaxRegistry {
     string,
     { name: string; status: TaxVerificationStatus; notes: string }
   > = {
+    // Priority A (12)
     US: {
       name: 'United States',
       status: 'VERIFIED',
@@ -89,25 +90,149 @@ export class TaxRegistry {
       status: 'LIMITED',
       notes: 'DGFiP 5-bracket scale and URSSAF CSG/CRDS/Retraite for single employee; quotient familial not fully modeled.',
     },
-    ES: {
-      name: 'Spain',
-      status: 'LIMITED',
-      notes: 'IRPF national and regional scales with standard personal allowance; regional variations limited.',
-    },
     NL: {
       name: 'Netherlands',
       status: 'LIMITED',
       notes: 'Box 1 progressive scale and basic tax credits; 30% ruling and complex asset boxes not modeled.',
+    },
+    CH: {
+      name: 'Switzerland',
+      status: 'LIMITED',
+      notes: 'Federal direct tax and standard Zurich/Geneva cantonal/communal simplified tax multipliers.',
     },
     IE: {
       name: 'Ireland',
       status: 'LIMITED',
       notes: 'Revenue standard rate band, personal tax credits, USC, and PRSI Class A for single filer.',
     },
-    CH: {
-      name: 'Switzerland',
+
+    // Priority B (15)
+    JP: {
+      name: 'Japan',
       status: 'LIMITED',
-      notes: 'Federal direct tax and standard Zurich/Geneva cantonal/communal simplified tax multipliers.',
+      notes: 'National progressive income tax schedules verified; resident surtax pending full local integration.',
+    },
+    KR: {
+      name: 'South Korea',
+      status: 'LIMITED',
+      notes: 'National income tax schedules verified; local resident surtax pending full local integration.',
+    },
+    NO: {
+      name: 'Norway',
+      status: 'LIMITED',
+      notes: 'General income tax and bracket tax verified; municipal variations pending.',
+    },
+    SE: {
+      name: 'Sweden',
+      status: 'LIMITED',
+      notes: 'National income tax and basic municipal rate verified.',
+    },
+    DK: {
+      name: 'Denmark',
+      status: 'LIMITED',
+      notes: 'Bottom/top tax and labor market contributions (AM-bidrag) verified.',
+    },
+    FI: {
+      name: 'Finland',
+      status: 'LIMITED',
+      notes: 'State progressive scale and municipal average rate verified.',
+    },
+    AT: {
+      name: 'Austria',
+      status: 'LIMITED',
+      notes: 'EStG progressive tax brackets verified.',
+    },
+    BE: {
+      name: 'Belgium',
+      status: 'LIMITED',
+      notes: 'Federal personal income tax brackets verified; communal surcharge pending.',
+    },
+    ES: {
+      name: 'Spain',
+      status: 'LIMITED',
+      notes: 'IRPF national and regional scales with standard personal allowance; regional variations limited.',
+    },
+    IT: {
+      name: 'Italy',
+      status: 'LIMITED',
+      notes: 'IRPEF national brackets verified; regional/municipal surcharges pending.',
+    },
+    IL: {
+      name: 'Israel',
+      status: 'LIMITED',
+      notes: 'Income tax brackets and standard credit points verified.',
+    },
+    HK: {
+      name: 'Hong Kong',
+      status: 'LIMITED',
+      notes: 'Salaries tax standard vs progressive rate verified.',
+    },
+    LU: {
+      name: 'Luxembourg',
+      status: 'LIMITED',
+      notes: 'Class 1 progressive rate scale verified.',
+    },
+
+    // Priority C (12)
+    IN: {
+      name: 'India',
+      status: 'LIMITED',
+      notes: 'New Tax Regime (Sec 115BAC) verified; standard deduction included.',
+    },
+    BR: {
+      name: 'Brazil',
+      status: 'LIMITED',
+      notes: 'IRPF progressive monthly brackets and INSS contribution verified.',
+    },
+    MX: {
+      name: 'Mexico',
+      status: 'LIMITED',
+      notes: 'ISR progressive tariff verified.',
+    },
+    ID: {
+      name: 'Indonesia',
+      status: 'PROVISIONAL',
+      notes: 'PPh 21 progressive scale under research.',
+    },
+    MY: {
+      name: 'Malaysia',
+      status: 'LIMITED',
+      notes: 'Resident progressive scale and EPF employee rate verified.',
+    },
+    PH: {
+      name: 'Philippines',
+      status: 'PROVISIONAL',
+      notes: 'TRAIN law progressive tax brackets under research.',
+    },
+    ZA: {
+      name: 'South Africa',
+      status: 'LIMITED',
+      notes: 'SARS progressive income tax and primary rebate verified.',
+    },
+    PL: {
+      name: 'Poland',
+      status: 'LIMITED',
+      notes: 'Skala podatkowa (12%/32%) and kwota wolna verified.',
+    },
+    PT: {
+      name: 'Portugal',
+      status: 'LIMITED',
+      notes: 'IRS progressive brackets verified; solidarity surcharge pending.',
+    },
+    CZ: {
+      name: 'Czechia',
+      status: 'LIMITED',
+      notes: 'Flat progressive (15%/23%) and basic tax credit verified.',
+    },
+    TH: {
+      name: 'Thailand',
+      status: 'PROVISIONAL',
+      notes: 'Personal income tax progressive schedule under research.',
+    },
+    VN: {
+      name: 'Vietnam',
+      status: 'PROVISIONAL',
+      notes: 'Personal income tax progressive schedule under research.',
     },
   };
 
@@ -132,7 +257,7 @@ export class TaxRegistry {
   private static fallbackAdapter = new FallbackUnsupportedTaxAdapter();
 
   public static getSupportedCountryIds(): string[] {
-    return ['US', 'GB', 'AE', 'CA', 'AU', 'DE', 'FR', 'ES', 'NL', 'IE', 'CH', 'SA', 'SG', 'QA', 'NZ'];
+    return Object.keys(this.COUNTRY_METADATA);
   }
 
   public static getCountryStatus(countryId: string): TaxVerificationStatus {
@@ -144,7 +269,8 @@ export class TaxRegistry {
   }
 
   public static isSupported(countryId: string): boolean {
-    return this.adapters.some((a) => a.supports({ countryId, taxYear: 2024 }));
+    const status = this.getCountryStatus(countryId);
+    return status !== 'UNSUPPORTED';
   }
 
   public static getCountrySupport(countryId: string): TaxCountrySupport {

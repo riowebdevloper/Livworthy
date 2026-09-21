@@ -37,6 +37,23 @@ export const CURRENCY_BOUNDS: Record<CurrencyCode, { min: number; max: number }>
   QAR: { min: 3.55, max: 3.75 }, // Pegged at ~3.64
   NZD: { min: 0.9, max: 2.6 },
   INR: { min: 50.0, max: 150.0 },
+  JPY: { min: 70.0, max: 250.0 },
+  KRW: { min: 800.0, max: 2500.0 },
+  NOK: { min: 5.0, max: 20.0 },
+  SEK: { min: 5.0, max: 20.0 },
+  DKK: { min: 4.0, max: 15.0 },
+  ILS: { min: 2.0, max: 6.0 },
+  HKD: { min: 7.0, max: 8.5 },
+  BRL: { min: 2.5, max: 10.0 },
+  MXN: { min: 10.0, max: 35.0 },
+  IDR: { min: 9000.0, max: 30000.0 },
+  MYR: { min: 2.5, max: 8.0 },
+  PHP: { min: 30.0, max: 100.0 },
+  ZAR: { min: 8.0, max: 35.0 },
+  PLN: { min: 2.0, max: 8.0 },
+  CZK: { min: 12.0, max: 45.0 },
+  THB: { min: 20.0, max: 60.0 },
+  VND: { min: 15000.0, max: 40000.0 },
 };
 
 export class FxEngine {

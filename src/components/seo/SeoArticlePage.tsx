@@ -11,7 +11,8 @@ import {
   Scale,
 } from 'lucide-react';
 import { DEFAULT_NYC_100K_SCENARIO } from '../../data/presets';
-import { SalaryWorthCalculator } from '../../engines/calculator-core/salary-worth';
+import { calculateSalaryWorth } from '../../api/calculators';
+import { LivWorthCalculationOutcome } from '../../types/scenario';
 import { formatMoney, toMajor } from '../../lib/money';
 import { LivingCostBreakdownCard } from '../calculator/LivingCostBreakdownCard';
 import { ResultSummaryCard } from '../calculator/ResultSummaryCard';
@@ -31,6 +32,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
   onNavigateToCompare,
 }) => {
   const [actualRentMajor, setActualRentMajor] = useState<number | undefined>(undefined);
+  const [outcome, setOutcome] = useState<LivWorthCalculationOutcome | null>(null);
 
   const scenario = {
     ...DEFAULT_NYC_100K_SCENARIO,
@@ -39,7 +41,21 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
     },
   };
 
-  const outcome = SalaryWorthCalculator.calculate(scenario);
+  React.useEffect(() => {
+    let isMounted = true;
+    calculateSalaryWorth(scenario)
+      .then((res) => {
+        if (isMounted && res.data) {
+          setOutcome(res.data);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to calculate salary worth for SEO article:', err);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [actualRentMajor]);
 
   return (
     <article id="seo-landing-nyc-100k" className="space-y-10 max-w-4xl mx-auto">
@@ -91,42 +107,52 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
           </button>
         </div>
 
-        <ResultSummaryCard
-          outcome={outcome}
-          onOpenCustomizer={onOpenCustomizer}
-          onCompareCity={onNavigateToCompare}
-          onOpenEvidence={onOpenEvidence}
-        />
+        {outcome ? (
+          <ResultSummaryCard
+            outcome={outcome}
+            onOpenCustomizer={onOpenCustomizer}
+            onCompareCity={onNavigateToCompare}
+            onOpenEvidence={onOpenEvidence}
+          />
+        ) : (
+          <div className="p-8 text-center bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] text-[#60706D] animate-pulse">
+            Loading verified NYC $100,000 intelligence...
+          </div>
+        )}
       </div>
 
-      {/* 5. After-Tax Explanation */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold text-[#102A2E]">
-          How Taxes Reduce $100,000 in NYC
-        </h2>
-        <p className="text-sm text-[#60706D] leading-relaxed">
-          New York City residents face one of the few triple-layer income tax jurisdictions in the United States: Federal, New York State, and NYC Local resident tax, plus mandatory FICA contributions.
-        </p>
+      {outcome && (
+        <>
+          {/* 5. After-Tax Explanation */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-[#102A2E]">
+              How Taxes Reduce $100,000 in NYC
+            </h2>
+            <p className="text-sm text-[#60706D] leading-relaxed">
+              New York City residents face one of the few triple-layer income tax jurisdictions in the United States: Federal, New York State, and NYC Local resident tax, plus mandatory FICA contributions.
+            </p>
 
-        <TaxBreakdownCard tax={outcome.tax} onOpenEvidence={onOpenEvidence} />
-      </div>
+            <TaxBreakdownCard tax={outcome.tax} onOpenEvidence={onOpenEvidence} />
+          </div>
 
-      {/* 6. Housing Scenarios & Override */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold text-[#102A2E]">
-          Where the Money Goes: Living Costs in NYC
-        </h2>
-        <p className="text-sm text-[#60706D] leading-relaxed">
-          Housing accounts for over 60% of basic monthly expenditures. Below is the itemized breakdown across groceries, transportation, utilities, and healthcare.
-        </p>
+          {/* 6. Housing Scenarios & Override */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-[#102A2E]">
+              Where the Money Goes: Living Costs in NYC
+            </h2>
+            <p className="text-sm text-[#60706D] leading-relaxed">
+              Housing accounts for over 60% of basic monthly expenditures. Below is the itemized breakdown across groceries, transportation, utilities, and healthcare.
+            </p>
 
-        <LivingCostBreakdownCard
-          col={outcome.costOfLiving}
-          actualRentMajor={actualRentMajor}
-          onOverrideRent={(r) => setActualRentMajor(r)}
-          onOpenCustomizer={onOpenCustomizer}
-        />
-      </div>
+            <LivingCostBreakdownCard
+              col={outcome.costOfLiving}
+              actualRentMajor={actualRentMajor}
+              onOverrideRent={(r) => setActualRentMajor(r)}
+              onOpenCustomizer={onOpenCustomizer}
+            />
+          </div>
+        </>
+      )}
 
       {/* 7. Household Scenarios (Single vs Couple vs Family) */}
       <div className="bg-[#FFFFFF] p-6 rounded-2xl border border-[#DCE3E0] shadow-xs space-y-4">

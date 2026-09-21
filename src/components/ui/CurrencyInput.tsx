@@ -27,6 +27,23 @@ const CURRENCY_SYMBOLS: Record<CurrencyCode, string> = {
   QAR: 'QAR ',
   NZD: 'NZ$',
   INR: '₹',
+  JPY: '¥',
+  KRW: '₩',
+  NOK: 'kr ',
+  SEK: 'kr ',
+  DKK: 'kr ',
+  ILS: '₪',
+  HKD: 'HK$',
+  BRL: 'R$',
+  MXN: 'Mex$',
+  IDR: 'Rp ',
+  MYR: 'RM ',
+  PHP: '₱',
+  ZAR: 'R ',
+  PLN: 'zł ',
+  CZK: 'Kč ',
+  THB: '฿',
+  VND: '₫',
 };
 
 export const CurrencyInput: React.FC<CurrencyInputProps> = ({

@@ -10,7 +10,24 @@ export type CurrencyCode =
   | 'SGD'
   | 'QAR'
   | 'NZD'
-  | 'INR';
+  | 'INR'
+  | 'JPY'
+  | 'KRW'
+  | 'NOK'
+  | 'SEK'
+  | 'DKK'
+  | 'ILS'
+  | 'HKD'
+  | 'BRL'
+  | 'MXN'
+  | 'IDR'
+  | 'MYR'
+  | 'PHP'
+  | 'ZAR'
+  | 'PLN'
+  | 'CZK'
+  | 'THB'
+  | 'VND';
 
 export interface Money {
   /**
