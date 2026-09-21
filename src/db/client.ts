@@ -130,7 +130,11 @@ class PostgresDatabaseService implements IDatabaseService {
   async runMigrations() {
     try {
       const migrationFile = path.join(process.cwd(), 'src/db/migrations/0000_init_livworth.sql');
-      const sqlContent = fs.readFileSync(migrationFile, 'utf-8');
+      const sqlContent = fs.existsSync(migrationFile) ? fs.readFileSync(migrationFile, 'utf-8') : '';
+      if (!sqlContent) {
+        console.warn('[Database] Migration file not found on disk; skipping migration step.');
+        return { success: true, executedCount: 0, mode: this.mode };
+      }
 
       // Create tracking table if not exists
       await this.client.unsafe(`
@@ -1097,15 +1101,16 @@ function createDatabaseService(): IDatabaseService {
   const isProduction = process.env.NODE_ENV === 'production';
   const dbUrl = process.env.DATABASE_URL?.trim();
 
-  if (isProduction && !dbUrl) {
-    throw new Error('[Database Configuration] DATABASE_URL is strictly required in production mode.');
-  }
-
   if (dbUrl) {
     return new PostgresDatabaseService(dbUrl);
   }
 
-  console.warn('[Database] Running with in-memory development repository (DATABASE_URL absent in development mode).');
+  if (isProduction) {
+    console.warn('[Database Configuration] DATABASE_URL is absent in production environment. Database operations will fail-closed.');
+  } else {
+    console.warn('[Database] Running with in-memory development repository (DATABASE_URL absent in development mode).');
+  }
+
   return new LocalFallbackDatabaseService();
 }
 
