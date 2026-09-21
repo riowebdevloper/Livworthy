@@ -327,6 +327,13 @@ export default function App() {
     }
   };
 
+  const handleSelectRegionFromLink = (regionId: string) => {
+    const premierCity = Object.values(CITIES).find((c) => c.regionId === regionId);
+    if (premierCity) {
+      handleSelectCityFromLink(premierCity.id);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F8F5]">
       {/* Persistent Global Header with brand and live navigation */}
@@ -408,6 +415,7 @@ export default function App() {
             onNavigateHome={() => handleSelectTab('salary-worth')}
             onNavigateCity={handleSelectCityFromLink}
             onNavigateCountry={handleSelectCountryFromLink}
+            onNavigateRegion={handleSelectRegionFromLink}
             onSelectGuide={handleSelectGuide}
           />
         )}

@@ -194,13 +194,13 @@ export const Footer: React.FC<FooterProps> = ({
                 scrollToTop();
               }}
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group cursor-pointer"
-              title="Click to view all salary guides"
+              title="Click to view all country & city salary guides"
             >
               <span>City Salary Guides</span>
-              <ChevronRight className="w-3 h-3 ml-1 text-[#167D75] opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
             <ul className="space-y-1.5 text-xs">
-              {POPULAR_GUIDES_LIST.slice(0, 7).map((guide) => (
+              {POPULAR_GUIDES_LIST.slice(0, 8).map((guide) => (
                 <li key={guide.slug}>
                   <button
                     type="button"
@@ -226,9 +226,9 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('nyc-100k-guide');
                     scrollToTop();
                   }}
-                  className="text-xs font-semibold text-[#167D75] hover:underline cursor-pointer pt-1 block"
+                  className="text-xs font-bold text-[#167D75] hover:underline cursor-pointer pt-1 flex items-center"
                 >
-                  Explore All 39 Market Guides...
+                  <span>Explore All {POPULAR_GUIDES_LIST.length}+ Country & City Guides →</span>
                 </button>
               </li>
             </ul>
@@ -240,10 +240,10 @@ export const Footer: React.FC<FooterProps> = ({
               type="button"
               onClick={onOpenMethodology}
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group cursor-pointer"
-              title="Click to view Calculation Methodology"
+              title="Click to view Calculation Methodology and Standards"
             >
               <span>Integrity & Standards</span>
-              <ChevronRight className="w-3 h-3 ml-1 text-[#167D75] opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
             <ul className="space-y-2 text-xs">
               <li>
@@ -319,11 +319,13 @@ export const Footer: React.FC<FooterProps> = ({
                 onSelectTab?.('salary-worth');
                 scrollToTop();
               }}
-              className="font-bold text-xs uppercase tracking-wider text-[#102A2E] hover:text-[#167D75] transition-colors cursor-pointer"
+              className="font-bold text-xs uppercase tracking-wider text-[#102A2E] hover:text-[#167D75] transition-colors cursor-pointer flex items-center group"
+              title="Click to view city salary calculators"
             >
-              Popular City Income Hubs
+              <span>Popular City Income Hubs</span>
+              <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
-            <span className="text-[11px] text-slate-400">Click any city to switch calculator benchmarks</span>
+            <span className="text-[11px] text-slate-600 font-medium">Click any city to switch calculator benchmarks</span>
           </div>
           <div className="flex flex-wrap gap-2 text-xs">
             {FEATURED_CITIES.map((c) => (
@@ -354,7 +356,7 @@ export const Footer: React.FC<FooterProps> = ({
             <button
               type="button"
               onClick={onOpenMethodology}
-              className="hover:underline cursor-pointer"
+              className="hover:underline hover:text-[#167D75] cursor-pointer"
             >
               Deterministic Statutory Engine
             </button>
@@ -362,12 +364,19 @@ export const Footer: React.FC<FooterProps> = ({
             <button
               type="button"
               onClick={onOpenEvidence}
-              className="hover:underline cursor-pointer"
+              className="hover:underline hover:text-[#167D75] cursor-pointer"
             >
               Zero Synthetic Fallbacks
             </button>
             <span>·</span>
-            <span>All 39 Commercial Markets</span>
+            <button
+              type="button"
+              onClick={onOpenMethodology}
+              className="hover:underline hover:text-[#167D75] cursor-pointer font-medium"
+              title="View all 39 supported commercial markets"
+            >
+              All 39 Commercial Markets
+            </button>
           </div>
         </div>
       </div>

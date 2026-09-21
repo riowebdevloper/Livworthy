@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { COUNTRIES, CITIES, TAX_JURISDICTIONS } from '../src/data/locations';
+import { COUNTRIES, CITIES, REGIONS, TAX_JURISDICTIONS } from '../src/data/locations';
 import { POPULAR_GUIDES_LIST } from '../src/data/salary-guides';
 
 const BASE_URL = 'https://livworthy.com';
@@ -182,6 +182,7 @@ export function runSeoGenerator() {
   // 3. City Hub Pages
   for (const city of Object.values(CITIES)) {
     const country = COUNTRIES[city.countryId];
+    const region = city.regionId ? REGIONS[city.regionId] : undefined;
     const isProvisional = city.verificationStatus === 'PROVISIONAL' || (country && country.verificationStatus === 'PROVISIONAL');
 
     const cityStructuredData = {
@@ -192,7 +193,8 @@ export function runSeoGenerator() {
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
             { '@type': 'ListItem', position: 2, name: country ? country.name : city.countryId, item: `${BASE_URL}/countries/${city.countryId.toLowerCase()}` },
-            { '@type': 'ListItem', position: 3, name: city.name, item: `${BASE_URL}/cities/${city.id}` },
+            ...(region ? [{ '@type': 'ListItem', position: 3, name: region.name, item: `${BASE_URL}/cities/${city.id}` }] : []),
+            { '@type': 'ListItem', position: region ? 4 : 3, name: city.name, item: `${BASE_URL}/cities/${city.id}` },
           ],
         },
         {
@@ -208,7 +210,14 @@ export function runSeoGenerator() {
 
     const cityBody = `
       <article class="max-w-5xl mx-auto px-4 py-8">
-        <nav class="text-sm text-slate-500 mb-6"><a href="/">Home</a> / <a href="/countries/${city.countryId.toLowerCase()}">${country ? country.name : city.countryId}</a> / <span class="text-slate-800">${city.name}</span></nav>
+        <nav class="text-sm text-slate-500 mb-6 flex flex-wrap items-center gap-1.5">
+          <a href="/" class="hover:text-teal-700 font-medium">Home</a>
+          <span>/</span>
+          <a href="/countries/${city.countryId.toLowerCase()}" class="hover:text-teal-700 font-medium">${country ? country.name : city.countryId}</a>
+          ${region ? `<span>/</span><a href="/cities/${city.id}" class="hover:text-teal-700 font-medium">${region.name}</a>` : ''}
+          <span>/</span>
+          <span class="text-slate-800 font-bold">${city.name}</span>
+        </nav>
         <h1 class="text-3xl font-extrabold text-[#102A2E]">${city.name} Income, Tax & Cost of Living Intelligence</h1>
         <p class="mt-2 text-slate-600">Financial living analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}.</p>
         
@@ -228,24 +237,13 @@ export function runSeoGenerator() {
         </div>
 
         <section class="mt-8">
-          <h2 class="text-xl font-bold text-[#102A2E] mb-3">Launch Calculators for ${city.name}</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-            <a href="/?city=${city.id}&tab=salary-worth" class="p-4 bg-teal-50 border border-teal-200 rounded-lg hover:bg-teal-100 transition-colors">
-              <span class="font-bold text-teal-900 block">Salary Worth in ${city.name}</span>
-              <span class="text-xs text-teal-700 mt-1 block">Find out what your income is really worth after taxes, rent, and local expenses.</span>
-            </a>
-            <a href="/?city=${city.id}&tab=salary-after-tax" class="p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors">
-              <span class="font-bold text-slate-900 block">Salary After Tax in ${city.name}</span>
-              <span class="text-xs text-slate-600 mt-1 block">Statutory income tax and social contribution breakdown.</span>
-            </a>
-            <a href="/?city=${city.id}&tab=salary-needed" class="p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors">
-              <span class="font-bold text-slate-900 block">Salary Needed in ${city.name}</span>
-              <span class="text-xs text-slate-600 mt-1 block">Compute the required gross compensation for your target lifestyle.</span>
-            </a>
-            <a href="/?city=${city.id}&tab=cost-of-living" class="p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors">
-              <span class="font-bold text-slate-900 block">Cost of Living Breakdown</span>
-              <span class="text-xs text-slate-600 mt-1 block">Housing, groceries, transit, and household living costs.</span>
-            </a>
+          <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators for ${city.name}</h2>
+          <div class="flex flex-wrap gap-2 text-sm">
+            <a href="/?city=${city.id}&tab=salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
+            <a href="/?city=${city.id}&tab=salary-after-tax" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary After Tax</a>
+            <a href="/?city=${city.id}&tab=salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>
+            <a href="/?city=${city.id}&tab=cost-of-living" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Cost of Living</a>
+            <a href="/?city=${city.id}&tab=compare" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Compare With Another City</a>
           </div>
         </section>
       </article>
@@ -254,28 +252,32 @@ export function runSeoGenerator() {
     pages.push({
       relativePath: `cities/${city.id}/index.html`,
       canonicalUrl: `${BASE_URL}/cities/${city.id}`,
-      title: `${city.name} Income & Cost of Living Intelligence | LivWorthy`,
-      description: `What is your income really worth in ${city.name}? Calculate statutory take-home pay, housing costs, and cost of living.`,
+      title: `${city.name} Income, Tax & Cost of Living Intelligence | LivWorthy`,
+      description: `Authoritative living costs, statutory income tax schedules, and salary benchmarks for ${city.name} (${country ? country.name : city.countryId}).`,
       robots: isProvisional ? 'noindex, follow' : 'index, follow',
       bodyContent: cityBody,
       structuredData: cityStructuredData,
       changefreq: 'weekly',
-      priority: city.verificationStatus === 'VERIFIED' ? 0.8 : 0.6,
+      priority: city.verificationStatus === 'VERIFIED' ? 0.9 : 0.7,
     });
   }
 
-  // 4. Key Comparisons
-  const keyComparisons = [
-    { slug: 'new-york-vs-london', cityA: 'nyc', cityB: 'london', nameA: 'New York City', nameB: 'London' },
-    { slug: 'new-york-vs-dubai', cityA: 'nyc', cityB: 'dubai', nameA: 'New York City', nameB: 'Dubai' },
-    { slug: 'london-vs-dubai', cityA: 'london', cityB: 'dubai', nameA: 'London', nameB: 'Dubai' },
-    { slug: 'toronto-vs-vancouver', cityA: 'toronto', cityB: 'vancouver', nameA: 'Toronto', nameB: 'Vancouver' },
-    { slug: 'sydney-vs-melbourne', cityA: 'sydney', cityB: 'melbourne', nameA: 'Sydney', nameB: 'Melbourne' },
-    { slug: 'berlin-vs-munich', cityA: 'berlin', cityB: 'munich', nameA: 'Berlin', nameB: 'Munich' },
-    { slug: 'singapore-vs-dubai', cityA: 'singapore', cityB: 'dubai', nameA: 'Singapore', nameB: 'Dubai' },
+  // 4. Comparison Landing Pages
+  const COMPARISONS = [
+    { slug: 'new-york-vs-london', cityAId: 'nyc', cityBId: 'london' },
+    { slug: 'new-york-vs-dubai', cityAId: 'nyc', cityBId: 'dubai' },
+    { slug: 'london-vs-dubai', cityAId: 'london', cityBId: 'dubai' },
+    { slug: 'toronto-vs-vancouver', cityAId: 'toronto', cityBId: 'vancouver' },
+    { slug: 'sydney-vs-melbourne', cityAId: 'sydney', cityBId: 'melbourne' },
+    { slug: 'berlin-vs-munich', cityAId: 'berlin', cityBId: 'munich' },
+    { slug: 'singapore-vs-dubai', cityAId: 'singapore', cityBId: 'dubai' },
   ];
 
-  for (const comp of keyComparisons) {
+  for (const comp of COMPARISONS) {
+    const cityA = CITIES[comp.cityAId];
+    const cityB = CITIES[comp.cityBId];
+    if (!cityA || !cityB) continue;
+
     const compStructuredData = {
       '@context': 'https://schema.org',
       '@graph': [
@@ -283,7 +285,7 @@ export function runSeoGenerator() {
           '@type': 'BreadcrumbList',
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
-            { '@type': 'ListItem', position: 2, name: `${comp.nameA} vs ${comp.nameB}`, item: `${BASE_URL}/compare/${comp.slug}` },
+            { '@type': 'ListItem', position: 2, name: `${cityA.name} vs ${cityB.name}`, item: `${BASE_URL}/compare/${comp.slug}` },
           ],
         },
       ],
@@ -291,11 +293,35 @@ export function runSeoGenerator() {
 
     const compBody = `
       <article class="max-w-5xl mx-auto px-4 py-8">
-        <nav class="text-sm text-slate-500 mb-6"><a href="/">Home</a> / <span class="text-slate-800">${comp.nameA} vs ${comp.nameB}</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">${comp.nameA} vs ${comp.nameB} Salary & Living Cost Comparison</h1>
-        <p class="mt-2 text-slate-600">Cross-border purchasing power, income tax differential, and cost of living comparison between ${comp.nameA} and ${comp.nameB}.</p>
-        <div class="mt-6">
-          <a href="/?city=${comp.cityA}&tab=compare" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Launch Interactive Comparator</a>
+        <nav class="text-sm text-slate-500 mb-6"><a href="/">Home</a> / <span class="text-slate-800">${cityA.name} vs ${cityB.name}</span></nav>
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">${cityA.name} vs ${cityB.name} Salary & Cost of Living Comparison</h1>
+        <p class="mt-2 text-slate-600">Cross-border financial living analysis comparing disposable income, statutory taxes, and purchasing power between ${cityA.name} and ${cityB.name}.</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+          <div class="p-5 bg-white border border-slate-200 rounded-xl">
+            <h2 class="text-lg font-bold text-slate-900">${cityA.name}</h2>
+            <p class="text-xs text-slate-500 mt-0.5">${cityA.metroAreaName}</p>
+            <div class="mt-3 text-sm space-y-1">
+              <div>Currency: <strong>${cityA.currency}</strong></div>
+              <div>COL Index: <strong>${cityA.colIndexBase100NYC}</strong></div>
+              <div>Tax Status: <span class="text-teal-700 font-semibold">${cityA.verificationStatus}</span></div>
+            </div>
+          </div>
+          <div class="p-5 bg-white border border-slate-200 rounded-xl">
+            <h2 class="text-lg font-bold text-slate-900">${cityB.name}</h2>
+            <p class="text-xs text-slate-500 mt-0.5">${cityB.metroAreaName}</p>
+            <div class="mt-3 text-sm space-y-1">
+              <div>Currency: <strong>${cityB.currency}</strong></div>
+              <div>COL Index: <strong>${cityB.colIndexBase100NYC}</strong></div>
+              <div>Tax Status: <span class="text-teal-700 font-semibold">${cityB.verificationStatus}</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <a href="/?city=${cityA.id}&tab=compare" class="px-5 py-2.5 bg-teal-700 text-white font-bold text-sm rounded-xl hover:bg-teal-800 inline-block shadow-sm">
+            Launch Live Interactive Comparison
+          </a>
         </div>
       </article>
     `;
@@ -303,13 +329,13 @@ export function runSeoGenerator() {
     pages.push({
       relativePath: `compare/${comp.slug}/index.html`,
       canonicalUrl: `${BASE_URL}/compare/${comp.slug}`,
-      title: `${comp.nameA} vs ${comp.nameB} Salary & Living Comparison | LivWorthy`,
-      description: `Compare salary worth, income taxes, housing, and purchasing power between ${comp.nameA} and ${comp.nameB}.`,
+      title: `${cityA.name} vs ${cityB.name} Salary & Living Cost Comparison | LivWorthy`,
+      description: `Compare salary worth, tax rates, rent, and household purchasing power between ${cityA.name} and ${cityB.name}. Deterministic cross-border calculator.`,
       robots: 'index, follow',
       bodyContent: compBody,
       structuredData: compStructuredData,
       changefreq: 'monthly',
-      priority: 0.7,
+      priority: 0.8,
     });
   }
 
@@ -317,6 +343,7 @@ export function runSeoGenerator() {
   for (const g of POPULAR_GUIDES_LIST) {
     const city = CITIES[g.cityId] || CITIES.nyc;
     const country = COUNTRIES[g.countryId] || COUNTRIES.US;
+    const region = (g.regionId && REGIONS[g.regionId]) ? REGIONS[g.regionId] : (city.regionId && REGIONS[city.regionId] ? REGIONS[city.regionId] : undefined);
 
     const guideStructuredData = {
       '@context': 'https://schema.org',
@@ -326,8 +353,9 @@ export function runSeoGenerator() {
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
             { '@type': 'ListItem', position: 2, name: country.name, item: `${BASE_URL}/countries/${country.id.toLowerCase()}` },
-            { '@type': 'ListItem', position: 3, name: city.name, item: `${BASE_URL}/cities/${city.id}` },
-            { '@type': 'ListItem', position: 4, name: g.title, item: `${BASE_URL}/guides/${g.slug}` },
+            ...(region ? [{ '@type': 'ListItem', position: 3, name: region.name, item: `${BASE_URL}/cities/${city.id}` }] : []),
+            { '@type': 'ListItem', position: region ? 4 : 3, name: city.name, item: `${BASE_URL}/cities/${city.id}` },
+            { '@type': 'ListItem', position: region ? 5 : 4, name: g.title, item: `${BASE_URL}/guides/${g.slug}` },
           ],
         },
         {
@@ -350,13 +378,14 @@ export function runSeoGenerator() {
           <span>/</span>
           <a href="/countries/${country.id.toLowerCase()}" class="hover:text-teal-700 font-medium">${country.name}</a>
           <span>/</span>
+          ${region ? `<a href="/cities/${city.id}" class="hover:text-teal-700 font-medium">${region.name}</a><span>/</span>` : ''}
           <a href="/cities/${city.id}" class="hover:text-teal-700 font-medium">${city.name}</a>
           <span>/</span>
           <span class="text-slate-800 font-bold">${g.title}</span>
         </nav>
 
         <div class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold rounded-full mb-3">
-          <span>${country.name}</span> • <span>${city.name}</span> • <span>Verified Statutory Benchmark</span>
+          <span>${country.name}</span> • ${region ? `<span>${region.name}</span> • ` : ''}<span>${city.name}</span> • <span>Verified Statutory Benchmark</span>
         </div>
 
         <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] tracking-tight leading-tight">

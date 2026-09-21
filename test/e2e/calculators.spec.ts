@@ -284,4 +284,62 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     expect(taxData.success).toBe(true);
     expect(taxData.data.netIncome.amountMinor).toBe(7011616); // $70,116.16
   });
+
+  test('12. FOOTER HEADLINES & BREADCRUMB INTERLINKING: Headlines clickable, breadcrumbs clickable, country/city guides functional', async ({ page }) => {
+    await page.goto('/');
+
+    // 1. Check footer headlines are clickable buttons
+    const footer = page.locator('#livworthy-footer');
+    await expect(footer).toBeVisible();
+
+    const calcHeadBtn = footer.getByRole('button', { name: 'Calculators & Tools' });
+    await expect(calcHeadBtn).toBeVisible();
+    await calcHeadBtn.click();
+
+    const guidesHeadBtn = footer.getByRole('button', { name: 'City Salary Guides' });
+    await expect(guidesHeadBtn).toBeVisible();
+    await guidesHeadBtn.click();
+
+    // Verify navigating to salary guide view
+    await expect(page.locator('h1').first()).toContainText('Is $100K a Good Salary in New York City?');
+
+    // 2. Check breadcrumb links (Home / United States / New York / New York City)
+    const breadcrumb = page.locator('nav[aria-label="Breadcrumb"]');
+    await expect(breadcrumb).toBeVisible();
+    await expect(breadcrumb.getByRole('button', { name: 'Home', exact: true })).toBeVisible();
+    await expect(breadcrumb.getByRole('button', { name: 'United States', exact: true })).toBeVisible();
+    await expect(breadcrumb.getByRole('button', { name: 'New York', exact: true })).toBeVisible();
+    await expect(breadcrumb.getByRole('button', { name: 'New York City', exact: true })).toBeVisible();
+
+    // 3. Test breadcrumb click actions: clicking New York City switches to calculator
+    await breadcrumb.getByRole('button', { name: 'New York City', exact: true }).click();
+    await expect(page.locator('h1').first()).toContainText('What is your income really worth?');
+
+    // Go back to guide via footer
+    await footer.getByRole('button', { name: 'City Salary Guides' }).click();
+    await expect(page.locator('h1').first()).toContainText('Salary');
+
+    // Test switching guide via country filter pills
+    const ukBtn = page.getByRole('button', { name: /United Kingdom/i });
+    await expect(ukBtn).toBeVisible();
+    await ukBtn.click();
+    await expect(page.locator('h1').first()).toContainText('London');
+
+    // Breadcrumb now shows UK / England / London
+    await expect(breadcrumb.getByRole('button', { name: 'United Kingdom', exact: true })).toBeVisible();
+    await expect(breadcrumb.getByRole('button', { name: 'England', exact: true })).toBeVisible();
+    await expect(breadcrumb.getByRole('button', { name: 'London', exact: true })).toBeVisible();
+
+    // 4. Test footer Integrity & Standards headline opens methodology modal
+    const integrityHeadBtn = footer.getByRole('button', { name: 'Integrity & Standards' });
+    await integrityHeadBtn.click();
+    await expect(page.locator('text=LivWorthy Calculation Methodology').first()).toBeVisible();
+    await page.keyboard.press('Escape');
+
+    // 5. Test 39 Commercial Markets link in bottom bar
+    const marketsBtn = footer.getByRole('button', { name: 'All 39 Commercial Markets' });
+    await marketsBtn.click();
+    await expect(page.locator('text=LivWorthy Calculation Methodology').first()).toBeVisible();
+    await page.keyboard.press('Escape');
+  });
 });
