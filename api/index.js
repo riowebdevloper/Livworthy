@@ -124,6 +124,7 @@ import {
 var verificationStatusEnum = pgEnum("verification_status", [
   "VERIFIED",
   "LIMITED",
+  "PROVISIONAL",
   "UNSUPPORTED"
 ]);
 var taxStatusEnum = pgEnum("tax_status", [
@@ -5345,28 +5346,37 @@ var TaxRegistry = class {
     this.fallbackAdapter = new FallbackUnsupportedTaxAdapter();
   }
   static getSupportedCountryIds() {
+    return Object.keys(this.COUNTRY_METADATA).filter((id) => this.supportsTaxCalculation(id));
+  }
+  static getCommercialMarketIds() {
     return Object.keys(this.COUNTRY_METADATA);
+  }
+  static getLoadedAdapterCount() {
+    return this.adapters.length;
   }
   static getCountryStatus(countryId) {
     return this.COUNTRY_METADATA[countryId]?.status || "UNSUPPORTED";
   }
+  static supportsTaxCalculation(countryId) {
+    return this.adapters.some((a) => a.supports({ countryId }));
+  }
   static isStatutorilyVerified(countryId) {
-    return this.getCountryStatus(countryId) === "VERIFIED";
+    return this.getCountryStatus(countryId) === "VERIFIED" && this.supportsTaxCalculation(countryId);
   }
   static isSupported(countryId) {
-    const status = this.getCountryStatus(countryId);
-    return status !== "UNSUPPORTED";
+    return this.supportsTaxCalculation(countryId);
   }
   static getCountrySupport(countryId) {
     const meta = this.COUNTRY_METADATA[countryId];
     const status = meta?.status || "UNSUPPORTED";
+    const hasAdapter = this.supportsTaxCalculation(countryId);
     return {
       countryId,
       name: meta?.name || countryId,
       verificationStatus: status,
-      isStatutorilyVerified: status === "VERIFIED",
-      isSupported: this.isSupported(countryId),
-      notes: meta?.notes || "No statutory adapter registered."
+      isStatutorilyVerified: status === "VERIFIED" && hasAdapter,
+      isSupported: hasAdapter,
+      notes: hasAdapter ? meta?.notes || "Statutory adapter registered." : `Statutory tax schedules for ${meta?.name || countryId} are under verification. Dedicated executable adapter pending.`
     };
   }
   static getAdapter(context) {
@@ -6659,6 +6669,182 @@ var SalaryNeededCalculator = class {
   }
 };
 
+// src/engines/capabilities/capability-resolver.ts
+var CapabilityResolver = class {
+  static {
+    // 15 dedicated executable adapters registered in TaxRegistry
+    this.EXECUTABLE_TAX_ADAPTER_COUNTRIES = /* @__PURE__ */ new Set([
+      "US",
+      "GB",
+      "AE",
+      "CA",
+      "AU",
+      "DE",
+      "SG",
+      "QA",
+      "SA",
+      "NZ",
+      // 10 VERIFIED
+      "FR",
+      "ES",
+      "NL",
+      "IE",
+      "CH"
+      // 5 LIMITED
+    ]);
+  }
+  static {
+    this.PRIORITY_A_COUNTRIES = /* @__PURE__ */ new Set([
+      "US",
+      "GB",
+      "CA",
+      "AU",
+      "DE",
+      "FR",
+      "NL",
+      "CH",
+      "IE",
+      "AE",
+      "SG",
+      "NZ"
+    ]);
+  }
+  static {
+    this.PRIORITY_B_COUNTRIES = /* @__PURE__ */ new Set([
+      "JP",
+      "KR",
+      "SA",
+      "QA",
+      "NO",
+      "SE",
+      "DK",
+      "FI",
+      "AT",
+      "BE",
+      "ES",
+      "IT",
+      "IL",
+      "HK",
+      "LU"
+    ]);
+  }
+  static getPriority(countryId) {
+    if (this.PRIORITY_A_COUNTRIES.has(countryId)) return "A";
+    if (this.PRIORITY_B_COUNTRIES.has(countryId)) return "B";
+    return "C";
+  }
+  static hasDedicatedTaxAdapter(countryId) {
+    return this.EXECUTABLE_TAX_ADAPTER_COUNTRIES.has(countryId);
+  }
+  static supportsTaxCalculation(countryId) {
+    return this.hasDedicatedTaxAdapter(countryId);
+  }
+  static resolve(countryId) {
+    const country = COUNTRIES[countryId];
+    const countryName = country?.name || countryId;
+    const priority = this.getPriority(countryId);
+    const hasTaxAdapter = this.hasDedicatedTaxAdapter(countryId);
+    const support = TaxRegistry.getCountrySupport(countryId);
+    const limitations = [];
+    let taxYear;
+    let taxRuleVersion;
+    if (hasTaxAdapter) {
+      taxYear = 2024;
+      switch (countryId) {
+        case "US":
+          taxRuleVersion = "US-FED-NY-NYC-2024.1";
+          limitations.push("Single filer standard deduction; localized state/local schedules for major commercial metros.");
+          break;
+        case "GB":
+          taxRuleVersion = "GB-HMRC-PAYE-2024.1";
+          limitations.push("England/Wales standard & Scottish progressive bands; personal allowance reduction over \xA3100k.");
+          break;
+        case "AE":
+          taxRuleVersion = "AE-FTA-2024.1";
+          limitations.push("Statutory 0% employment income tax; corporate and excise taxes excluded from payroll.");
+          break;
+        case "CA":
+          taxRuleVersion = "CA-CRA-ON-2024.1";
+          limitations.push("Federal + Ontario provincial schedules, CPP1/CPP2, and Employment Insurance.");
+          break;
+        case "AU":
+          taxRuleVersion = "AU-ATO-2024-25.1";
+          limitations.push("Revised Stage 3 tax cuts (effective July 2024) and Medicare levy.");
+          break;
+        case "DE":
+          taxRuleVersion = "DE-BMF-2024.1";
+          limitations.push("EStG polynomial formula and standard statutory social contributions (KV, RV, AV, PV).");
+          break;
+        case "SG":
+          taxRuleVersion = "SG-IRAS-YA2024.1";
+          limitations.push("Resident progressive tax schedule; CPF statutory contributions for citizens/PR.");
+          break;
+        case "QA":
+          taxRuleVersion = "QA-GTA-2024.1";
+          limitations.push("Statutory 0% employment income tax for resident and foreign employees.");
+          break;
+        case "SA":
+          taxRuleVersion = "SA-ZATCA-2024.1";
+          limitations.push("0% personal income tax on employee compensation; GOSI contributions for Saudi nationals.");
+          break;
+        case "NZ":
+          taxRuleVersion = "NZ-IRD-2024.1";
+          limitations.push("Post-July 2024 tax thresholds and ACC earner levy.");
+          break;
+        case "FR":
+          taxRuleVersion = "FR-DGFIP-2024.1";
+          limitations.push("Single employee scale & URSSAF social charges; quotient familial not modeled.");
+          break;
+        case "ES":
+          taxRuleVersion = "ES-AEAT-2024.1";
+          limitations.push("National and standard Madrid/Catalonia scales; specific autonomous regional deductions limited.");
+          break;
+        case "NL":
+          taxRuleVersion = "NL-BELASTING-2024.1";
+          limitations.push("Box 1 income tax & national insurance; 30% ruling not applied.");
+          break;
+        case "IE":
+          taxRuleVersion = "IE-REVENUE-2024.1";
+          limitations.push("Single filer standard rate band, personal tax credit, USC, and PRSI Class A.");
+          break;
+        case "CH":
+          taxRuleVersion = "CH-ESTV-ZH-2024.1";
+          limitations.push("Federal direct tax and standard Zurich cantonal/communal multiplier.");
+          break;
+      }
+    } else {
+      limitations.push(
+        `Statutory tax schedules for ${countryName} are in verification. Calculations for ${countryName} project living costs against pre-tax gross compensation without artificial tax approximations.`
+      );
+    }
+    return {
+      countryId,
+      countryName,
+      commercialPriority: priority,
+      verificationStatus: hasTaxAdapter ? support.verificationStatus : "LIMITED",
+      hasDedicatedTaxAdapter: hasTaxAdapter,
+      supportsTaxCalculation: hasTaxAdapter,
+      supportsCOL: true,
+      // Cost of living benchmarks available for all 39 markets
+      supportsSalaryWorth: true,
+      // Evaluates living costs and disposable income (identifying pre-tax status if tax unavailable)
+      supportsSalaryNeeded: hasTaxAdapter,
+      // Accurate reverse-solving requires executable tax adapter
+      supportsComparison: true,
+      // Cross-city comparison with FX conversion
+      supportsJobOffers: true,
+      supportsRelocation: true,
+      taxYear,
+      taxRuleVersion,
+      evidenceAvailable: hasTaxAdapter,
+      limitations
+    };
+  }
+  static getAllCapabilities() {
+    return Object.keys(COUNTRIES).map((id) => this.resolve(id));
+  }
+};
+
 // server.ts
 var env = null;
 try {
@@ -7024,6 +7210,9 @@ function configureApp() {
       };
     });
     res.json({ countries: list });
+  });
+  app.get("/api/capabilities", rateLimit(120, 60), (req, res) => {
+    res.json({ capabilities: CapabilityResolver.getAllCapabilities() });
   });
   app.get("/api/cities", rateLimit(120, 60), (req, res) => {
     res.json({ cities: Object.values(CITIES) });

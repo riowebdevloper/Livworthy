@@ -36,20 +36,21 @@ export default function App() {
     evidenceSourceIds: string[];
     ruleVersions: { taxRuleVersion?: string; colDate?: string };
   }>({
-    evidenceSourceIds: [
-      'us-irs-tax-2024',
-      'us-ssa-fica-2024',
-      'us-nys-tax-2024',
-      'us-nyc-tax-2024',
-      'us-hud-nyc-fmr-2024',
-      'us-bls-cpi-nyc-2024',
-      'us-mta-nyc-transit-2024',
-    ],
-    ruleVersions: {
-      taxRuleVersion: 'US-FED-NY-NYC-2024.1',
-      colDate: '2024-12',
-    },
+    evidenceSourceIds: [],
+    ruleVersions: {},
   });
+
+  // Invalidate metadata immediately when calculation-defining inputs change to prevent stale cross-jurisdiction evidence
+  const lastLocationIdRef = useRef<string>(scenario.location.id);
+  useEffect(() => {
+    if (lastLocationIdRef.current !== scenario.location.id) {
+      lastLocationIdRef.current = scenario.location.id;
+      setCalculationMetadata({
+        evidenceSourceIds: [],
+        ruleVersions: {},
+      });
+    }
+  }, [scenario.location.id]);
 
   // Modals & Drawers state
   const [isCustomizerOpen, setIsCustomizerOpen] = useState<boolean>(false);

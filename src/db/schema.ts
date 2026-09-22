@@ -16,6 +16,7 @@ import {
 export const verificationStatusEnum = pgEnum('verification_status', [
   'VERIFIED',
   'LIMITED',
+  'PROVISIONAL',
   'UNSUPPORTED',
 ]);
 

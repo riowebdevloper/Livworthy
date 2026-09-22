@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, DollarSign, ShieldCheck, Sparkles, Building2, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowRight, DollarSign, ShieldCheck, Sparkles, Building2, Loader2, AlertCircle, AlertTriangle } from 'lucide-react';
 import { CITIES, COUNTRIES } from '../../data/locations';
 import { calculateSalaryAfterTax } from '../../api/calculators';
 import { createMoney, formatMoney, toMajor } from '../../lib/money';
@@ -98,6 +98,8 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
       })
     : '$0';
 
+  const isUnavailable = taxResult?.status === 'TAX_CALCULATION_UNAVAILABLE';
+
   const taxDisplay = taxResult
     ? formatMoney({
         amountMinor: getFreqAmount(taxResult.totalDeductionsAndTaxes.amountMinor),
@@ -123,12 +125,14 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             </span>
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
-                verificationStatus === 'VERIFIED'
+                isUnavailable
+                  ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                  : verificationStatus === 'VERIFIED'
                   ? 'bg-[#DDF2EC] text-[#0D625B]'
                   : 'bg-amber-100 text-amber-800'
               }`}
             >
-              {verificationStatus} ADAPTER
+              {isUnavailable ? 'UNDER VERIFICATION' : `${verificationStatus} ADAPTER`}
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
@@ -225,7 +229,38 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
       )}
 
       {/* Result Cards */}
-      {taxResult && (
+      {taxResult && (isUnavailable ? (
+        <div className="bg-[#FFFFFF] rounded-2xl border border-amber-200 p-6 sm:p-8 shadow-xs">
+          <div className="flex items-start space-x-3">
+            <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+            <div className="space-y-3">
+              <h3 className="font-bold text-lg text-[#102A2E]">
+                Statutory Tax Schedules Under Verification for {city.name} ({city.countryId})
+              </h3>
+              <p className="text-xs sm:text-sm text-[#60706D] leading-relaxed">
+                {taxResult.unsupportedExplanation ||
+                  `Statutory personal income tax calculation for ${city.name} is currently undergoing institutional verification against official government revenue tables. In accordance with LivWorthy's Data Integrity Charter, we never substitute synthetic approximations or unverified formulas.`}
+              </p>
+              <div className="p-3 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0] flex items-center justify-between">
+                <span className="text-xs text-[#60706D]">Stated Gross Salary:</span>
+                <span className="text-sm font-bold text-[#102A2E] font-tabular">
+                  {formatMoney({ amountMinor: Math.round(grossSalaryMajor * 100), currency })}/year
+                </span>
+              </div>
+              <div className="pt-2 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => onSwitchToSalaryWorthWithSalary(grossSalaryMajor, city.id)}
+                  className="px-4 py-2.5 bg-[#102A2E] hover:bg-[#167D75] text-white text-xs font-bold rounded-xl transition-colors flex items-center space-x-1.5"
+                >
+                  <span>Evaluate Cost of Living in {city.name}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between">
             <div>
@@ -294,10 +329,10 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             </div>
           </div>
         </div>
-      )}
+      ))}
 
       {/* Itemized Deductions Table */}
-      {taxResult && (
+      {taxResult && !isUnavailable && (
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs">
           <div className="flex items-center justify-between pb-4 border-b border-[#F7F8F5]">
             <div>

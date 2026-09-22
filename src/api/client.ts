@@ -105,3 +105,24 @@ export async function apiFetch<T>(endpoint: string, options: ApiFetchOptions = {
     }
   }
 }
+
+// Authoritative typed API methods
+export {
+  calculateSalaryWorth,
+  calculateSalaryNeeded,
+  calculateSalaryAfterTax,
+  calculateSalaryAfterTax as calculateAfterTax,
+  calculateCostOfLiving,
+  calculateCostOfLiving as calculateCOL,
+  compareCities,
+  compareCities as compareLocations,
+  compareJobOffers,
+} from './calculators';
+
+export async function getCapabilities(options?: ApiFetchOptions): Promise<{ countries: any[] }> {
+  return apiFetch<{ countries: any[] }>('/api/countries', options);
+}
+
+export async function getEvidence(sourceIds?: string[], options?: ApiFetchOptions): Promise<{ sources: any[] }> {
+  return apiFetch<{ sources: any[] }>('/api/tax/inspect', options);
+}

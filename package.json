@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test": "tsx test/financial-engine.test.ts && tsx test/database-and-backend.test.ts && tsx test/tax-golden-vectors.test.ts && tsx test/production-integration-and-failure.test.ts",
+    "test": "tsx test/financial-engine.test.ts && tsx test/database-and-backend.test.ts && tsx test/tax-golden-vectors.test.ts && tsx test/country-capability-consistency.test.ts && tsx test/production-integration-and-failure.test.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {

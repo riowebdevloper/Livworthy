@@ -14,6 +14,7 @@ import { AuthService } from './src/lib/auth';
 import { COUNTRIES, CITIES } from './src/data/locations';
 import { EVIDENCE_REGISTRY } from './src/data/evidence-registry';
 import { createMoney, fromMinor } from './src/lib/money';
+import { CapabilityResolver } from './src/engines/capabilities/capability-resolver';
 
 let env: any = null;
 try {
@@ -448,6 +449,10 @@ function configureApp() {
       };
     });
     res.json({ countries: list });
+  });
+
+  app.get('/api/capabilities', rateLimit(120, 60), (req, res) => {
+    res.json({ capabilities: CapabilityResolver.getAllCapabilities() });
   });
 
   app.get('/api/cities', rateLimit(120, 60), (req, res) => {

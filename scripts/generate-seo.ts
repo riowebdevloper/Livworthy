@@ -86,10 +86,10 @@ export function runSeoGenerator() {
         '@id': `${BASE_URL}/#dataset`,
         name: 'LivWorthy Global Income, Tax & Cost of Living Benchmark Dataset',
         description:
-          'Authoritative statutory personal income tax schedules, fair-market rent benchmarks, and weighted essential goods expenditure models across 39 international commercial markets.',
+          'Income and living-cost intelligence across 39 target markets, with statutory tax calculations available for supported jurisdictions, fair-market rent benchmarks, and essential goods expenditure models.',
         creator: { '@id': `${BASE_URL}/#organization` },
         temporalCoverage: '2024/2026',
-        spatialCoverage: 'Global (39 Sovereign Jurisdictions)',
+        spatialCoverage: 'Global (39 Target Commercial Markets)',
         license: `${BASE_URL}/terms`,
       },
     ],
@@ -98,7 +98,7 @@ export function runSeoGenerator() {
   const homeHtmlBody = `
     <header class="max-w-7xl mx-auto px-4 py-8">
       <h1 class="text-3xl font-extrabold text-[#102A2E]">LivWorthy — Know what your income is really worth.</h1>
-      <p class="mt-2 text-lg text-slate-600">${PLATFORM_IDENTITY.coreDefinition} Compute verified statutory take-home pay, realistic cost of living, household budgets, and purchasing power across 39 international markets.</p>
+      <p class="mt-2 text-lg text-slate-600">${PLATFORM_IDENTITY.coreDefinition} Income and living-cost intelligence across 39 target markets, with statutory tax calculations available for supported jurisdictions, realistic cost of living, household budgets, and purchasing power.</p>
     </header>
     <main class="max-w-7xl mx-auto px-4 py-6">
       <section class="mb-10">

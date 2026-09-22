@@ -257,32 +257,46 @@ export class TaxRegistry {
   private static fallbackAdapter = new FallbackUnsupportedTaxAdapter();
 
   public static getSupportedCountryIds(): string[] {
+    return Object.keys(this.COUNTRY_METADATA).filter((id) => this.supportsTaxCalculation(id));
+  }
+
+  public static getCommercialMarketIds(): string[] {
     return Object.keys(this.COUNTRY_METADATA);
+  }
+
+  public static getLoadedAdapterCount(): number {
+    return this.adapters.length;
   }
 
   public static getCountryStatus(countryId: string): TaxVerificationStatus {
     return this.COUNTRY_METADATA[countryId]?.status || 'UNSUPPORTED';
   }
 
+  public static supportsTaxCalculation(countryId: string): boolean {
+    return this.adapters.some((a) => a.supports({ countryId }));
+  }
+
   public static isStatutorilyVerified(countryId: string): boolean {
-    return this.getCountryStatus(countryId) === 'VERIFIED';
+    return this.getCountryStatus(countryId) === 'VERIFIED' && this.supportsTaxCalculation(countryId);
   }
 
   public static isSupported(countryId: string): boolean {
-    const status = this.getCountryStatus(countryId);
-    return status !== 'UNSUPPORTED';
+    return this.supportsTaxCalculation(countryId);
   }
 
   public static getCountrySupport(countryId: string): TaxCountrySupport {
     const meta = this.COUNTRY_METADATA[countryId];
     const status = meta?.status || 'UNSUPPORTED';
+    const hasAdapter = this.supportsTaxCalculation(countryId);
     return {
       countryId,
       name: meta?.name || countryId,
       verificationStatus: status,
-      isStatutorilyVerified: status === 'VERIFIED',
-      isSupported: this.isSupported(countryId),
-      notes: meta?.notes || 'No statutory adapter registered.',
+      isStatutorilyVerified: status === 'VERIFIED' && hasAdapter,
+      isSupported: hasAdapter,
+      notes: hasAdapter
+        ? meta?.notes || 'Statutory adapter registered.'
+        : `Statutory tax schedules for ${meta?.name || countryId} are under verification. Dedicated executable adapter pending.`,
     };
   }
 

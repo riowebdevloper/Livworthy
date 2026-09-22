@@ -86,56 +86,66 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
               Authoritative Reference Sources ({sources.length})
             </h3>
 
-            <div className="space-y-3">
-              {sources.map((src) => (
-                <div
-                  key={src.id}
-                  className="p-4 rounded-xl border border-[#DCE3E0] bg-[#FFFFFF] space-y-2 hover:border-[#167D75] transition-colors"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <span className="font-bold text-sm text-[#102A2E]">{src.organization}</span>
-                      <span className="text-[11px] text-[#60706D] block">{src.sourceType} · {src.jurisdiction}</span>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#DDF2EC] text-[#0D625B]">
-                      {src.reliabilityTier}
-                    </span>
-                  </div>
-
-                  <p className="text-xs font-medium text-[#102A2E] leading-snug">
-                    {src.canonicalReference}
-                  </p>
-
-                  <p className="text-[11px] text-[#60706D] leading-relaxed">
-                    {src.notes}
-                  </p>
-
-                  <div className="pt-2 border-t border-[#F7F8F5] flex flex-wrap items-center justify-between text-[10px] text-[#60706D] gap-2">
-                    <div className="flex items-center space-x-2">
-                      <span className="flex items-center">
-                        <Calendar className="w-3 h-3 mr-1" /> Effective: {src.effectiveDate}
-                      </span>
-                      <span>·</span>
-                      <span className="flex items-center text-[#167D75]">
-                        <CheckCircle2 className="w-3 h-3 mr-1" /> Verified: {src.verifiedAt}
+            {sources.length === 0 ? (
+              <div className="p-4 rounded-xl border border-dashed border-[#DCE3E0] text-center text-[#60706D] space-y-1">
+                <AlertCircle className="w-5 h-5 mx-auto text-[#60706D]" />
+                <p className="font-semibold text-xs text-[#102A2E]">No Active Sources Loaded</p>
+                <p className="text-[11px]">
+                  Provenance records are loaded dynamically upon authoritative calculation. For jurisdictions without a dedicated adapter, statutory tax evidence is never fabricated.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {sources.map((src) => (
+                  <div
+                    key={src.id}
+                    className="p-4 rounded-xl border border-[#DCE3E0] bg-[#FFFFFF] space-y-2 hover:border-[#167D75] transition-colors"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <span className="font-bold text-sm text-[#102A2E]">{src.organization}</span>
+                        <span className="text-[11px] text-[#60706D] block">{src.sourceType} · {src.jurisdiction}</span>
+                      </div>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#DDF2EC] text-[#0D625B]">
+                        {src.reliabilityTier}
                       </span>
                     </div>
 
-                    {src.url && (
-                      <a
-                        href={src.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[#167D75] hover:underline flex items-center"
-                      >
-                        <span>Official Bulletin</span>
-                        <ExternalLink className="w-3 h-3 ml-1" />
-                      </a>
-                    )}
+                    <p className="text-xs font-medium text-[#102A2E] leading-snug">
+                      {src.canonicalReference}
+                    </p>
+
+                    <p className="text-[11px] text-[#60706D] leading-relaxed">
+                      {src.notes}
+                    </p>
+
+                    <div className="pt-2 border-t border-[#F7F8F5] flex flex-wrap items-center justify-between text-[10px] text-[#60706D] gap-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="flex items-center">
+                          <Calendar className="w-3 h-3 mr-1" /> Effective: {src.effectiveDate}
+                        </span>
+                        <span>·</span>
+                        <span className="flex items-center text-[#167D75]">
+                          <CheckCircle2 className="w-3 h-3 mr-1" /> Verified: {src.verifiedAt}
+                        </span>
+                      </div>
+
+                      {src.url && (
+                        <a
+                          href={src.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[#167D75] hover:underline flex items-center"
+                        >
+                          <span>Official Bulletin</span>
+                          <ExternalLink className="w-3 h-3 ml-1" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Zero Data Fabrication Guarantee */}

@@ -63,7 +63,7 @@ export const Footer: React.FC<FooterProps> = ({
               <LivWorthLogo size="sm" showTagline={true} />
             </button>
             <p className="text-xs leading-relaxed text-[#60706D]">
-              LivWorthy provides deterministic income and living intelligence across 39 international commercial markets. All calculations use statutory tax schedules, verified consumer price indexes, and official government statistics.
+              LivWorthy provides deterministic income and living intelligence across 39 international commercial markets, with statutory tax calculations available for supported jurisdictions, verified consumer price indexes, and official government statistics.
             </p>
             <div className="space-y-1.5 text-xs pt-1">
               <button

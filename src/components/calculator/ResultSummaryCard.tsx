@@ -105,7 +105,9 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
             </span>
           </div>
           <p className="text-xs text-[#60706D] mt-0.5">
-            Verified with {outcome.scenario.taxProfile.taxYear} statutory schedules
+            {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+              ? 'Statutory tax verification pending • Pre-tax gross displayed'
+              : `Verified with ${outcome.scenario.taxProfile.taxYear} statutory schedules`}
           </p>
         </div>
 
@@ -162,14 +164,22 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
           label={
             <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
               <span className="text-xs font-semibold uppercase tracking-wider text-[#167D75]">
-                Estimated Take-Home
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                  ? 'Estimated Take-Home (Pre-Tax)'
+                  : 'Estimated Take-Home'}
               </span>
               <span className="text-xs text-[#60706D]">
-                ({(outcome.tax.effectiveTaxRate * 100).toFixed(1)}% total tax & FICA)
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                  ? '(Tax calculation under verification)'
+                  : `(${(outcome.tax.effectiveTaxRate * 100).toFixed(1)}% total tax & FICA)`}
               </span>
             </div>
           }
-          description="After federal, state, local resident taxes & social contributions"
+          description={
+            outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+              ? 'Statutory tax schedules under verification; pre-tax gross displayed pending verified tables'
+              : 'After federal, state, local resident taxes & social contributions'
+          }
           amount={takeHomeDisplay}
           period={`/${isMonthly ? 'mo' : 'yr'}`}
           color="teal"
