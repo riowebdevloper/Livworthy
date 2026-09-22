@@ -56,35 +56,35 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
       </div>
 
       {/* Summary Metrics Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
-        <div className="bg-[#F7F8F5] p-3 rounded-xl">
-          <span className="text-xs text-[#60706D] block">Gross Income</span>
-          <span className="text-sm font-bold text-[#102A2E] font-tabular">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 my-4">
+        <div className="bg-[#F7F8F5] p-3 rounded-xl min-w-0">
+          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Gross Income</span>
+          <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block truncate sm:overflow-visible">
             {formatMoney(tax.grossIncome, { hideDecimals: true })}
           </span>
         </div>
-        <div className="bg-[#F7F8F5] p-3 rounded-xl">
-          <span className="text-xs text-[#60706D] block">Total Taxes & FICA</span>
-          <span className="text-sm font-bold text-[#102A2E] font-tabular">
+        <div className="bg-[#F7F8F5] p-3 rounded-xl min-w-0">
+          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Total Taxes & FICA</span>
+          <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block truncate sm:overflow-visible">
             {formatMoney(tax.totalDeductionsAndTaxes, { hideDecimals: true })}
           </span>
         </div>
-        <div className="bg-[#F7F8F5] p-3 rounded-xl">
-          <span className="text-xs text-[#60706D] block">Annual Take-Home</span>
-          <span className="text-sm font-bold text-[#167D75] font-tabular">
+        <div className="bg-[#F7F8F5] p-3 rounded-xl min-w-0">
+          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Annual Take-Home</span>
+          <span className="text-xs sm:text-sm font-bold text-[#167D75] font-tabular tabular-nums tracking-tight block truncate sm:overflow-visible">
             {formatMoney(tax.netIncome, { hideDecimals: true })}
           </span>
         </div>
-        <div className="bg-[#F7F8F5] p-3 rounded-xl">
-          <span className="text-xs text-[#60706D] block">Combined Marginal Rate</span>
-          <span className="text-sm font-bold text-[#102A2E] font-tabular">
+        <div className="bg-[#F7F8F5] p-3 rounded-xl min-w-0">
+          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Combined Marginal</span>
+          <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block">
             {(tax.marginalTaxRate * 100).toFixed(2)}%
           </span>
         </div>
       </div>
 
       {/* Line-item component table */}
-      <div className="space-y-3 pt-2">
+      <div className="space-y-2.5 pt-2">
         {tax.components.map((item) => {
           const pctOfGross = tax.grossIncome.amountMinor > 0
             ? (item.amount.amountMinor / tax.grossIncome.amountMinor) * 100
@@ -93,21 +93,21 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
           return (
             <div
               key={item.id}
-              className="flex items-center justify-between p-3 rounded-xl bg-[#F7F8F5]/60 hover:bg-[#F7F8F5] transition-colors"
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-xl bg-[#F7F8F5]/60 hover:bg-[#F7F8F5] transition-colors gap-2"
             >
-              <div className="space-y-0.5">
-                <div className="flex items-center space-x-2">
+              <div className="space-y-0.5 min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-1.5">
                   <span className="text-xs font-bold text-[#102A2E]">{item.name}</span>
-                  <span className="text-xs text-[#60706D] bg-[#FFFFFF] px-2 py-0.5 rounded border border-[#DCE3E0]">
+                  <span className="text-[10px] text-[#60706D] bg-[#FFFFFF] px-1.5 py-0.5 rounded border border-[#DCE3E0]">
                     {item.authority}
                   </span>
                 </div>
                 {item.description && (
-                  <p className="text-xs text-[#60706D]">{item.description}</p>
+                  <p className="text-xs text-[#60706D] leading-relaxed">{item.description}</p>
                 )}
               </div>
-              <div className="text-right pl-3">
-                <div className="text-sm font-bold text-[#102A2E] font-tabular">
+              <div className="shrink-0 flex sm:block items-baseline justify-between sm:text-right pl-0 sm:pl-3">
+                <div className="text-sm font-bold text-[#102A2E] font-tabular tabular-nums whitespace-nowrap">
                   {formatMoney(item.amount)}
                 </div>
                 <div className="text-xs text-[#60706D]">

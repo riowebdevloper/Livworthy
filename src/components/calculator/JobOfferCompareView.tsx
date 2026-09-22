@@ -429,15 +429,15 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D]">Spendable Gross Pay:</span>
-                <span className="font-bold text-[#102A2E] font-tabular">
+              <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Spendable Gross Pay:</span>
+                <span className="font-bold text-[#102A2E] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(comparison.outcomeA.grossAnnual, { hideDecimals: true })}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D]">Total Compensation Value:</span>
-                <span className="font-bold text-[#102A2E] font-tabular">
+              <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Total Compensation Value:</span>
+                <span className="font-bold text-[#102A2E] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(
                     createMoney(
                       toMajor(comparison.outcomeA.grossAnnual) + offerAHousingAllowance,
@@ -447,22 +447,22 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                   )}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D]">Net Take-Home (After Tax & Social):</span>
-                <span className="font-bold text-[#167D75] font-tabular">
+              <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Net Take-Home (After Tax & Social):</span>
+                <span className="font-bold text-[#167D75] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(comparison.outcomeA.takeHomeAnnual, { hideDecimals: true })}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D]">Annual Living Costs:</span>
-                <span className="font-bold text-[#60706D] font-tabular">
+              <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Annual Living Costs:</span>
+                <span className="font-bold text-[#60706D] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   −{formatMoney(comparison.outcomeA.livingCostsAnnual, { hideDecimals: true })}
                 </span>
               </div>
 
-              <div className="flex justify-between py-2 bg-[#DDF2EC]/40 border border-[#167D75]/20 px-3 rounded-lg mt-2">
-                <span className="font-bold text-[#102A2E]">Net Money Remaining:</span>
-                <span className="font-extrabold text-[#102A2E] font-tabular text-sm">
+              <div className="flex items-baseline justify-between gap-2 py-2 bg-[#DDF2EC]/40 border border-[#167D75]/20 px-3 rounded-lg mt-2">
+                <span className="font-bold text-[#102A2E] min-w-0 flex-1 pr-1">Net Money Remaining:</span>
+                <span className="font-extrabold text-[#102A2E] font-tabular tabular-nums text-sm shrink-0 whitespace-nowrap">
                   {formatMoney(comparison.outcomeA.moneyRemainingAnnual, { hideDecimals: true })}
                 </span>
               </div>
@@ -479,15 +479,15 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D]">Spendable Gross Pay:</span>
-                <span className="font-bold text-[#102A2E] font-tabular">
+              <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Spendable Gross Pay:</span>
+                <span className="font-bold text-[#102A2E] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(comparison.outcomeB.grossAnnual, { hideDecimals: true })}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D]">Total Compensation Value:</span>
-                <span className="font-bold text-[#102A2E] font-tabular">
+              <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Total Compensation Value:</span>
+                <span className="font-bold text-[#102A2E] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(
                     createMoney(
                       toMajor(comparison.outcomeB.grossAnnual) + offerBHousingAllowance,
@@ -497,33 +497,33 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                   )}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D]">Net Take-Home (After Tax & Social):</span>
-                <span className="font-bold text-[#167D75] font-tabular">
+              <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Net Take-Home (After Tax & Social):</span>
+                <span className="font-bold text-[#167D75] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(comparison.outcomeB.takeHomeAnnual, { hideDecimals: true })}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D]">Annual Living Costs:</span>
-                <span className="font-bold text-[#60706D] font-tabular">
+              <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Annual Living Costs:</span>
+                <span className="font-bold text-[#60706D] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   −{formatMoney(comparison.outcomeB.livingCostsAnnual, { hideDecimals: true })}
                 </span>
               </div>
 
               {displayYear === 'year1' && year1TotalRelocation > 0 && (
-                <div className="flex justify-between py-1 border-b border-[#F7F8F5] text-amber-700">
-                  <span>Less One-Time Relocation Costs:</span>
-                  <span className="font-bold font-tabular">
+                <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5] text-amber-700">
+                  <span className="min-w-0 flex-1 pr-1">Less One-Time Relocation Costs:</span>
+                  <span className="font-bold font-tabular tabular-nums shrink-0 whitespace-nowrap">
                     −{formatMoney(createMoney(year1TotalRelocation, cityB.currency), { hideDecimals: true })}
                   </span>
                 </div>
               )}
 
-              <div className="flex justify-between py-2 bg-[#DDF2EC]/40 border border-[#167D75]/20 px-3 rounded-lg mt-2">
-                <span className="font-bold text-[#102A2E]">
+              <div className="flex items-baseline justify-between gap-2 py-2 bg-[#DDF2EC]/40 border border-[#167D75]/20 px-3 rounded-lg mt-2">
+                <span className="font-bold text-[#102A2E] min-w-0 flex-1 pr-1">
                   {displayYear === 'year1' ? 'Year 1 Net Remaining:' : 'Year 2+ Recurring Remaining:'}
                 </span>
-                <span className="font-extrabold text-[#102A2E] font-tabular text-sm">
+                <span className="font-extrabold text-[#102A2E] font-tabular tabular-nums text-sm shrink-0 whitespace-nowrap">
                   {displayYear === 'year1'
                     ? formatMoney(
                         createMoney(

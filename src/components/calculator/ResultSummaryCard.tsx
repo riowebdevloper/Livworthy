@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { formatMoney, toMajor } from '../../lib/money';
 import { LivWorthCalculationOutcome } from '../../types/scenario';
+import { MoneyRow, MoneyValue } from '../ui/MoneyDisplay';
 
 interface ResultSummaryCardProps {
   outcome: LivWorthCalculationOutcome;
@@ -140,20 +141,14 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
       {/* Main Metric Cascade Flow */}
       <div className="p-6 sm:p-8 space-y-6">
         {/* Step 1: Gross Compensation */}
-        <div className="flex items-baseline justify-between border-b border-[#F7F8F5] pb-4">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#60706D]">
-              Gross Compensation
-            </span>
-            <p className="text-xs text-[#60706D] mt-0.5">Stated total cash salary</p>
-          </div>
-          <div className="text-right">
-            <span className="text-xl sm:text-2xl font-bold text-[#102A2E] font-tabular">
-              {grossDisplay}
-            </span>
-            <span className="text-xs text-[#60706D] block">/{isMonthly ? 'mo' : 'yr'}</span>
-          </div>
-        </div>
+        <MoneyRow
+          label="Gross Compensation"
+          description="Stated total cash salary"
+          amount={grossDisplay}
+          period={`/${isMonthly ? 'mo' : 'yr'}`}
+          color="primary"
+          size="xl"
+        />
 
         {/* Flow indicator */}
         <div className="flex justify-center -my-2">
@@ -163,9 +158,9 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
         </div>
 
         {/* Step 2: Estimated Take-Home Pay */}
-        <div className="flex items-baseline justify-between border-b border-[#F7F8F5] pb-4">
-          <div>
-            <div className="flex items-center space-x-1.5">
+        <MoneyRow
+          label={
+            <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
               <span className="text-xs font-semibold uppercase tracking-wider text-[#167D75]">
                 Estimated Take-Home
               </span>
@@ -173,17 +168,13 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
                 ({(outcome.tax.effectiveTaxRate * 100).toFixed(1)}% total tax & FICA)
               </span>
             </div>
-            <p className="text-xs text-[#60706D] mt-0.5">
-              After federal, state, local resident taxes & social contributions
-            </p>
-          </div>
-          <div className="text-right">
-            <span className="text-xl sm:text-2xl font-bold text-[#167D75] font-tabular">
-              {takeHomeDisplay}
-            </span>
-            <span className="text-xs text-[#60706D] block">/{isMonthly ? 'mo' : 'yr'}</span>
-          </div>
-        </div>
+          }
+          description="After federal, state, local resident taxes & social contributions"
+          amount={takeHomeDisplay}
+          period={`/${isMonthly ? 'mo' : 'yr'}`}
+          color="teal"
+          size="xl"
+        />
 
         {/* Flow indicator */}
         <div className="flex justify-center -my-2">
@@ -193,24 +184,19 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
         </div>
 
         {/* Step 3: Estimated Local Living Costs */}
-        <div className="flex items-baseline justify-between border-b border-[#F7F8F5] pb-4">
-          <div>
-            <div className="flex items-center space-x-1.5">
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#60706D]">
-                Estimated Living Costs
-              </span>
-            </div>
-            <p className="text-xs text-[#60706D] mt-0.5">
-              Housing ({outcome.scenario.household.housingType}), food, utilities, transit & healthcare
-            </p>
-          </div>
-          <div className="text-right">
-            <span className="text-xl sm:text-2xl font-bold text-[#60706D] font-tabular">
-              −{livingCostsDisplay}
+        <MoneyRow
+          label={
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#60706D]">
+              Estimated Living Costs
             </span>
-            <span className="text-xs text-[#60706D] block">/{isMonthly ? 'mo' : 'yr'}</span>
-          </div>
-        </div>
+          }
+          description={`Housing (${outcome.scenario.household.housingType}), food, utilities, transit & healthcare`}
+          amount={livingCostsDisplay}
+          prefixSign="−"
+          period={`/${isMonthly ? 'mo' : 'yr'}`}
+          color="muted"
+          size="xl"
+        />
 
         {/* Flow indicator */}
         <div className="flex justify-center -my-2">
@@ -220,25 +206,25 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
         </div>
 
         {/* Step 4: MONEY REMAINING (THE HERO OUTCOME) */}
-        <div className="bg-[#F7F8F5] rounded-xl p-5 border border-[#DCE3E0]">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <div>
+        <div className="bg-[#F7F8F5] rounded-xl p-4 sm:p-5 border border-[#DCE3E0]">
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 sm:gap-4">
+            <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-2">
-                <Wallet className="w-5 h-5 text-[#167D75]" />
+                <Wallet className="w-5 h-5 text-[#167D75] shrink-0" />
                 <span className="text-sm font-bold uppercase tracking-wider text-[#102A2E]">
                   Money Remaining (Disposable Income)
                 </span>
               </div>
-              <p className="text-xs text-[#60706D] mt-1 max-w-md">
+              <p className="text-xs text-[#60706D] mt-1 max-w-md leading-relaxed">
                 Uncommitted income available for personal savings, emergency fund, investments, or travel.
               </p>
             </div>
 
-            <div className="text-left sm:text-right mt-2 sm:mt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] font-tabular">
+            <div className="shrink-0 text-left sm:text-right space-y-0.5 pt-1 sm:pt-0">
+              <div className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight whitespace-nowrap">
                 {moneyRemainingDisplay}
               </div>
-              <div className="text-xs font-medium text-[#60706D]">
+              <div className="text-xs font-medium text-[#60706D] whitespace-normal sm:whitespace-nowrap">
                 {isMonthly ? (
                   <span>
                     Equivalent to {formatMoney(outcome.moneyRemainingAnnual, { hideDecimals: true })}/year
@@ -254,9 +240,9 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
 
           {/* Visual Income Allocation Stack */}
           <div className="mt-5 pt-4 border-t border-[#DCE3E0]/80">
-            <div className="flex items-center justify-between text-xs mb-2">
+            <div className="flex flex-wrap items-center justify-between gap-1 text-xs mb-2">
               <span className="font-bold text-[#102A2E] flex items-center space-x-1.5">
-                <BarChart3 className="w-3.5 h-3.5 text-[#167D75]" />
+                <BarChart3 className="w-3.5 h-3.5 text-[#167D75] shrink-0" />
                 <span>Gross Compensation Allocation</span>
               </span>
               <span className="text-xs text-[#60706D]">
@@ -320,8 +306,8 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
 
           {/* Savings Capacity Bar */}
           <div className="mt-4 pt-4 border-t border-[#DCE3E0]/70 flex flex-wrap items-center justify-between gap-2 text-xs">
-            <div className="flex items-center space-x-2">
-              <PiggyBank className="w-4 h-4 text-[#167D75]" />
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+              <PiggyBank className="w-4 h-4 text-[#167D75] shrink-0" />
               <span className="font-semibold text-[#102A2E]">Potential Savings Rate:</span>
               <span className="font-bold text-[#167D75]">{outcome.savingsRatePercentage}%</span>
               <span className="text-[#60706D]">of gross earnings</span>

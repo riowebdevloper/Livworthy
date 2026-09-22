@@ -172,22 +172,22 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-[#F7F8F5]">
-                  <span className="text-2xl font-extrabold text-[#102A2E] font-tabular">
+                  <span className="text-xl sm:text-2xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight block whitespace-nowrap">
                     {formatMoney(result.threeTiers.essential.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
-                  <span className="text-xs text-[#60706D] block">Required Annual Gross</span>
+                  <span className="text-xs text-[#60706D] block mt-0.5">Required Annual Gross</span>
                 </div>
 
                 <div className="mt-4 space-y-1.5 text-xs text-[#60706D] bg-[#F7F8F5] p-3 rounded-xl">
-                  <div className="flex justify-between">
-                    <span>Monthly Expenses:</span>
-                    <span className="font-semibold text-[#102A2E]">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="shrink-0">Monthly Expenses:</span>
+                    <span className="font-semibold text-[#102A2E] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(result.threeTiers.essential.monthlyLivingCosts, { hideDecimals: true })}
                     </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Monthly Savings:</span>
-                    <span className="font-medium text-[#60706D]">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="shrink-0">Monthly Savings:</span>
+                    <span className="font-medium text-[#60706D] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(result.threeTiers.essential.monthlySavings, { hideDecimals: true })}
                     </span>
                   </div>
@@ -219,22 +219,22 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-[#F7F8F5]">
-                  <span className="text-2xl font-extrabold text-[#102A2E] font-tabular">
+                  <span className="text-xl sm:text-2xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight block whitespace-nowrap">
                     {formatMoney(result.threeTiers.moderate.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
-                  <span className="text-xs text-[#60706D] block">Required Annual Gross</span>
+                  <span className="text-xs text-[#60706D] block mt-0.5">Required Annual Gross</span>
                 </div>
 
                 <div className="mt-4 space-y-1.5 text-xs text-[#60706D] bg-[#F7F8F5] p-3 rounded-xl">
-                  <div className="flex justify-between">
-                    <span>Monthly Expenses:</span>
-                    <span className="font-semibold text-[#102A2E]">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="shrink-0">Monthly Expenses:</span>
+                    <span className="font-semibold text-[#102A2E] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(result.threeTiers.moderate.monthlyLivingCosts, { hideDecimals: true })}
                     </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Monthly Savings:</span>
-                    <span className="font-medium text-[#167D75] font-semibold">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="shrink-0">Monthly Savings:</span>
+                    <span className="font-medium text-[#167D75] font-semibold font-tabular tabular-nums whitespace-nowrap">
                       +{formatMoney(result.threeTiers.moderate.monthlySavings, { hideDecimals: true })}
                     </span>
                   </div>
@@ -270,22 +270,22 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-[#F7F8F5]">
-                  <span className="text-3xl font-black text-[#102A2E] font-tabular">
+                  <span className="text-2xl sm:text-3xl font-black text-[#102A2E] font-tabular tabular-nums tracking-tight block whitespace-nowrap">
                     {formatMoney(result.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
-                  <span className="text-xs font-semibold text-[#167D75] block">Annual Gross Compensation</span>
+                  <span className="text-xs font-semibold text-[#167D75] block mt-0.5">Annual Gross Compensation</span>
                 </div>
 
                 <div className="mt-4 space-y-1.5 text-xs text-[#60706D] bg-[#F7F8F5] p-3 rounded-xl border border-[#DCE3E0]/60">
-                  <div className="flex justify-between">
-                    <span>Monthly Expenses:</span>
-                    <span className="font-semibold text-[#102A2E]">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="shrink-0">Monthly Expenses:</span>
+                    <span className="font-semibold text-[#102A2E] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(result.monthlyExpensesTotal, { hideDecimals: true })}
                     </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Monthly Savings Target:</span>
-                    <span className="font-bold text-[#167D75]">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="shrink-0">Monthly Savings Target:</span>
+                    <span className="font-bold text-[#167D75] font-tabular tabular-nums whitespace-nowrap">
                       +{formatMoney(targetSavingsMoney, { hideDecimals: true })}
                     </span>
                   </div>

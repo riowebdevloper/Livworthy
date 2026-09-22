@@ -188,7 +188,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
         </div>
 
         {/* Frequency Toggle */}
-        <div className="mt-6 pt-4 border-t border-[#F7F8F5] flex items-center justify-between">
+        <div className="mt-6 pt-4 border-t border-[#F7F8F5] flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center space-x-1 bg-[#F7F8F5] p-1 rounded-lg border border-[#DCE3E0]">
             <span className="text-xs text-[#60706D] font-medium px-2">Show:</span>
             {(['annual', 'monthly', 'biweekly'] as const).map((freq) => (
@@ -240,7 +240,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-[#F7F8F5]">
-              <span className="text-3xl sm:text-4xl font-black text-[#167D75] font-tabular">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#167D75] font-tabular tabular-nums tracking-tight block whitespace-nowrap overflow-hidden text-ellipsis">
                 {netDisplay}
               </span>
               <span className="text-xs text-[#60706D] block mt-1">
@@ -262,7 +262,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-[#F7F8F5]">
-              <span className="text-3xl sm:text-4xl font-black text-[#60706D] font-tabular">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#60706D] font-tabular tabular-nums tracking-tight block whitespace-nowrap overflow-hidden text-ellipsis">
                 {taxDisplay}
               </span>
               <span className="text-xs text-[#60706D] block mt-1">

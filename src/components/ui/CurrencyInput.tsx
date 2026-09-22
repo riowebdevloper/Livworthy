@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { CurrencyCode } from '../../types/money';
 
 interface CurrencyInputProps {
@@ -19,29 +19,29 @@ const CURRENCY_SYMBOLS: Record<CurrencyCode, string> = {
   GBP: '£',
   EUR: '€',
   CAD: 'CA$',
-  AED: 'AED ',
+  AED: 'AED',
   AUD: 'A$',
-  SAR: 'SAR ',
-  CHF: 'CHF ',
+  SAR: 'SAR',
+  CHF: 'CHF',
   SGD: 'S$',
-  QAR: 'QAR ',
+  QAR: 'QAR',
   NZD: 'NZ$',
   INR: '₹',
   JPY: '¥',
   KRW: '₩',
-  NOK: 'kr ',
-  SEK: 'kr ',
-  DKK: 'kr ',
+  NOK: 'kr',
+  SEK: 'kr',
+  DKK: 'kr',
   ILS: '₪',
   HKD: 'HK$',
   BRL: 'R$',
   MXN: 'Mex$',
-  IDR: 'Rp ',
-  MYR: 'RM ',
+  IDR: 'Rp',
+  MYR: 'RM',
   PHP: '₱',
-  ZAR: 'R ',
-  PLN: 'zł ',
-  CZK: 'Kč ',
+  ZAR: 'R',
+  PLN: 'zł',
+  CZK: 'Kč',
   THB: '฿',
   VND: '₫',
 };
@@ -53,39 +53,73 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   currency,
   onChangeMajor,
   helperText,
-  min = 0,
-  max = 10_000_000,
-  step = 1000,
+  max = 100_000_000,
   disabled = false,
 }) => {
-  const symbol = CURRENCY_SYMBOLS[currency] || '$';
+  const symbol = CURRENCY_SYMBOLS[currency] || currency;
+  const [isFocused, setIsFocused] = useState(false);
+  const [rawText, setRawText] = useState(valueMajor === 0 ? '' : valueMajor.toString());
+
+  useEffect(() => {
+    if (!isFocused) {
+      setRawText(valueMajor === 0 ? '' : valueMajor.toString());
+    }
+  }, [valueMajor, isFocused]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Keep digits only
+    const digits = e.target.value.replace(/[^0-9]/g, '');
+    setRawText(digits);
+    const parsed = parseInt(digits, 10);
+    onChangeMajor(isNaN(parsed) ? 0 : Math.min(max, parsed));
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    setRawText(valueMajor === 0 ? '' : valueMajor.toString());
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  // Formatted with thousands separators when idle; raw digits when actively typing
+  const displayValue = isFocused
+    ? rawText
+    : valueMajor === 0
+    ? ''
+    : valueMajor.toLocaleString('en-US');
 
   return (
     <div className="w-full">
       {label && (
-        <label htmlFor={id} className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
+        <label
+          htmlFor={id}
+          className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider"
+        >
           {label}
         </label>
       )}
-      <div className="relative rounded-lg shadow-xs">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-          <span className="text-[#60706D] font-medium text-base sm:text-lg">{symbol}</span>
+      <div className="relative flex items-center rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] focus-within:border-[#167D75] focus-within:ring-2 focus-within:ring-[#167D75]/20 shadow-xs transition-colors">
+        {/* Dedicated currency badge container with distinct spacing preventing overlap */}
+        <div className="flex items-center pl-3.5 pr-2.5 select-none shrink-0 pointer-events-none">
+          <span className="text-[#60706D] font-bold text-base sm:text-lg">
+            {symbol}
+          </span>
         </div>
         <input
-          type="number"
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
           id={id}
           name={id}
-          value={valueMajor === 0 ? '' : valueMajor}
+          value={displayValue}
           placeholder="0"
-          min={min}
-          max={max}
-          step={step}
           disabled={disabled}
-          onChange={(e) => {
-            const raw = parseFloat(e.target.value);
-            onChangeMajor(isNaN(raw) ? 0 : Math.max(0, raw));
-          }}
-          className="block w-full rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] pl-10 pr-4 py-2.5 sm:py-3 text-base sm:text-lg font-bold text-[#102A2E] font-tabular placeholder-[#60706D]/40 focus:border-[#167D75] focus:ring-2 focus:ring-[#167D75]/20 focus:outline-hidden transition-colors"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          className="block w-full rounded-r-lg bg-transparent pr-4 py-2.5 sm:py-3 text-base sm:text-lg font-bold text-[#102A2E] font-tabular tabular-nums placeholder-[#60706D]/40 focus:outline-hidden"
         />
       </div>
       {helperText && <p className="mt-1 text-xs text-[#60706D]">{helperText}</p>}

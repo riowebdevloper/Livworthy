@@ -6,6 +6,7 @@ import { ComparisonResult } from '../../engines/calculator-core/compare';
 import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { CurrencyCode } from '../../types/money';
 import { LivWorthScenario } from '../../types/scenario';
+import { CurrencyInput } from '../ui/CurrencyInput';
 
 interface CompareViewProps {
   initialScenarioA: LivWorthScenario;
@@ -201,16 +202,12 @@ export const CompareView: React.FC<CompareViewProps> = ({
             </div>
 
             <div>
-              <label htmlFor="compare-salary-a-input" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
-                Annual Gross Salary ({cityA.currency})
-              </label>
-              <input
+              <CurrencyInput
                 id="compare-salary-a-input"
-                aria-label={`Annual Gross Salary (${cityA.currency})`}
-                type="number"
-                value={salaryAMajor}
-                onChange={(e) => setSalaryAMajor(parseFloat(e.target.value) || 0)}
-                className="w-full text-base font-bold rounded-lg border border-[#DCE3E0] p-2.5 bg-white text-[#102A2E]"
+                label={`Annual Gross Salary (${cityA.currency})`}
+                valueMajor={salaryAMajor}
+                currency={cityA.currency}
+                onChangeMajor={setSalaryAMajor}
               />
             </div>
           </div>
@@ -246,16 +243,12 @@ export const CompareView: React.FC<CompareViewProps> = ({
             </div>
 
             <div>
-              <label htmlFor="compare-salary-b-input" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
-                Annual Gross Salary ({cityB.currency})
-              </label>
-              <input
+              <CurrencyInput
                 id="compare-salary-b-input"
-                aria-label={`Annual Gross Salary (${cityB.currency})`}
-                type="number"
-                value={salaryBMajor}
-                onChange={(e) => setSalaryBMajor(parseFloat(e.target.value) || 0)}
-                className="w-full text-base font-bold rounded-lg border border-[#DCE3E0] p-2.5 bg-white text-[#102A2E]"
+                label={`Annual Gross Salary (${cityB.currency})`}
+                valueMajor={salaryBMajor}
+                currency={cityB.currency}
+                onChangeMajor={setSalaryBMajor}
               />
             </div>
           </div>

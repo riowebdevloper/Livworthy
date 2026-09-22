@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Home, Utensils, Zap, Bus, HeartPulse, Baby, Sparkles, Edit2, Check, RotateCcw } from 'lucide-react';
-import { formatMoney, toMajor } from '../../lib/money';
+import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { CostCategorySummary, CostOfLivingResult } from '../../types/col';
 
 interface LivingCostBreakdownCardProps {
@@ -97,14 +97,14 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
       <div className="mt-4 p-4 rounded-xl bg-[#F7F8F5] border border-[#DCE3E0]/80">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
-            <Home className="w-4 h-4 text-[#167D75]" />
+            <Home className="w-4 h-4 text-[#167D75] shrink-0" />
             <div>
               <span className="text-xs font-bold text-[#102A2E]">
                 {actualRentMajor ? 'Your Actual Rent Override Active:' : 'Have an exact rental price?'}
               </span>
               <p className="text-[11px] text-[#60706D]">
                 {actualRentMajor
-                  ? `Overriding benchmark with $${actualRentMajor.toLocaleString()}/month`
+                  ? `Overriding benchmark with ${formatMoney(createMoney(actualRentMajor, currency), { hideDecimals: true })}/month`
                   : 'Replace the HUD benchmark estimate with your specific monthly lease amount.'}
               </p>
             </div>
@@ -113,14 +113,14 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
           <div className="flex items-center space-x-2">
             {isEditingRent ? (
               <div className="flex items-center space-x-2">
-                <div className="relative">
-                  <span className="absolute left-2.5 top-1.5 text-xs text-[#60706D] font-bold">$</span>
+                <div className="relative flex items-center rounded-md border border-[#167D75] bg-white px-2 py-1">
+                  <span className="text-xs text-[#60706D] font-bold mr-1">{currency}</span>
                   <input
                     type="number"
                     value={rentInput}
                     placeholder="e.g. 2400"
                     onChange={(e) => setRentInput(e.target.value)}
-                    className="w-28 pl-6 pr-2 py-1 text-xs font-bold border border-[#167D75] rounded-md bg-white focus:outline-hidden"
+                    className="w-24 text-xs font-bold text-[#102A2E] focus:outline-hidden bg-transparent font-tabular"
                   />
                 </div>
                 <button
@@ -180,23 +180,23 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
                 key={cat.category}
                 className="p-3.5 rounded-xl border border-[#DCE3E0]/60 bg-[#FFFFFF] hover:border-[#DCE3E0] transition-colors"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-[#F7F8F5] flex items-center justify-center">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex items-center space-x-2.5 min-w-0 flex-1">
+                    <div className="w-7 h-7 rounded-lg bg-[#F7F8F5] flex items-center justify-center shrink-0">
                       {CATEGORY_ICONS[cat.category] || <Sparkles className="w-4 h-4 text-[#167D75]" />}
                     </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#102A2E]">{cat.label}</span>
-                      <p className="text-[11px] text-[#60706D]">
+                    <div className="min-w-0 flex-1">
+                      <span className="text-xs font-bold text-[#102A2E] block truncate">{cat.label}</span>
+                      <p className="text-[11px] text-[#60706D] truncate">
                         {cat.items.map((i) => i.label).join(' · ')}
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-right">
-                    <div className="text-sm font-bold text-[#102A2E] font-tabular">
+                  <div className="shrink-0 flex sm:block items-baseline justify-between sm:text-right pl-0 sm:pl-3">
+                    <div className="text-sm font-bold text-[#102A2E] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(monthlyAmount)}
-                      <span className="text-xs font-normal text-[#60706D]">/mo</span>
+                      <span className="text-xs font-normal text-[#60706D] ml-0.5">/mo</span>
                     </div>
                     <div className="text-[10px] text-[#60706D]">
                       {formatMoney(cat.annualTotal, { hideDecimals: true })}/yr ({pctOfTotal.toFixed(0)}%)
@@ -206,12 +206,12 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
 
                 {/* Range bar (low - estimate - high) */}
                 {cat.items[0] && (
-                  <div className="mt-2 pt-2 border-t border-[#F7F8F5] flex items-center justify-between text-[10px] text-[#60706D]">
-                    <span>Low: {formatMoney(cat.items[0].monthlyLow, { hideDecimals: true })}</span>
-                    <span className="font-semibold text-[#167D75]">
+                  <div className="mt-2 pt-2 border-t border-[#F7F8F5] flex flex-wrap items-center justify-between gap-1 text-[10px] text-[#60706D]">
+                    <span className="whitespace-nowrap">Low: {formatMoney(cat.items[0].monthlyLow, { hideDecimals: true })}</span>
+                    <span className="font-semibold text-[#167D75] whitespace-nowrap">
                       Expected: {formatMoney(cat.items[0].monthlyEstimate, { hideDecimals: true })}
                     </span>
-                    <span>High: {formatMoney(cat.items[0].monthlyHigh, { hideDecimals: true })}</span>
+                    <span className="whitespace-nowrap">High: {formatMoney(cat.items[0].monthlyHigh, { hideDecimals: true })}</span>
                   </div>
                 )}
               </div>
