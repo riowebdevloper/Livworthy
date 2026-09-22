@@ -1,0 +1,27 @@
+# LivWorthy (https://livworthy.com)
+> Know what your income is really worth.
+
+A global income and living intelligence platform that helps people understand what their income is really worth in a specific location.
+
+## Core Intelligence Capabilities
+- Salary Worth: Evaluates disposable income and savings capacity after statutory taxes, rent, and household necessities.
+- Salary After Tax: Statutory take-home pay engine accounting for national, regional/state, and local income taxes plus mandatory social contributions.
+- Salary Needed: Deterministic inverse solver computing gross compensation needed to sustain defined living standards and savings goals.
+- Cost of Living: Metro-level benchmarks for housing, food, transit, healthcare, and utilities across 39 commercial markets.
+- City Comparison: Cross-border purchasing-power and lifestyle equivalence modeling.
+- Job Offer Evaluator: Multi-currency total compensation value calculator.
+
+## Algorithmic & Data Governance
+- Zero-AI Financial Calculation Policy: All financial numbers are computed by deterministic software and verified statutory tax rules—never estimated by LLMs.
+- Source Provenance: Built on Tier-1 government tax authorities (IRS, HMRC, FTA, CRA, ATO), official statistical bureaus (BLS, Eurostat), and institutional benchmarks (HUD FMR).
+- Privacy-First: Anonymous calculations without user accounts, cookies, or personally identifiable information.
+
+## Authoritative Public Resources
+- Platform Overview: https://livworthy.com/about
+- Calculation Methodology: https://livworthy.com/methodology
+- Verified Sources Registry: https://livworthy.com/sources
+- Editorial & Verification Policy: https://livworthy.com/editorial-policy
+- Data & Privacy Policy: https://livworthy.com/data-policy
+- Data Corrections & Feedback: https://livworthy.com/corrections
+- Terms & Financial Disclaimer: https://livworthy.com/terms
+- Sitemap Index: https://livworthy.com/sitemap.xml

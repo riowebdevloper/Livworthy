@@ -7,6 +7,7 @@ import { POPULAR_GUIDES_LIST } from '../../data/salary-guides';
 interface FooterProps {
   onOpenEvidence: () => void;
   onOpenMethodology: () => void;
+  onOpenCorrections?: () => void;
   onOpenDiagnostics?: () => void;
   onSelectTab?: (tab: ActiveTab) => void;
   onSelectGuide?: (slug: string) => void;
@@ -31,6 +32,7 @@ const FEATURED_CITIES = [
 export const Footer: React.FC<FooterProps> = ({
   onOpenEvidence,
   onOpenMethodology,
+  onOpenCorrections,
   onOpenDiagnostics,
   onSelectTab,
   onSelectGuide,
@@ -234,7 +236,7 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/* Column 4: Integrity, Standards & Architecture */}
+          {/* Column 4: Integrity, Standards & E-E-A-T */}
           <div>
             <button
               type="button"
@@ -242,16 +244,16 @@ export const Footer: React.FC<FooterProps> = ({
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group cursor-pointer"
               title="Click to view Calculation Methodology and Standards"
             >
-              <span>Integrity & Standards</span>
+              <span>Integrity & Governance</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-1 text-xs">
               <li>
                 <button
                   type="button"
                   id="footer-methodology-btn"
                   onClick={onOpenMethodology}
-                  className="hover:text-[#102A2E] underline text-left transition-colors cursor-pointer"
+                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] underline text-left transition-colors cursor-pointer"
                 >
                   Calculation Methodology
                 </button>
@@ -261,49 +263,58 @@ export const Footer: React.FC<FooterProps> = ({
                   type="button"
                   id="footer-evidence-btn"
                   onClick={onOpenEvidence}
-                  className="hover:text-[#102A2E] underline text-left transition-colors cursor-pointer"
+                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] underline text-left transition-colors cursor-pointer"
                 >
                   Sources & Evidence Registry
                 </button>
               </li>
+              {onOpenCorrections && (
+                <li>
+                  <button
+                    type="button"
+                    id="footer-corrections-btn"
+                    onClick={onOpenCorrections}
+                    className="min-h-[24px] py-1 flex items-center text-[#167D75] font-semibold hover:underline text-left transition-colors cursor-pointer"
+                  >
+                    Report Data Correction
+                  </button>
+                </li>
+              )}
               {onOpenDiagnostics && (
                 <li>
                   <button
                     type="button"
                     id="footer-diagnostics-btn"
                     onClick={onOpenDiagnostics}
-                    className="hover:text-[#102A2E] underline text-[#167D75] font-semibold text-left transition-colors cursor-pointer"
+                    className="min-h-[24px] py-1 flex items-center text-slate-700 hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                   >
                     System Architecture & Diagnostics
                   </button>
                 </li>
               )}
               <li>
-                <button
-                  type="button"
-                  onClick={onOpenMethodology}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                <a
+                  href="/about"
+                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
                 >
-                  Deterministic Rule Versioning
-                </button>
+                  About LivWorthy
+                </a>
               </li>
               <li>
-                <button
-                  type="button"
-                  onClick={onOpenMethodology}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                <a
+                  href="/editorial-policy"
+                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
                 >
-                  Zero Data Fabrication Policy
-                </button>
+                  Editorial & Verification Policy
+                </a>
               </li>
               <li>
-                <button
-                  type="button"
-                  onClick={onOpenMethodology}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                <a
+                  href="/data-policy"
+                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
                 >
-                  Anonymous & Privacy First (No PII)
-                </button>
+                  Data Policy (Zero PII & Zero Fabrication)
+                </a>
               </li>
             </ul>
           </div>
@@ -352,31 +363,22 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom Bar */}
         <div className="border-t border-[#F7F8F5] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#60706D] gap-2">
           <p>© {new Date().getFullYear()} LivWorthy. Know what your income is really worth.</p>
-          <div className="flex items-center space-x-3 text-xs">
-            <button
-              type="button"
-              onClick={onOpenMethodology}
-              className="hover:underline hover:text-[#167D75] cursor-pointer"
-            >
-              Deterministic Statutory Engine
-            </button>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+            <a href="/about" className="hover:underline hover:text-[#167D75]">About</a>
             <span>·</span>
-            <button
-              type="button"
-              onClick={onOpenEvidence}
-              className="hover:underline hover:text-[#167D75] cursor-pointer"
-            >
-              Zero Synthetic Fallbacks
-            </button>
+            <a href="/methodology" className="hover:underline hover:text-[#167D75]">Methodology</a>
             <span>·</span>
-            <button
-              type="button"
-              onClick={onOpenMethodology}
-              className="hover:underline hover:text-[#167D75] cursor-pointer font-medium"
-              title="View all 39 supported commercial markets"
-            >
-              All 39 Commercial Markets
-            </button>
+            <a href="/sources" className="hover:underline hover:text-[#167D75]">Sources</a>
+            <span>·</span>
+            <a href="/editorial-policy" className="hover:underline hover:text-[#167D75]">Editorial Policy</a>
+            <span>·</span>
+            <a href="/data-policy" className="hover:underline hover:text-[#167D75]">Data Policy</a>
+            <span>·</span>
+            <a href="/corrections" className="hover:underline hover:text-[#167D75]">Corrections</a>
+            <span>·</span>
+            <a href="/terms" className="hover:underline hover:text-[#167D75]">Terms & YMYL Disclaimer</a>
+            <span>·</span>
+            <a href="/privacy" className="hover:underline hover:text-[#167D75]">Privacy Policy</a>
           </div>
         </div>
       </div>

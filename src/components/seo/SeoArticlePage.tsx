@@ -21,12 +21,15 @@ import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { LivingCostBreakdownCard } from '../calculator/LivingCostBreakdownCard';
 import { ResultSummaryCard } from '../calculator/ResultSummaryCard';
 import { TaxBreakdownCard } from '../calculator/TaxBreakdownCard';
+import { AnswerSummary } from './AnswerSummary';
+import { FinancialGlossary } from './FinancialGlossary';
 
 interface SeoArticlePageProps {
   initialGuideSlug?: string;
   onOpenCustomizer: () => void;
   onOpenEvidence: () => void;
   onOpenMethodology: () => void;
+  onReportCorrection?: (jurisdiction?: string) => void;
   onNavigateToCompare: () => void;
   onNavigateHome: () => void;
   onNavigateCity: (cityId: string) => void;
@@ -57,6 +60,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
   onOpenCustomizer,
   onOpenEvidence,
   onOpenMethodology,
+  onReportCorrection,
   onNavigateToCompare,
   onNavigateHome,
   onNavigateCity,
@@ -333,28 +337,21 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
         </p>
       </div>
 
-      {/* 4. Direct Editorial Answer Card */}
-      <div className="bg-[#FFFFFF] p-6 sm:p-7 rounded-2xl border-l-4 border-l-[#167D75] border border-[#DCE3E0] shadow-xs space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#167D75] block">
-          Direct Editorial & Financial Verdict
-        </span>
-        <p className="text-base text-[#102A2E] leading-relaxed">
-          <strong>{activeGuide.headlineSummary}</strong> At an annual gross salary of <strong>{formattedSalary}</strong>, an earner takes home an estimated <strong>{formattedTakeHome}/year ({formattedMonthlyTakeHome}/month)</strong> after statutory national, regional, and social payroll contributions.
-        </p>
-        <p className="text-sm text-[#374151] leading-relaxed">
-          {activeGuide.lifestyleContext}
-        </p>
-        <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-[#60706D] gap-2">
-          <span>Benchmark Context: {activeGuide.benchmarkContext}</span>
-          <button
-            type="button"
-            onClick={onOpenMethodology}
-            className="text-[#167D75] hover:underline font-medium cursor-pointer"
-          >
-            Review Statutory Assumptions →
-          </button>
-        </div>
-      </div>
+      {/* 4. AEO Direct Answer & Fact Summary Block */}
+      <AnswerSummary
+        question={activeGuide.title}
+        headlineSummary={activeGuide.headlineSummary}
+        lifestyleContext={activeGuide.lifestyleContext}
+        cityName={city.name}
+        countryName={country.name}
+        currency={activeGuide.currency}
+        grossSalaryMajor={activeGuide.salaryMajor}
+        outcome={outcome}
+        taxYear={2024}
+        onOpenMethodology={onOpenMethodology}
+        onOpenEvidence={onOpenEvidence}
+        onReportCorrection={() => onReportCorrection?.(`${city.name}, ${country.name}`)}
+      />
 
       {/* 5. Interactive Live Scenario Controls */}
       <div className="space-y-4">
@@ -435,7 +432,19 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
         </button>
       </div>
 
-      {/* 9. More City Salary Guides (All Interlinked with Country and City Tags) */}
+      {/* 9. Canonical Financial Intelligence Glossary (AEO / GEO / LLMO) */}
+      <FinancialGlossary
+        termsToShow={[
+          'Gross Salary',
+          'Net Salary (Take-Home Pay)',
+          'Effective Tax Rate',
+          'Cost of Living (COL)',
+          'Disposable Income',
+          'Purchasing Power',
+        ]}
+      />
+
+      {/* 10. More City Salary Guides (All Interlinked with Country and City Tags) */}
       <section className="pt-6 border-t border-[#DCE3E0] space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-bold text-[#102A2E]">

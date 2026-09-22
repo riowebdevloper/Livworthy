@@ -4,4 +4,32 @@ Disallow: /api/
 Disallow: /admin/
 Disallow: /test/
 
+# Explicit Search Engine & AI Answer Systems Discovery Directives
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
 Sitemap: https://livworthy.com/sitemap.xml

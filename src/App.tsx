@@ -12,6 +12,7 @@ import { Footer } from './components/layout/Footer';
 import { MethodologyModal } from './components/seo/MethodologyModal';
 import { SeoArticlePage } from './components/seo/SeoArticlePage';
 import { SystemDiagnosticsModal } from './components/system/SystemDiagnosticsModal';
+import { DataCorrectionModal } from './components/system/DataCorrectionModal';
 import { CITIES } from './data/locations';
 import { DEFAULT_NYC_100K_SCENARIO } from './data/presets';
 import { SALARY_GUIDES } from './data/salary-guides';
@@ -55,6 +56,8 @@ export default function App() {
   const [isEvidenceOpen, setIsEvidenceOpen] = useState<boolean>(false);
   const [isMethodologyOpen, setIsMethodologyOpen] = useState<boolean>(false);
   const [isDiagnosticsOpen, setIsDiagnosticsOpen] = useState<boolean>(false);
+  const [isCorrectionOpen, setIsCorrectionOpen] = useState<boolean>(false);
+  const [correctionJurisdiction, setCorrectionJurisdiction] = useState<string>('');
 
   const isInitialMount = useRef<boolean>(true);
 
@@ -411,6 +414,10 @@ export default function App() {
             onOpenCustomizer={() => setIsCustomizerOpen(true)}
             onOpenEvidence={() => setIsEvidenceOpen(true)}
             onOpenMethodology={() => setIsMethodologyOpen(true)}
+            onReportCorrection={(jurisdiction) => {
+              setCorrectionJurisdiction(jurisdiction || scenario.location.name);
+              setIsCorrectionOpen(true);
+            }}
             onNavigateToCompare={() => handleSelectTab('compare')}
             onNavigateHome={() => handleSelectTab('salary-worth')}
             onNavigateCity={handleSelectCityFromLink}
@@ -425,6 +432,10 @@ export default function App() {
       <Footer
         onOpenMethodology={() => setIsMethodologyOpen(true)}
         onOpenEvidence={() => setIsEvidenceOpen(true)}
+        onOpenCorrections={() => {
+          setCorrectionJurisdiction(scenario.location.name);
+          setIsCorrectionOpen(true);
+        }}
         onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
         onSelectTab={handleSelectTab}
         onSelectGuide={handleSelectGuide}
@@ -462,6 +473,12 @@ export default function App() {
       <SystemDiagnosticsModal
         isOpen={isDiagnosticsOpen}
         onClose={() => setIsDiagnosticsOpen(false)}
+      />
+
+      <DataCorrectionModal
+        isOpen={isCorrectionOpen}
+        onClose={() => setIsCorrectionOpen(false)}
+        defaultJurisdiction={correctionJurisdiction}
       />
     </div>
   );

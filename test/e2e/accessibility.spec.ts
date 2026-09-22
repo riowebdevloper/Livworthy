@@ -44,7 +44,7 @@ test.describe('LivWorthy Accessibility (Axe) Audit Suite', () => {
   test('Location Compare view meets accessibility standards', async ({ page }) => {
     await page.goto('/?tab=compare');
     await page.waitForSelector('#compare-view');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa'])
