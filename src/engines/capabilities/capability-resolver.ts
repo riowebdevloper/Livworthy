@@ -1,5 +1,5 @@
 import { COUNTRIES } from '../../data/locations';
-import { TaxRegistry, TaxVerificationStatus } from '../tax/tax-registry';
+import { LATEST_STATUTORY_TAX_YEAR, TaxRegistry, TaxVerificationStatus } from '../tax/tax-registry';
 
 export interface CountryCapability {
   countryId: string;
@@ -25,11 +25,8 @@ export interface CountryCapability {
 }
 
 export class CapabilityResolver {
-  // 15 dedicated executable adapters registered in TaxRegistry
-  private static readonly EXECUTABLE_TAX_ADAPTER_COUNTRIES = new Set<string>([
-    'US', 'GB', 'AE', 'CA', 'AU', 'DE', 'SG', 'QA', 'SA', 'NZ', // 10 VERIFIED
-    'FR', 'ES', 'NL', 'IE', 'CH',                                 // 5 LIMITED
-  ]);
+  // The canonical list of supported adapters is owned by TaxRegistry — do NOT duplicate it here.
+  // Call TaxRegistry.supportsTaxCalculation(countryId) for authoritative adapter presence checks.
 
   private static readonly PRIORITY_A_COUNTRIES = new Set<string>([
     'US', 'GB', 'CA', 'AU', 'DE', 'FR', 'NL', 'CH', 'IE', 'AE', 'SG', 'NZ',
@@ -46,14 +43,15 @@ export class CapabilityResolver {
   }
 
   public static hasDedicatedTaxAdapter(countryId: string): boolean {
-    return this.EXECUTABLE_TAX_ADAPTER_COUNTRIES.has(countryId);
+    // Derived from TaxRegistry — single source of truth
+    return TaxRegistry.supportsTaxCalculation(countryId);
   }
 
   public static supportsTaxCalculation(countryId: string): boolean {
     return this.hasDedicatedTaxAdapter(countryId);
   }
 
-  public static resolve(countryId: string, requestedTaxYear: number = 2025): CountryCapability {
+  public static resolve(countryId: string, requestedTaxYear: number = LATEST_STATUTORY_TAX_YEAR): CountryCapability {
     const country = COUNTRIES[countryId];
     const countryName = country?.name || countryId;
     const priority = this.getPriority(countryId);
@@ -66,8 +64,9 @@ export class CapabilityResolver {
     let taxRuleVersion: string | undefined;
 
     if (hasTaxAdapter) {
-      taxYear = requestedTaxYear;
-      const isHistorical2024 = requestedTaxYear <= 2024;
+      // Cap displayed taxYear to latest verified period; never claim support for unverified future years
+      taxYear = Math.min(requestedTaxYear, LATEST_STATUTORY_TAX_YEAR);
+      const isHistorical2024 = taxYear <= 2024;
 
       switch (countryId) {
         case 'US':

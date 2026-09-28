@@ -5569,6 +5569,7 @@ var UsTaxAdapter = class {
 };
 
 // src/engines/tax/tax-registry.ts
+var LATEST_STATUTORY_TAX_YEAR = 2025;
 var TaxRegistry = class {
   static {
     this.COUNTRY_METADATA = {
@@ -5838,6 +5839,35 @@ var TaxRegistry = class {
     return adapter;
   }
   static calculate(grossCompensation, profile, context) {
+    const requestedYear = profile.taxYear || context.taxYear || LATEST_STATUTORY_TAX_YEAR;
+    if (requestedYear > LATEST_STATUTORY_TAX_YEAR) {
+      const currency = grossCompensation.currency;
+      const zero = createMoney(0, currency);
+      return {
+        status: "TAX_CALCULATION_UNAVAILABLE",
+        grossIncome: grossCompensation,
+        taxableIncome: zero,
+        deductions: zero,
+        federalTax: zero,
+        stateTax: zero,
+        localTax: zero,
+        socialContributions: zero,
+        totalTax: zero,
+        totalDeductionsAndTaxes: zero,
+        netIncome: grossCompensation,
+        monthlyNetIncome: createMoney(Math.round(grossCompensation.amountMinor / 12), currency),
+        biweeklyNetIncome: createMoney(Math.round(grossCompensation.amountMinor / 26), currency),
+        effectiveTaxRate: 0,
+        marginalTaxRate: 0,
+        components: [],
+        taxRuleVersion: `FUTURE-YEAR-UNVERIFIED-${requestedYear}`,
+        evidenceSourceIds: [],
+        warnings: [
+          `Tax Year ${requestedYear} statutory schedules have not yet been officially published or verified. LivWorthy's latest verified statutory period is ${LATEST_STATUTORY_TAX_YEAR}. In accordance with our data integrity charter, we do not fabricate forward-projected tax rules.`
+        ],
+        unsupportedExplanation: `Statutory tax rules for ${requestedYear} are not yet verified. The most recent verified period is Tax Year ${LATEST_STATUTORY_TAX_YEAR} (${context.countryId || "all supported jurisdictions"}). Please recalculate using Tax Year ${LATEST_STATUTORY_TAX_YEAR} or earlier for an authoritative result.`
+      };
+    }
     const adapter = this.getAdapter(context);
     return adapter.calculate(grossCompensation, profile, context);
   }
@@ -7163,28 +7193,8 @@ var SalaryNeededCalculator = class {
 // src/engines/capabilities/capability-resolver.ts
 var CapabilityResolver = class {
   static {
-    // 15 dedicated executable adapters registered in TaxRegistry
-    this.EXECUTABLE_TAX_ADAPTER_COUNTRIES = /* @__PURE__ */ new Set([
-      "US",
-      "GB",
-      "AE",
-      "CA",
-      "AU",
-      "DE",
-      "SG",
-      "QA",
-      "SA",
-      "NZ",
-      // 10 VERIFIED
-      "FR",
-      "ES",
-      "NL",
-      "IE",
-      "CH"
-      // 5 LIMITED
-    ]);
-  }
-  static {
+    // The canonical list of supported adapters is owned by TaxRegistry — do NOT duplicate it here.
+    // Call TaxRegistry.supportsTaxCalculation(countryId) for authoritative adapter presence checks.
     this.PRIORITY_A_COUNTRIES = /* @__PURE__ */ new Set([
       "US",
       "GB",
@@ -7225,12 +7235,12 @@ var CapabilityResolver = class {
     return "C";
   }
   static hasDedicatedTaxAdapter(countryId) {
-    return this.EXECUTABLE_TAX_ADAPTER_COUNTRIES.has(countryId);
+    return TaxRegistry.supportsTaxCalculation(countryId);
   }
   static supportsTaxCalculation(countryId) {
     return this.hasDedicatedTaxAdapter(countryId);
   }
-  static resolve(countryId, requestedTaxYear = 2025) {
+  static resolve(countryId, requestedTaxYear = LATEST_STATUTORY_TAX_YEAR) {
     const country = COUNTRIES[countryId];
     const countryName = country?.name || countryId;
     const priority = this.getPriority(countryId);
@@ -7240,8 +7250,8 @@ var CapabilityResolver = class {
     let taxYear;
     let taxRuleVersion;
     if (hasTaxAdapter) {
-      taxYear = requestedTaxYear;
-      const isHistorical2024 = requestedTaxYear <= 2024;
+      taxYear = Math.min(requestedTaxYear, LATEST_STATUTORY_TAX_YEAR);
+      const isHistorical2024 = taxYear <= 2024;
       switch (countryId) {
         case "US":
           taxRuleVersion = isHistorical2024 ? "US-FED-NY-NYC-2024.1" : "US-FED-NY-NYC-2025.1";

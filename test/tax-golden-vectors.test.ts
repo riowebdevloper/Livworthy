@@ -1,4 +1,4 @@
-import { TaxRegistry } from '../src/engines/tax/tax-registry';
+import { LATEST_STATUTORY_TAX_YEAR, TaxRegistry } from '../src/engines/tax/tax-registry';
 import { createMoney, toMajor, CurrencyCode } from '../src/lib/money';
 import { TaxProfile } from '../src/types/tax';
 
@@ -1243,3 +1243,96 @@ export function runTaxGoldenVectorTests() {
 }
 
 runTaxGoldenVectorTests();
+
+// =========================================================================
+// FUTURE YEAR GATE TESTS — Tax Year > LATEST_STATUTORY_TAX_YEAR must NEVER
+// silently fall back to the latest known rules. The registry must return
+// status: 'TAX_CALCULATION_UNAVAILABLE' with an explicit explanation.
+// =========================================================================
+
+export function runFutureYearGateTests() {
+  const futureYear = LATEST_STATUTORY_TAX_YEAR + 1;
+
+  console.log(`--- FUTURE YEAR GATE TESTS (Tax Year ${futureYear}) ---`);
+  console.log(
+    `Verifying that all verified adapters refuse to calculate for year ${futureYear} ` +
+    `(LATEST_STATUTORY_TAX_YEAR = ${LATEST_STATUTORY_TAX_YEAR}). ` +
+    `Expected status: TAX_CALCULATION_UNAVAILABLE.\n`
+  );
+
+  // All 10 VERIFIED adapters plus 5 LIMITED adapters must gate on future years
+  const FUTURE_YEAR_GATE_CASES: Array<{ country: string; regionId?: string; currency: CurrencyCode; gross: number }> = [
+    { country: 'US', regionId: 'US-TX', currency: 'USD', gross: 100_000 },
+    { country: 'US', regionId: 'US-NY', currency: 'USD', gross: 150_000 }, // with NYC city tax
+    { country: 'GB', currency: 'GBP', gross: 80_000 },
+    { country: 'AE', currency: 'AED', gross: 200_000 },
+    { country: 'CA', regionId: 'CA-ON', currency: 'CAD', gross: 90_000 },
+    { country: 'AU', currency: 'AUD', gross: 120_000 },
+    { country: 'DE', currency: 'EUR', gross: 70_000 },
+    { country: 'SG', currency: 'SGD', gross: 100_000 },
+    { country: 'QA', currency: 'QAR', gross: 300_000 },
+    { country: 'SA', currency: 'SAR', gross: 200_000 },
+    { country: 'NZ', currency: 'NZD', gross: 80_000 },
+    { country: 'FR', currency: 'EUR', gross: 60_000 },
+    { country: 'ES', currency: 'EUR', gross: 55_000 },
+    { country: 'NL', currency: 'EUR', gross: 65_000 },
+    { country: 'IE', currency: 'EUR', gross: 70_000 },
+    { country: 'CH', currency: 'CHF', gross: 120_000 },
+  ];
+
+  let passedCount = 0;
+
+  for (const tc of FUTURE_YEAR_GATE_CASES) {
+    const grossMoney = createMoney(tc.gross, tc.currency);
+    const profile: TaxProfile = {
+      filingStatus: 'single',
+      dependentsCount: 0,
+      taxYear: futureYear,
+    };
+
+    const result = TaxRegistry.calculate(grossMoney, profile, {
+      countryId: tc.country,
+      regionId: tc.regionId,
+      taxYear: futureYear,
+    });
+
+    if (result.status !== 'TAX_CALCULATION_UNAVAILABLE') {
+      const actualNet = toMajor(result.netIncome);
+      console.error(
+        `FAIL FUTURE YEAR GATE [${tc.country} TY=${futureYear}]: ` +
+        `Expected status TAX_CALCULATION_UNAVAILABLE but got '${result.status}'. ` +
+        `Actual net was ${actualNet} ${tc.currency} — this means the adapter silently used ` +
+        `Tax Year ${LATEST_STATUTORY_TAX_YEAR} rules without disclosure. ` +
+        `Rule version returned: ${result.taxRuleVersion}`
+      );
+      throw new Error(
+        `Future year gate failure for ${tc.country} TY=${futureYear}: ` +
+        `adapter must not silently use ${LATEST_STATUTORY_TAX_YEAR} rules for an unverified year.`
+      );
+    }
+
+    // Also verify the warning contains the year and boundary information
+    const hasYearWarning = result.warnings && result.warnings.some(
+      (w) => w.includes(String(futureYear)) && w.includes(String(LATEST_STATUTORY_TAX_YEAR))
+    );
+    if (!hasYearWarning) {
+      throw new Error(
+        `Future year gate warning missing for ${tc.country} TY=${futureYear}: ` +
+        `result.warnings must reference both the requested year (${futureYear}) ` +
+        `and the latest statutory year (${LATEST_STATUTORY_TAX_YEAR}).`
+      );
+    }
+
+    console.log(`  PASS [${tc.country} TY=${futureYear}]: TAX_CALCULATION_UNAVAILABLE correctly returned.`);
+    passedCount++;
+  }
+
+  console.log(
+    `\nPASS: All ${passedCount} future-year gate vectors correctly returned TAX_CALCULATION_UNAVAILABLE ` +
+    `for Tax Year ${futureYear} across all 15 registered adapters. ` +
+    `No adapter silently used ${LATEST_STATUTORY_TAX_YEAR} rules.\n`
+  );
+}
+
+runFutureYearGateTests();
+

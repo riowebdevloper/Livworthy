@@ -1,3 +1,4 @@
+import { createMoney } from '../../lib/money';
 import { Money } from '../../types/money';
 import { TaxProfile, TaxResult } from '../../types/tax';
 import { AustraliaTaxAdapter } from './au/au-adapter';
@@ -17,6 +18,13 @@ import { UaeTaxAdapter } from './uae/uae-adapter';
 import { UkTaxAdapter } from './uk/uk-adapter';
 import { FallbackUnsupportedTaxAdapter } from './unsupported/unsupported-adapter';
 import { UsTaxAdapter } from './us/us-adapter';
+
+/**
+ * The most recent tax year for which verified statutory rules exist across all adapters.
+ * Any request for a year beyond this MUST return TAX_CALCULATION_UNAVAILABLE — never silently
+ * calculate using the latest known rules without disclosure.
+ */
+export const LATEST_STATUTORY_TAX_YEAR = 2025;
 
 export type TaxVerificationStatus = 'VERIFIED' | 'LIMITED' | 'PROVISIONAL' | 'UNSUPPORTED';
 
@@ -318,6 +326,43 @@ export class TaxRegistry {
     profile: TaxProfile,
     context: TaxContext
   ): TaxResult {
+    // Year-gate: if the requested year exceeds the latest verified statutory period, refuse to
+    // silently calculate with stale rules. Return TAX_CALCULATION_UNAVAILABLE with an explicit
+    // explanation and the applicable period boundary.
+    const requestedYear = profile.taxYear || context.taxYear || LATEST_STATUTORY_TAX_YEAR;
+    if (requestedYear > LATEST_STATUTORY_TAX_YEAR) {
+      const currency = grossCompensation.currency;
+      const zero = createMoney(0, currency);
+      return {
+        status: 'TAX_CALCULATION_UNAVAILABLE',
+        grossIncome: grossCompensation,
+        taxableIncome: zero,
+        deductions: zero,
+        federalTax: zero,
+        stateTax: zero,
+        localTax: zero,
+        socialContributions: zero,
+        totalTax: zero,
+        totalDeductionsAndTaxes: zero,
+        netIncome: grossCompensation,
+        monthlyNetIncome: createMoney(Math.round(grossCompensation.amountMinor / 12), currency),
+        biweeklyNetIncome: createMoney(Math.round(grossCompensation.amountMinor / 26), currency),
+        effectiveTaxRate: 0,
+        marginalTaxRate: 0,
+        components: [],
+        taxRuleVersion: `FUTURE-YEAR-UNVERIFIED-${requestedYear}`,
+        evidenceSourceIds: [],
+        warnings: [
+          `Tax Year ${requestedYear} statutory schedules have not yet been officially published or verified. ` +
+          `LivWorthy's latest verified statutory period is ${LATEST_STATUTORY_TAX_YEAR}. ` +
+          `In accordance with our data integrity charter, we do not fabricate forward-projected tax rules.`,
+        ],
+        unsupportedExplanation:
+          `Statutory tax rules for ${requestedYear} are not yet verified. ` +
+          `The most recent verified period is Tax Year ${LATEST_STATUTORY_TAX_YEAR} (${context.countryId || 'all supported jurisdictions'}). ` +
+          `Please recalculate using Tax Year ${LATEST_STATUTORY_TAX_YEAR} or earlier for an authoritative result.`,
+      };
+    }
     const adapter = this.getAdapter(context);
     return adapter.calculate(grossCompensation, profile, context);
   }
