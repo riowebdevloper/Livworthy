@@ -313,7 +313,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
 
     // 3. Test breadcrumb click actions: clicking New York City switches to calculator
     await breadcrumb.getByRole('button', { name: 'New York City', exact: true }).click();
-    await expect(page.locator('h1').first()).toContainText('What is your income really worth?');
+    await expect(page.locator('h1').first()).toContainText(/What is your (salary|income) really worth\?/);
 
     // Go back to guide via footer
     await footer.getByRole('button', { name: 'City Salary Guides' }).click();

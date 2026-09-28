@@ -66,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="btn-open-methodology"
               onClick={onOpenMethodology}
-              className="inline-flex items-center space-x-1.5 text-xs font-medium text-[#60706D] hover:text-[#102A2E] px-2.5 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors"
+              className="inline-flex items-center space-x-1.5 text-xs font-medium text-[#334D4A] hover:text-[#102A2E] px-2.5 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors"
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span>Methodology</span>
@@ -82,11 +82,11 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'salary-worth'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <Calculator className="w-3.5 h-3.5" />
-            <span>Salary Worth</span>
+            <span>Is My Salary Enough?</span>
           </button>
 
           <button
@@ -95,11 +95,11 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'salary-needed'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <DollarSign className="w-3.5 h-3.5" />
-            <span>Salary Needed</span>
+            <span>How Much Should I Earn?</span>
           </button>
 
           <button
@@ -108,7 +108,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'salary-after-tax'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <span>Salary After Tax</span>
@@ -120,11 +120,11 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'cost-of-living'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <Home className="w-3.5 h-3.5" />
-            <span>Cost of Living</span>
+            <span>Living Costs</span>
           </button>
 
           <button
@@ -133,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'compare'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <ArrowLeftRight className="w-3.5 h-3.5" />
@@ -146,11 +146,11 @@ export const Header: React.FC<HeaderProps> = ({
             className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 ${
               activeTab === 'job-offers'
                 ? 'bg-[#102A2E] text-white shadow-sm'
-                : 'bg-white text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+                : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
             <Scale className="w-3.5 h-3.5" />
-            <span>Job Offers</span>
+            <span>Compare Job Offers</span>
           </button>
 
           <button

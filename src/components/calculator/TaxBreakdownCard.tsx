@@ -17,14 +17,14 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
         <div className="flex items-start space-x-3">
           <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
           <div>
-            <h3 className="font-bold text-base text-[#102A2E]">Statutory Tax Schedules Under Verification</h3>
+            <h3 className="font-bold text-base text-[#102A2E]">Tax calculation not available yet</h3>
             <p className="text-xs text-[#60706D] mt-1 leading-relaxed">
               {tax.unsupportedExplanation ||
-                'Statutory tax calculation for this jurisdiction is currently being verified against official revenue authority tables.'}
+                'Official statutory tax schedules for this country are currently under verification against official tax authority tables. Living costs and currency conversions remain active.'}
             </p>
             <div className="mt-3 inline-flex items-center text-xs text-[#167D75] font-semibold">
               <ShieldCheck className="w-3.5 h-3.5 mr-1" />
-              LivWorthy Data Integrity Charter: We never substitute synthetic approximations for official tax schedules.
+              LivWorthy Integrity Charter: We never substitute synthetic guesses for verified statutory tax schedules.
             </div>
           </div>
         </div>

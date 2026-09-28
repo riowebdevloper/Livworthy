@@ -109,7 +109,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Salary Worth Calculator
+                  Is My Salary Enough?
                 </button>
               </li>
               <li>
@@ -121,7 +121,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Salary Needed (Reverse Solver)
+                  How Much Should I Earn?
                 </button>
               </li>
               <li>
@@ -133,7 +133,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Salary After Tax (Statutory Net)
+                  Salary After Tax
                 </button>
               </li>
               <li>
@@ -145,7 +145,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Household Cost of Living Index
+                  Living Costs
                 </button>
               </li>
               <li>
@@ -157,7 +157,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Location Comparison Engine
+                  Compare Cities
                 </button>
               </li>
               <li>
@@ -169,7 +169,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Job Offer & Relocation Value
+                  Compare Job Offers
                 </button>
               </li>
               <li>

@@ -106,8 +106,8 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
           </div>
           <p className="text-xs text-[#60706D] mt-0.5">
             {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
-              ? 'Statutory tax verification pending • Pre-tax gross displayed'
-              : `Verified with ${outcome.scenario.taxProfile.taxYear} statutory schedules`}
+              ? 'Tax calculation not available yet for this jurisdiction • Pre-tax gross displayed'
+              : `Statutory ${outcome.scenario.taxProfile.taxYear} schedule (${outcome.tax.taxRuleVersion || 'Official table'})`}
           </p>
         </div>
 
@@ -215,18 +215,18 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
           </div>
         </div>
 
-        {/* Step 4: MONEY REMAINING (THE HERO OUTCOME) */}
+        {/* Step 4: MONEY LEFT AFTER EXPENSES (THE HERO OUTCOME) */}
         <div className="bg-[#F7F8F5] rounded-xl p-4 sm:p-5 border border-[#DCE3E0]">
           <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 sm:gap-4">
             <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-2">
                 <Wallet className="w-5 h-5 text-[#167D75] shrink-0" />
                 <span className="text-sm font-bold uppercase tracking-wider text-[#102A2E]">
-                  Money Remaining (Disposable Income)
+                  Money Left After Expenses
                 </span>
               </div>
               <p className="text-xs text-[#60706D] mt-1 max-w-md leading-relaxed">
-                Uncommitted income available for personal savings, emergency fund, investments, or travel.
+                Money you actually keep each {isMonthly ? 'month' : 'year'} after taxes and estimated living costs — available for savings, investments, or discretionary spending.
               </p>
             </div>
 
@@ -246,6 +246,20 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
                 )}
               </div>
             </div>
+          </div>
+
+          {/* Potential Monthly Savings Callout */}
+          <div className="flex flex-wrap items-center justify-between gap-2 p-3 mt-4 rounded-lg bg-[#EBF6F3] border border-[#167D75]/20 text-xs">
+            <div className="flex items-center space-x-2">
+              <PiggyBank className="w-4 h-4 text-[#167D75] shrink-0" />
+              <span className="font-bold text-[#0D625B]">Potential Monthly Savings:</span>
+              <span className="font-extrabold text-[#102A2E] text-sm">
+                {formatMoney(outcome.savingsCapacityMonthly, { hideDecimals: true })}/mo
+              </span>
+            </div>
+            <span className="text-[#0D625B] font-medium">
+              ({outcome.savingsRatePercentage}% of gross income)
+            </span>
           </div>
 
           {/* Visual Income Allocation Stack */}

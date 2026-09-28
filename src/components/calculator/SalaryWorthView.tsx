@@ -1,5 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Sparkles, Building2, MapPin, SlidersHorizontal, ShieldCheck, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
+import {
+  ArrowRight,
+  Sparkles,
+  Building2,
+  MapPin,
+  SlidersHorizontal,
+  ShieldCheck,
+  Loader2,
+  AlertCircle,
+  RefreshCw,
+  Calculator,
+  Home,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 import { CITIES } from '../../data/locations';
 import { PRESET_LIST } from '../../data/presets';
 import { calculateSalaryWorth } from '../../api/calculators';
@@ -134,9 +149,28 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
     });
   };
 
+  const [isAssumptionsOpen, setIsAssumptionsOpen] = useState(false);
+  const [showTaxBreakdown, setShowTaxBreakdown] = useState(false);
+  const [showColBreakdown, setShowColBreakdown] = useState(false);
+  const [showMethodology, setShowMethodology] = useState(false);
+  const [rentInputDraft, setRentInputDraft] = useState<string>(
+    actualRentMajor ? actualRentMajor.toString() : ''
+  );
+
+  const handleTriggerCalculate = () => {
+    onUpdateScenario({
+      ...scenario,
+      location: currentCity,
+      compensation: {
+        ...scenario.compensation,
+        baseSalary: createMoney(salaryInputMajor, currency),
+      },
+    });
+  };
+
   return (
     <div id="salary-worth-view" className="space-y-8">
-      {/* 28. Hero Section: Calculator is the Hero */}
+      {/* Hero Section: Calculator is the Hero */}
       <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
         {isCalculating && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
@@ -150,10 +184,13 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
             Global Income & Living Intelligence
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            What is your income really worth?
+            What is your salary really worth?
           </h1>
-          <p className="text-xs sm:text-sm text-[#60706D] mt-2 leading-relaxed">
-            LivWorthy estimates what actually remains after statutory income taxes, mandatory social contributions, and verified local living costs.
+          <p className="text-sm sm:text-base text-[#60706D] mt-2 leading-relaxed">
+            Enter your salary and city to see how much you could take home, spend and save.
+          </p>
+          <p className="text-xs text-[#167D75] mt-1 font-medium">
+            See if your salary covers living costs and allows you to save in your chosen city.
           </p>
         </div>
 
@@ -176,6 +213,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
                   onClick={() => {
                     setSalaryInputMajor(toMajor(p.scenario.compensation.baseSalary));
                     onUpdateRentOverride(undefined);
+                    setRentInputDraft('');
                     onUpdateScenario(p.scenario);
                   }}
                   className={`text-xs px-2.5 py-1 rounded-full whitespace-nowrap transition-colors border ${
@@ -191,22 +229,11 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
           </div>
         </div>
 
-        {/* Hero Inputs */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
-          <div>
-            <CurrencyInput
-              id="hero-annual-salary-input"
-              label="Annual Gross Salary"
-              valueMajor={salaryInputMajor}
-              currency={currency}
-              onChangeMajor={handleSalaryChange}
-              helperText="Pre-tax compensation (base salary)."
-            />
-          </div>
-
-          <div>
+        {/* Primary Inputs Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
+          <div className="sm:col-span-5">
             <label htmlFor="hero-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              Location
+              1. Choose City / Location
             </label>
             <div className="relative">
               <select
@@ -214,7 +241,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
                 aria-label="Location"
                 value={currentCity.id}
                 onChange={(e) => handleCityChange(e.target.value)}
-                className="block w-full rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] px-3 py-2.5 sm:py-3 text-base sm:text-lg font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"
+                className="block w-full rounded-xl border border-[#DCE3E0] bg-[#FFFFFF] px-3.5 py-3 text-base sm:text-lg font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"
               >
                 {Object.values(CITIES).map((c) => (
                   <option key={c.id} value={c.id}>
@@ -227,20 +254,122 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
               Statutory tax jurisdiction: {currentCity.taxJurisdictionId}
             </p>
           </div>
+
+          <div className="sm:col-span-5">
+            <CurrencyInput
+              id="hero-annual-salary-input"
+              label="2. Annual Salary"
+              valueMajor={salaryInputMajor}
+              currency={currency}
+              onChangeMajor={handleSalaryChange}
+              helperText="Pre-tax compensation (base salary)."
+            />
+          </div>
+
+          <div className="sm:col-span-2 flex flex-col justify-end">
+            <button
+              id="btn-calculate"
+              type="button"
+              onClick={handleTriggerCalculate}
+              className="w-full h-[52px] bg-[#102A2E] hover:bg-[#167D75] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center space-x-1.5 cursor-pointer"
+            >
+              <Calculator className="w-4 h-4" />
+              <span>Calculate</span>
+            </button>
+          </div>
         </div>
 
-        {/* 31. Editable Assumption Chips */}
-        <div className="mt-4 pt-4 border-t border-[#F7F8F5]">
-          <span className="text-xs font-semibold text-[#60706D] block mb-1">
-            Household Profile Assumptions:
-          </span>
-          <AssumptionPills
-            household={scenario.household}
-            actualRentOverridden={actualRentMajor !== undefined}
-            actualRentFormatted={actualRentMajor ? formatMoney(createMoney(actualRentMajor, currency), { hideDecimals: true }) : undefined}
-            onOpenCustomizer={onOpenCustomizer}
-            onQuickPresetChange={handleQuickPresetChange}
-          />
+        {/* Optional Expandable Controls: Advanced Options */}
+        <div className="mt-5 pt-4 border-t border-[#F7F8F5]">
+          <button
+            id="btn-toggle-assumptions"
+            type="button"
+            onClick={() => setIsAssumptionsOpen(!isAssumptionsOpen)}
+            className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#167D75] hover:text-[#0D524D] transition-colors cursor-pointer"
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5" />
+            <span>
+              {isAssumptionsOpen
+                ? 'Hide optional assumptions'
+                : 'Optional assumptions (household size, rent, tax profile, filing status)'}
+            </span>
+            {isAssumptionsOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          </button>
+
+          {isAssumptionsOpen && (
+            <div className="mt-3 p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0] space-y-4">
+              <div>
+                <span className="text-xs font-semibold text-[#102A2E] block mb-1.5">
+                  Household Size & Presets:
+                </span>
+                <AssumptionPills
+                  household={scenario.household}
+                  actualRentOverridden={actualRentMajor !== undefined}
+                  actualRentFormatted={
+                    actualRentMajor
+                      ? formatMoney(createMoney(actualRentMajor, currency), { hideDecimals: true })
+                      : undefined
+                  }
+                  onOpenCustomizer={onOpenCustomizer}
+                  onQuickPresetChange={handleQuickPresetChange}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-[#DCE3E0]/70">
+                <div>
+                  <label htmlFor="hero-custom-rent-input" className="block text-xs font-semibold text-[#102A2E] mb-1">
+                    Custom Monthly Rent Override (Optional)
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      id="hero-custom-rent-input"
+                      type="number"
+                      placeholder="e.g. 2500"
+                      value={rentInputDraft}
+                      onChange={(e) => setRentInputDraft(e.target.value)}
+                      className="w-full rounded-lg border border-[#DCE3E0] bg-white px-3 py-2 text-xs font-medium text-[#102A2E]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const num = parseFloat(rentInputDraft);
+                        if (!isNaN(num) && num > 0) {
+                          onUpdateRentOverride(num);
+                        } else {
+                          onUpdateRentOverride(undefined);
+                        }
+                      }}
+                      className="px-3 py-2 text-xs font-bold rounded-lg bg-[#102A2E] text-white hover:bg-[#167D75] shrink-0"
+                    >
+                      Apply
+                    </button>
+                    {actualRentMajor !== undefined && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRentInputDraft('');
+                          onUpdateRentOverride(undefined);
+                        }}
+                        className="px-2 py-2 text-xs font-medium text-red-600 hover:underline shrink-0"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-end">
+                  <button
+                    type="button"
+                    onClick={onOpenCustomizer}
+                    className="text-xs font-semibold text-[#167D75] hover:text-[#0D524D] hover:underline flex items-center space-x-1"
+                  >
+                    <span>Open full tax profile & filing status modeler →</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -261,7 +390,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
         </div>
       )}
 
-      {/* 29. Primary Result Summary Card */}
+      {/* Primary Result Summary Card */}
       {outcome && (
         <>
           <ResultSummaryCard
@@ -271,16 +400,123 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
             onOpenEvidence={onOpenEvidence}
           />
 
-          {/* 30. Detailed Breakdowns: Taxes & Living Costs */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <TaxBreakdownCard tax={outcome.tax} onOpenEvidence={onOpenEvidence} />
-            <LivingCostBreakdownCard
-              col={outcome.costOfLiving}
-              actualRentMajor={actualRentMajor}
-              onOverrideRent={onUpdateRentOverride}
-              onOpenCustomizer={onOpenCustomizer}
-            />
+          {/* Progressive Disclosure Action Bar */}
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-5 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#60706D] block">
+                  Detailed Financial Intelligence
+                </span>
+                <p className="text-xs text-[#60706D] mt-0.5">
+                  Explore statutory tax brackets, itemized living costs, and methodology
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  id="btn-toggle-tax-breakdown"
+                  type="button"
+                  onClick={() => setShowTaxBreakdown(!showTaxBreakdown)}
+                  className={`inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
+                    showTaxBreakdown
+                      ? 'bg-[#102A2E] text-white border-[#102A2E]'
+                      : 'border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]'
+                  }`}
+                >
+                  <Calculator className="w-3.5 h-3.5" />
+                  <span>{showTaxBreakdown ? 'Hide tax breakdown' : 'See tax breakdown'}</span>
+                  {showTaxBreakdown ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                </button>
+
+                <button
+                  id="btn-toggle-col-breakdown"
+                  type="button"
+                  onClick={() => setShowColBreakdown(!showColBreakdown)}
+                  className={`inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
+                    showColBreakdown
+                      ? 'bg-[#102A2E] text-white border-[#102A2E]'
+                      : 'border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]'
+                  }`}
+                >
+                  <Home className="w-3.5 h-3.5" />
+                  <span>{showColBreakdown ? 'Hide living-cost breakdown' : 'See living-cost breakdown'}</span>
+                  {showColBreakdown ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                </button>
+
+                <button
+                  id="btn-toggle-methodology-summary"
+                  type="button"
+                  onClick={() => setShowMethodology(!showMethodology)}
+                  className={`inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
+                    showMethodology
+                      ? 'bg-[#102A2E] text-white border-[#102A2E]'
+                      : 'border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]'
+                  }`}
+                >
+                  <HelpCircle className="w-3.5 h-3.5" />
+                  <span>How was this calculated?</span>
+                  {showMethodology ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                </button>
+
+                <button
+                  id="btn-view-data-sources"
+                  type="button"
+                  onClick={onOpenEvidence}
+                  className="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#167D75] hover:bg-[#DDF2EC] transition-colors cursor-pointer"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>View data sources</span>
+                </button>
+
+                <button
+                  id="btn-open-customizer"
+                  type="button"
+                  onClick={onOpenCustomizer}
+                  className="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5] transition-colors cursor-pointer"
+                >
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  <span>Customize Assumptions</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Expandable "How was this calculated?" explanation box */}
+            {showMethodology && (
+              <div className="mt-4 p-4 rounded-xl bg-[#F7F8F5] border border-[#DCE3E0] text-xs space-y-2 text-[#60706D]">
+                <h4 className="font-bold text-sm text-[#102A2E]">LivWorthy Calculation Pipeline</h4>
+                <p>
+                  1. <strong>Gross Salary:</strong> Stated pre-tax cash compensation.
+                </p>
+                <p>
+                  2. <strong>Statutory Deductions & Taxes:</strong> Applied deterministically using verified government tax authority schedules (federal, state/provincial, local, and mandatory social insurance).
+                </p>
+                <p>
+                  3. <strong>Take-Home Pay:</strong> Stated gross minus exact statutory deductions and taxes.
+                </p>
+                <p>
+                  4. <strong>Estimated Living Costs:</strong> Benchmarked for your household composition (rent, utilities, groceries, healthcare, transit) using official metropolitan statistics.
+                </p>
+                <p>
+                  5. <strong>Money Left After Expenses:</strong> Take-home pay minus estimated living costs. This represents your spendable buffer for savings, investments, or travel.
+                </p>
+              </div>
+            )}
           </div>
+
+          {/* Detailed Breakdowns when expanded */}
+          {(showTaxBreakdown || showColBreakdown) && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {showTaxBreakdown && <TaxBreakdownCard tax={outcome.tax} onOpenEvidence={onOpenEvidence} />}
+              {showColBreakdown && (
+                <LivingCostBreakdownCard
+                  col={outcome.costOfLiving}
+                  actualRentMajor={actualRentMajor}
+                  onOverrideRent={onUpdateRentOverride}
+                  onOpenCustomizer={onOpenCustomizer}
+                />
+              )}
+            </div>
+          )}
         </>
       )}
     </div>

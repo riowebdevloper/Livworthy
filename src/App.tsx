@@ -24,7 +24,27 @@ import { ComparisonResult } from './engines/calculator-core/compare';
 import { SalaryNeededResult } from './engines/calculator-core/salary-needed';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('salary-worth');
+  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab') as ActiveTab | null;
+      if (
+        tabParam &&
+        [
+          'salary-worth',
+          'salary-needed',
+          'salary-after-tax',
+          'cost-of-living',
+          'compare',
+          'job-offers',
+          'nyc-100k-guide',
+        ].includes(tabParam)
+      ) {
+        return tabParam;
+      }
+    }
+    return 'salary-worth';
+  });
   const [selectedGuideSlug, setSelectedGuideSlug] = useState<string>('nyc-100k');
 
   // Core Scenario state

@@ -6968,7 +6968,7 @@ function configureApp() {
   app.get("/api/health/live", (req, res) => {
     res.status(200).send("OK");
   });
-  app.get("/api/health/ready", async (req, res) => {
+  const handleReadinessCheck = async (req, res) => {
     const isProduction = process.env.NODE_ENV === "production";
     let dbStatus = "connected";
     let cacheStatus = "connected";
@@ -7025,7 +7025,9 @@ function configureApp() {
         capabilities
       });
     }
-  });
+  };
+  app.get("/api/health/ready", handleReadinessCheck);
+  app.get("/api/readiness", handleReadinessCheck);
   app.get("/api/health/diagnostics", async (req, res) => {
     const memory = process.memoryUsage();
     const vitalsSummary = await dbService.getWebVitalsSummary();
@@ -7233,6 +7235,17 @@ function configureApp() {
       taxRuleVersion: sample.taxRuleVersion,
       components: sample.components,
       evidenceSources: sample.evidenceSourceIds.map((id) => EVIDENCE_REGISTRY[id]).filter(Boolean)
+    });
+  });
+  app.get("/api/tax/registry", rateLimit(60, 60), (req, res) => {
+    const supportedCountries = TaxRegistry.getSupportedCountryIds();
+    const commercialMarkets = TaxRegistry.getCommercialMarketIds();
+    res.json({
+      totalSupportedCountries: supportedCountries.length,
+      supportedCountryIds: supportedCountries,
+      commercialMarketCount: commercialMarkets.length,
+      commercialMarketIds: commercialMarkets,
+      adapters: commercialMarkets.map((id) => TaxRegistry.getCountrySupport(id))
     });
   });
   app.get("/api/fx/latest", rateLimit(60, 60), async (req, res) => {
