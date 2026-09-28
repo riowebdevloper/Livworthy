@@ -1,11 +1,21 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', () => {
+  const pageErrors: Error[] = [];
+
   test.beforeEach(async ({ page }) => {
-    // Catch any unexpected uncaught exceptions or console errors
+    pageErrors.length = 0;
+    // Catch any unexpected uncaught exceptions and record for test failure
     page.on('pageerror', (err) => {
-      console.error('Browser uncaught pageerror:', err.message);
+      console.error('Browser uncaught pageerror stack:', err.stack || err.message);
+      pageErrors.push(err);
     });
+  });
+
+  test.afterEach(async () => {
+    if (pageErrors.length > 0) {
+      throw new Error(`Uncaught browser page errors detected: ${pageErrors.map((e) => e.message).join('; ')}`);
+    }
   });
 
   test('1. Homepage loads official branding, title, and interactive navigation tabs', async ({ page }) => {
@@ -262,14 +272,14 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
 
     const verified = cData.countries.filter((c: any) => c.verificationStatus === 'VERIFIED');
     const limited = cData.countries.filter((c: any) => c.verificationStatus === 'LIMITED');
-    const provisional = cData.countries.filter((c: any) => c.verificationStatus === 'PROVISIONAL');
+    const unsupported = cData.countries.filter((c: any) => c.verificationStatus === 'UNSUPPORTED');
     expect(verified.length).toBe(10);
-    expect(limited.length).toBe(25);
-    expect(provisional.length).toBe(4);
+    expect(limited.length).toBe(5);
+    expect(unsupported.length).toBe(24);
     expect(cData.countries.length).toBe(39);
 
-    // Verify tax calculate endpoint
-    const taxRes = await request.post('/api/tax/estimate', {
+    // 1. Verify historical 2024 tax calculate endpoint with explicit taxYear
+    const historicalRes = await request.post('/api/tax/estimate', {
       data: {
         grossSalaryMinor: 10000000,
         currency: 'USD',
@@ -277,12 +287,46 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
         regionId: 'NY',
         cityId: 'nyc',
         taxJurisdictionId: 'US-FED-NY-NYC',
+        taxYear: 2024,
       },
     });
-    expect(taxRes.status()).toBe(200);
-    const taxData = await taxRes.json();
-    expect(taxData.success).toBe(true);
-    expect(taxData.data.netIncome.amountMinor).toBe(7011616); // $70,116.16
+    expect(historicalRes.status()).toBe(200);
+    const historicalData = await historicalRes.json();
+    expect(historicalData.success).toBe(true);
+    expect(historicalData.data.taxRuleVersion).toBe('US-FED-NY-NYC-2024.1');
+    expect(historicalData.data.netIncome.amountMinor).toBe(7011616); // $70,116.16 historical 2024 NYC
+
+    // 2. Verify current 2025 tax calculate endpoint with current statutory schedules
+    const currentRes = await request.post('/api/tax/estimate', {
+      data: {
+        grossSalaryMinor: 10000000,
+        currency: 'USD',
+        countryId: 'US',
+        regionId: 'NY',
+        cityId: 'nyc',
+        taxJurisdictionId: 'US-FED-NY-NYC',
+        taxYear: 2025,
+      },
+    });
+    expect(currentRes.status()).toBe(200);
+    const currentData = await currentRes.json();
+    expect(currentData.success).toBe(true);
+    expect(currentData.data.taxRuleVersion).toBe('US-FED-NY-NYC-2025.1');
+    expect(currentData.data.netIncome.amountMinor).toBe(7034316); // $70,343.16 under 2025 IRS Rev. Proc. 2024-40
+
+    // 3. Verify unsupported country returns TAX_CALCULATION_UNAVAILABLE
+    const unsupportedRes = await request.post('/api/tax/estimate', {
+      data: {
+        grossSalaryMinor: 7500000,
+        currency: 'JPY',
+        countryId: 'JP',
+        cityId: 'tokyo',
+        taxYear: 2025,
+      },
+    });
+    expect(unsupportedRes.status()).toBe(200);
+    const unsupportedData = await unsupportedRes.json();
+    expect(unsupportedData.data.status).toBe('TAX_CALCULATION_UNAVAILABLE');
   });
 
   test('12. FOOTER HEADLINES & BREADCRUMB INTERLINKING: Headlines clickable, breadcrumbs clickable, country/city guides functional', async ({ page }) => {

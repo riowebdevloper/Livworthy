@@ -407,34 +407,34 @@ var COUNTRIES = {
   SG: { id: "SG", name: "Singapore", defaultCurrency: "SGD", verificationStatus: "VERIFIED" },
   NZ: { id: "NZ", name: "New Zealand", defaultCurrency: "NZD", verificationStatus: "VERIFIED", notes: "Inland Revenue (IRD) brackets and ACC earner levy verified." },
   // PRIORITY B (15)
-  JP: { id: "JP", name: "Japan", defaultCurrency: "JPY", verificationStatus: "LIMITED", notes: "National progressive income tax verified; resident surtax pending." },
-  KR: { id: "KR", name: "South Korea", defaultCurrency: "KRW", verificationStatus: "LIMITED", notes: "National income tax schedules verified; local resident surtax pending." },
+  JP: { id: "JP", name: "Japan", defaultCurrency: "JPY", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  KR: { id: "KR", name: "South Korea", defaultCurrency: "KRW", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
   SA: { id: "SA", name: "Saudi Arabia", defaultCurrency: "SAR", verificationStatus: "VERIFIED" },
   QA: { id: "QA", name: "Qatar", defaultCurrency: "QAR", verificationStatus: "VERIFIED" },
-  NO: { id: "NO", name: "Norway", defaultCurrency: "NOK", verificationStatus: "LIMITED", notes: "General income tax and bracket tax verified; municipal variations pending." },
-  SE: { id: "SE", name: "Sweden", defaultCurrency: "SEK", verificationStatus: "LIMITED", notes: "National income tax and basic municipal rate verified." },
-  DK: { id: "DK", name: "Denmark", defaultCurrency: "DKK", verificationStatus: "LIMITED", notes: "Bottom/top tax and labor market contributions (AM-bidrag) verified." },
-  FI: { id: "FI", name: "Finland", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "State progressive scale and municipal average rate verified." },
-  AT: { id: "AT", name: "Austria", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "EStG progressive tax brackets verified." },
-  BE: { id: "BE", name: "Belgium", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "Federal personal income tax brackets verified; communal surcharge pending." },
-  ES: { id: "ES", name: "Spain", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "IRPF regional schedules verified; autonomous community variations pending." },
-  IT: { id: "IT", name: "Italy", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "IRPEF national brackets verified; regional/municipal surcharges pending." },
-  IL: { id: "IL", name: "Israel", defaultCurrency: "ILS", verificationStatus: "LIMITED", notes: "Income tax brackets and standard credit points verified." },
-  HK: { id: "HK", name: "Hong Kong", defaultCurrency: "HKD", verificationStatus: "LIMITED", notes: "Salaries tax standard vs progressive rate verified." },
-  LU: { id: "LU", name: "Luxembourg", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "Class 1 progressive rate scale verified." },
+  NO: { id: "NO", name: "Norway", defaultCurrency: "NOK", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  SE: { id: "SE", name: "Sweden", defaultCurrency: "SEK", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  DK: { id: "DK", name: "Denmark", defaultCurrency: "DKK", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  FI: { id: "FI", name: "Finland", defaultCurrency: "EUR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  AT: { id: "AT", name: "Austria", defaultCurrency: "EUR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  BE: { id: "BE", name: "Belgium", defaultCurrency: "EUR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  ES: { id: "ES", name: "Spain", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "IRPF national and regional scales verified; autonomous community variations limited." },
+  IT: { id: "IT", name: "Italy", defaultCurrency: "EUR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  IL: { id: "IL", name: "Israel", defaultCurrency: "ILS", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  HK: { id: "HK", name: "Hong Kong", defaultCurrency: "HKD", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  LU: { id: "LU", name: "Luxembourg", defaultCurrency: "EUR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
   // PRIORITY C (12)
-  IN: { id: "IN", name: "India", defaultCurrency: "INR", verificationStatus: "LIMITED", notes: "New Tax Regime (Sec 115BAC) verified; standard deduction included." },
-  BR: { id: "BR", name: "Brazil", defaultCurrency: "BRL", verificationStatus: "LIMITED", notes: "IRPF progressive monthly brackets and INSS contribution verified." },
-  MX: { id: "MX", name: "Mexico", defaultCurrency: "MXN", verificationStatus: "LIMITED", notes: "ISR progressive tariff verified." },
-  ID: { id: "ID", name: "Indonesia", defaultCurrency: "IDR", verificationStatus: "PROVISIONAL", notes: "PPh 21 progressive scale under research." },
-  MY: { id: "MY", name: "Malaysia", defaultCurrency: "MYR", verificationStatus: "LIMITED", notes: "Resident progressive scale and EPF employee rate verified." },
-  PH: { id: "PH", name: "Philippines", defaultCurrency: "PHP", verificationStatus: "PROVISIONAL", notes: "TRAIN law progressive tax brackets under research." },
-  ZA: { id: "ZA", name: "South Africa", defaultCurrency: "ZAR", verificationStatus: "LIMITED", notes: "SARS progressive income tax and primary rebate verified." },
-  PL: { id: "PL", name: "Poland", defaultCurrency: "PLN", verificationStatus: "LIMITED", notes: "Skala podatkowa (12%/32%) and kwota wolna verified." },
-  PT: { id: "PT", name: "Portugal", defaultCurrency: "EUR", verificationStatus: "LIMITED", notes: "IRS progressive brackets verified; solidarity surcharge pending." },
-  CZ: { id: "CZ", name: "Czechia", defaultCurrency: "CZK", verificationStatus: "LIMITED", notes: "Flat progressive (15%/23%) and basic tax credit verified." },
-  TH: { id: "TH", name: "Thailand", defaultCurrency: "THB", verificationStatus: "PROVISIONAL", notes: "Personal income tax progressive schedule under research." },
-  VN: { id: "VN", name: "Vietnam", defaultCurrency: "VND", verificationStatus: "PROVISIONAL", notes: "Personal income tax progressive schedule under research." }
+  IN: { id: "IN", name: "India", defaultCurrency: "INR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  BR: { id: "BR", name: "Brazil", defaultCurrency: "BRL", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  MX: { id: "MX", name: "Mexico", defaultCurrency: "MXN", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  ID: { id: "ID", name: "Indonesia", defaultCurrency: "IDR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  MY: { id: "MY", name: "Malaysia", defaultCurrency: "MYR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  PH: { id: "PH", name: "Philippines", defaultCurrency: "PHP", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  ZA: { id: "ZA", name: "South Africa", defaultCurrency: "ZAR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  PL: { id: "PL", name: "Poland", defaultCurrency: "PLN", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  PT: { id: "PT", name: "Portugal", defaultCurrency: "EUR", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  CZ: { id: "CZ", name: "Czechia", defaultCurrency: "CZK", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  TH: { id: "TH", name: "Thailand", defaultCurrency: "THB", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." },
+  VN: { id: "VN", name: "Vietnam", defaultCurrency: "VND", verificationStatus: "UNSUPPORTED", notes: "Commercial market supported for cost-of-living; dedicated statutory tax engine under verification." }
 };
 var REGIONS = {
   // US States
@@ -943,7 +943,7 @@ var CITIES = {
     taxJurisdictionId: "tax-nz-federal",
     colIndexBase100NYC: 72.9,
     metroAreaName: "Auckland Region",
-    verificationStatus: "LIMITED"
+    verificationStatus: "VERIFIED"
   },
   // --- Japan ---
   tokyo: {
@@ -955,7 +955,7 @@ var CITIES = {
     taxJurisdictionId: "tax-jp-federal",
     colIndexBase100NYC: 68.4,
     metroAreaName: "Greater Tokyo Area",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- South Korea ---
   seoul: {
@@ -967,7 +967,7 @@ var CITIES = {
     taxJurisdictionId: "tax-kr-federal",
     colIndexBase100NYC: 65.2,
     metroAreaName: "Seoul Capital Area",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Norway ---
   oslo: {
@@ -979,7 +979,7 @@ var CITIES = {
     taxJurisdictionId: "tax-no-federal",
     colIndexBase100NYC: 84.1,
     metroAreaName: "Greater Oslo Region",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Sweden ---
   stockholm: {
@@ -991,7 +991,7 @@ var CITIES = {
     taxJurisdictionId: "tax-se-federal",
     colIndexBase100NYC: 72.8,
     metroAreaName: "Metropolitan Stockholm",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Denmark ---
   copenhagen: {
@@ -1003,7 +1003,7 @@ var CITIES = {
     taxJurisdictionId: "tax-dk-federal",
     colIndexBase100NYC: 82.5,
     metroAreaName: "Hovedstadsomr\xE5det",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Finland ---
   helsinki: {
@@ -1015,7 +1015,7 @@ var CITIES = {
     taxJurisdictionId: "tax-fi-federal",
     colIndexBase100NYC: 71.9,
     metroAreaName: "Helsinki Metropolitan Area",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Austria ---
   vienna: {
@@ -1027,7 +1027,7 @@ var CITIES = {
     taxJurisdictionId: "tax-at-federal",
     colIndexBase100NYC: 69.4,
     metroAreaName: "Vienna Region",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Belgium ---
   brussels: {
@@ -1039,7 +1039,7 @@ var CITIES = {
     taxJurisdictionId: "tax-be-federal",
     colIndexBase100NYC: 73.1,
     metroAreaName: "Brussels-Capital",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Italy ---
   rome: {
@@ -1051,7 +1051,7 @@ var CITIES = {
     taxJurisdictionId: "tax-it-federal",
     colIndexBase100NYC: 68.2,
     metroAreaName: "Metropolitan City of Rome",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   milan: {
     id: "milan",
@@ -1062,7 +1062,7 @@ var CITIES = {
     taxJurisdictionId: "tax-it-federal",
     colIndexBase100NYC: 74.8,
     metroAreaName: "Milan Metropolitan Area",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Israel ---
   "tel-aviv": {
@@ -1074,7 +1074,7 @@ var CITIES = {
     taxJurisdictionId: "tax-il-federal",
     colIndexBase100NYC: 86.2,
     metroAreaName: "Gush Dan Metropolitan Area",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Hong Kong ---
   "hong-kong": {
@@ -1086,7 +1086,7 @@ var CITIES = {
     taxJurisdictionId: "tax-hk-federal",
     colIndexBase100NYC: 79.5,
     metroAreaName: "Hong Kong SAR",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Luxembourg ---
   luxembourg: {
@@ -1098,7 +1098,7 @@ var CITIES = {
     taxJurisdictionId: "tax-lu-federal",
     colIndexBase100NYC: 78.2,
     metroAreaName: "Canton of Luxembourg",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- India ---
   mumbai: {
@@ -1110,7 +1110,7 @@ var CITIES = {
     taxJurisdictionId: "tax-in-federal",
     colIndexBase100NYC: 27.5,
     metroAreaName: "Mumbai Metropolitan Region",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   bengaluru: {
     id: "bengaluru",
@@ -1121,7 +1121,7 @@ var CITIES = {
     taxJurisdictionId: "tax-in-federal",
     colIndexBase100NYC: 24.8,
     metroAreaName: "Bangalore Urban",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Brazil ---
   "sao-paulo": {
@@ -1133,7 +1133,7 @@ var CITIES = {
     taxJurisdictionId: "tax-br-federal",
     colIndexBase100NYC: 38.2,
     metroAreaName: "Greater S\xE3o Paulo",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Mexico ---
   "mexico-city": {
@@ -1145,7 +1145,7 @@ var CITIES = {
     taxJurisdictionId: "tax-mx-federal",
     colIndexBase100NYC: 42.1,
     metroAreaName: "Greater Mexico City",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Indonesia ---
   jakarta: {
@@ -1157,7 +1157,7 @@ var CITIES = {
     taxJurisdictionId: "tax-id-federal",
     colIndexBase100NYC: 32.4,
     metroAreaName: "Jabodetabek",
-    verificationStatus: "PROVISIONAL"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Malaysia ---
   "kuala-lumpur": {
@@ -1169,7 +1169,7 @@ var CITIES = {
     taxJurisdictionId: "tax-my-federal",
     colIndexBase100NYC: 34.6,
     metroAreaName: "Greater Kuala Lumpur (Klang Valley)",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Philippines ---
   manila: {
@@ -1181,7 +1181,7 @@ var CITIES = {
     taxJurisdictionId: "tax-ph-federal",
     colIndexBase100NYC: 31.2,
     metroAreaName: "Metro Manila",
-    verificationStatus: "PROVISIONAL"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- South Africa ---
   johannesburg: {
@@ -1193,7 +1193,7 @@ var CITIES = {
     taxJurisdictionId: "tax-za-federal",
     colIndexBase100NYC: 36.8,
     metroAreaName: "Greater Johannesburg",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   "cape-town": {
     id: "cape-town",
@@ -1204,7 +1204,7 @@ var CITIES = {
     taxJurisdictionId: "tax-za-federal",
     colIndexBase100NYC: 35.4,
     metroAreaName: "City of Cape Town",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Poland ---
   warsaw: {
@@ -1216,7 +1216,7 @@ var CITIES = {
     taxJurisdictionId: "tax-pl-federal",
     colIndexBase100NYC: 44.5,
     metroAreaName: "Warsaw Metropolitan Area",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Portugal ---
   lisbon: {
@@ -1228,7 +1228,7 @@ var CITIES = {
     taxJurisdictionId: "tax-pt-federal",
     colIndexBase100NYC: 52.3,
     metroAreaName: "Lisbon Metropolitan Area",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Czechia ---
   prague: {
@@ -1240,7 +1240,7 @@ var CITIES = {
     taxJurisdictionId: "tax-cz-federal",
     colIndexBase100NYC: 48.7,
     metroAreaName: "Prague Metropolitan Area",
-    verificationStatus: "LIMITED"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Thailand ---
   bangkok: {
@@ -1252,7 +1252,7 @@ var CITIES = {
     taxJurisdictionId: "tax-th-federal",
     colIndexBase100NYC: 39.8,
     metroAreaName: "Bangkok Metropolitan Region",
-    verificationStatus: "PROVISIONAL"
+    verificationStatus: "UNSUPPORTED"
   },
   // --- Vietnam ---
   "ho-chi-minh-city": {
@@ -1264,7 +1264,7 @@ var CITIES = {
     taxJurisdictionId: "tax-vn-federal",
     colIndexBase100NYC: 29.4,
     metroAreaName: "Ho Chi Minh Metropolitan Area",
-    verificationStatus: "PROVISIONAL"
+    verificationStatus: "UNSUPPORTED"
   }
 };
 
@@ -2166,6 +2166,259 @@ var EVIDENCE_SOURCES = {
     verifiedAt: "2025-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Valencia metropolitan rental and living cost basket."
+  },
+  // --- 2025 STATUTORY EVIDENCE SOURCES ---
+  "us-irs-tax-2025": {
+    id: "us-irs-tax-2025",
+    organization: "Internal Revenue Service (IRS)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "IRS Rev. Proc. 2024-40 (2025 Inflation-adjusted Tax Brackets & Standard Deductions)",
+    url: "https://www.irs.gov/pub/irs-drop/rp-24-40.pdf",
+    jurisdiction: "United States (Federal)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-11-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-10",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Official 2025 statutory 7-bracket schedule (10%, 12%, 22%, 24%, 32%, 35%, 37%), Standard Deduction $15,000 single / $30,000 MFJ / $22,500 HoH."
+  },
+  "us-ssa-fica-2025": {
+    id: "us-ssa-fica-2025",
+    organization: "Social Security Administration (SSA)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Social Security Administration Press Release: 2025 Social Security Changes (OASDI Wage Base $176,100)",
+    url: "https://www.ssa.gov/news/press/releases/2024/#10-2024-1",
+    jurisdiction: "United States (Federal FICA)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-10-15",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-10",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "OASDI 6.2% on wages up to $176,100 maximum annual wage base; Medicare 1.45% uncapped + 0.9% Additional Medicare Tax above $200k."
+  },
+  "us-nys-tax-2025": {
+    id: "us-nys-tax-2025",
+    organization: "New York State Department of Taxation and Finance",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Form IT-201-I Instructions for Form IT-201 (NYS Tax Law \xA7 601 / \xA7 614)",
+    url: "https://www.tax.ny.gov/forms/income_cur_forms.htm",
+    jurisdiction: "New York State",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-12-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-12",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "NYS graduated income tax rates 4.0% to 10.9%, NYS Standard Deduction $8,000 single / $16,050 MFJ."
+  },
+  "us-nyc-tax-2025": {
+    id: "us-nyc-tax-2025",
+    organization: "New York City Department of Finance",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "NYC Personal Income Tax Tables for NYC Residents (NYC Admin Code \xA7 11-1701)",
+    url: "https://www.tax.ny.gov/pit/file/tax_tables/nyc_tables.htm",
+    jurisdiction: "New York City (Local Resident)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-12-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-12",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "NYC resident income tax rates 3.078% to 3.876% applied on NY taxable income."
+  },
+  "uk-hmrc-tax-2025": {
+    id: "uk-hmrc-tax-2025",
+    organization: "HM Revenue & Customs (HMRC)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "HMRC Rates and Allowances: Income Tax and National Insurance Contributions 2024-2025 / 2025-2026",
+    url: "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2024-to-2025",
+    jurisdiction: "United Kingdom (HMRC)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-11-15",
+    effectiveDate: "2025-04-06",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Personal Allowance \xA312,570 with \xA31-for-\xA32 taper above \xA3100,000; Basic Rate 20%, Higher Rate 40%, Additional Rate 45%; Class 1 Employee NIC 8% main, 2% upper."
+  },
+  "uae-fta-2025": {
+    id: "uae-fta-2025",
+    organization: "Federal Tax Authority (FTA)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Federal Decree-Law No. 47 of 2022 on the Taxation of Corporations and Businesses (Individual Salary Exemption)",
+    url: "https://tax.gov.ae",
+    jurisdiction: "United Arab Emirates",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-10-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Statutory 0% individual employment personal income tax across all seven emirates."
+  },
+  "ca-cra-tax-2025": {
+    id: "ca-cra-tax-2025",
+    organization: "Canada Revenue Agency (CRA)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "CRA Indexation Adjustments for Personal Income Tax and Benefit Amounts 2025 (2.7% Indexation)",
+    url: "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html",
+    jurisdiction: "Canada (Federal & Ontario)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-11-20",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "2025 Federal Brackets ($57,375, $114,750, $177,882, $253,414), BPA $16,129; CPP Max $4,034.10 + CPP2 $396 = $4,430.10; EI Max $1,077.48."
+  },
+  "au-ato-tax-2025": {
+    id: "au-ato-tax-2025",
+    organization: "Australian Taxation Office (ATO)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Treasury Laws Amendment (Cost of Living Tax Cuts) Act 2024 (Resident Tax Rates 2024-25 and 2025-26)",
+    url: "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
+    jurisdiction: "Australia (Commonwealth)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-07-01",
+    effectiveDate: "2024-07-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Revised Stage 3 rates: 16% ($18.2k-$45k), 30% ($45k-$135k), 37% ($135k-$190k), 45% (above $190k); Medicare Levy 2.0%."
+  },
+  "de-bmf-tax-2025": {
+    id: "de-bmf-tax-2025",
+    organization: "Bundesministerium der Finanzen (BMF)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Steuerfortentwicklungsgesetz 2024/2025 (EStG \xA7 32a Grundfreibetrag 2025 & Sozialversicherungs-Rechengr\xF6\xDFenverordnung)",
+    url: "https://www.bundesfinanzministerium.de",
+    jurisdiction: "Germany (Federal)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-11-25",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Grundfreibetrag \u20AC12,084; polynomial tariff zones; KV 8.25%, RV 9.3%, AV 1.3%, PV 2.2%; BBG RV \u20AC96,600, KV \u20AC66,150."
+  },
+  "sg-iras-tax-2025": {
+    id: "sg-iras-tax-2025",
+    organization: "Inland Revenue Authority of Singapore (IRAS)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "IRAS Individual Income Tax Rates for Year of Assessment (YA) 2025",
+    url: "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-rates-and-tax-expenses/individual-income-tax-rates",
+    jurisdiction: "Singapore",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-10-15",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Progressive resident rate schedule 0% to 24% for YA 2025."
+  },
+  "qa-gta-tax-2025": {
+    id: "qa-gta-tax-2025",
+    organization: "General Tax Authority (GTA)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "State of Qatar Law No. 24 of 2018 Promulgating the Income Tax Law",
+    url: "https://www.gta.gov.qa",
+    jurisdiction: "State of Qatar",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-10-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Statutory 0% tax on employment salaries and compensation of resident and foreign employees."
+  },
+  "sa-zatca-tax-2025": {
+    id: "sa-zatca-tax-2025",
+    organization: "Zakat, Tax and Customs Authority (ZATCA)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Kingdom of Saudi Arabia Income Tax Law issued by Royal Decree No. M/1",
+    url: "https://zatca.gov.sa",
+    jurisdiction: "Kingdom of Saudi Arabia",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-10-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "0% personal income tax on employee employment income."
+  },
+  "nz-ird-tax-2025": {
+    id: "nz-ird-tax-2025",
+    organization: "Inland Revenue Department (Te Tari Taake)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Taxation (Annual Rates for 2024-25, Emergency Response, and Remedial Measures) Act 2024",
+    url: "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals",
+    jurisdiction: "New Zealand",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-08-01",
+    effectiveDate: "2024-07-31",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Thresholds: 10.5% ($0-$15.6k), 17.5% ($15.6k-$53.5k), 30% ($53.5k-$78.1k), 33% ($78.1k-$180k), 39% (> $180k); ACC Earners Levy 1.60%."
+  },
+  "fr-dgfip-tax-2025": {
+    id: "fr-dgfip-tax-2025",
+    organization: "Direction G\xE9n\xE9rale des Finances Publiques (DGFiP)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Loi de finances pour 2025 (Bar\xE8me de l'imp\xF4t sur le revenu & PASS 2025)",
+    url: "https://www.impots.gouv.fr",
+    jurisdiction: "France",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-12-15",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Bar\xE8me progressif de l'IR, PASS 2025 \u20AC47,100, CSG/CRDS 9.7% sur 98.25% du brut."
+  },
+  "es-aeat-tax-2025": {
+    id: "es-aeat-tax-2025",
+    organization: "Agencia Estatal de Administraci\xF3n Tributaria (AEAT)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Ley del IRPF & Orden de cotizaci\xF3n a la Seguridad Social 2025",
+    url: "https://sede.agenciatributaria.gob.es",
+    jurisdiction: "Spain",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-12-20",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Escala general IRPF, base m\xE1xima de cotizaci\xF3n 2025, cuota de solidaridad y MEI 0.14%."
+  },
+  "nl-belasting-tax-2025": {
+    id: "nl-belasting-tax-2025",
+    organization: "Belastingdienst",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Belastingplan 2025 (Tarieven inkomstenbelasting Box 1)",
+    url: "https://www.belastingdienst.nl",
+    jurisdiction: "Netherlands",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-12-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Tarieven box 1 schijven en heffingskortingen 2025."
+  },
+  "ie-revenue-tax-2025": {
+    id: "ie-revenue-tax-2025",
+    organization: "Office of the Revenue Commissioners",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Budget 2025 Tax Changes: Standard Rate Cut-Off Point & Tax Credits",
+    url: "https://www.revenue.ie/en/corporate/press-office/budget-information/2025/index.aspx",
+    jurisdiction: "Ireland",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-10-15",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Single SRCOP \u20AC44,000, Single Personal Credit \u20AC2,000, Employee PAYE Credit \u20AC2,000; revised USC bands."
+  },
+  "ch-estv-tax-2025": {
+    id: "ch-estv-tax-2025",
+    organization: "Eidgen\xF6ssische Steuerverwaltung (ESTV)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Bundesgesetz \xFCber die direkte Bundessteuer (DBG Tarife 2025)",
+    url: "https://www.estv.admin.ch",
+    jurisdiction: "Switzerland",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-11-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2025-01-15",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Tarife der direkten Bundessteuer 2025 und kantonale Steuerf\xFCsse."
   }
 };
 var EVIDENCE_REGISTRY = EVIDENCE_SOURCES;
@@ -3640,6 +3893,8 @@ var AustraliaTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
     let incomeTax = 0;
     if (grossMajor <= 18200) {
       incomeTax = 0;
@@ -3662,6 +3917,7 @@ var AustraliaTaxAdapter = class {
     const medicareMinor = Math.round(medicareLevy * 100);
     const totalTaxMinor = federalTaxMinor + medicareMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
+    const evidenceRef = isHistorical2024 ? "ato-individual-rates-2024" : "au-ato-tax-2025";
     const components = [
       {
         id: "au-income-tax",
@@ -3670,7 +3926,7 @@ var AustraliaTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "AUD"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "ato-individual-rates-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "au-medicare-levy",
@@ -3679,9 +3935,10 @@ var AustraliaTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(medicareMinor, "AUD"),
         effectiveRate: medicareMinor / (grossMinor || 1),
-        evidenceRefId: "ato-medicare-levy-2024"
+        evidenceRefId: evidenceRef
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "ATO-2024.2" : "AU-ATO-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -3699,8 +3956,8 @@ var AustraliaTaxAdapter = class {
       effectiveTaxRate: totalTaxMinor / (grossMinor || 1),
       marginalTaxRate: grossMajor > 19e4 ? 0.47 : grossMajor > 135e3 ? 0.39 : 0.32,
       components,
-      taxRuleVersion: "ATO-2024.2",
-      evidenceSourceIds: ["ato-individual-rates-2024", "ato-medicare-levy-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: isHistorical2024 ? ["ato-individual-rates-2024", "ato-medicare-levy-2024"] : ["au-ato-tax-2025"]
     };
   }
 };
@@ -3717,31 +3974,66 @@ var CanadaTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
     let cppMinor = 0;
-    if (grossMajor > 3500) {
-      const cppEligible = Math.min(grossMajor, 68500) - 3500;
-      cppMinor = Math.round(cppEligible * 0.0595 * 100);
+    if (isHistorical2024) {
+      if (grossMajor > 3500) {
+        const cppEligible = Math.min(grossMajor, 68500) - 3500;
+        cppMinor = Math.round(cppEligible * 0.0595 * 100);
+      }
+      if (grossMajor > 68500) {
+        const cpp2Eligible = Math.min(grossMajor, 73200) - 68500;
+        cppMinor += Math.round(cpp2Eligible * 0.04 * 100);
+      }
+    } else {
+      if (grossMajor > 3500) {
+        const cppEligible = Math.min(grossMajor, 71300) - 3500;
+        cppMinor = Math.round(cppEligible * 0.0595 * 100);
+      }
+      if (grossMajor > 71300) {
+        const cpp2Eligible = Math.min(grossMajor, 81200) - 71300;
+        cppMinor += Math.round(cpp2Eligible * 0.04 * 100);
+      }
     }
-    if (grossMajor > 68500) {
-      const cpp2Eligible = Math.min(grossMajor, 73200) - 68500;
-      cppMinor += Math.round(cpp2Eligible * 0.04 * 100);
+    let eiMinor = 0;
+    if (isHistorical2024) {
+      const eiEligible = Math.min(grossMajor, 63200);
+      eiMinor = Math.round(eiEligible * 0.0166 * 100);
+    } else {
+      const eiEligible = Math.min(grossMajor, 65700);
+      eiMinor = Math.round(eiEligible * 0.0164 * 100);
     }
-    const eiEligible = Math.min(grossMajor, 63200);
-    const eiMinor = Math.round(eiEligible * 0.0166 * 100);
     const socialMinor = cppMinor + eiMinor;
     let fedGrossTax = 0;
-    if (grossMajor <= 55867) {
-      fedGrossTax = grossMajor * 0.15;
-    } else if (grossMajor <= 111733) {
-      fedGrossTax = 55867 * 0.15 + (grossMajor - 55867) * 0.205;
-    } else if (grossMajor <= 173205) {
-      fedGrossTax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (grossMajor - 111733) * 0.26;
-    } else if (grossMajor <= 246752) {
-      fedGrossTax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (173205 - 111733) * 0.26 + (grossMajor - 173205) * 0.29;
+    let fedBpa = 15705;
+    if (isHistorical2024) {
+      fedBpa = 15705;
+      if (grossMajor <= 55867) {
+        fedGrossTax = grossMajor * 0.15;
+      } else if (grossMajor <= 111733) {
+        fedGrossTax = 55867 * 0.15 + (grossMajor - 55867) * 0.205;
+      } else if (grossMajor <= 173205) {
+        fedGrossTax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (grossMajor - 111733) * 0.26;
+      } else if (grossMajor <= 246752) {
+        fedGrossTax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (173205 - 111733) * 0.26 + (grossMajor - 173205) * 0.29;
+      } else {
+        fedGrossTax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (173205 - 111733) * 0.26 + (246752 - 173205) * 0.29 + (grossMajor - 246752) * 0.33;
+      }
     } else {
-      fedGrossTax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (173205 - 111733) * 0.26 + (246752 - 173205) * 0.29 + (grossMajor - 246752) * 0.33;
+      fedBpa = 16129;
+      if (grossMajor <= 57375) {
+        fedGrossTax = grossMajor * 0.15;
+      } else if (grossMajor <= 114750) {
+        fedGrossTax = 57375 * 0.15 + (grossMajor - 57375) * 0.205;
+      } else if (grossMajor <= 177882) {
+        fedGrossTax = 57375 * 0.15 + (114750 - 57375) * 0.205 + (grossMajor - 114750) * 0.26;
+      } else if (grossMajor <= 253414) {
+        fedGrossTax = 57375 * 0.15 + (114750 - 57375) * 0.205 + (177882 - 114750) * 0.26 + (grossMajor - 177882) * 0.29;
+      } else {
+        fedGrossTax = 57375 * 0.15 + (114750 - 57375) * 0.205 + (177882 - 114750) * 0.26 + (253414 - 177882) * 0.29 + (grossMajor - 253414) * 0.33;
+      }
     }
-    const fedBpa = 15705;
     const fedBpaCredit = fedBpa * 0.15;
     const fedTaxTotal = Math.max(0, fedGrossTax - fedBpaCredit);
     const federalTaxMinor = Math.round(fedTaxTotal * 100);
@@ -3750,50 +4042,62 @@ var CanadaTaxAdapter = class {
     let provBpaCredit = 0;
     let provSurtax = 0;
     if (regionCode === "ON") {
-      if (grossMajor <= 51446) {
+      const b1Cap = isHistorical2024 ? 51446 : 52835;
+      const b2Cap = isHistorical2024 ? 102894 : 105672;
+      const onBpa = isHistorical2024 ? 12399 : 12734;
+      if (grossMajor <= b1Cap) {
         provGrossTax = grossMajor * 0.0505;
-      } else if (grossMajor <= 102894) {
-        provGrossTax = 51446 * 0.0505 + (grossMajor - 51446) * 0.0915;
+      } else if (grossMajor <= b2Cap) {
+        provGrossTax = b1Cap * 0.0505 + (grossMajor - b1Cap) * 0.0915;
       } else if (grossMajor <= 15e4) {
-        provGrossTax = 51446 * 0.0505 + (102894 - 51446) * 0.0915 + (grossMajor - 102894) * 0.1116;
+        provGrossTax = b1Cap * 0.0505 + (b2Cap - b1Cap) * 0.0915 + (grossMajor - b2Cap) * 0.1116;
       } else if (grossMajor <= 22e4) {
-        provGrossTax = 51446 * 0.0505 + (102894 - 51446) * 0.0915 + (15e4 - 102894) * 0.1116 + (grossMajor - 15e4) * 0.1216;
+        provGrossTax = b1Cap * 0.0505 + (b2Cap - b1Cap) * 0.0915 + (15e4 - b2Cap) * 0.1116 + (grossMajor - 15e4) * 0.1216;
       } else {
-        provGrossTax = 51446 * 0.0505 + (102894 - 51446) * 0.0915 + (15e4 - 102894) * 0.1116 + (22e4 - 15e4) * 0.1216 + (grossMajor - 22e4) * 0.1316;
+        provGrossTax = b1Cap * 0.0505 + (b2Cap - b1Cap) * 0.0915 + (15e4 - b2Cap) * 0.1116 + (22e4 - 15e4) * 0.1216 + (grossMajor - 22e4) * 0.1316;
       }
-      provBpaCredit = 12399 * 0.0505;
+      provBpaCredit = onBpa * 0.0505;
       const onBaseTax = Math.max(0, provGrossTax - provBpaCredit);
-      if (onBaseTax > 7108) {
-        provSurtax = (onBaseTax - 5554) * 0.2 + (onBaseTax - 7108) * 0.36;
-      } else if (onBaseTax > 5554) {
-        provSurtax = (onBaseTax - 5554) * 0.2;
+      const surtax1Threshold = isHistorical2024 ? 5554 : 5704;
+      const surtax2Threshold = isHistorical2024 ? 7108 : 7300;
+      if (onBaseTax > surtax2Threshold) {
+        provSurtax = (onBaseTax - surtax1Threshold) * 0.2 + (onBaseTax - surtax2Threshold) * 0.36;
+      } else if (onBaseTax > surtax1Threshold) {
+        provSurtax = (onBaseTax - surtax1Threshold) * 0.2;
       }
     } else if (regionCode === "BC") {
-      if (grossMajor <= 47937) {
+      const b1 = isHistorical2024 ? 47937 : 49279;
+      const b2 = isHistorical2024 ? 95875 : 98560;
+      const b3 = isHistorical2024 ? 110076 : 113158;
+      const b4 = isHistorical2024 ? 133664 : 137407;
+      const b5 = isHistorical2024 ? 181232 : 186306;
+      if (grossMajor <= b1) {
         provGrossTax = grossMajor * 0.0506;
-      } else if (grossMajor <= 95875) {
-        provGrossTax = 47937 * 0.0506 + (grossMajor - 47937) * 0.077;
-      } else if (grossMajor <= 110076) {
-        provGrossTax = 47937 * 0.0506 + (95875 - 47937) * 0.077 + (grossMajor - 95875) * 0.105;
-      } else if (grossMajor <= 133664) {
-        provGrossTax = 47937 * 0.0506 + (95875 - 47937) * 0.077 + (110076 - 95875) * 0.105 + (grossMajor - 110076) * 0.1229;
+      } else if (grossMajor <= b2) {
+        provGrossTax = b1 * 0.0506 + (grossMajor - b1) * 0.077;
+      } else if (grossMajor <= b3) {
+        provGrossTax = b1 * 0.0506 + (b2 - b1) * 0.077 + (grossMajor - b2) * 0.105;
+      } else if (grossMajor <= b4) {
+        provGrossTax = b1 * 0.0506 + (b2 - b1) * 0.077 + (b3 - b2) * 0.105 + (grossMajor - b3) * 0.1229;
       } else {
-        provGrossTax = 47937 * 0.0506 + (95875 - 47937) * 0.077 + (110076 - 95875) * 0.105 + (133664 - 110076) * 0.1229 + (grossMajor - 133664) * 0.147;
+        provGrossTax = b1 * 0.0506 + (b2 - b1) * 0.077 + (b3 - b2) * 0.105 + (b4 - b3) * 0.1229 + (grossMajor - b4) * 0.147;
       }
-      provBpaCredit = 12580 * 0.0506;
+      provBpaCredit = (isHistorical2024 ? 12580 : 12932) * 0.0506;
     } else {
-      if (grossMajor <= 148269) {
+      const abCap = isHistorical2024 ? 148269 : 152272;
+      if (grossMajor <= abCap) {
         provGrossTax = grossMajor * 0.1;
       } else {
-        provGrossTax = 148269 * 0.1 + (grossMajor - 148269) * 0.12;
+        provGrossTax = abCap * 0.1 + (grossMajor - abCap) * 0.12;
       }
-      provBpaCredit = 21885 * 0.1;
+      provBpaCredit = (isHistorical2024 ? 21885 : 22476) * 0.1;
     }
     const provTaxTotal = Math.max(0, provGrossTax - provBpaCredit) + provSurtax;
     const stateTaxMinor = Math.round(provTaxTotal * 100);
     const totalTaxMinor = federalTaxMinor + stateTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceRef = isHistorical2024 ? "cra-income-tax-2024" : "ca-cra-tax-2025";
     const components = [
       {
         id: "ca-fed-tax",
@@ -3802,7 +4106,7 @@ var CanadaTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "CAD"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "cra-income-tax-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "ca-cpp",
@@ -3811,7 +4115,7 @@ var CanadaTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(cppMinor, "CAD"),
         effectiveRate: cppMinor / (grossMinor || 1),
-        evidenceRefId: "cra-cpp-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "ca-ei",
@@ -3820,7 +4124,7 @@ var CanadaTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(eiMinor, "CAD"),
         effectiveRate: eiMinor / (grossMinor || 1),
-        evidenceRefId: "cra-ei-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "ca-prov-tax",
@@ -3829,9 +4133,10 @@ var CanadaTaxAdapter = class {
         category: "state",
         amount: fromMinor(stateTaxMinor, "CAD"),
         effectiveRate: stateTaxMinor / (grossMinor || 1),
-        evidenceRefId: "cra-provincial-rates-2024"
+        evidenceRefId: evidenceRef
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "CRA-2024.1" : "CA-CRA-ON-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -3849,8 +4154,8 @@ var CanadaTaxAdapter = class {
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
       marginalTaxRate: 0.4341,
       components,
-      taxRuleVersion: "CRA-2024.1",
-      evidenceSourceIds: ["cra-income-tax-2024", "cra-cpp-2024", "cra-ei-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -3867,10 +4172,15 @@ var SwitzerlandTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
     const ahvMinor = Math.round(grossMajor * 0.053 * 100);
-    const alvBase = Math.min(grossMajor, 148200);
+    const alvCap = 148200;
+    const alvBase = Math.min(grossMajor, alvCap);
     const alvMinor = Math.round(alvBase * 0.011 * 100);
-    const coordinatedSalary = Math.max(0, Math.min(grossMajor, 88200) - 25725);
+    const bvgCap = isHistorical2024 ? 88200 : 90720;
+    const bvgDeduction = isHistorical2024 ? 25725 : 26460;
+    const coordinatedSalary = Math.max(0, Math.min(grossMajor, bvgCap) - bvgDeduction);
     const bvgMinor = Math.round(coordinatedSalary * 0.05 * 100);
     const socialContributionsMinor = ahvMinor + alvMinor + bvgMinor;
     const taxableIncomeMajor = Math.max(0, grossMajor - socialContributionsMinor / 100);
@@ -3916,6 +4226,7 @@ var SwitzerlandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor + stateTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceRef = isHistorical2024 ? "estv-bundessteuer-tarife-2024" : "ch-estv-tax-2025";
     const components = [
       {
         id: "ch-bundessteuer",
@@ -3924,7 +4235,7 @@ var SwitzerlandTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "CHF"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "estv-bundessteuer-tarife-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "ch-kantonssteuer",
@@ -3933,7 +4244,7 @@ var SwitzerlandTaxAdapter = class {
         category: "state",
         amount: fromMinor(stateTaxMinor, "CHF"),
         effectiveRate: stateTaxMinor / (grossMinor || 1),
-        evidenceRefId: "estv-kantonssteuer-2024"
+        evidenceRefId: isHistorical2024 ? "estv-kantonssteuer-2024" : "ch-estv-tax-2025"
       },
       {
         id: "ch-sozialabgaben",
@@ -3942,9 +4253,10 @@ var SwitzerlandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialContributionsMinor, "CHF"),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: "bsv-beitragssaetze-2024"
+        evidenceRefId: isHistorical2024 ? "bsv-beitragssaetze-2024" : "ch-estv-tax-2025"
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "ESTV-2024.1" : "CH-ESTV-ZH-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -3962,12 +4274,8 @@ var SwitzerlandTaxAdapter = class {
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
       marginalTaxRate: federalTaxMinor / grossMinor + cantonalEffectiveRate + 0.064,
       components,
-      taxRuleVersion: "ESTV-2024.1",
-      evidenceSourceIds: [
-        "estv-bundessteuer-tarife-2024",
-        "estv-kantonssteuer-2024",
-        "bsv-beitragssaetze-2024"
-      ]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -3984,26 +4292,45 @@ var GermanyTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const healthCap = Math.min(grossMajor, 62100);
-    const healthMinor = Math.round(healthCap * 0.0815 * 100);
-    const pensionCap = Math.min(grossMajor, 90600);
-    const pensionMinor = Math.round(pensionCap * 0.093 * 100);
-    const unemployMinor = Math.round(pensionCap * 0.013 * 100);
-    const nursingMinor = Math.round(healthCap * 0.022 * 100);
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const kvCap = isHistorical2024 ? 62100 : 66150;
+    const rvCap = isHistorical2024 ? 90600 : 96600;
+    const kvRate = isHistorical2024 ? 0.0815 : 0.0825;
+    const healthMinor = Math.round(Math.min(grossMajor, kvCap) * kvRate * 100);
+    const pensionMinor = Math.round(Math.min(grossMajor, rvCap) * 0.093 * 100);
+    const unemployMinor = Math.round(Math.min(grossMajor, rvCap) * 0.013 * 100);
+    const nursingMinor = Math.round(Math.min(grossMajor, kvCap) * 0.022 * 100);
     const socialMinor = healthMinor + pensionMinor + unemployMinor + nursingMinor;
     let incomeTax = 0;
-    if (grossMajor <= 11784) {
-      incomeTax = 0;
-    } else if (grossMajor <= 17005) {
-      const y = (grossMajor - 11784) / 1e4;
-      incomeTax = (995.21 * y + 1400) * y;
-    } else if (grossMajor <= 66760) {
-      const z = (grossMajor - 17005) / 1e4;
-      incomeTax = (208.85 * z + 2397) * z + 1015.51;
-    } else if (grossMajor <= 277825) {
-      incomeTax = 0.42 * grossMajor - 10636.31;
+    if (isHistorical2024) {
+      if (grossMajor <= 11784) {
+        incomeTax = 0;
+      } else if (grossMajor <= 17005) {
+        const y = (grossMajor - 11784) / 1e4;
+        incomeTax = (995.21 * y + 1400) * y;
+      } else if (grossMajor <= 66760) {
+        const z = (grossMajor - 17005) / 1e4;
+        incomeTax = (208.85 * z + 2397) * z + 1015.51;
+      } else if (grossMajor <= 277825) {
+        incomeTax = 0.42 * grossMajor - 10636.31;
+      } else {
+        incomeTax = 0.45 * grossMajor - 18971.06;
+      }
     } else {
-      incomeTax = 0.45 * grossMajor - 18971.06;
+      if (grossMajor <= 12084) {
+        incomeTax = 0;
+      } else if (grossMajor <= 17443) {
+        const y = (grossMajor - 12084) / 1e4;
+        incomeTax = (995.21 * y + 1400) * y;
+      } else if (grossMajor <= 68480) {
+        const z = (grossMajor - 17443) / 1e4;
+        incomeTax = (208.85 * z + 2397) * z + 1015.51;
+      } else if (grossMajor <= 277825) {
+        incomeTax = 0.42 * grossMajor - 10900;
+      } else {
+        incomeTax = 0.45 * grossMajor - 19235;
+      }
     }
     const federalTaxMinor = Math.max(0, Math.round(incomeTax * 100));
     let soliMinor = 0;
@@ -4013,6 +4340,7 @@ var GermanyTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor + soliMinor;
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceRef = isHistorical2024 ? "bzst-lohnsteuer-2024" : "de-bmf-tax-2025";
     const components = [
       {
         id: "de-einkommensteuer",
@@ -4021,7 +4349,7 @@ var GermanyTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "EUR"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "bzst-lohnsteuer-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "de-sozialversicherung",
@@ -4030,9 +4358,10 @@ var GermanyTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialMinor, "EUR"),
         effectiveRate: socialMinor / (grossMinor || 1),
-        evidenceRefId: "gkv-beitragssaetze-2024"
+        evidenceRefId: isHistorical2024 ? "gkv-beitragssaetze-2024" : "de-bmf-tax-2025"
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "BZSt-2024.1" : "DE-BMF-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4048,10 +4377,10 @@ var GermanyTaxAdapter = class {
       monthlyNetIncome: fromMinor(Math.round(netIncomeMinor / 12), "EUR"),
       biweeklyNetIncome: fromMinor(Math.round(netIncomeMinor / 26), "EUR"),
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
-      marginalTaxRate: grossMajor > 66760 ? 0.42 : 0.32,
+      marginalTaxRate: grossMajor > (isHistorical2024 ? 66760 : 68480) ? 0.42 : 0.32,
       components,
-      taxRuleVersion: "BZSt-2024.1",
-      evidenceSourceIds: ["bzst-lohnsteuer-2024", "gkv-beitragssaetze-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4068,8 +4397,12 @@ var SpainTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const ssBase = Math.min(grossMajor, 56646);
-    const ssMinor = Math.round(ssBase * 0.0647 * 100);
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const ssBaseLimit = isHistorical2024 ? 56646 : 6e4;
+    const ssRate = isHistorical2024 ? 0.0647 : 0.0649;
+    const ssBase = Math.min(grossMajor, ssBaseLimit);
+    const ssMinor = Math.round(ssBase * ssRate * 100);
     const workAllowance = 2e3;
     const taxableBase = Math.max(0, grossMajor - ssMinor / 100 - workAllowance);
     const calcScaleTax = (income) => {
@@ -4090,6 +4423,7 @@ var SpainTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + ssMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceRef = isHistorical2024 ? "aeat-tramos-irpf-2024" : "es-aeat-tax-2025";
     const components = [
       {
         id: "es-irpf",
@@ -4098,7 +4432,7 @@ var SpainTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "EUR"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "aeat-tramos-irpf-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "es-seguridad-social",
@@ -4107,9 +4441,10 @@ var SpainTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(ssMinor, "EUR"),
         effectiveRate: ssMinor / (grossMinor || 1),
-        evidenceRefId: "tgss-bases-cotizacion-2024"
+        evidenceRefId: isHistorical2024 ? "tgss-bases-cotizacion-2024" : "es-aeat-tax-2025"
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "AEAT-2024.1" : "ES-AEAT-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4127,8 +4462,8 @@ var SpainTaxAdapter = class {
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
       marginalTaxRate: taxableBase > 6e4 ? 0.45 : taxableBase > 35200 ? 0.37 : 0.3,
       components,
-      taxRuleVersion: "AEAT-2024.1",
-      evidenceSourceIds: ["aeat-tramos-irpf-2024", "tgss-bases-cotizacion-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4145,14 +4480,16 @@ var FranceTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const PASS_2024 = 46368;
-    const csgBase = Math.min(grossMajor, 4 * PASS_2024) * 0.9825;
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const PASS = isHistorical2024 ? 46368 : 47100;
+    const csgBase = Math.min(grossMajor, 4 * PASS) * 0.9825;
     const csgMinor = Math.round(csgBase * 0.097 * 100);
-    const t1Base = Math.min(grossMajor, PASS_2024);
+    const t1Base = Math.min(grossMajor, PASS);
     const t1Minor = Math.round(t1Base * 0.0401 * 100);
     let t2Minor = 0;
-    if (grossMajor > PASS_2024) {
-      const t2Base = Math.min(grossMajor, 8 * PASS_2024) - PASS_2024;
+    if (grossMajor > PASS) {
+      const t2Base = Math.min(grossMajor, 8 * PASS) - PASS;
       t2Minor = Math.round(t2Base * 0.0972 * 100);
     }
     const otherSocialMinor = Math.round(grossMajor * 0.035 * 100);
@@ -4161,16 +4498,30 @@ var FranceTaxAdapter = class {
     const standardDeduction = Math.min(14171, Math.max(495, netSalaryMajor * 0.1));
     const taxableIncomeMajor = Math.max(0, netSalaryMajor - standardDeduction);
     let incomeTax = 0;
-    if (taxableIncomeMajor <= 11294) {
-      incomeTax = 0;
-    } else if (taxableIncomeMajor <= 28797) {
-      incomeTax = (taxableIncomeMajor - 11294) * 0.11;
-    } else if (taxableIncomeMajor <= 82341) {
-      incomeTax = (28797 - 11294) * 0.11 + (taxableIncomeMajor - 28797) * 0.3;
-    } else if (taxableIncomeMajor <= 177106) {
-      incomeTax = (28797 - 11294) * 0.11 + (82341 - 28797) * 0.3 + (taxableIncomeMajor - 82341) * 0.41;
+    if (isHistorical2024) {
+      if (taxableIncomeMajor <= 11294) {
+        incomeTax = 0;
+      } else if (taxableIncomeMajor <= 28797) {
+        incomeTax = (taxableIncomeMajor - 11294) * 0.11;
+      } else if (taxableIncomeMajor <= 82341) {
+        incomeTax = (28797 - 11294) * 0.11 + (taxableIncomeMajor - 28797) * 0.3;
+      } else if (taxableIncomeMajor <= 177106) {
+        incomeTax = (28797 - 11294) * 0.11 + (82341 - 28797) * 0.3 + (taxableIncomeMajor - 82341) * 0.41;
+      } else {
+        incomeTax = (28797 - 11294) * 0.11 + (82341 - 28797) * 0.3 + (177106 - 82341) * 0.41 + (taxableIncomeMajor - 177106) * 0.45;
+      }
     } else {
-      incomeTax = (28797 - 11294) * 0.11 + (82341 - 28797) * 0.3 + (177106 - 82341) * 0.41 + (taxableIncomeMajor - 177106) * 0.45;
+      if (taxableIncomeMajor <= 11520) {
+        incomeTax = 0;
+      } else if (taxableIncomeMajor <= 29373) {
+        incomeTax = (taxableIncomeMajor - 11520) * 0.11;
+      } else if (taxableIncomeMajor <= 83988) {
+        incomeTax = (29373 - 11520) * 0.11 + (taxableIncomeMajor - 29373) * 0.3;
+      } else if (taxableIncomeMajor <= 180648) {
+        incomeTax = (29373 - 11520) * 0.11 + (83988 - 29373) * 0.3 + (taxableIncomeMajor - 83988) * 0.41;
+      } else {
+        incomeTax = (29373 - 11520) * 0.11 + (83988 - 29373) * 0.3 + (180648 - 83988) * 0.41 + (taxableIncomeMajor - 180648) * 0.45;
+      }
     }
     if (incomeTax > 0 && incomeTax < 1929) {
       const decote = 873 - incomeTax * 0.4525;
@@ -4180,6 +4531,7 @@ var FranceTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceRef = isHistorical2024 ? "dgfip-bareme-ir-2024" : "fr-dgfip-tax-2025";
     const components = [
       {
         id: "fr-impot-revenu",
@@ -4188,7 +4540,7 @@ var FranceTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "EUR"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "dgfip-bareme-ir-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "fr-csg-crds",
@@ -4197,9 +4549,10 @@ var FranceTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialContributionsMinor, "EUR"),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: "urssaf-taux-cotisations-2024"
+        evidenceRefId: isHistorical2024 ? "urssaf-taux-cotisations-2024" : "fr-dgfip-tax-2025"
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "DGFiP-2024.1" : "FR-DGFIP-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4217,8 +4570,8 @@ var FranceTaxAdapter = class {
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
       marginalTaxRate: taxableIncomeMajor > 82341 ? 0.41 : taxableIncomeMajor > 28797 ? 0.3 : 0.11,
       components,
-      taxRuleVersion: "DGFiP-2024.1",
-      evidenceSourceIds: ["dgfip-bareme-ir-2024", "urssaf-taux-cotisations-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4235,27 +4588,31 @@ var IrelandTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const SRCOP = 42e3;
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const SRCOP = isHistorical2024 ? 42e3 : 44e3;
     let grossIncomeTax = 0;
     if (grossMajor <= SRCOP) {
       grossIncomeTax = grossMajor * 0.2;
     } else {
       grossIncomeTax = SRCOP * 0.2 + (grossMajor - SRCOP) * 0.4;
     }
-    const standardCredits = 3750;
+    const standardCredits = isHistorical2024 ? 3750 : 4e3;
     const netIncomeTax = Math.max(0, grossIncomeTax - standardCredits);
     const federalTaxMinor = Math.round(netIncomeTax * 100);
     let usc = 0;
     if (grossMajor > 13e3) {
       const b1 = Math.min(grossMajor, 12012);
       usc += b1 * 5e-3;
+      const uscB2Cap = isHistorical2024 ? 25760 : 27382;
+      const uscB3Rate = isHistorical2024 ? 0.04 : 0.03;
       if (grossMajor > 12012) {
-        const b2 = Math.min(grossMajor, 25760) - 12012;
+        const b2 = Math.min(grossMajor, uscB2Cap) - 12012;
         usc += b2 * 0.02;
       }
-      if (grossMajor > 25760) {
-        const b3 = Math.min(grossMajor, 70044) - 25760;
-        usc += b3 * 0.04;
+      if (grossMajor > uscB2Cap) {
+        const b3 = Math.min(grossMajor, 70044) - uscB2Cap;
+        usc += b3 * uscB3Rate;
       }
       if (grossMajor > 70044) {
         const b4 = grossMajor - 70044;
@@ -4278,6 +4635,7 @@ var IrelandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceRef = isHistorical2024 ? "revenue-paye-rates-2024" : "ie-revenue-tax-2025";
     const components = [
       {
         id: "ie-paye-tax",
@@ -4286,7 +4644,7 @@ var IrelandTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "EUR"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "revenue-paye-rates-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "ie-usc",
@@ -4295,7 +4653,7 @@ var IrelandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(uscMinor, "EUR"),
         effectiveRate: uscMinor / (grossMinor || 1),
-        evidenceRefId: "revenue-usc-rates-2024"
+        evidenceRefId: isHistorical2024 ? "revenue-usc-rates-2024" : "ie-revenue-tax-2025"
       },
       {
         id: "ie-prsi",
@@ -4304,9 +4662,10 @@ var IrelandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(prsiMinor, "EUR"),
         effectiveRate: prsiMinor / (grossMinor || 1),
-        evidenceRefId: "dsp-prsi-rates-2024"
+        evidenceRefId: isHistorical2024 ? "dsp-prsi-rates-2024" : "ie-revenue-tax-2025"
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "Revenue-2024.1" : "IE-REVENUE-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4322,10 +4681,10 @@ var IrelandTaxAdapter = class {
       monthlyNetIncome: fromMinor(Math.round(netIncomeMinor / 12), "EUR"),
       biweeklyNetIncome: fromMinor(Math.round(netIncomeMinor / 26), "EUR"),
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
-      marginalTaxRate: grossMajor > 70044 ? 0.52 : grossMajor > 42e3 ? 0.481 : 0.261,
+      marginalTaxRate: grossMajor > 70044 ? 0.52 : grossMajor > SRCOP ? 0.481 : 0.261,
       components,
-      taxRuleVersion: "Revenue-2024.1",
-      evidenceSourceIds: ["revenue-paye-rates-2024", "revenue-usc-rates-2024", "dsp-prsi-rates-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4342,36 +4701,56 @@ var NetherlandsTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const BRACKET_1_CAP = 75518;
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const bracket1Cap = isHistorical2024 ? 75518 : 76817;
+    const bracket1Rate = isHistorical2024 ? 0.3697 : 0.3582;
+    const bracket2Rate = 0.495;
     let grossTax = 0;
-    if (grossMajor <= BRACKET_1_CAP) {
-      grossTax = grossMajor * 0.3697;
+    if (grossMajor <= bracket1Cap) {
+      grossTax = grossMajor * bracket1Rate;
     } else {
-      grossTax = BRACKET_1_CAP * 0.3697 + (grossMajor - BRACKET_1_CAP) * 0.495;
+      grossTax = bracket1Cap * bracket1Rate + (grossMajor - bracket1Cap) * bracket2Rate;
     }
     let generalCredit = 0;
-    if (grossMajor <= 24812) {
-      generalCredit = 3362;
-    } else if (grossMajor < 75518) {
-      generalCredit = Math.max(0, 3362 - (grossMajor - 24812) * 0.0663);
+    const maxGenCredit = isHistorical2024 ? 3362 : 3068;
+    const genThreshold = isHistorical2024 ? 24812 : 28406;
+    const genTaperRate = isHistorical2024 ? 0.0663 : 0.06337;
+    if (grossMajor <= genThreshold) {
+      generalCredit = maxGenCredit;
+    } else if (grossMajor < bracket1Cap) {
+      generalCredit = Math.max(0, maxGenCredit - (grossMajor - genThreshold) * genTaperRate);
     }
     let labourCredit = 0;
-    if (grossMajor <= 11490) {
-      labourCredit = grossMajor * 0.08425;
-    } else if (grossMajor <= 24820) {
-      labourCredit = 968 + (grossMajor - 11490) * 0.31433;
-    } else if (grossMajor <= 39957) {
-      labourCredit = 5158 + (grossMajor - 24820) * 0.02471;
+    if (isHistorical2024) {
+      if (grossMajor <= 11490) {
+        labourCredit = grossMajor * 0.08425;
+      } else if (grossMajor <= 24820) {
+        labourCredit = 968 + (grossMajor - 11490) * 0.31433;
+      } else if (grossMajor <= 39957) {
+        labourCredit = 5158 + (grossMajor - 24820) * 0.02471;
+      } else {
+        labourCredit = Math.max(0, 5532 - (grossMajor - 39957) * 0.0651);
+      }
     } else {
-      labourCredit = Math.max(0, 5532 - (grossMajor - 39957) * 0.0651);
+      if (grossMajor <= 11500) {
+        labourCredit = grossMajor * 0.084;
+      } else if (grossMajor <= 25e3) {
+        labourCredit = 966 + (grossMajor - 11500) * 0.314;
+      } else if (grossMajor <= 4e4) {
+        labourCredit = 5205 + (grossMajor - 25e3) * 0.024;
+      } else {
+        labourCredit = Math.max(0, 5599 - (grossMajor - 4e4) * 0.0651);
+      }
     }
     const totalCredits = generalCredit + labourCredit;
     const netTax = Math.max(0, grossTax - totalCredits);
-    const volksverzekeringenShare = Math.min(grossMajor, BRACKET_1_CAP) * 0.2765;
+    const volksverzekeringenShare = Math.min(grossMajor, bracket1Cap) * 0.2765;
     const nationalInsuranceMinor = Math.round(Math.min(netTax, volksverzekeringenShare) * 100);
     const incomeTaxMinor = Math.round(Math.max(0, netTax - nationalInsuranceMinor / 100) * 100);
     const totalDeductionsMinor = Math.round(netTax * 100);
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceRef = isHistorical2024 ? "belastingdienst-box1-2024" : "nl-belasting-tax-2025";
     const components = [
       {
         id: "nl-inkomstenbelasting",
@@ -4380,7 +4759,7 @@ var NetherlandsTaxAdapter = class {
         category: "federal",
         amount: fromMinor(incomeTaxMinor, "EUR"),
         effectiveRate: incomeTaxMinor / (grossMinor || 1),
-        evidenceRefId: "belastingdienst-box1-2024"
+        evidenceRefId: evidenceRef
       },
       {
         id: "nl-volksverzekeringen",
@@ -4389,9 +4768,10 @@ var NetherlandsTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(nationalInsuranceMinor, "EUR"),
         effectiveRate: nationalInsuranceMinor / (grossMinor || 1),
-        evidenceRefId: "belastingdienst-premies-2024"
+        evidenceRefId: isHistorical2024 ? "belastingdienst-premies-2024" : "nl-belasting-tax-2025"
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "Belastingdienst-2024.1" : "NL-BELASTING-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4407,10 +4787,10 @@ var NetherlandsTaxAdapter = class {
       monthlyNetIncome: fromMinor(Math.round(netIncomeMinor / 12), "EUR"),
       biweeklyNetIncome: fromMinor(Math.round(netIncomeMinor / 26), "EUR"),
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
-      marginalTaxRate: grossMajor > 75518 ? 0.495 : 0.3697,
+      marginalTaxRate: grossMajor > bracket1Cap ? 0.495 : bracket1Rate,
       components,
-      taxRuleVersion: "Belastingdienst-2024.1",
-      evidenceSourceIds: ["belastingdienst-box1-2024", "belastingdienst-premies-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4427,6 +4807,8 @@ var NewZealandTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
     let incomeTax = 0;
     if (grossMajor <= 15600) {
       incomeTax = grossMajor * 0.105;
@@ -4446,6 +4828,7 @@ var NewZealandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceRef = isHistorical2024 ? "ird-tax-rates-2024-2025" : "nz-ird-tax-2025";
     const components = [
       {
         id: "nz-ird-paye",
@@ -4454,7 +4837,7 @@ var NewZealandTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "NZD"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "ird-tax-rates-2024-2025"
+        evidenceRefId: evidenceRef
       },
       {
         id: "nz-acc-levy",
@@ -4463,9 +4846,10 @@ var NewZealandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(accMinor, "NZD"),
         effectiveRate: accMinor / (grossMinor || 1),
-        evidenceRefId: "acc-earners-levy-2024"
+        evidenceRefId: isHistorical2024 ? "acc-earners-levy-2024" : "nz-ird-tax-2025"
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "IRD-2024.2" : "NZ-IRD-2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4483,8 +4867,8 @@ var NewZealandTaxAdapter = class {
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
       marginalTaxRate: grossMajor > 18e4 ? 0.406 : grossMajor > 78100 ? 0.346 : 0.316,
       components,
-      taxRuleVersion: "IRD-2024.2",
-      evidenceSourceIds: ["ird-tax-rates-2024-2025", "acc-earners-levy-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4500,6 +4884,10 @@ var QatarTaxAdapter = class {
   }
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const taxRuleVersion = isHistorical2024 ? "GTA-2024.1" : "QA-GTA-2025.1";
+    const evidenceRef = isHistorical2024 ? "qatar-income-tax-law-2018" : "qa-gta-tax-2025";
     const components = [
       {
         id: "qa-statutory-tax",
@@ -4508,7 +4896,7 @@ var QatarTaxAdapter = class {
         category: "federal",
         amount: createMoney(0, "QAR"),
         effectiveRate: 0,
-        evidenceRefId: "qatar-income-tax-law-2018"
+        evidenceRefId: evidenceRef
       }
     ];
     return {
@@ -4528,8 +4916,8 @@ var QatarTaxAdapter = class {
       effectiveTaxRate: 0,
       marginalTaxRate: 0,
       components,
-      taxRuleVersion: "GTA-2024.1",
-      evidenceSourceIds: ["qatar-income-tax-law-2018"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4541,11 +4929,15 @@ var SaudiTaxAdapter = class {
     this.name = "Saudi ZATCA & Gulf Statutory Zero-Tax Engine";
   }
   supports(context) {
-    return context.countryId === "SA" || context.countryId === "QA";
+    return context.countryId === "SA";
   }
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const currency = grossCompensation.currency;
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const taxRuleVersion = isHistorical2024 ? "GULF-2024.1" : "SA-ZATCA-2025.1";
+    const evidenceRef = isHistorical2024 ? "gulf-zero-income-tax-statute" : "sa-zatca-tax-2025";
     const components = [
       {
         id: `${context.countryId.toLowerCase()}-zero-tax`,
@@ -4554,7 +4946,7 @@ var SaudiTaxAdapter = class {
         category: "federal",
         amount: createMoney(0, currency),
         effectiveRate: 0,
-        evidenceRefId: "gulf-zero-income-tax-statute"
+        evidenceRefId: evidenceRef
       }
     ];
     return {
@@ -4574,8 +4966,8 @@ var SaudiTaxAdapter = class {
       effectiveTaxRate: 0,
       marginalTaxRate: 0,
       components,
-      taxRuleVersion: "GULF-2024.1",
-      evidenceSourceIds: ["gulf-zero-income-tax-statute"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4592,6 +4984,8 @@ var SingaporeTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
     let tax = 0;
     if (grossMajor <= 2e4) {
       tax = 0;
@@ -4621,6 +5015,7 @@ var SingaporeTaxAdapter = class {
     const federalTaxMinor = Math.round(tax * 100);
     const totalTaxMinor = federalTaxMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
+    const evidenceRef = isHistorical2024 ? "iras-tax-rates-2024" : "sg-iras-tax-2025";
     const components = [
       {
         id: "sg-iras-income-tax",
@@ -4629,9 +5024,10 @@ var SingaporeTaxAdapter = class {
         category: "federal",
         amount: fromMinor(federalTaxMinor, "SGD"),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: "iras-tax-rates-2024"
+        evidenceRefId: evidenceRef
       }
     ];
+    const taxRuleVersion = isHistorical2024 ? "IRAS-YA2024" : "SG-IRAS-YA2025.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4649,8 +5045,8 @@ var SingaporeTaxAdapter = class {
       effectiveTaxRate: totalTaxMinor / (grossMinor || 1),
       marginalTaxRate: grossMajor > 5e5 ? 0.24 : grossMajor > 32e4 ? 0.22 : 0.19,
       components,
-      taxRuleVersion: "IRAS-YA2024",
-      evidenceSourceIds: ["iras-tax-rates-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4664,10 +5060,15 @@ var UaeTaxAdapter = class {
   supports(context) {
     return context.countryId === "AE";
   }
-  calculate(gross, _profile, _context) {
+  calculate(gross, profile, context) {
     const currency = "AED";
     const grossMinor = gross.amountMinor;
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const taxRuleVersion = isHistorical2024 ? "UAE-FTA-2024.1" : "AE-FTA-2025.1";
+    const evidenceRef = isHistorical2024 ? "uae-fta-2024" : "uae-fta-2025";
     return {
+      status: "CALCULATED",
       grossIncome: gross,
       taxableIncome: fromMinor(0, currency),
       deductions: fromMinor(0, currency),
@@ -4691,11 +5092,11 @@ var UaeTaxAdapter = class {
           amount: fromMinor(0, currency),
           effectiveRate: 0,
           description: "No federal or emirate personal income tax levied on employee salaries",
-          evidenceRefId: "uae-fta-2024"
+          evidenceRefId: evidenceRef
         }
       ],
-      taxRuleVersion: "UAE-FTA-2024.1",
-      evidenceSourceIds: ["uae-fta-2024"]
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef]
     };
   }
 };
@@ -4709,9 +5110,11 @@ var UkTaxAdapter = class {
   supports(context) {
     return context.countryId === "GB";
   }
-  calculate(gross, _profile, _context) {
+  calculate(gross, profile, context) {
     const currency = "GBP";
     const grossMinor = gross.amountMinor;
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
     let personalAllowanceMinor = 1257e3;
     if (grossMinor > 1e7) {
       const reduction = Math.floor((grossMinor - 1e7) / 2);
@@ -4719,7 +5122,7 @@ var UkTaxAdapter = class {
     }
     const taxableMinor = Math.max(0, grossMinor - personalAllowanceMinor);
     let incomeTaxMinor = 0;
-    const isScotland = _context.regionId === "GB-SCT";
+    const isScotland = context.regionId === "GB-SCT";
     if (isScotland) {
       if (taxableMinor > 0) {
         const t1 = 230600;
@@ -4775,6 +5178,7 @@ var UkTaxAdapter = class {
     niMinor = Math.round(niMinor);
     const totalDeductionsMinor = incomeTaxMinor + niMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
+    const evidenceSourceId = isHistorical2024 ? "uk-hmrc-tax-2024" : "uk-hmrc-tax-2025";
     const components = [
       {
         id: "uk-income-tax",
@@ -4784,7 +5188,7 @@ var UkTaxAdapter = class {
         amount: fromMinor(incomeTaxMinor, currency),
         effectiveRate: grossMinor > 0 ? incomeTaxMinor / grossMinor : 0,
         description: `Personal Allowance: \xA3${(personalAllowanceMinor / 100).toLocaleString()}`,
-        evidenceRefId: "uk-hmrc-tax-2024"
+        evidenceRefId: evidenceSourceId
       },
       {
         id: "uk-national-insurance",
@@ -4794,10 +5198,11 @@ var UkTaxAdapter = class {
         amount: fromMinor(niMinor, currency),
         effectiveRate: grossMinor > 0 ? niMinor / grossMinor : 0,
         description: "8% main rate up to \xA350,270 + 2% upper rate",
-        evidenceRefId: "uk-hmrc-tax-2024"
+        evidenceRefId: evidenceSourceId
       }
     ];
     return {
+      status: "CALCULATED",
       grossIncome: gross,
       taxableIncome: fromMinor(taxableMinor, currency),
       deductions: fromMinor(personalAllowanceMinor, currency),
@@ -4813,8 +5218,8 @@ var UkTaxAdapter = class {
       effectiveTaxRate: grossMinor > 0 ? totalDeductionsMinor / grossMinor : 0,
       marginalTaxRate: grossMinor > 12514e3 ? 0.47 : grossMinor > 5027e3 ? 0.42 : 0.28,
       components,
-      taxRuleVersion: "UK-HMRC-2024.2",
-      evidenceSourceIds: ["uk-hmrc-tax-2024"]
+      taxRuleVersion: isHistorical2024 ? "UK-HMRC-2024.2" : "GB-HMRC-2025.1",
+      evidenceSourceIds: [evidenceSourceId]
     };
   }
 };
@@ -4893,8 +5298,43 @@ var US_FEDERAL_STANDARD_DEDUCTION_2024 = {
   married_filing_jointly: 292e4,
   head_of_household: 219e4
 };
-var SOCIAL_SECURITY_RATE = 0.062;
 var SOCIAL_SECURITY_CAP_2024_MINOR = 1686e4;
+var US_FEDERAL_BRACKETS_2025 = {
+  single: [
+    { upToMinor: 1192500, rate: 0.1 },
+    { upToMinor: 4847500, rate: 0.12 },
+    { upToMinor: 10335e3, rate: 0.22 },
+    { upToMinor: 1973e4, rate: 0.24 },
+    { upToMinor: 25052500, rate: 0.32 },
+    { upToMinor: 62635e3, rate: 0.35 },
+    { upToMinor: Infinity, rate: 0.37 }
+  ],
+  married_filing_jointly: [
+    { upToMinor: 2385e3, rate: 0.1 },
+    { upToMinor: 9695e3, rate: 0.12 },
+    { upToMinor: 2067e4, rate: 0.22 },
+    { upToMinor: 3946e4, rate: 0.24 },
+    { upToMinor: 50105e3, rate: 0.32 },
+    { upToMinor: 7516e4, rate: 0.35 },
+    { upToMinor: Infinity, rate: 0.37 }
+  ],
+  head_of_household: [
+    { upToMinor: 17e5, rate: 0.1 },
+    { upToMinor: 6485e3, rate: 0.12 },
+    { upToMinor: 10335e3, rate: 0.22 },
+    { upToMinor: 1973e4, rate: 0.24 },
+    { upToMinor: 2505e4, rate: 0.32 },
+    { upToMinor: 62635e3, rate: 0.35 },
+    { upToMinor: Infinity, rate: 0.37 }
+  ]
+};
+var US_FEDERAL_STANDARD_DEDUCTION_2025 = {
+  single: 15e5,
+  married_filing_jointly: 3e6,
+  head_of_household: 225e4
+};
+var SOCIAL_SECURITY_CAP_2025_MINOR = 1761e4;
+var SOCIAL_SECURITY_RATE = 0.062;
 var MEDICARE_RATE = 0.0145;
 var ADDL_MEDICARE_RATE = 9e-3;
 var ADDL_MEDICARE_THRESHOLD_MINOR = {
@@ -4902,12 +5342,12 @@ var ADDL_MEDICARE_THRESHOLD_MINOR = {
   married_filing_jointly: 25e6,
   head_of_household: 2e7
 };
-var NYS_STANDARD_DEDUCTION_2024 = {
+var NYS_STANDARD_DEDUCTION = {
   single: 8e5,
   married_filing_jointly: 1605e3,
   head_of_household: 112e4
 };
-var NYS_BRACKETS_2024_SINGLE = [
+var NYS_BRACKETS_SINGLE = [
   { upToMinor: 85e4, rate: 0.04 },
   { upToMinor: 117e4, rate: 0.045 },
   { upToMinor: 139e4, rate: 0.0525 },
@@ -4918,7 +5358,7 @@ var NYS_BRACKETS_2024_SINGLE = [
   { upToMinor: 25e8, rate: 0.103 },
   { upToMinor: Infinity, rate: 0.109 }
 ];
-var NYC_BRACKETS_2024_SINGLE = [
+var NYC_BRACKETS_SINGLE = [
   { upToMinor: 12e5, rate: 0.03078 },
   { upToMinor: 25e5, rate: 0.03762 },
   { upToMinor: 5e6, rate: 0.03819 },
@@ -4956,16 +5396,22 @@ var UsTaxAdapter = class {
   calculate(gross, profile, context) {
     const currency = "USD";
     const grossMinor = gross.amountMinor;
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const effectiveYear = isHistorical2024 ? 2024 : 2025;
+    const federalStdDeductions = isHistorical2024 ? US_FEDERAL_STANDARD_DEDUCTION_2024 : US_FEDERAL_STANDARD_DEDUCTION_2025;
+    const federalBracketsMap = isHistorical2024 ? US_FEDERAL_BRACKETS_2024 : US_FEDERAL_BRACKETS_2025;
+    const socialSecurityCapMinor = isHistorical2024 ? SOCIAL_SECURITY_CAP_2024_MINOR : SOCIAL_SECURITY_CAP_2025_MINOR;
     const preTaxDeductionsMinor = (profile.pensionContributionMinor || 0) + (profile.healthDeductionMinor || 0);
     const adjustedGrossMinor = Math.max(0, grossMinor - preTaxDeductionsMinor);
-    const federalStdDeductionMinor = US_FEDERAL_STANDARD_DEDUCTION_2024[profile.filingStatus];
+    const federalStdDeductionMinor = federalStdDeductions[profile.filingStatus];
     const federalTaxableMinor = Math.max(0, adjustedGrossMinor - federalStdDeductionMinor);
-    const federalBrackets = US_FEDERAL_BRACKETS_2024[profile.filingStatus];
+    const federalBrackets = federalBracketsMap[profile.filingStatus];
     const { taxMinor: federalTaxMinor, topMarginalRate: federalMarginal } = calculateGraduatedTax(
       federalTaxableMinor,
       federalBrackets
     );
-    const socialSecuritySubjectMinor = Math.min(grossMinor, SOCIAL_SECURITY_CAP_2024_MINOR);
+    const socialSecuritySubjectMinor = Math.min(grossMinor, socialSecurityCapMinor);
     const socialSecurityTaxMinor = Math.round(socialSecuritySubjectMinor * SOCIAL_SECURITY_RATE);
     const standardMedicareTaxMinor = Math.round(grossMinor * MEDICARE_RATE);
     const addlMedicareThresholdMinor = ADDL_MEDICARE_THRESHOLD_MINOR[profile.filingStatus];
@@ -4982,13 +5428,13 @@ var UsTaxAdapter = class {
     const isNycResident = context.cityId === "nyc" || context.taxJurisdictionId === "US-FED-NY-NYC" || context.taxJurisdictionId === "tax-us-ny-nyc";
     let nysTaxableMinor = 0;
     if (isNewYorkState) {
-      const nysStdDeductionMinor = NYS_STANDARD_DEDUCTION_2024[profile.filingStatus];
+      const nysStdDeductionMinor = NYS_STANDARD_DEDUCTION[profile.filingStatus];
       nysTaxableMinor = Math.max(0, adjustedGrossMinor - nysStdDeductionMinor);
-      const stateCalc = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_2024_SINGLE);
+      const stateCalc = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE);
       stateTaxMinor = stateCalc.taxMinor;
       stateMarginal = stateCalc.topMarginalRate;
       if (isNycResident) {
-        const localCalc = calculateGraduatedTax(nysTaxableMinor, NYC_BRACKETS_2024_SINGLE);
+        const localCalc = calculateGraduatedTax(nysTaxableMinor, NYC_BRACKETS_SINGLE);
         localTaxMinor = localCalc.taxMinor;
         localMarginal = localCalc.topMarginalRate;
       }
@@ -5039,7 +5485,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? federalTaxMinor / grossMinor : 0,
         marginalRate: federalMarginal,
         description: `Taxable Income: $${(federalTaxableMinor / 100).toLocaleString()} (Standard deduction $${(federalStdDeductionMinor / 100).toLocaleString()})`,
-        evidenceRefId: "us-irs-tax-2024"
+        evidenceRefId: isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2025"
       },
       {
         id: "us-fica-social-security",
@@ -5048,9 +5494,9 @@ var UsTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialSecurityTaxMinor, currency),
         effectiveRate: grossMinor > 0 ? socialSecurityTaxMinor / grossMinor : 0,
-        marginalRate: grossMinor < SOCIAL_SECURITY_CAP_2024_MINOR ? SOCIAL_SECURITY_RATE : 0,
-        description: `6.2% on wages up to $168,600 maximum annual wage base`,
-        evidenceRefId: "us-ssa-fica-2024"
+        marginalRate: grossMinor < socialSecurityCapMinor ? SOCIAL_SECURITY_RATE : 0,
+        description: `6.2% on wages up to $${(socialSecurityCapMinor / 100).toLocaleString()} maximum annual wage base`,
+        evidenceRefId: isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2025"
       },
       {
         id: "us-fica-medicare",
@@ -5061,7 +5507,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? totalMedicareTaxMinor / grossMinor : 0,
         marginalRate: grossMinor > addlMedicareThresholdMinor ? MEDICARE_RATE + ADDL_MEDICARE_RATE : MEDICARE_RATE,
         description: `1.45% uncapped + 0.9% on earnings exceeding $200k`,
-        evidenceRefId: "us-ssa-fica-2024"
+        evidenceRefId: isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2025"
       }
     ];
     if (stateTaxMinor > 0 || isNewYorkState) {
@@ -5073,8 +5519,8 @@ var UsTaxAdapter = class {
         amount: fromMinor(stateTaxMinor, currency),
         effectiveRate: grossMinor > 0 ? stateTaxMinor / grossMinor : 0,
         marginalRate: stateMarginal,
-        description: isNewYorkState ? `NYS Standard Deduction $${(NYS_STANDARD_DEDUCTION_2024[profile.filingStatus] / 100).toLocaleString()}` : void 0,
-        evidenceRefId: isNewYorkState ? "us-nys-tax-2024" : "us-irs-tax-2024"
+        description: isNewYorkState ? `NYS Standard Deduction $${(NYS_STANDARD_DEDUCTION[profile.filingStatus] / 100).toLocaleString()}` : void 0,
+        evidenceRefId: isNewYorkState ? isHistorical2024 ? "us-nys-tax-2024" : "us-nys-tax-2025" : isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2025"
       });
     }
     if (localTaxMinor > 0 || isNycResident) {
@@ -5087,12 +5533,20 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? localTaxMinor / grossMinor : 0,
         marginalRate: localMarginal,
         description: "NYC Resident Tax Schedule (Admin Code \xA7 11-1701)",
-        evidenceRefId: "us-nyc-tax-2024"
+        evidenceRefId: isHistorical2024 ? "us-nyc-tax-2024" : "us-nyc-tax-2025"
       });
     }
     const effectiveTaxRate = grossMinor > 0 ? totalDeductionsAndTaxesMinor / grossMinor : 0;
-    const combinedMarginalRate = federalMarginal + stateMarginal + localMarginal + (grossMinor < SOCIAL_SECURITY_CAP_2024_MINOR ? SOCIAL_SECURITY_RATE : 0) + MEDICARE_RATE + (grossMinor > addlMedicareThresholdMinor ? ADDL_MEDICARE_RATE : 0);
+    const combinedMarginalRate = federalMarginal + stateMarginal + localMarginal + (grossMinor < socialSecurityCapMinor ? SOCIAL_SECURITY_RATE : 0) + MEDICARE_RATE + (grossMinor > addlMedicareThresholdMinor ? ADDL_MEDICARE_RATE : 0);
+    const taxRuleVersion = isHistorical2024 ? "US-FED-NY-NYC-2024.1" : "US-FED-NY-NYC-2025.1";
+    const evidenceSourceIds = [
+      isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2025",
+      isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2025",
+      ...isNewYorkState ? [isHistorical2024 ? "us-nys-tax-2024" : "us-nys-tax-2025"] : [],
+      ...isNycResident ? [isHistorical2024 ? "us-nyc-tax-2024" : "us-nyc-tax-2025"] : []
+    ];
     return {
+      status: "CALCULATED",
       grossIncome: gross,
       taxableIncome: fromMinor(federalTaxableMinor, currency),
       deductions: fromMinor(federalStdDeductionMinor, currency),
@@ -5108,13 +5562,8 @@ var UsTaxAdapter = class {
       effectiveTaxRate,
       marginalTaxRate: combinedMarginalRate,
       components,
-      taxRuleVersion: "US-FED-NY-NYC-2024.1",
-      evidenceSourceIds: [
-        "us-irs-tax-2024",
-        "us-ssa-fica-2024",
-        ...isNewYorkState ? ["us-nys-tax-2024"] : [],
-        ...isNycResident ? ["us-nyc-tax-2024"] : []
-      ]
+      taxRuleVersion,
+      evidenceSourceIds
     };
   }
 };
@@ -5123,61 +5572,62 @@ var UsTaxAdapter = class {
 var TaxRegistry = class {
   static {
     this.COUNTRY_METADATA = {
-      // Priority A (12)
+      // 10 VERIFIED ADAPTERS (Supported by executable golden-vector test suites)
       US: {
         name: "United States",
         status: "VERIFIED",
-        notes: "IRS 2024 Rev. Proc. 2023-34, SSA FICA, and state/local schedules verified with golden vectors."
+        notes: "IRS Rev. Proc. 2024-40 (2025) & Rev. Proc. 2023-34 (2024), SSA FICA, and state/local schedules verified with golden vectors."
       },
       GB: {
         name: "United Kingdom",
         status: "VERIFIED",
-        notes: "HMRC 2024/25 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors."
+        notes: "HMRC 2024/25 & 2025/26 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors."
       },
       AE: {
         name: "United Arab Emirates",
         status: "VERIFIED",
-        notes: "Federal Tax Authority (FTA) 0% statutory employment income tax verified."
+        notes: "Federal Tax Authority (FTA) 0% statutory employment income tax verified under Federal Decree-Law No. 47/2022."
       },
       CA: {
         name: "Canada",
         status: "VERIFIED",
-        notes: "CRA 2024 Federal Brackets, BPA phase-out, CPP1/CPP2, EI, and provincial tax verified with golden vectors."
+        notes: "CRA 2024 & 2025 Federal Brackets, BPA, CPP1/CPP2, EI, and provincial tax verified with golden vectors."
       },
       AU: {
         name: "Australia",
         status: "VERIFIED",
-        notes: "ATO 2024-25 Revised Stage 3 personal tax cuts and Medicare levy verified with golden vectors."
+        notes: "ATO Revised Stage 3 personal tax cuts and Medicare levy verified with golden vectors."
       },
       DE: {
         name: "Germany",
         status: "VERIFIED",
-        notes: "EStG \xA7 32a statutory polynomial formula and social insurance contributions (KV/RV/AV/PV) verified with golden vectors."
+        notes: "EStG \xA7 32a statutory polynomial formula (2024 & 2025) and social insurance contributions (KV/RV/AV/PV) verified with golden vectors."
       },
       SG: {
         name: "Singapore",
         status: "VERIFIED",
-        notes: "IRAS YA 2024 progressive resident tax schedule verified with golden vectors."
+        notes: "IRAS YA 2024 & YA 2025 progressive resident tax schedules verified with golden vectors."
       },
       QA: {
         name: "Qatar",
         status: "VERIFIED",
-        notes: "General Tax Authority (GTA) 0% statutory personal income tax verified."
+        notes: "General Tax Authority (GTA) 0% statutory personal employment income tax verified under Law No. 24/2018."
       },
       SA: {
         name: "Saudi Arabia",
         status: "VERIFIED",
-        notes: "ZATCA 0% statutory employment income tax for employees verified."
+        notes: "ZATCA 0% statutory employment income tax for employees verified under Royal Decree No. M/1."
       },
       NZ: {
         name: "New Zealand",
         status: "VERIFIED",
-        notes: "Inland Revenue (IRD) 2024/25 brackets and ACC earner levy verified with golden vectors."
+        notes: "Inland Revenue (IRD) post-July 2024/2025 thresholds and ACC earner levy verified with golden vectors."
       },
+      // 5 LIMITED ADAPTERS (Executable dedicated adapters with documented scope limitations)
       FR: {
         name: "France",
         status: "LIMITED",
-        notes: "DGFiP 5-bracket scale and URSSAF CSG/CRDS/Retraite for single employee; quotient familial not fully modeled."
+        notes: "DGFiP progressive scale and URSSAF CSG/CRDS/Retraite for single employee; quotient familial not fully modeled."
       },
       NL: {
         name: "Netherlands",
@@ -5192,134 +5642,133 @@ var TaxRegistry = class {
       IE: {
         name: "Ireland",
         status: "LIMITED",
-        notes: "Revenue standard rate band, personal tax credits, USC, and PRSI Class A for single filer."
-      },
-      // Priority B (15)
-      JP: {
-        name: "Japan",
-        status: "LIMITED",
-        notes: "National progressive income tax schedules verified; resident surtax pending full local integration."
-      },
-      KR: {
-        name: "South Korea",
-        status: "LIMITED",
-        notes: "National income tax schedules verified; local resident surtax pending full local integration."
-      },
-      NO: {
-        name: "Norway",
-        status: "LIMITED",
-        notes: "General income tax and bracket tax verified; municipal variations pending."
-      },
-      SE: {
-        name: "Sweden",
-        status: "LIMITED",
-        notes: "National income tax and basic municipal rate verified."
-      },
-      DK: {
-        name: "Denmark",
-        status: "LIMITED",
-        notes: "Bottom/top tax and labor market contributions (AM-bidrag) verified."
-      },
-      FI: {
-        name: "Finland",
-        status: "LIMITED",
-        notes: "State progressive scale and municipal average rate verified."
-      },
-      AT: {
-        name: "Austria",
-        status: "LIMITED",
-        notes: "EStG progressive tax brackets verified."
-      },
-      BE: {
-        name: "Belgium",
-        status: "LIMITED",
-        notes: "Federal personal income tax brackets verified; communal surcharge pending."
+        notes: "Revenue standard rate band (2024 \u20AC42k / 2025 \u20AC44k), personal tax credits, USC, and PRSI Class A for single filer."
       },
       ES: {
         name: "Spain",
         status: "LIMITED",
-        notes: "IRPF national and regional scales with standard personal allowance; regional variations limited."
+        notes: "IRPF national and regional scales with standard personal allowance; autonomous regional deductions limited."
+      },
+      // 24 COMMERCIAL MARKETS WITHOUT EXECUTABLE ADAPTER (Return TAX_CALCULATION_UNAVAILABLE)
+      JP: {
+        name: "Japan",
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
+      },
+      KR: {
+        name: "South Korea",
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
+      },
+      NO: {
+        name: "Norway",
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
+      },
+      SE: {
+        name: "Sweden",
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
+      },
+      DK: {
+        name: "Denmark",
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
+      },
+      FI: {
+        name: "Finland",
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
+      },
+      AT: {
+        name: "Austria",
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
+      },
+      BE: {
+        name: "Belgium",
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       IT: {
         name: "Italy",
-        status: "LIMITED",
-        notes: "IRPEF national brackets verified; regional/municipal surcharges pending."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       IL: {
         name: "Israel",
-        status: "LIMITED",
-        notes: "Income tax brackets and standard credit points verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       HK: {
         name: "Hong Kong",
-        status: "LIMITED",
-        notes: "Salaries tax standard vs progressive rate verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       LU: {
         name: "Luxembourg",
-        status: "LIMITED",
-        notes: "Class 1 progressive rate scale verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
-      // Priority C (12)
       IN: {
         name: "India",
-        status: "LIMITED",
-        notes: "New Tax Regime (Sec 115BAC) verified; standard deduction included."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       BR: {
         name: "Brazil",
-        status: "LIMITED",
-        notes: "IRPF progressive monthly brackets and INSS contribution verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       MX: {
         name: "Mexico",
-        status: "LIMITED",
-        notes: "ISR progressive tariff verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       ID: {
         name: "Indonesia",
-        status: "PROVISIONAL",
-        notes: "PPh 21 progressive scale under research."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       MY: {
         name: "Malaysia",
-        status: "LIMITED",
-        notes: "Resident progressive scale and EPF employee rate verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       PH: {
         name: "Philippines",
-        status: "PROVISIONAL",
-        notes: "TRAIN law progressive tax brackets under research."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       ZA: {
         name: "South Africa",
-        status: "LIMITED",
-        notes: "SARS progressive income tax and primary rebate verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       PL: {
         name: "Poland",
-        status: "LIMITED",
-        notes: "Skala podatkowa (12%/32%) and kwota wolna verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       PT: {
         name: "Portugal",
-        status: "LIMITED",
-        notes: "IRS progressive brackets verified; solidarity surcharge pending."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       CZ: {
         name: "Czechia",
-        status: "LIMITED",
-        notes: "Flat progressive (15%/23%) and basic tax credit verified."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       TH: {
         name: "Thailand",
-        status: "PROVISIONAL",
-        notes: "Personal income tax progressive schedule under research."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       },
       VN: {
         name: "Vietnam",
-        status: "PROVISIONAL",
-        notes: "Personal income tax progressive schedule under research."
+        status: "UNSUPPORTED",
+        notes: "Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification."
       }
     };
   }
@@ -5355,28 +5804,30 @@ var TaxRegistry = class {
     return this.adapters.length;
   }
   static getCountryStatus(countryId) {
+    const hasAdapter = this.supportsTaxCalculation(countryId);
+    if (!hasAdapter) return "UNSUPPORTED";
     return this.COUNTRY_METADATA[countryId]?.status || "UNSUPPORTED";
   }
   static supportsTaxCalculation(countryId) {
     return this.adapters.some((a) => a.supports({ countryId }));
   }
   static isStatutorilyVerified(countryId) {
-    return this.getCountryStatus(countryId) === "VERIFIED" && this.supportsTaxCalculation(countryId);
+    return this.getCountryStatus(countryId) === "VERIFIED";
   }
   static isSupported(countryId) {
     return this.supportsTaxCalculation(countryId);
   }
   static getCountrySupport(countryId) {
     const meta = this.COUNTRY_METADATA[countryId];
-    const status = meta?.status || "UNSUPPORTED";
     const hasAdapter = this.supportsTaxCalculation(countryId);
+    const status = hasAdapter ? meta?.status || "UNSUPPORTED" : "UNSUPPORTED";
     return {
       countryId,
       name: meta?.name || countryId,
       verificationStatus: status,
-      isStatutorilyVerified: status === "VERIFIED" && hasAdapter,
+      isStatutorilyVerified: status === "VERIFIED",
       isSupported: hasAdapter,
-      notes: hasAdapter ? meta?.notes || "Statutory adapter registered." : `Statutory tax schedules for ${meta?.name || countryId} are under verification. Dedicated executable adapter pending.`
+      notes: hasAdapter ? meta?.notes || "Statutory adapter registered." : `Statutory tax calculations for ${meta?.name || countryId} are under active research and verification. LivWorthy does not fabricate synthetic tax rates without verified official schedules.`
     };
   }
   static getAdapter(context) {
@@ -6174,6 +6625,46 @@ var CITY_COL_BENCHMARKS = {
     childcarePerChild: 1350,
     sourceDate: "2024-12",
     evidenceSourceId: "nz-stats-auckland-2024"
+  },
+  tokyo: {
+    currency: "JPY",
+    rentBase: { studio: 11e4, "1-bedroom": 15e4, "2-bedroom": 24e4, "3-bedroom": 36e4 },
+    groceriesPerAdult: 48e3,
+    groceriesPerChild: 3e4,
+    diningPerAdult: 28e3,
+    baseUtilities: 18e3,
+    utilitiesPerExtraPerson: 4e3,
+    internetMonthly: 5e3,
+    mobilePerAdult: 4500,
+    publicTransitPerAdult: 12e3,
+    carMonthlyPerVehicle: 55e3,
+    rideshareMonthly: 15e3,
+    healthcareSingle: 12e3,
+    healthcareFamily: 35e3,
+    lifestyleBasePerAdult: { essential: 15e3, moderate: 35e3, comfortable: 65e3 },
+    childcarePerChild: 6e4,
+    sourceDate: "2024-12",
+    evidenceSourceId: "jp-stat-tokyo-2024"
+  },
+  seoul: {
+    currency: "KRW",
+    rentBase: { studio: 85e4, "1-bedroom": 12e5, "2-bedroom": 19e5, "3-bedroom": 28e5 },
+    groceriesPerAdult: 42e4,
+    groceriesPerChild: 26e4,
+    diningPerAdult: 25e4,
+    baseUtilities: 16e4,
+    utilitiesPerExtraPerson: 35e3,
+    internetMonthly: 35e3,
+    mobilePerAdult: 55e3,
+    publicTransitPerAdult: 65e3,
+    carMonthlyPerVehicle: 45e4,
+    rideshareMonthly: 12e4,
+    healthcareSingle: 9e4,
+    healthcareFamily: 26e4,
+    lifestyleBasePerAdult: { essential: 12e4, moderate: 28e4, comfortable: 52e4 },
+    childcarePerChild: 5e5,
+    sourceDate: "2024-12",
+    evidenceSourceId: "kr-kostat-seoul-2024"
   }
 };
 
@@ -6184,9 +6675,9 @@ var CostOfLivingEngine = class {
     const currency = benchmark.currency;
     const areaMultiplier = household.areaType === "budget" ? 0.85 : household.areaType === "premium" ? 1.35 : 1;
     const baseRentMajor = benchmark.rentBase[household.housingType] * areaMultiplier;
-    let rentMonthlyMinor = Math.round(baseRentMajor * 100);
+    let rentMonthlyMinor = createMoney(baseRentMajor, currency).amountMinor;
     let rentIsOverridden = false;
-    if (overrides?.actualRentMonthlyMinor !== void 0 && overrides.actualRentMonthlyMinor > 0) {
+    if (overrides?.actualRentMonthlyMinor !== void 0 && overrides.actualRentMonthlyMinor >= 0) {
       rentMonthlyMinor = overrides.actualRentMonthlyMinor;
       rentIsOverridden = true;
     }
@@ -6209,7 +6700,7 @@ var CostOfLivingEngine = class {
     let foodMonthlyMajor = household.adults * benchmark.groceriesPerAdult + household.children * benchmark.groceriesPerChild;
     const diningMultiplier = household.lifestyleLevel === "essential" ? 0.4 : household.lifestyleLevel === "comfortable" ? 1.6 : 1;
     foodMonthlyMajor += household.adults * benchmark.diningPerAdult * diningMultiplier;
-    let foodMonthlyMinor = Math.round(foodMonthlyMajor * 100);
+    let foodMonthlyMinor = createMoney(foodMonthlyMajor, currency).amountMinor;
     if (overrides?.actualGroceriesMonthlyMinor) {
       foodMonthlyMinor = overrides.actualGroceriesMonthlyMinor;
     }
@@ -6228,7 +6719,7 @@ var CostOfLivingEngine = class {
     };
     const extraPersons = Math.max(0, household.adults + household.children - 1);
     const utilitiesMajor = benchmark.baseUtilities + extraPersons * benchmark.utilitiesPerExtraPerson + benchmark.internetMonthly + household.adults * benchmark.mobilePerAdult;
-    const utilitiesMinor = Math.round(utilitiesMajor * 100);
+    const utilitiesMinor = createMoney(utilitiesMajor, currency).amountMinor;
     const utilitiesItem = {
       id: "utilities-connectivity",
       category: "utilities",
@@ -6252,7 +6743,7 @@ var CostOfLivingEngine = class {
     } else {
       transportMajor = household.adults * 40;
     }
-    let transportMinor = Math.round(transportMajor * 100);
+    let transportMinor = createMoney(transportMajor, currency).amountMinor;
     if (overrides?.actualTransitMonthlyMinor) {
       transportMinor = overrides.actualTransitMonthlyMinor;
     }
@@ -6271,7 +6762,7 @@ var CostOfLivingEngine = class {
     };
     const isFamily = household.children > 0 || household.adults > 1;
     const healthcareMajor = isFamily ? benchmark.healthcareFamily : benchmark.healthcareSingle;
-    const healthcareMinor = Math.round(healthcareMajor * 100);
+    const healthcareMinor = createMoney(healthcareMajor, currency).amountMinor;
     const healthcareItem = {
       id: "healthcare",
       category: "healthcare",
@@ -6289,7 +6780,7 @@ var CostOfLivingEngine = class {
     const items = [housingItem, foodItem, utilitiesItem, transportItem, healthcareItem];
     if (household.children > 0) {
       const childcareMajor = household.children * benchmark.childcarePerChild;
-      childcareMinor = Math.round(childcareMajor * 100);
+      childcareMinor = createMoney(childcareMajor, currency).amountMinor;
       const childcareItem = {
         id: "childcare-education",
         category: "family",
@@ -6308,7 +6799,7 @@ var CostOfLivingEngine = class {
     const effectiveLifestyle = household.lifestyleLevel || "moderate";
     const lifestyleBase = benchmark.lifestyleBasePerAdult[effectiveLifestyle] || benchmark.lifestyleBasePerAdult.moderate;
     const lifestyleMajor = household.adults * lifestyleBase;
-    const lifestyleMinor = Math.round(lifestyleMajor * 100);
+    const lifestyleMinor = createMoney(lifestyleMajor, currency).amountMinor;
     const lifestyleItem = {
       id: "lifestyle-discretionary",
       category: "lifestyle",
@@ -6739,7 +7230,7 @@ var CapabilityResolver = class {
   static supportsTaxCalculation(countryId) {
     return this.hasDedicatedTaxAdapter(countryId);
   }
-  static resolve(countryId) {
+  static resolve(countryId, requestedTaxYear = 2025) {
     const country = COUNTRIES[countryId];
     const countryName = country?.name || countryId;
     const priority = this.getPriority(countryId);
@@ -6749,79 +7240,81 @@ var CapabilityResolver = class {
     let taxYear;
     let taxRuleVersion;
     if (hasTaxAdapter) {
-      taxYear = 2024;
+      taxYear = requestedTaxYear;
+      const isHistorical2024 = requestedTaxYear <= 2024;
       switch (countryId) {
         case "US":
-          taxRuleVersion = "US-FED-NY-NYC-2024.1";
+          taxRuleVersion = isHistorical2024 ? "US-FED-NY-NYC-2024.1" : "US-FED-NY-NYC-2025.1";
           limitations.push("Single filer standard deduction; localized state/local schedules for major commercial metros.");
           break;
         case "GB":
-          taxRuleVersion = "GB-HMRC-PAYE-2024.1";
+          taxRuleVersion = isHistorical2024 ? "UK-HMRC-2024.2" : "GB-HMRC-2025.1";
           limitations.push("England/Wales standard & Scottish progressive bands; personal allowance reduction over \xA3100k.");
           break;
         case "AE":
-          taxRuleVersion = "AE-FTA-2024.1";
+          taxRuleVersion = isHistorical2024 ? "UAE-FTA-2024.1" : "AE-FTA-2025.1";
           limitations.push("Statutory 0% employment income tax; corporate and excise taxes excluded from payroll.");
           break;
         case "CA":
-          taxRuleVersion = "CA-CRA-ON-2024.1";
+          taxRuleVersion = isHistorical2024 ? "CRA-2024.1" : "CA-CRA-ON-2025.1";
           limitations.push("Federal + Ontario provincial schedules, CPP1/CPP2, and Employment Insurance.");
           break;
         case "AU":
-          taxRuleVersion = "AU-ATO-2024-25.1";
+          taxRuleVersion = isHistorical2024 ? "ATO-2024.2" : "AU-ATO-2025.1";
           limitations.push("Revised Stage 3 tax cuts (effective July 2024) and Medicare levy.");
           break;
         case "DE":
-          taxRuleVersion = "DE-BMF-2024.1";
+          taxRuleVersion = isHistorical2024 ? "BZSt-2024.1" : "DE-BMF-2025.1";
           limitations.push("EStG polynomial formula and standard statutory social contributions (KV, RV, AV, PV).");
           break;
         case "SG":
-          taxRuleVersion = "SG-IRAS-YA2024.1";
+          taxRuleVersion = isHistorical2024 ? "IRAS-YA2024" : "SG-IRAS-YA2025.1";
           limitations.push("Resident progressive tax schedule; CPF statutory contributions for citizens/PR.");
           break;
         case "QA":
-          taxRuleVersion = "QA-GTA-2024.1";
+          taxRuleVersion = isHistorical2024 ? "GTA-2024.1" : "QA-GTA-2025.1";
           limitations.push("Statutory 0% employment income tax for resident and foreign employees.");
           break;
         case "SA":
-          taxRuleVersion = "SA-ZATCA-2024.1";
+          taxRuleVersion = isHistorical2024 ? "GULF-2024.1" : "SA-ZATCA-2025.1";
           limitations.push("0% personal income tax on employee compensation; GOSI contributions for Saudi nationals.");
           break;
         case "NZ":
-          taxRuleVersion = "NZ-IRD-2024.1";
+          taxRuleVersion = isHistorical2024 ? "IRD-2024.2" : "NZ-IRD-2025.1";
           limitations.push("Post-July 2024 tax thresholds and ACC earner levy.");
           break;
         case "FR":
-          taxRuleVersion = "FR-DGFIP-2024.1";
+          taxRuleVersion = isHistorical2024 ? "DGFiP-2024.1" : "FR-DGFIP-2025.1";
           limitations.push("Single employee scale & URSSAF social charges; quotient familial not modeled.");
           break;
         case "ES":
-          taxRuleVersion = "ES-AEAT-2024.1";
+          taxRuleVersion = isHistorical2024 ? "AEAT-2024.1" : "ES-AEAT-2025.1";
           limitations.push("National and standard Madrid/Catalonia scales; specific autonomous regional deductions limited.");
           break;
         case "NL":
-          taxRuleVersion = "NL-BELASTING-2024.1";
+          taxRuleVersion = isHistorical2024 ? "Belastingdienst-2024.1" : "NL-BELASTING-2025.1";
           limitations.push("Box 1 income tax & national insurance; 30% ruling not applied.");
           break;
         case "IE":
-          taxRuleVersion = "IE-REVENUE-2024.1";
+          taxRuleVersion = isHistorical2024 ? "Revenue-2024.1" : "IE-REVENUE-2025.1";
           limitations.push("Single filer standard rate band, personal tax credit, USC, and PRSI Class A.");
           break;
         case "CH":
-          taxRuleVersion = "CH-ESTV-ZH-2024.1";
+          taxRuleVersion = isHistorical2024 ? "ESTV-2024.1" : "CH-ESTV-ZH-2025.1";
           limitations.push("Federal direct tax and standard Zurich cantonal/communal multiplier.");
           break;
       }
     } else {
+      taxRuleVersion = "UNSUPPORTED-JURISDICTION";
       limitations.push(
-        `Statutory tax schedules for ${countryName} are in verification. Calculations for ${countryName} project living costs against pre-tax gross compensation without artificial tax approximations.`
+        `Statutory tax schedules for ${countryName} are in verification. Dedicated executable tax adapter is not yet available; tax calculations return TAX_CALCULATION_UNAVAILABLE.`
       );
     }
     return {
       countryId,
       countryName,
       commercialPriority: priority,
-      verificationStatus: hasTaxAdapter ? support.verificationStatus : "LIMITED",
+      verificationStatus: hasTaxAdapter ? support.verificationStatus : "UNSUPPORTED",
       hasDedicatedTaxAdapter: hasTaxAdapter,
       supportsTaxCalculation: hasTaxAdapter,
       supportsCOL: true,
@@ -6894,7 +7387,7 @@ function configureApp() {
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     res.setHeader(
       "Content-Security-Policy",
-      "default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'self'; object-src 'none';"
+      "default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; frame-ancestors 'self'; object-src 'none';"
     );
     next();
   });

@@ -34,61 +34,63 @@ export class TaxRegistry {
     string,
     { name: string; status: TaxVerificationStatus; notes: string }
   > = {
-    // Priority A (12)
+    // 10 VERIFIED ADAPTERS (Supported by executable golden-vector test suites)
     US: {
       name: 'United States',
       status: 'VERIFIED',
-      notes: 'IRS 2024 Rev. Proc. 2023-34, SSA FICA, and state/local schedules verified with golden vectors.',
+      notes: 'IRS Rev. Proc. 2024-40 (2025) & Rev. Proc. 2023-34 (2024), SSA FICA, and state/local schedules verified with golden vectors.',
     },
     GB: {
       name: 'United Kingdom',
       status: 'VERIFIED',
-      notes: 'HMRC 2024/25 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors.',
+      notes: 'HMRC 2024/25 & 2025/26 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors.',
     },
     AE: {
       name: 'United Arab Emirates',
       status: 'VERIFIED',
-      notes: 'Federal Tax Authority (FTA) 0% statutory employment income tax verified.',
+      notes: 'Federal Tax Authority (FTA) 0% statutory employment income tax verified under Federal Decree-Law No. 47/2022.',
     },
     CA: {
       name: 'Canada',
       status: 'VERIFIED',
-      notes: 'CRA 2024 Federal Brackets, BPA phase-out, CPP1/CPP2, EI, and provincial tax verified with golden vectors.',
+      notes: 'CRA 2024 & 2025 Federal Brackets, BPA, CPP1/CPP2, EI, and provincial tax verified with golden vectors.',
     },
     AU: {
       name: 'Australia',
       status: 'VERIFIED',
-      notes: 'ATO 2024-25 Revised Stage 3 personal tax cuts and Medicare levy verified with golden vectors.',
+      notes: 'ATO Revised Stage 3 personal tax cuts and Medicare levy verified with golden vectors.',
     },
     DE: {
       name: 'Germany',
       status: 'VERIFIED',
-      notes: 'EStG § 32a statutory polynomial formula and social insurance contributions (KV/RV/AV/PV) verified with golden vectors.',
+      notes: 'EStG § 32a statutory polynomial formula (2024 & 2025) and social insurance contributions (KV/RV/AV/PV) verified with golden vectors.',
     },
     SG: {
       name: 'Singapore',
       status: 'VERIFIED',
-      notes: 'IRAS YA 2024 progressive resident tax schedule verified with golden vectors.',
+      notes: 'IRAS YA 2024 & YA 2025 progressive resident tax schedules verified with golden vectors.',
     },
     QA: {
       name: 'Qatar',
       status: 'VERIFIED',
-      notes: 'General Tax Authority (GTA) 0% statutory personal income tax verified.',
+      notes: 'General Tax Authority (GTA) 0% statutory personal employment income tax verified under Law No. 24/2018.',
     },
     SA: {
       name: 'Saudi Arabia',
       status: 'VERIFIED',
-      notes: 'ZATCA 0% statutory employment income tax for employees verified.',
+      notes: 'ZATCA 0% statutory employment income tax for employees verified under Royal Decree No. M/1.',
     },
     NZ: {
       name: 'New Zealand',
       status: 'VERIFIED',
-      notes: 'Inland Revenue (IRD) 2024/25 brackets and ACC earner levy verified with golden vectors.',
+      notes: 'Inland Revenue (IRD) post-July 2024/2025 thresholds and ACC earner levy verified with golden vectors.',
     },
+
+    // 5 LIMITED ADAPTERS (Executable dedicated adapters with documented scope limitations)
     FR: {
       name: 'France',
       status: 'LIMITED',
-      notes: 'DGFiP 5-bracket scale and URSSAF CSG/CRDS/Retraite for single employee; quotient familial not fully modeled.',
+      notes: 'DGFiP progressive scale and URSSAF CSG/CRDS/Retraite for single employee; quotient familial not fully modeled.',
     },
     NL: {
       name: 'Netherlands',
@@ -103,136 +105,134 @@ export class TaxRegistry {
     IE: {
       name: 'Ireland',
       status: 'LIMITED',
-      notes: 'Revenue standard rate band, personal tax credits, USC, and PRSI Class A for single filer.',
-    },
-
-    // Priority B (15)
-    JP: {
-      name: 'Japan',
-      status: 'LIMITED',
-      notes: 'National progressive income tax schedules verified; resident surtax pending full local integration.',
-    },
-    KR: {
-      name: 'South Korea',
-      status: 'LIMITED',
-      notes: 'National income tax schedules verified; local resident surtax pending full local integration.',
-    },
-    NO: {
-      name: 'Norway',
-      status: 'LIMITED',
-      notes: 'General income tax and bracket tax verified; municipal variations pending.',
-    },
-    SE: {
-      name: 'Sweden',
-      status: 'LIMITED',
-      notes: 'National income tax and basic municipal rate verified.',
-    },
-    DK: {
-      name: 'Denmark',
-      status: 'LIMITED',
-      notes: 'Bottom/top tax and labor market contributions (AM-bidrag) verified.',
-    },
-    FI: {
-      name: 'Finland',
-      status: 'LIMITED',
-      notes: 'State progressive scale and municipal average rate verified.',
-    },
-    AT: {
-      name: 'Austria',
-      status: 'LIMITED',
-      notes: 'EStG progressive tax brackets verified.',
-    },
-    BE: {
-      name: 'Belgium',
-      status: 'LIMITED',
-      notes: 'Federal personal income tax brackets verified; communal surcharge pending.',
+      notes: 'Revenue standard rate band (2024 €42k / 2025 €44k), personal tax credits, USC, and PRSI Class A for single filer.',
     },
     ES: {
       name: 'Spain',
       status: 'LIMITED',
-      notes: 'IRPF national and regional scales with standard personal allowance; regional variations limited.',
+      notes: 'IRPF national and regional scales with standard personal allowance; autonomous regional deductions limited.',
+    },
+
+    // 24 COMMERCIAL MARKETS WITHOUT EXECUTABLE ADAPTER (Return TAX_CALCULATION_UNAVAILABLE)
+    JP: {
+      name: 'Japan',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
+    },
+    KR: {
+      name: 'South Korea',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
+    },
+    NO: {
+      name: 'Norway',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
+    },
+    SE: {
+      name: 'Sweden',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
+    },
+    DK: {
+      name: 'Denmark',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
+    },
+    FI: {
+      name: 'Finland',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
+    },
+    AT: {
+      name: 'Austria',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
+    },
+    BE: {
+      name: 'Belgium',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     IT: {
       name: 'Italy',
-      status: 'LIMITED',
-      notes: 'IRPEF national brackets verified; regional/municipal surcharges pending.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     IL: {
       name: 'Israel',
-      status: 'LIMITED',
-      notes: 'Income tax brackets and standard credit points verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     HK: {
       name: 'Hong Kong',
-      status: 'LIMITED',
-      notes: 'Salaries tax standard vs progressive rate verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     LU: {
       name: 'Luxembourg',
-      status: 'LIMITED',
-      notes: 'Class 1 progressive rate scale verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
-
-    // Priority C (12)
     IN: {
       name: 'India',
-      status: 'LIMITED',
-      notes: 'New Tax Regime (Sec 115BAC) verified; standard deduction included.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     BR: {
       name: 'Brazil',
-      status: 'LIMITED',
-      notes: 'IRPF progressive monthly brackets and INSS contribution verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     MX: {
       name: 'Mexico',
-      status: 'LIMITED',
-      notes: 'ISR progressive tariff verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     ID: {
       name: 'Indonesia',
-      status: 'PROVISIONAL',
-      notes: 'PPh 21 progressive scale under research.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     MY: {
       name: 'Malaysia',
-      status: 'LIMITED',
-      notes: 'Resident progressive scale and EPF employee rate verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     PH: {
       name: 'Philippines',
-      status: 'PROVISIONAL',
-      notes: 'TRAIN law progressive tax brackets under research.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     ZA: {
       name: 'South Africa',
-      status: 'LIMITED',
-      notes: 'SARS progressive income tax and primary rebate verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     PL: {
       name: 'Poland',
-      status: 'LIMITED',
-      notes: 'Skala podatkowa (12%/32%) and kwota wolna verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     PT: {
       name: 'Portugal',
-      status: 'LIMITED',
-      notes: 'IRS progressive brackets verified; solidarity surcharge pending.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     CZ: {
       name: 'Czechia',
-      status: 'LIMITED',
-      notes: 'Flat progressive (15%/23%) and basic tax credit verified.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     TH: {
       name: 'Thailand',
-      status: 'PROVISIONAL',
-      notes: 'Personal income tax progressive schedule under research.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
     VN: {
       name: 'Vietnam',
-      status: 'PROVISIONAL',
-      notes: 'Personal income tax progressive schedule under research.',
+      status: 'UNSUPPORTED',
+      notes: 'Commercial market supported for cost-of-living and income benchmarking; dedicated statutory tax engine under verification.',
     },
   };
 
@@ -269,6 +269,8 @@ export class TaxRegistry {
   }
 
   public static getCountryStatus(countryId: string): TaxVerificationStatus {
+    const hasAdapter = this.supportsTaxCalculation(countryId);
+    if (!hasAdapter) return 'UNSUPPORTED';
     return this.COUNTRY_METADATA[countryId]?.status || 'UNSUPPORTED';
   }
 
@@ -277,7 +279,7 @@ export class TaxRegistry {
   }
 
   public static isStatutorilyVerified(countryId: string): boolean {
-    return this.getCountryStatus(countryId) === 'VERIFIED' && this.supportsTaxCalculation(countryId);
+    return this.getCountryStatus(countryId) === 'VERIFIED';
   }
 
   public static isSupported(countryId: string): boolean {
@@ -286,17 +288,20 @@ export class TaxRegistry {
 
   public static getCountrySupport(countryId: string): TaxCountrySupport {
     const meta = this.COUNTRY_METADATA[countryId];
-    const status = meta?.status || 'UNSUPPORTED';
     const hasAdapter = this.supportsTaxCalculation(countryId);
+    const status: TaxVerificationStatus = hasAdapter
+      ? meta?.status || 'UNSUPPORTED'
+      : 'UNSUPPORTED';
+
     return {
       countryId,
       name: meta?.name || countryId,
       verificationStatus: status,
-      isStatutorilyVerified: status === 'VERIFIED' && hasAdapter,
+      isStatutorilyVerified: status === 'VERIFIED',
       isSupported: hasAdapter,
       notes: hasAdapter
         ? meta?.notes || 'Statutory adapter registered.'
-        : `Statutory tax schedules for ${meta?.name || countryId} are under verification. Dedicated executable adapter pending.`,
+        : `Statutory tax calculations for ${meta?.name || countryId} are under active research and verification. LivWorthy does not fabricate synthetic tax rates without verified official schedules.`,
     };
   }
 
@@ -317,4 +322,3 @@ export class TaxRegistry {
     return adapter.calculate(grossCompensation, profile, context);
   }
 }
-

@@ -15,24 +15,26 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
 
-    // 1. Social Security (1st Pillar: AHV/IV/EO + ALV 2024)
-    // AHV / IV / EO: 5.3% uncapped
+    // Effective-period rule selection
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+
+    // 1. Social Security (1st Pillar: AHV/IV/EO + ALV)
     const ahvMinor = Math.round(grossMajor * 0.053 * 100);
 
-    // ALV (Arbeitslosenversicherung): 1.1% up to CHF 148,200
-    const alvBase = Math.min(grossMajor, 148200);
+    const alvCap = 148200;
+    const alvBase = Math.min(grossMajor, alvCap);
     const alvMinor = Math.round(alvBase * 0.011 * 100);
 
-    // 2nd Pillar (BVG / Occupational Pension estimate employee share ~5.0% on coordinated salary)
-    const coordinatedSalary = Math.max(0, Math.min(grossMajor, 88200) - 25725);
+    const bvgCap = isHistorical2024 ? 88200 : 90720;
+    const bvgDeduction = isHistorical2024 ? 25725 : 26460;
+    const coordinatedSalary = Math.max(0, Math.min(grossMajor, bvgCap) - bvgDeduction);
     const bvgMinor = Math.round(coordinatedSalary * 0.05 * 100);
 
     const socialContributionsMinor = ahvMinor + alvMinor + bvgMinor;
-
-    // 2. Net Taxable Income after social deductions
     const taxableIncomeMajor = Math.max(0, grossMajor - socialContributionsMinor / 100);
 
-    // 3. Federal Direct Tax (Direkte Bundessteuer 2024 single)
+    // 2. Federal Direct Tax (Direkte Bundessteuer single)
     let federalTax = 0;
     if (taxableIncomeMajor <= 14500) {
       federalTax = 0;
@@ -57,8 +59,7 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
     }
     const federalTaxMinor = Math.round(federalTax * 100);
 
-    // 4. Cantonal & Communal Tax (Staats- und Gemeindesteuern)
-    // Modeled with Zurich / Geneva standard schedules (~11% to 16% effective depending on income)
+    // 3. Cantonal & Communal Tax (Staats- und Gemeindesteuern)
     const cantonCode = context.regionId?.replace('CH-', '') || 'ZH';
     let cantonalEffectiveRate = 0.115;
     if (cantonCode === 'GE') {
@@ -66,10 +67,9 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
     } else if (cantonCode === 'BS') {
       cantonalEffectiveRate = 0.14;
     } else if (cantonCode === 'ZG') {
-      cantonalEffectiveRate = 0.075; // Low-tax canton Zug
+      cantonalEffectiveRate = 0.075;
     }
 
-    // Scale rate based on progressive tier
     if (taxableIncomeMajor > 150000) {
       cantonalEffectiveRate += 0.03;
     } else if (taxableIncomeMajor < 60000) {
@@ -83,6 +83,8 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
+    const evidenceRef = isHistorical2024 ? 'estv-bundessteuer-tarife-2024' : 'ch-estv-tax-2025';
+
     const components: TaxComponentBreakdown[] = [
       {
         id: 'ch-bundessteuer',
@@ -91,7 +93,7 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
         category: 'federal',
         amount: fromMinor(federalTaxMinor, 'CHF'),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: 'estv-bundessteuer-tarife-2024',
+        evidenceRefId: evidenceRef,
       },
       {
         id: 'ch-kantonssteuer',
@@ -100,7 +102,7 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
         category: 'state',
         amount: fromMinor(stateTaxMinor, 'CHF'),
         effectiveRate: stateTaxMinor / (grossMinor || 1),
-        evidenceRefId: 'estv-kantonssteuer-2024',
+        evidenceRefId: isHistorical2024 ? 'estv-kantonssteuer-2024' : 'ch-estv-tax-2025',
       },
       {
         id: 'ch-sozialabgaben',
@@ -109,9 +111,11 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(socialContributionsMinor, 'CHF'),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: 'bsv-beitragssaetze-2024',
+        evidenceRefId: isHistorical2024 ? 'bsv-beitragssaetze-2024' : 'ch-estv-tax-2025',
       },
     ];
+
+    const taxRuleVersion = isHistorical2024 ? 'ESTV-2024.1' : 'CH-ESTV-ZH-2025.1';
 
     return {
       status: 'CALCULATED',
@@ -130,12 +134,8 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
       marginalTaxRate: federalTaxMinor / grossMinor + cantonalEffectiveRate + 0.064,
       components,
-      taxRuleVersion: 'ESTV-2024.1',
-      evidenceSourceIds: [
-        'estv-bundessteuer-tarife-2024',
-        'estv-kantonssteuer-2024',
-        'bsv-beitragssaetze-2024',
-      ],
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef],
     };
   }
 }

@@ -11,11 +11,17 @@ export class UaeTaxAdapter implements TaxAdapter {
     return context.countryId === 'AE';
   }
 
-  calculate(gross: Money, _profile: TaxProfile, _context: TaxContext): TaxResult {
+  calculate(gross: Money, profile: TaxProfile, context: TaxContext): TaxResult {
     const currency: CurrencyCode = 'AED';
     const grossMinor = gross.amountMinor;
 
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const taxRuleVersion = isHistorical2024 ? 'UAE-FTA-2024.1' : 'AE-FTA-2025.1';
+    const evidenceRef = isHistorical2024 ? 'uae-fta-2024' : 'uae-fta-2025';
+
     return {
+      status: 'CALCULATED',
       grossIncome: gross,
       taxableIncome: fromMinor(0, currency),
       deductions: fromMinor(0, currency),
@@ -39,11 +45,11 @@ export class UaeTaxAdapter implements TaxAdapter {
           amount: fromMinor(0, currency),
           effectiveRate: 0,
           description: 'No federal or emirate personal income tax levied on employee salaries',
-          evidenceRefId: 'uae-fta-2024',
+          evidenceRefId: evidenceRef,
         },
       ],
-      taxRuleVersion: 'UAE-FTA-2024.1',
-      evidenceSourceIds: ['uae-fta-2024'],
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef],
     };
   }
 }

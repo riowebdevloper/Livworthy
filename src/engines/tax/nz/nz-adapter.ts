@@ -15,7 +15,11 @@ export class NewZealandTaxAdapter implements TaxAdapter {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
 
-    // 1. IRD PAYE Personal Income Tax Brackets (2024/2025 Revised Thresholds)
+    // Effective-period rule selection
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+
+    // 1. IRD PAYE Personal Income Tax Brackets (Revised Thresholds)
     // 0 to $15,600: 10.5%
     // $15,601 to $53,500: 17.5%
     // $53,501 to $78,100: 30%
@@ -53,6 +57,8 @@ export class NewZealandTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
+    const evidenceRef = isHistorical2024 ? 'ird-tax-rates-2024-2025' : 'nz-ird-tax-2025';
+
     const components: TaxComponentBreakdown[] = [
       {
         id: 'nz-ird-paye',
@@ -61,7 +67,7 @@ export class NewZealandTaxAdapter implements TaxAdapter {
         category: 'federal',
         amount: fromMinor(federalTaxMinor, 'NZD'),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: 'ird-tax-rates-2024-2025',
+        evidenceRefId: evidenceRef,
       },
       {
         id: 'nz-acc-levy',
@@ -70,9 +76,11 @@ export class NewZealandTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(accMinor, 'NZD'),
         effectiveRate: accMinor / (grossMinor || 1),
-        evidenceRefId: 'acc-earners-levy-2024',
+        evidenceRefId: isHistorical2024 ? 'acc-earners-levy-2024' : 'nz-ird-tax-2025',
       },
     ];
+
+    const taxRuleVersion = isHistorical2024 ? 'IRD-2024.2' : 'NZ-IRD-2025.1';
 
     return {
       status: 'CALCULATED',
@@ -91,8 +99,8 @@ export class NewZealandTaxAdapter implements TaxAdapter {
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
       marginalTaxRate: grossMajor > 180000 ? 0.406 : grossMajor > 78100 ? 0.346 : 0.316,
       components,
-      taxRuleVersion: 'IRD-2024.2',
-      evidenceSourceIds: ['ird-tax-rates-2024-2025', 'acc-earners-levy-2024'],
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef],
     };
   }
 }

@@ -16,35 +16,35 @@ export const COUNTRIES: Record<string, Country> = {
   NZ: { id: 'NZ', name: 'New Zealand', defaultCurrency: 'NZD', verificationStatus: 'VERIFIED', notes: 'Inland Revenue (IRD) brackets and ACC earner levy verified.' },
 
   // PRIORITY B (15)
-  JP: { id: 'JP', name: 'Japan', defaultCurrency: 'JPY', verificationStatus: 'LIMITED', notes: 'National progressive income tax verified; resident surtax pending.' },
-  KR: { id: 'KR', name: 'South Korea', defaultCurrency: 'KRW', verificationStatus: 'LIMITED', notes: 'National income tax schedules verified; local resident surtax pending.' },
+  JP: { id: 'JP', name: 'Japan', defaultCurrency: 'JPY', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  KR: { id: 'KR', name: 'South Korea', defaultCurrency: 'KRW', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
   SA: { id: 'SA', name: 'Saudi Arabia', defaultCurrency: 'SAR', verificationStatus: 'VERIFIED' },
   QA: { id: 'QA', name: 'Qatar', defaultCurrency: 'QAR', verificationStatus: 'VERIFIED' },
-  NO: { id: 'NO', name: 'Norway', defaultCurrency: 'NOK', verificationStatus: 'LIMITED', notes: 'General income tax and bracket tax verified; municipal variations pending.' },
-  SE: { id: 'SE', name: 'Sweden', defaultCurrency: 'SEK', verificationStatus: 'LIMITED', notes: 'National income tax and basic municipal rate verified.' },
-  DK: { id: 'DK', name: 'Denmark', defaultCurrency: 'DKK', verificationStatus: 'LIMITED', notes: 'Bottom/top tax and labor market contributions (AM-bidrag) verified.' },
-  FI: { id: 'FI', name: 'Finland', defaultCurrency: 'EUR', verificationStatus: 'LIMITED', notes: 'State progressive scale and municipal average rate verified.' },
-  AT: { id: 'AT', name: 'Austria', defaultCurrency: 'EUR', verificationStatus: 'LIMITED', notes: 'EStG progressive tax brackets verified.' },
-  BE: { id: 'BE', name: 'Belgium', defaultCurrency: 'EUR', verificationStatus: 'LIMITED', notes: 'Federal personal income tax brackets verified; communal surcharge pending.' },
-  ES: { id: 'ES', name: 'Spain', defaultCurrency: 'EUR', verificationStatus: 'LIMITED', notes: 'IRPF regional schedules verified; autonomous community variations pending.' },
-  IT: { id: 'IT', name: 'Italy', defaultCurrency: 'EUR', verificationStatus: 'LIMITED', notes: 'IRPEF national brackets verified; regional/municipal surcharges pending.' },
-  IL: { id: 'IL', name: 'Israel', defaultCurrency: 'ILS', verificationStatus: 'LIMITED', notes: 'Income tax brackets and standard credit points verified.' },
-  HK: { id: 'HK', name: 'Hong Kong', defaultCurrency: 'HKD', verificationStatus: 'LIMITED', notes: 'Salaries tax standard vs progressive rate verified.' },
-  LU: { id: 'LU', name: 'Luxembourg', defaultCurrency: 'EUR', verificationStatus: 'LIMITED', notes: 'Class 1 progressive rate scale verified.' },
+  NO: { id: 'NO', name: 'Norway', defaultCurrency: 'NOK', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  SE: { id: 'SE', name: 'Sweden', defaultCurrency: 'SEK', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  DK: { id: 'DK', name: 'Denmark', defaultCurrency: 'DKK', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  FI: { id: 'FI', name: 'Finland', defaultCurrency: 'EUR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  AT: { id: 'AT', name: 'Austria', defaultCurrency: 'EUR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  BE: { id: 'BE', name: 'Belgium', defaultCurrency: 'EUR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  ES: { id: 'ES', name: 'Spain', defaultCurrency: 'EUR', verificationStatus: 'LIMITED', notes: 'IRPF national and regional scales verified; autonomous community variations limited.' },
+  IT: { id: 'IT', name: 'Italy', defaultCurrency: 'EUR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  IL: { id: 'IL', name: 'Israel', defaultCurrency: 'ILS', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  HK: { id: 'HK', name: 'Hong Kong', defaultCurrency: 'HKD', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  LU: { id: 'LU', name: 'Luxembourg', defaultCurrency: 'EUR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
 
   // PRIORITY C (12)
-  IN: { id: 'IN', name: 'India', defaultCurrency: 'INR', verificationStatus: 'LIMITED', notes: 'New Tax Regime (Sec 115BAC) verified; standard deduction included.' },
-  BR: { id: 'BR', name: 'Brazil', defaultCurrency: 'BRL', verificationStatus: 'LIMITED', notes: 'IRPF progressive monthly brackets and INSS contribution verified.' },
-  MX: { id: 'MX', name: 'Mexico', defaultCurrency: 'MXN', verificationStatus: 'LIMITED', notes: 'ISR progressive tariff verified.' },
-  ID: { id: 'ID', name: 'Indonesia', defaultCurrency: 'IDR', verificationStatus: 'PROVISIONAL', notes: 'PPh 21 progressive scale under research.' },
-  MY: { id: 'MY', name: 'Malaysia', defaultCurrency: 'MYR', verificationStatus: 'LIMITED', notes: 'Resident progressive scale and EPF employee rate verified.' },
-  PH: { id: 'PH', name: 'Philippines', defaultCurrency: 'PHP', verificationStatus: 'PROVISIONAL', notes: 'TRAIN law progressive tax brackets under research.' },
-  ZA: { id: 'ZA', name: 'South Africa', defaultCurrency: 'ZAR', verificationStatus: 'LIMITED', notes: 'SARS progressive income tax and primary rebate verified.' },
-  PL: { id: 'PL', name: 'Poland', defaultCurrency: 'PLN', verificationStatus: 'LIMITED', notes: 'Skala podatkowa (12%/32%) and kwota wolna verified.' },
-  PT: { id: 'PT', name: 'Portugal', defaultCurrency: 'EUR', verificationStatus: 'LIMITED', notes: 'IRS progressive brackets verified; solidarity surcharge pending.' },
-  CZ: { id: 'CZ', name: 'Czechia', defaultCurrency: 'CZK', verificationStatus: 'LIMITED', notes: 'Flat progressive (15%/23%) and basic tax credit verified.' },
-  TH: { id: 'TH', name: 'Thailand', defaultCurrency: 'THB', verificationStatus: 'PROVISIONAL', notes: 'Personal income tax progressive schedule under research.' },
-  VN: { id: 'VN', name: 'Vietnam', defaultCurrency: 'VND', verificationStatus: 'PROVISIONAL', notes: 'Personal income tax progressive schedule under research.' },
+  IN: { id: 'IN', name: 'India', defaultCurrency: 'INR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  BR: { id: 'BR', name: 'Brazil', defaultCurrency: 'BRL', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  MX: { id: 'MX', name: 'Mexico', defaultCurrency: 'MXN', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  ID: { id: 'ID', name: 'Indonesia', defaultCurrency: 'IDR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  MY: { id: 'MY', name: 'Malaysia', defaultCurrency: 'MYR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  PH: { id: 'PH', name: 'Philippines', defaultCurrency: 'PHP', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  ZA: { id: 'ZA', name: 'South Africa', defaultCurrency: 'ZAR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  PL: { id: 'PL', name: 'Poland', defaultCurrency: 'PLN', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  PT: { id: 'PT', name: 'Portugal', defaultCurrency: 'EUR', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  CZ: { id: 'CZ', name: 'Czechia', defaultCurrency: 'CZK', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  TH: { id: 'TH', name: 'Thailand', defaultCurrency: 'THB', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
+  VN: { id: 'VN', name: 'Vietnam', defaultCurrency: 'VND', verificationStatus: 'UNSUPPORTED', notes: 'Commercial market supported for cost-of-living; dedicated statutory tax engine under verification.' },
 };
 
 export const REGIONS: Record<string, Region> = {
@@ -580,7 +580,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-nz-federal',
     colIndexBase100NYC: 72.9,
     metroAreaName: 'Auckland Region',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'VERIFIED',
   },
 
   // --- Japan ---
@@ -593,7 +593,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-jp-federal',
     colIndexBase100NYC: 68.4,
     metroAreaName: 'Greater Tokyo Area',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- South Korea ---
@@ -606,7 +606,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-kr-federal',
     colIndexBase100NYC: 65.2,
     metroAreaName: 'Seoul Capital Area',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Norway ---
@@ -619,7 +619,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-no-federal',
     colIndexBase100NYC: 84.1,
     metroAreaName: 'Greater Oslo Region',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Sweden ---
@@ -632,7 +632,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-se-federal',
     colIndexBase100NYC: 72.8,
     metroAreaName: 'Metropolitan Stockholm',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Denmark ---
@@ -645,7 +645,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-dk-federal',
     colIndexBase100NYC: 82.5,
     metroAreaName: 'Hovedstadsområdet',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Finland ---
@@ -658,7 +658,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-fi-federal',
     colIndexBase100NYC: 71.9,
     metroAreaName: 'Helsinki Metropolitan Area',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Austria ---
@@ -671,7 +671,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-at-federal',
     colIndexBase100NYC: 69.4,
     metroAreaName: 'Vienna Region',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Belgium ---
@@ -684,7 +684,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-be-federal',
     colIndexBase100NYC: 73.1,
     metroAreaName: 'Brussels-Capital',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Italy ---
@@ -697,7 +697,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-it-federal',
     colIndexBase100NYC: 68.2,
     metroAreaName: 'Metropolitan City of Rome',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
   milan: {
     id: 'milan',
@@ -708,7 +708,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-it-federal',
     colIndexBase100NYC: 74.8,
     metroAreaName: 'Milan Metropolitan Area',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Israel ---
@@ -721,7 +721,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-il-federal',
     colIndexBase100NYC: 86.2,
     metroAreaName: 'Gush Dan Metropolitan Area',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Hong Kong ---
@@ -734,7 +734,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-hk-federal',
     colIndexBase100NYC: 79.5,
     metroAreaName: 'Hong Kong SAR',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Luxembourg ---
@@ -747,7 +747,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-lu-federal',
     colIndexBase100NYC: 78.2,
     metroAreaName: 'Canton of Luxembourg',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- India ---
@@ -760,7 +760,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-in-federal',
     colIndexBase100NYC: 27.5,
     metroAreaName: 'Mumbai Metropolitan Region',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
   bengaluru: {
     id: 'bengaluru',
@@ -771,7 +771,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-in-federal',
     colIndexBase100NYC: 24.8,
     metroAreaName: 'Bangalore Urban',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Brazil ---
@@ -784,7 +784,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-br-federal',
     colIndexBase100NYC: 38.2,
     metroAreaName: 'Greater São Paulo',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Mexico ---
@@ -797,7 +797,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-mx-federal',
     colIndexBase100NYC: 42.1,
     metroAreaName: 'Greater Mexico City',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Indonesia ---
@@ -810,7 +810,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-id-federal',
     colIndexBase100NYC: 32.4,
     metroAreaName: 'Jabodetabek',
-    verificationStatus: 'PROVISIONAL',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Malaysia ---
@@ -823,7 +823,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-my-federal',
     colIndexBase100NYC: 34.6,
     metroAreaName: 'Greater Kuala Lumpur (Klang Valley)',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Philippines ---
@@ -836,7 +836,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-ph-federal',
     colIndexBase100NYC: 31.2,
     metroAreaName: 'Metro Manila',
-    verificationStatus: 'PROVISIONAL',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- South Africa ---
@@ -849,7 +849,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-za-federal',
     colIndexBase100NYC: 36.8,
     metroAreaName: 'Greater Johannesburg',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
   'cape-town': {
     id: 'cape-town',
@@ -860,7 +860,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-za-federal',
     colIndexBase100NYC: 35.4,
     metroAreaName: 'City of Cape Town',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Poland ---
@@ -873,7 +873,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-pl-federal',
     colIndexBase100NYC: 44.5,
     metroAreaName: 'Warsaw Metropolitan Area',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Portugal ---
@@ -886,7 +886,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-pt-federal',
     colIndexBase100NYC: 52.3,
     metroAreaName: 'Lisbon Metropolitan Area',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Czechia ---
@@ -899,7 +899,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-cz-federal',
     colIndexBase100NYC: 48.7,
     metroAreaName: 'Prague Metropolitan Area',
-    verificationStatus: 'LIMITED',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Thailand ---
@@ -912,7 +912,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-th-federal',
     colIndexBase100NYC: 39.8,
     metroAreaName: 'Bangkok Metropolitan Region',
-    verificationStatus: 'PROVISIONAL',
+    verificationStatus: 'UNSUPPORTED',
   },
 
   // --- Vietnam ---
@@ -925,7 +925,7 @@ export const CITIES: Record<string, City> = {
     taxJurisdictionId: 'tax-vn-federal',
     colIndexBase100NYC: 29.4,
     metroAreaName: 'Ho Chi Minh Metropolitan Area',
-    verificationStatus: 'PROVISIONAL',
+    verificationStatus: 'UNSUPPORTED',
   },
 };
 

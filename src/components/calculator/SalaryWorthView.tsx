@@ -18,7 +18,7 @@ import {
 import { CITIES } from '../../data/locations';
 import { PRESET_LIST } from '../../data/presets';
 import { calculateSalaryWorth } from '../../api/calculators';
-import { createMoney, formatMoney, toMajor } from '../../lib/money';
+import { createMoney, formatMoney, getDefaultSalaryForCurrency, toMajor } from '../../lib/money';
 import { HouseholdProfile } from '../../types/col';
 import { LivWorthCalculationOutcome, LivWorthScenario } from '../../types/scenario';
 import { CurrencyInput } from '../ui/CurrencyInput';
@@ -118,13 +118,27 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
 
   const handleCityChange = (cityId: string) => {
     const nextCity = CITIES[cityId] || CITIES.nyc;
+    const isCurrencyChange = nextCity.currency !== scenario.location.currency;
+    const nextSalaryMajor = isCurrencyChange
+      ? getDefaultSalaryForCurrency(nextCity.currency)
+      : salaryInputMajor;
+
+    if (isCurrencyChange) {
+      setSalaryInputMajor(nextSalaryMajor);
+    }
+    if (onUpdateRentOverride) {
+      onUpdateRentOverride(undefined);
+    }
+    setRentInputDraft('');
+
     onUpdateScenario({
       ...scenario,
       location: nextCity,
       compensation: {
         ...scenario.compensation,
-        baseSalary: createMoney(salaryInputMajor, nextCity.currency),
+        baseSalary: createMoney(nextSalaryMajor, nextCity.currency),
       },
+      overrides: undefined,
     });
   };
 
@@ -154,8 +168,14 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   const [showColBreakdown, setShowColBreakdown] = useState(false);
   const [showMethodology, setShowMethodology] = useState(false);
   const [rentInputDraft, setRentInputDraft] = useState<string>(
-    actualRentMajor ? actualRentMajor.toString() : ''
+    actualRentMajor !== undefined && isFinite(actualRentMajor) ? actualRentMajor.toString() : ''
   );
+
+  useEffect(() => {
+    setRentInputDraft(
+      actualRentMajor !== undefined && isFinite(actualRentMajor) ? actualRentMajor.toString() : ''
+    );
+  }, [actualRentMajor]);
 
   const handleTriggerCalculate = () => {
     onUpdateScenario({
@@ -306,7 +326,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
                   household={scenario.household}
                   actualRentOverridden={actualRentMajor !== undefined}
                   actualRentFormatted={
-                    actualRentMajor
+                    actualRentMajor !== undefined && isFinite(actualRentMajor)
                       ? formatMoney(createMoney(actualRentMajor, currency), { hideDecimals: true })
                       : undefined
                   }
@@ -332,8 +352,9 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
                     <button
                       type="button"
                       onClick={() => {
-                        const num = parseFloat(rentInputDraft);
-                        if (!isNaN(num) && num > 0) {
+                        const trimmed = rentInputDraft.trim();
+                        const num = trimmed !== '' ? parseFloat(trimmed) : NaN;
+                        if (!isNaN(num) && num >= 0) {
                           onUpdateRentOverride(num);
                         } else {
                           onUpdateRentOverride(undefined);

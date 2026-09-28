@@ -27,10 +27,16 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
   onOpenCustomizer,
 }) => {
   const [rentInput, setRentInput] = useState<string>(
-    actualRentMajor ? actualRentMajor.toString() : ''
+    actualRentMajor !== undefined && isFinite(actualRentMajor) ? actualRentMajor.toString() : ''
   );
   const [isEditingRent, setIsEditingRent] = useState(false);
   const [viewMode, setViewMode] = useState<'with-rent' | 'without-rent'>('with-rent');
+
+  React.useEffect(() => {
+    setRentInput(
+      actualRentMajor !== undefined && isFinite(actualRentMajor) ? actualRentMajor.toString() : ''
+    );
+  }, [actualRentMajor]);
 
   const currency = col.monthlyTotal.currency;
   const isWithoutRent = viewMode === 'without-rent';
@@ -38,8 +44,9 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
   const displayedTotal = isWithoutRent ? col.monthlyWithoutRent : col.monthlyWithRent;
 
   const handleSaveRent = () => {
-    const parsed = parseFloat(rentInput);
-    if (!isNaN(parsed) && parsed > 0) {
+    const trimmed = rentInput.trim();
+    const parsed = trimmed !== '' ? parseFloat(trimmed) : NaN;
+    if (!isNaN(parsed) && parsed >= 0) {
       onOverrideRent(parsed);
     } else {
       onOverrideRent(undefined);
@@ -100,10 +107,10 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
             <Home className="w-4 h-4 text-[#167D75] shrink-0" />
             <div>
               <span className="text-xs font-bold text-[#102A2E]">
-                {actualRentMajor ? 'Your Actual Rent Override Active:' : 'Have an exact rental price?'}
+                {actualRentMajor !== undefined ? 'Your Actual Rent Override Active:' : 'Have an exact rental price?'}
               </span>
               <p className="text-[11px] text-[#60706D]">
-                {actualRentMajor
+                {actualRentMajor !== undefined && isFinite(actualRentMajor)
                   ? `Overriding benchmark with ${formatMoney(createMoney(actualRentMajor, currency), { hideDecimals: true })}/month`
                   : 'Replace the HUD benchmark estimate with your specific monthly lease amount.'}
               </p>
@@ -139,7 +146,7 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                {actualRentMajor && (
+                {actualRentMajor !== undefined && (
                   <button
                     onClick={handleResetRent}
                     className="text-xs text-[#60706D] hover:text-[#102A2E] flex items-center space-x-1 px-2 py-1"
@@ -150,13 +157,13 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
                 )}
                 <button
                   onClick={() => {
-                    setRentInput(actualRentMajor ? actualRentMajor.toString() : '');
+                    setRentInput(actualRentMajor !== undefined && isFinite(actualRentMajor) ? actualRentMajor.toString() : '');
                     setIsEditingRent(true);
                   }}
                   className="text-xs font-semibold px-3 py-1 bg-[#FFFFFF] border border-[#DCE3E0] hover:border-[#167D75] text-[#102A2E] rounded-md flex items-center space-x-1 transition-colors"
                 >
                   <Edit2 className="w-3 h-3 text-[#167D75]" />
-                  <span>{actualRentMajor ? 'Change rent' : 'Use my actual rent'}</span>
+                  <span>{actualRentMajor !== undefined ? 'Change rent' : 'Use my actual rent'}</span>
                 </button>
               </div>
             )}

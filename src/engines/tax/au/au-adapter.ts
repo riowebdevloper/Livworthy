@@ -15,7 +15,11 @@ export class AustraliaTaxAdapter implements TaxAdapter {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
 
-    // Australia 2024-2025 Resident Tax Rates (Revised Stage 3 Cuts):
+    // Effective-period rule selection
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+
+    // Australia Resident Tax Rates (Revised Stage 3 Cuts, Treasury Laws Amendment Act 2024):
     // 0 to $18,200: Nil
     // $18,201 to $45,000: 16% on excess over $18,200
     // $45,001 to $135,000: $4,288 + 30% on excess over $45,000
@@ -47,6 +51,8 @@ export class AustraliaTaxAdapter implements TaxAdapter {
     const totalTaxMinor = federalTaxMinor + medicareMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
 
+    const evidenceRef = isHistorical2024 ? 'ato-individual-rates-2024' : 'au-ato-tax-2025';
+
     const components: TaxComponentBreakdown[] = [
       {
         id: 'au-income-tax',
@@ -55,7 +61,7 @@ export class AustraliaTaxAdapter implements TaxAdapter {
         category: 'federal',
         amount: fromMinor(federalTaxMinor, 'AUD'),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: 'ato-individual-rates-2024',
+        evidenceRefId: evidenceRef,
       },
       {
         id: 'au-medicare-levy',
@@ -64,9 +70,11 @@ export class AustraliaTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(medicareMinor, 'AUD'),
         effectiveRate: medicareMinor / (grossMinor || 1),
-        evidenceRefId: 'ato-medicare-levy-2024',
+        evidenceRefId: evidenceRef,
       },
     ];
+
+    const taxRuleVersion = isHistorical2024 ? 'ATO-2024.2' : 'AU-ATO-2025.1';
 
     return {
       status: 'CALCULATED',
@@ -85,8 +93,10 @@ export class AustraliaTaxAdapter implements TaxAdapter {
       effectiveTaxRate: totalTaxMinor / (grossMinor || 1),
       marginalTaxRate: grossMajor > 190000 ? 0.47 : grossMajor > 135000 ? 0.39 : 0.32,
       components,
-      taxRuleVersion: 'ATO-2024.2',
-      evidenceSourceIds: ['ato-individual-rates-2024', 'ato-medicare-levy-2024'],
+      taxRuleVersion,
+      evidenceSourceIds: isHistorical2024
+        ? ['ato-individual-rates-2024', 'ato-medicare-levy-2024']
+        : ['au-ato-tax-2025'],
     };
   }
 }

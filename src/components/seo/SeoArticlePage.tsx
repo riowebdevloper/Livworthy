@@ -107,10 +107,13 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
     taxProfile: {
       filingStatus: 'single',
       dependentsCount: 0,
-      taxYear: 2024,
+      taxYear: 2025,
     },
     overrides: {
-      actualRentMonthlyMinor: actualRentMajor ? Math.round(actualRentMajor * 100) : undefined,
+      actualRentMonthlyMinor:
+        actualRentMajor !== undefined && isFinite(actualRentMajor)
+          ? createMoney(actualRentMajor, city.currency).amountMinor
+          : undefined,
     },
     displayCurrency: city.currency,
     calculationDate: new Date().toISOString(),
@@ -347,7 +350,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
         currency={activeGuide.currency}
         grossSalaryMajor={activeGuide.salaryMajor}
         outcome={outcome}
-        taxYear={2024}
+        taxYear={2025}
         onOpenMethodology={onOpenMethodology}
         onOpenEvidence={onOpenEvidence}
         onReportCorrection={() => onReportCorrection?.(`${city.name}, ${country.name}`)}

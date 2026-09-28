@@ -53,7 +53,7 @@ export class CapabilityResolver {
     return this.hasDedicatedTaxAdapter(countryId);
   }
 
-  public static resolve(countryId: string): CountryCapability {
+  public static resolve(countryId: string, requestedTaxYear: number = 2025): CountryCapability {
     const country = COUNTRIES[countryId];
     const countryName = country?.name || countryId;
     const priority = this.getPriority(countryId);
@@ -66,72 +66,75 @@ export class CapabilityResolver {
     let taxRuleVersion: string | undefined;
 
     if (hasTaxAdapter) {
-      taxYear = 2024;
+      taxYear = requestedTaxYear;
+      const isHistorical2024 = requestedTaxYear <= 2024;
+
       switch (countryId) {
         case 'US':
-          taxRuleVersion = 'US-FED-NY-NYC-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'US-FED-NY-NYC-2024.1' : 'US-FED-NY-NYC-2025.1';
           limitations.push('Single filer standard deduction; localized state/local schedules for major commercial metros.');
           break;
         case 'GB':
-          taxRuleVersion = 'GB-HMRC-PAYE-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'UK-HMRC-2024.2' : 'GB-HMRC-2025.1';
           limitations.push('England/Wales standard & Scottish progressive bands; personal allowance reduction over £100k.');
           break;
         case 'AE':
-          taxRuleVersion = 'AE-FTA-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'UAE-FTA-2024.1' : 'AE-FTA-2025.1';
           limitations.push('Statutory 0% employment income tax; corporate and excise taxes excluded from payroll.');
           break;
         case 'CA':
-          taxRuleVersion = 'CA-CRA-ON-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'CRA-2024.1' : 'CA-CRA-ON-2025.1';
           limitations.push('Federal + Ontario provincial schedules, CPP1/CPP2, and Employment Insurance.');
           break;
         case 'AU':
-          taxRuleVersion = 'AU-ATO-2024-25.1';
+          taxRuleVersion = isHistorical2024 ? 'ATO-2024.2' : 'AU-ATO-2025.1';
           limitations.push('Revised Stage 3 tax cuts (effective July 2024) and Medicare levy.');
           break;
         case 'DE':
-          taxRuleVersion = 'DE-BMF-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'BZSt-2024.1' : 'DE-BMF-2025.1';
           limitations.push('EStG polynomial formula and standard statutory social contributions (KV, RV, AV, PV).');
           break;
         case 'SG':
-          taxRuleVersion = 'SG-IRAS-YA2024.1';
+          taxRuleVersion = isHistorical2024 ? 'IRAS-YA2024' : 'SG-IRAS-YA2025.1';
           limitations.push('Resident progressive tax schedule; CPF statutory contributions for citizens/PR.');
           break;
         case 'QA':
-          taxRuleVersion = 'QA-GTA-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'GTA-2024.1' : 'QA-GTA-2025.1';
           limitations.push('Statutory 0% employment income tax for resident and foreign employees.');
           break;
         case 'SA':
-          taxRuleVersion = 'SA-ZATCA-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'GULF-2024.1' : 'SA-ZATCA-2025.1';
           limitations.push('0% personal income tax on employee compensation; GOSI contributions for Saudi nationals.');
           break;
         case 'NZ':
-          taxRuleVersion = 'NZ-IRD-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'IRD-2024.2' : 'NZ-IRD-2025.1';
           limitations.push('Post-July 2024 tax thresholds and ACC earner levy.');
           break;
         case 'FR':
-          taxRuleVersion = 'FR-DGFIP-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'DGFiP-2024.1' : 'FR-DGFIP-2025.1';
           limitations.push('Single employee scale & URSSAF social charges; quotient familial not modeled.');
           break;
         case 'ES':
-          taxRuleVersion = 'ES-AEAT-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'AEAT-2024.1' : 'ES-AEAT-2025.1';
           limitations.push('National and standard Madrid/Catalonia scales; specific autonomous regional deductions limited.');
           break;
         case 'NL':
-          taxRuleVersion = 'NL-BELASTING-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'Belastingdienst-2024.1' : 'NL-BELASTING-2025.1';
           limitations.push('Box 1 income tax & national insurance; 30% ruling not applied.');
           break;
         case 'IE':
-          taxRuleVersion = 'IE-REVENUE-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'Revenue-2024.1' : 'IE-REVENUE-2025.1';
           limitations.push('Single filer standard rate band, personal tax credit, USC, and PRSI Class A.');
           break;
         case 'CH':
-          taxRuleVersion = 'CH-ESTV-ZH-2024.1';
+          taxRuleVersion = isHistorical2024 ? 'ESTV-2024.1' : 'CH-ESTV-ZH-2025.1';
           limitations.push('Federal direct tax and standard Zurich cantonal/communal multiplier.');
           break;
       }
     } else {
+      taxRuleVersion = 'UNSUPPORTED-JURISDICTION';
       limitations.push(
-        `Statutory tax schedules for ${countryName} are in verification. Calculations for ${countryName} project living costs against pre-tax gross compensation without artificial tax approximations.`
+        `Statutory tax schedules for ${countryName} are in verification. Dedicated executable tax adapter is not yet available; tax calculations return TAX_CALCULATION_UNAVAILABLE.`
       );
     }
 
@@ -139,7 +142,7 @@ export class CapabilityResolver {
       countryId,
       countryName,
       commercialPriority: priority,
-      verificationStatus: hasTaxAdapter ? support.verificationStatus : 'LIMITED',
+      verificationStatus: hasTaxAdapter ? support.verificationStatus : 'UNSUPPORTED',
       hasDedicatedTaxAdapter: hasTaxAdapter,
       supportsTaxCalculation: hasTaxAdapter,
       supportsCOL: true, // Cost of living benchmarks available for all 39 markets

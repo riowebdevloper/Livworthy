@@ -27,7 +27,7 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
   currency,
   grossSalaryMajor,
   outcome,
-  taxYear = 2024,
+  taxYear = 2025,
   onOpenMethodology,
   onOpenEvidence,
   onReportCorrection,

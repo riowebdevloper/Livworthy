@@ -8,6 +8,7 @@ import {
   AUTHORITATIVE_SOURCES,
   CORRECTIONS_LOG,
 } from '../src/data/transparency';
+import { CapabilityResolver } from '../src/engines/capabilities/capability-resolver';
 
 const BASE_URL = 'https://livworthy.com';
 
@@ -155,7 +156,9 @@ export function runSeoGenerator() {
 
   // 3. Country Hub Pages
   for (const country of Object.values(COUNTRIES)) {
-    const isProvisional = country.verificationStatus === 'PROVISIONAL' || country.verificationStatus === 'UNSUPPORTED';
+    const cap = CapabilityResolver.resolve(country.id);
+    const hasTax = cap.hasDedicatedTaxAdapter;
+    const isProvisional = country.verificationStatus === 'PROVISIONAL' || country.verificationStatus === 'UNSUPPORTED' || !hasTax;
     const countryCities = Object.values(CITIES).filter((c) => c.countryId === country.id);
 
     const countryStructuredData = {
@@ -170,9 +173,13 @@ export function runSeoGenerator() {
         },
         {
           '@type': 'WebPage',
-          name: `${country.name} Income & Living Intelligence`,
+          name: hasTax
+            ? `${country.name} Income & Living Intelligence`
+            : `${country.name} Cost of Living & City Intelligence`,
           url: `${BASE_URL}/countries/${country.id.toLowerCase()}`,
-          description: `Analyze take-home pay, statutory taxes, and living expenses in ${country.name}.`,
+          description: hasTax
+            ? `Analyze take-home pay, statutory taxes (${cap.taxYear || 2025}), and living expenses in ${country.name}.`
+            : `Analyze cost of living benchmarks, fair-market rent, and metropolitan expenditure in ${country.name}.`,
           publisher: { '@id': `${BASE_URL}/#organization` },
         },
       ],
@@ -181,10 +188,12 @@ export function runSeoGenerator() {
     const countryBody = `
       <article class="max-w-5xl mx-auto px-4 py-8">
         <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">${country.name}</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">${country.name} Income & Living Intelligence</h1>
-        <p class="mt-2 text-slate-600">Comprehensive statutory salary calculations, tax breakdowns, cost of living indices, and major city benchmarks for ${country.name}.</p>
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">${country.name} ${hasTax ? 'Income & Living Intelligence' : 'Cost of Living Intelligence'}</h1>
+        <p class="mt-2 text-slate-600">${hasTax
+          ? `Comprehensive statutory salary calculations, tax breakdowns (Tax Year ${cap.taxYear || 2025}), cost of living indices, and major city benchmarks for ${country.name}.`
+          : `Cost of living benchmarks, fair market rent data, and major metropolitan indices for ${country.name}. Statutory tax calculations are currently under statutory verification.`}</p>
         <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold rounded-full">
-          Status: ${country.verificationStatus}
+          Status: ${hasTax ? `${country.verificationStatus} ADAPTER (${cap.taxYear || 2025})` : 'COST OF LIVING AVAILABLE (TAX UNDER VERIFICATION)'}
         </div>
         ${country.notes ? `<p class="mt-3 text-sm text-slate-500 italic">${country.notes}</p>` : ''}
 
@@ -205,10 +214,11 @@ export function runSeoGenerator() {
           <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators & Tools for ${country.name}</h2>
           <div class="flex flex-wrap gap-2 text-sm">
             ${countryCities.slice(0, 1).map((ct) => `
-              <a href="/?city=${ct.id}&tab=salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
+              ${hasTax ? `<a href="/?city=${ct.id}&tab=salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
               <a href="/?city=${ct.id}&tab=salary-after-tax" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary After Tax</a>
-              <a href="/?city=${ct.id}&tab=salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>
+              <a href="/?city=${ct.id}&tab=salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>` : ''}
               <a href="/?city=${ct.id}&tab=cost-of-living" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Cost of Living</a>
+              <a href="/?city=${ct.id}&tab=compare" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Compare With Another City</a>
             `).join('')}
           </div>
         </section>
@@ -218,8 +228,12 @@ export function runSeoGenerator() {
     pages.push({
       relativePath: `countries/${country.id.toLowerCase()}/index.html`,
       canonicalUrl: `${BASE_URL}/countries/${country.id.toLowerCase()}`,
-      title: `${country.name} Living & Income Intelligence | LivWorthy`,
-      description: `Authoritative statutory salary, tax, and cost-of-living intelligence for ${country.name}. Compute net income and living benchmarks.`,
+      title: hasTax
+        ? `${country.name} Living & Income Intelligence | LivWorthy`
+        : `${country.name} Cost of Living & City Intelligence | LivWorthy`,
+      description: hasTax
+        ? `Authoritative statutory salary, tax (${cap.taxYear || 2025}), and cost-of-living intelligence for ${country.name}. Compute net income and living benchmarks.`
+        : `Cost of living indices, fair market rent benchmarks, and metropolitan expenditure data for ${country.name}.`,
       robots: isProvisional ? 'noindex, follow' : 'index, follow',
       bodyContent: countryBody,
       structuredData: countryStructuredData,
@@ -232,7 +246,9 @@ export function runSeoGenerator() {
   for (const city of Object.values(CITIES)) {
     const country = COUNTRIES[city.countryId];
     const region = city.regionId ? REGIONS[city.regionId] : undefined;
-    const isProvisional = city.verificationStatus === 'PROVISIONAL' || (country && country.verificationStatus === 'PROVISIONAL');
+    const cap = CapabilityResolver.resolve(city.countryId);
+    const hasTax = cap.hasDedicatedTaxAdapter;
+    const isProvisional = city.verificationStatus === 'PROVISIONAL' || city.verificationStatus === 'UNSUPPORTED' || !hasTax || (country && country.verificationStatus === 'UNSUPPORTED');
 
     const cityStructuredData = {
       '@context': 'https://schema.org',
@@ -267,8 +283,10 @@ export function runSeoGenerator() {
           <span>/</span>
           <span class="text-slate-800 font-bold">${city.name}</span>
         </nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">${city.name} Income, Tax & Cost of Living Intelligence</h1>
-        <p class="mt-2 text-slate-600">Financial living analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}.</p>
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">${city.name} ${hasTax ? 'Income, Tax & Cost of Living Intelligence' : 'Cost of Living & City Intelligence'}</h1>
+        <p class="mt-2 text-slate-600">${hasTax
+          ? `Financial living analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}. Tax Year: ${cap.taxYear || 2025}.`
+          : `Metropolitan cost of living and housing expense analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}.`}</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
           <div class="p-4 bg-white border border-slate-200 rounded-lg">
@@ -281,16 +299,16 @@ export function runSeoGenerator() {
           </div>
           <div class="p-4 bg-white border border-slate-200 rounded-lg">
             <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Verification Status</span>
-            <div class="text-xl font-bold text-teal-700 mt-1">${city.verificationStatus}</div>
+            <div class="text-xl font-bold text-teal-700 mt-1">${hasTax ? city.verificationStatus : 'COST OF LIVING AVAILABLE'}</div>
           </div>
         </div>
 
         <section class="mt-8">
           <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators for ${city.name}</h2>
           <div class="flex flex-wrap gap-2 text-sm">
-            <a href="/?city=${city.id}&tab=salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
+            ${hasTax ? `<a href="/?city=${city.id}&tab=salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
             <a href="/?city=${city.id}&tab=salary-after-tax" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary After Tax</a>
-            <a href="/?city=${city.id}&tab=salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>
+            <a href="/?city=${city.id}&tab=salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>` : ''}
             <a href="/?city=${city.id}&tab=cost-of-living" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Cost of Living</a>
             <a href="/?city=${city.id}&tab=compare" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Compare With Another City</a>
           </div>
@@ -301,8 +319,12 @@ export function runSeoGenerator() {
     pages.push({
       relativePath: `cities/${city.id}/index.html`,
       canonicalUrl: `${BASE_URL}/cities/${city.id}`,
-      title: `${city.name} Income, Tax & Cost of Living Intelligence | LivWorthy`,
-      description: `Authoritative living costs, statutory income tax schedules, and salary benchmarks for ${city.name} (${country ? country.name : city.countryId}).`,
+      title: hasTax
+        ? `${city.name} Income, Tax & Cost of Living Intelligence | LivWorthy`
+        : `${city.name} Cost of Living & City Intelligence | LivWorthy`,
+      description: hasTax
+        ? `Authoritative living costs, statutory income tax schedules (${cap.taxYear || 2025}), and salary benchmarks for ${city.name} (${country ? country.name : city.countryId}).`
+        : `Metropolitan living costs, fair-market rent benchmarks, and consumer expenditure indices for ${city.name} (${country ? country.name : city.countryId}).`,
       robots: isProvisional ? 'noindex, follow' : 'index, follow',
       bodyContent: cityBody,
       structuredData: cityStructuredData,
@@ -436,7 +458,7 @@ export function runSeoGenerator() {
         </nav>
 
         <div class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold rounded-full mb-3">
-          <span>${country.name}</span> • ${region ? `<span>${region.name}</span> • ` : ''}<span>${city.name}</span> • <span>Verified Statutory Benchmark</span>
+          <span>${country.name}</span> • ${region ? `<span>${region.name}</span> • ` : ''}<span>${city.name}</span> • <span>Verified Statutory Benchmark (2025)</span>
         </div>
 
         <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] tracking-tight leading-tight">
@@ -451,7 +473,7 @@ export function runSeoGenerator() {
         <section aria-label="Direct Financial Answer & Verdict" class="mt-6 p-6 sm:p-7 bg-white border-l-4 border-l-teal-600 border border-slate-200 rounded-2xl shadow-xs space-y-4">
           <div class="flex items-center justify-between border-b border-slate-100 pb-2">
             <span class="text-xs font-bold uppercase tracking-wider text-teal-700">AEO Direct Answer & Verdict</span>
-            <span class="text-xs text-slate-500">Tax Year 2024 / Deterministic Model</span>
+            <span class="text-xs text-slate-500">Tax Year 2025 / Deterministic Statutory Model</span>
           </div>
           <p class="text-base text-slate-900 leading-relaxed font-semibold">
             ${g.headlineSummary}

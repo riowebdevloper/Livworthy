@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, DollarSign, ShieldCheck, Sparkles, Building2, Loader2, AlertCircle, AlertTriangle } from 'lucide-react';
 import { CITIES, COUNTRIES } from '../../data/locations';
 import { calculateSalaryAfterTax } from '../../api/calculators';
-import { createMoney, formatMoney, toMajor } from '../../lib/money';
+import { createMoney, formatMoney, getDefaultSalaryForCurrency, toMajor } from '../../lib/money';
 import { TaxResult, FilingStatus } from '../../types/tax';
 import { CurrencyInput } from '../ui/CurrencyInput';
 
@@ -44,7 +44,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
       try {
         const response = await calculateSalaryAfterTax(
           {
-            grossSalaryMinor: Math.round(grossSalaryMajor * 100),
+            grossSalaryMinor: createMoney(grossSalaryMajor, currency).amountMinor,
             currency,
             countryId: city.countryId,
             regionId: city.regionId,
@@ -52,7 +52,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             taxJurisdictionId: city.taxJurisdictionId,
             filingStatus,
             dependentsCount: 0,
-            taxYear: 2024,
+            taxYear: 2025,
           },
           { signal: controller.signal }
         );
@@ -162,7 +162,14 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
               id="tax-location-select"
               aria-label="Location & Jurisdiction"
               value={selectedCityId}
-              onChange={(e) => setSelectedCityId(e.target.value)}
+              onChange={(e) => {
+                const nextCityId = e.target.value;
+                const nextCity = CITIES[nextCityId] || CITIES.nyc;
+                if (nextCity.currency !== currency) {
+                  setGrossSalaryMajor(getDefaultSalaryForCurrency(nextCity.currency));
+                }
+                setSelectedCityId(nextCityId);
+              }}
               className="block w-full rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] px-3 py-3 text-base font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"
             >
               {Object.values(CITIES).map((c) => (

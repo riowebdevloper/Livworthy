@@ -11,11 +11,15 @@ export class UkTaxAdapter implements TaxAdapter {
     return context.countryId === 'GB';
   }
 
-  calculate(gross: Money, _profile: TaxProfile, _context: TaxContext): TaxResult {
+  calculate(gross: Money, profile: TaxProfile, context: TaxContext): TaxResult {
     const currency: CurrencyCode = 'GBP';
     const grossMinor = gross.amountMinor;
 
-    // UK Personal Allowance 2024/2025: £12,570
+    // Effective-period rule selection
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+
+    // UK Personal Allowance: £12,570 (frozen through 2028 under Finance Act)
     // Tapers by £1 for every £2 of income above £100,000
     let personalAllowanceMinor = 12_570_00;
     if (grossMinor > 100_000_00) {
@@ -27,10 +31,10 @@ export class UkTaxAdapter implements TaxAdapter {
 
     // Income tax brackets
     let incomeTaxMinor = 0;
-    const isScotland = _context.regionId === 'GB-SCT';
+    const isScotland = context.regionId === 'GB-SCT';
 
     if (isScotland) {
-      // Scottish Income Tax 2024/25:
+      // Scottish Income Tax:
       // Starter 19% (first £2,306 taxable)
       // Basic 20% (next £11,685 taxable, up to £13,991)
       // Intermediate 21% (next £17,101 taxable, up to £31,092)
@@ -62,7 +66,7 @@ export class UkTaxAdapter implements TaxAdapter {
         }
       }
     } else {
-      // England & Wales 2024/2025:
+      // England & Wales:
       // Basic: 20% on £0 up to £37,700 taxable (i.e. £12,570 to £50,270)
       // Higher: 40% on £37,700 to £112,570 taxable (i.e. up to £125,140)
       // Additional: 45% above £125,140
@@ -86,7 +90,7 @@ export class UkTaxAdapter implements TaxAdapter {
     }
     incomeTaxMinor = Math.round(incomeTaxMinor);
 
-    // National Insurance (Class 1 Employee 2024 - 8% main rate, 2% above UEL)
+    // National Insurance (Class 1 Employee - 8% main rate, 2% above UEL)
     // Primary threshold: £12,570/yr, Upper Earnings Limit: £50,270/yr
     let niMinor = 0;
     const ptMinor = 12_570_00;
@@ -104,6 +108,8 @@ export class UkTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = incomeTaxMinor + niMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
+    const evidenceSourceId = isHistorical2024 ? 'uk-hmrc-tax-2024' : 'uk-hmrc-tax-2025';
+
     const components: TaxComponentBreakdown[] = [
       {
         id: 'uk-income-tax',
@@ -113,7 +119,7 @@ export class UkTaxAdapter implements TaxAdapter {
         amount: fromMinor(incomeTaxMinor, currency),
         effectiveRate: grossMinor > 0 ? incomeTaxMinor / grossMinor : 0,
         description: `Personal Allowance: £${(personalAllowanceMinor / 100).toLocaleString()}`,
-        evidenceRefId: 'uk-hmrc-tax-2024',
+        evidenceRefId: evidenceSourceId,
       },
       {
         id: 'uk-national-insurance',
@@ -123,11 +129,12 @@ export class UkTaxAdapter implements TaxAdapter {
         amount: fromMinor(niMinor, currency),
         effectiveRate: grossMinor > 0 ? niMinor / grossMinor : 0,
         description: '8% main rate up to £50,270 + 2% upper rate',
-        evidenceRefId: 'uk-hmrc-tax-2024',
+        evidenceRefId: evidenceSourceId,
       },
     ];
 
     return {
+      status: 'CALCULATED',
       grossIncome: gross,
       taxableIncome: fromMinor(taxableMinor, currency),
       deductions: fromMinor(personalAllowanceMinor, currency),
@@ -143,8 +150,8 @@ export class UkTaxAdapter implements TaxAdapter {
       effectiveTaxRate: grossMinor > 0 ? totalDeductionsMinor / grossMinor : 0,
       marginalTaxRate: grossMinor > 125_140_00 ? 0.47 : grossMinor > 50_270_00 ? 0.42 : 0.28,
       components,
-      taxRuleVersion: 'UK-HMRC-2024.2',
-      evidenceSourceIds: ['uk-hmrc-tax-2024'],
+      taxRuleVersion: isHistorical2024 ? 'UK-HMRC-2024.2' : 'GB-HMRC-2025.1',
+      evidenceSourceIds: [evidenceSourceId],
     };
   }
 }

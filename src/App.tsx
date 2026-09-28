@@ -16,7 +16,7 @@ import { DataCorrectionModal } from './components/system/DataCorrectionModal';
 import { CITIES } from './data/locations';
 import { DEFAULT_NYC_100K_SCENARIO } from './data/presets';
 import { SALARY_GUIDES } from './data/salary-guides';
-import { createMoney, toMajor } from './lib/money';
+import { createMoney, getDefaultSalaryForCurrency, toMajor } from './lib/money';
 import { HouseholdProfile, CostOfLivingResult } from './types/col';
 import { LivWorthCalculationOutcome, LivWorthScenario } from './types/scenario';
 import { TaxProfile, TaxResult } from './types/tax';
@@ -108,21 +108,29 @@ export default function App() {
       }
 
       const targetCity = cityParam && CITIES[cityParam] ? CITIES[cityParam] : undefined;
-      const salaryNum = salaryParam ? parseFloat(salaryParam) : undefined;
-      const rentNum = rentParam ? parseFloat(rentParam) : undefined;
+      const salaryNum = salaryParam !== null && salaryParam !== '' ? parseFloat(salaryParam) : undefined;
+      const rentNum = rentParam !== null && rentParam !== '' ? parseFloat(rentParam) : undefined;
       const guideParam = params.get('guide');
 
       if (guideParam && SALARY_GUIDES[guideParam]) {
         setSelectedGuideSlug(guideParam);
       }
 
-      if (targetCity || (salaryNum && !isNaN(salaryNum)) || (rentNum && !isNaN(rentNum))) {
+      if (targetCity || (salaryNum !== undefined && !isNaN(salaryNum)) || (rentNum !== undefined && !isNaN(rentNum))) {
         setScenario((prev) => {
           const loc = targetCity || prev.location;
-          const sal =
-            salaryNum && !isNaN(salaryNum)
-              ? createMoney(salaryNum, loc.currency)
-              : prev.compensation.baseSalary;
+          let sal = prev.compensation.baseSalary;
+          if (salaryNum !== undefined && !isNaN(salaryNum)) {
+            sal = createMoney(salaryNum, loc.currency);
+          } else if (targetCity && targetCity.currency !== prev.location.currency) {
+            sal = createMoney(getDefaultSalaryForCurrency(loc.currency), loc.currency);
+          }
+
+          const overrides =
+            rentNum !== undefined && !isNaN(rentNum)
+              ? { ...prev.overrides, actualRentMonthlyMinor: createMoney(rentNum, loc.currency).amountMinor }
+              : (targetCity && targetCity.id !== prev.location.id ? undefined : prev.overrides);
+
           return {
             ...prev,
             location: loc,
@@ -130,15 +138,12 @@ export default function App() {
               ...prev.compensation,
               baseSalary: sal,
             },
-            overrides:
-              rentNum && !isNaN(rentNum)
-                ? { ...prev.overrides, actualRentMonthlyMinor: Math.round(rentNum * 100) }
-                : prev.overrides,
+            overrides,
           };
         });
-        if (rentNum && !isNaN(rentNum)) {
+        if (rentNum !== undefined && !isNaN(rentNum)) {
           setActualRentMajor(rentNum);
-        } else {
+        } else if (targetCity && targetCity.id !== scenario.location.id) {
           setActualRentMajor(undefined);
         }
       }
@@ -177,7 +182,7 @@ export default function App() {
       if (activeTab === 'nyc-100k-guide' && selectedGuideSlug) {
         params.set('guide', selectedGuideSlug);
       }
-      if (actualRentMajor) {
+      if (actualRentMajor !== undefined && isFinite(actualRentMajor)) {
         params.set('rent', actualRentMajor.toString());
       }
       const newUrl = `${window.location.pathname}?${params.toString()}`;
@@ -220,7 +225,10 @@ export default function App() {
       ...prev,
       overrides: {
         ...prev.overrides,
-        actualRentMonthlyMinor: rentMajor ? rentMajor * 100 : undefined,
+        actualRentMonthlyMinor:
+          rentMajor !== undefined && isFinite(rentMajor)
+            ? createMoney(rentMajor, prev.location.currency).amountMinor
+            : undefined,
       },
     }));
   };
@@ -243,7 +251,7 @@ export default function App() {
       params.set('city', targetCity.id);
       params.set('salary', salaryMajor.toString());
       params.set('tab', 'salary-worth');
-      if (actualRentMajor) {
+      if (actualRentMajor !== undefined && isFinite(actualRentMajor)) {
         params.set('rent', actualRentMajor.toString());
       }
       const newUrl = `${window.location.pathname}?${params.toString()}`;
@@ -323,20 +331,31 @@ export default function App() {
   const handleSelectCityFromLink = (cityId: string) => {
     const targetCity = CITIES[cityId];
     if (targetCity) {
-      setScenario((prev) => ({
-        ...prev,
-        location: targetCity,
-        compensation: {
-          ...prev.compensation,
-          baseSalary: createMoney(toMajor(prev.compensation.baseSalary), targetCity.currency),
-        },
-      }));
+      setScenario((prev) => {
+        const isCurrencyChange = targetCity.currency !== prev.location.currency;
+        const targetSalaryMajor = isCurrencyChange
+          ? getDefaultSalaryForCurrency(targetCity.currency)
+          : toMajor(prev.compensation.baseSalary);
+        return {
+          ...prev,
+          location: targetCity,
+          compensation: {
+            ...prev.compensation,
+            baseSalary: createMoney(targetSalaryMajor, targetCity.currency),
+          },
+          overrides: undefined, // Reset rent override on city change
+        };
+      });
+      setActualRentMajor(undefined);
       setActiveTab('salary-worth');
       try {
         if (typeof window === 'undefined') return;
+        const targetSalaryMajor = targetCity.currency !== scenario.location.currency
+          ? getDefaultSalaryForCurrency(targetCity.currency)
+          : toMajor(scenario.compensation.baseSalary);
         const params = new URLSearchParams();
         params.set('city', targetCity.id);
-        params.set('salary', toMajor(scenario.compensation.baseSalary).toString());
+        params.set('salary', targetSalaryMajor.toString());
         params.set('tab', 'salary-worth');
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         window.history.pushState(null, '', newUrl);

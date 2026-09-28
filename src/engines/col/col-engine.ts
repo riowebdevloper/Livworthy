@@ -1,4 +1,4 @@
-import { fromMinor } from '../../lib/money';
+import { createMoney, fromMinor } from '../../lib/money';
 import { CurrencyCode, Money } from '../../types/money';
 import {
   CostCategorySummary,
@@ -33,10 +33,10 @@ export class CostOfLivingEngine {
 
     // 1. Housing
     const baseRentMajor = benchmark.rentBase[household.housingType] * areaMultiplier;
-    let rentMonthlyMinor = Math.round(baseRentMajor * 100);
+    let rentMonthlyMinor = createMoney(baseRentMajor, currency).amountMinor;
     let rentIsOverridden = false;
 
-    if (overrides?.actualRentMonthlyMinor !== undefined && overrides.actualRentMonthlyMinor > 0) {
+    if (overrides?.actualRentMonthlyMinor !== undefined && overrides.actualRentMonthlyMinor >= 0) {
       rentMonthlyMinor = overrides.actualRentMonthlyMinor;
       rentIsOverridden = true;
     }
@@ -75,7 +75,7 @@ export class CostOfLivingEngine {
         : 1.0;
     foodMonthlyMajor += household.adults * benchmark.diningPerAdult * diningMultiplier;
 
-    let foodMonthlyMinor = Math.round(foodMonthlyMajor * 100);
+    let foodMonthlyMinor = createMoney(foodMonthlyMajor, currency).amountMinor;
     if (overrides?.actualGroceriesMonthlyMinor) {
       foodMonthlyMinor = overrides.actualGroceriesMonthlyMinor;
     }
@@ -101,7 +101,7 @@ export class CostOfLivingEngine {
       extraPersons * benchmark.utilitiesPerExtraPerson +
       benchmark.internetMonthly +
       household.adults * benchmark.mobilePerAdult;
-    const utilitiesMinor = Math.round(utilitiesMajor * 100);
+    const utilitiesMinor = createMoney(utilitiesMajor, currency).amountMinor;
 
     const utilitiesItem: CostEstimateItem = {
       id: 'utilities-connectivity',
@@ -132,7 +132,7 @@ export class CostOfLivingEngine {
       transportMajor = household.adults * 40;
     }
 
-    let transportMinor = Math.round(transportMajor * 100);
+    let transportMinor = createMoney(transportMajor, currency).amountMinor;
     if (overrides?.actualTransitMonthlyMinor) {
       transportMinor = overrides.actualTransitMonthlyMinor;
     }
@@ -154,7 +154,7 @@ export class CostOfLivingEngine {
     // 5. Healthcare
     const isFamily = household.children > 0 || household.adults > 1;
     const healthcareMajor = isFamily ? benchmark.healthcareFamily : benchmark.healthcareSingle;
-    const healthcareMinor = Math.round(healthcareMajor * 100);
+    const healthcareMinor = createMoney(healthcareMajor, currency).amountMinor;
 
     const healthcareItem: CostEstimateItem = {
       id: 'healthcare',
@@ -176,7 +176,7 @@ export class CostOfLivingEngine {
 
     if (household.children > 0) {
       const childcareMajor = household.children * benchmark.childcarePerChild;
-      childcareMinor = Math.round(childcareMajor * 100);
+      childcareMinor = createMoney(childcareMajor, currency).amountMinor;
       const childcareItem: CostEstimateItem = {
         id: 'childcare-education',
         category: 'family',
@@ -197,7 +197,7 @@ export class CostOfLivingEngine {
     const effectiveLifestyle = household.lifestyleLevel || 'moderate';
     const lifestyleBase = benchmark.lifestyleBasePerAdult[effectiveLifestyle] || benchmark.lifestyleBasePerAdult.moderate;
     const lifestyleMajor = household.adults * lifestyleBase;
-    const lifestyleMinor = Math.round(lifestyleMajor * 100);
+    const lifestyleMinor = createMoney(lifestyleMajor, currency).amountMinor;
 
     const lifestyleItem: CostEstimateItem = {
       id: 'lifestyle-discretionary',

@@ -15,56 +15,112 @@ export class CanadaTaxAdapter implements TaxAdapter {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
 
-    // 1. CPP (Canada Pension Plan) 2024
-    // Base CPP: 5.95% between $3,500 and $68,500 (Max $3,867.50)
+    // Effective-period rule selection
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+
+    // 1. CPP (Canada Pension Plan)
     let cppMinor = 0;
-    if (grossMajor > 3500) {
-      const cppEligible = Math.min(grossMajor, 68500) - 3500;
-      cppMinor = Math.round(cppEligible * 0.0595 * 100);
-    }
-    // CPP2: 4.0% between $68,500 and $73,200 (Max $188)
-    if (grossMajor > 68500) {
-      const cpp2Eligible = Math.min(grossMajor, 73200) - 68500;
-      cppMinor += Math.round(cpp2Eligible * 0.04 * 100);
+    if (isHistorical2024) {
+      // 2024: Base CPP 5.95% between $3,500 and $68,500 (Max $3,867.50)
+      if (grossMajor > 3500) {
+        const cppEligible = Math.min(grossMajor, 68500) - 3500;
+        cppMinor = Math.round(cppEligible * 0.0595 * 100);
+      }
+      // 2024 CPP2: 4.0% between $68,500 and $73,200 (Max $188)
+      if (grossMajor > 68500) {
+        const cpp2Eligible = Math.min(grossMajor, 73200) - 68500;
+        cppMinor += Math.round(cpp2Eligible * 0.04 * 100);
+      }
+    } else {
+      // 2025 (CRA Statutory Parameters): Base CPP 5.95% between $3,500 and $71,300 (Max $4,034.10)
+      if (grossMajor > 3500) {
+        const cppEligible = Math.min(grossMajor, 71300) - 3500;
+        cppMinor = Math.round(cppEligible * 0.0595 * 100);
+      }
+      // 2025 CPP2: 4.0% between $71,300 and $81,200 (Max $396.00)
+      if (grossMajor > 71300) {
+        const cpp2Eligible = Math.min(grossMajor, 81200) - 71300;
+        cppMinor += Math.round(cpp2Eligible * 0.04 * 100);
+      }
     }
 
-    // 2. EI (Employment Insurance) 2024
-    // 1.66% on gross up to $63,200 (Max $1,049.12)
-    const eiEligible = Math.min(grossMajor, 63200);
-    const eiMinor = Math.round(eiEligible * 0.0166 * 100);
+    // 2. EI (Employment Insurance)
+    let eiMinor = 0;
+    if (isHistorical2024) {
+      // 2024: 1.66% on gross up to $63,200 (Max $1,049.12)
+      const eiEligible = Math.min(grossMajor, 63200);
+      eiMinor = Math.round(eiEligible * 0.0166 * 100);
+    } else {
+      // 2025: 1.64% on gross up to $65,700 (Max $1,077.48)
+      const eiEligible = Math.min(grossMajor, 65700);
+      eiMinor = Math.round(eiEligible * 0.0164 * 100);
+    }
 
     const socialMinor = cppMinor + eiMinor;
 
-    // 3. Federal Income Tax (2024 Brackets)
-    // 15% on first $55,867
-    // 20.5% on $55,867 to $111,733
-    // 26% on $111,733 to $173,205
-    // 29% on $173,205 to $246,752
-    // 33% on excess over $246,752
+    // 3. Federal Income Tax
     let fedGrossTax = 0;
-    if (grossMajor <= 55867) {
-      fedGrossTax = grossMajor * 0.15;
-    } else if (grossMajor <= 111733) {
-      fedGrossTax = 55867 * 0.15 + (grossMajor - 55867) * 0.205;
-    } else if (grossMajor <= 173205) {
-      fedGrossTax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (grossMajor - 111733) * 0.26;
-    } else if (grossMajor <= 246752) {
-      fedGrossTax =
-        55867 * 0.15 +
-        (111733 - 55867) * 0.205 +
-        (173205 - 111733) * 0.26 +
-        (grossMajor - 173205) * 0.29;
+    let fedBpa = 15705;
+
+    if (isHistorical2024) {
+      // 2024 Federal Brackets:
+      // 15% on first $55,867
+      // 20.5% on $55,867 to $111,733
+      // 26% on $111,733 to $173,205
+      // 29% on $173,205 to $246,752
+      // 33% on excess over $246,752
+      fedBpa = 15705;
+      if (grossMajor <= 55867) {
+        fedGrossTax = grossMajor * 0.15;
+      } else if (grossMajor <= 111733) {
+        fedGrossTax = 55867 * 0.15 + (grossMajor - 55867) * 0.205;
+      } else if (grossMajor <= 173205) {
+        fedGrossTax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (grossMajor - 111733) * 0.26;
+      } else if (grossMajor <= 246752) {
+        fedGrossTax =
+          55867 * 0.15 +
+          (111733 - 55867) * 0.205 +
+          (173205 - 111733) * 0.26 +
+          (grossMajor - 173205) * 0.29;
+      } else {
+        fedGrossTax =
+          55867 * 0.15 +
+          (111733 - 55867) * 0.205 +
+          (173205 - 111733) * 0.26 +
+          (246752 - 173205) * 0.29 +
+          (grossMajor - 246752) * 0.33;
+      }
     } else {
-      fedGrossTax =
-        55867 * 0.15 +
-        (111733 - 55867) * 0.205 +
-        (173205 - 111733) * 0.26 +
-        (246752 - 173205) * 0.29 +
-        (grossMajor - 246752) * 0.33;
+      // 2025 Federal Brackets (2.7% indexation):
+      // 15% on first $57,375
+      // 20.5% on $57,375 to $114,750
+      // 26% on $114,750 to $177,882
+      // 29% on $177,882 to $253,414
+      // 33% on excess over $253,414
+      fedBpa = 16129;
+      if (grossMajor <= 57375) {
+        fedGrossTax = grossMajor * 0.15;
+      } else if (grossMajor <= 114750) {
+        fedGrossTax = 57375 * 0.15 + (grossMajor - 57375) * 0.205;
+      } else if (grossMajor <= 177882) {
+        fedGrossTax = 57375 * 0.15 + (114750 - 57375) * 0.205 + (grossMajor - 114750) * 0.26;
+      } else if (grossMajor <= 253414) {
+        fedGrossTax =
+          57375 * 0.15 +
+          (114750 - 57375) * 0.205 +
+          (177882 - 114750) * 0.26 +
+          (grossMajor - 177882) * 0.29;
+      } else {
+        fedGrossTax =
+          57375 * 0.15 +
+          (114750 - 57375) * 0.205 +
+          (177882 - 114750) * 0.26 +
+          (253414 - 177882) * 0.29 +
+          (grossMajor - 253414) * 0.33;
+      }
     }
 
-    // Federal BPA (Basic Personal Amount) non-refundable credit 15% of $15,705
-    const fedBpa = 15705;
     const fedBpaCredit = fedBpa * 0.15;
     const fedTaxTotal = Math.max(0, fedGrossTax - fedBpaCredit);
     const federalTaxMinor = Math.round(fedTaxTotal * 100);
@@ -76,88 +132,79 @@ export class CanadaTaxAdapter implements TaxAdapter {
     let provSurtax = 0;
 
     if (regionCode === 'ON') {
-      // Ontario 2024:
-      // 5.05% on first $51,446
-      // 9.15% on $51,446 to $102,894
-      // 11.16% on $102,894 to $150,000
-      // 12.16% on $150,000 to $220,000
-      // 13.16% on excess over $220,000
-      if (grossMajor <= 51446) {
+      const b1Cap = isHistorical2024 ? 51446 : 52835;
+      const b2Cap = isHistorical2024 ? 102894 : 105672;
+      const onBpa = isHistorical2024 ? 12399 : 12734;
+
+      if (grossMajor <= b1Cap) {
         provGrossTax = grossMajor * 0.0505;
-      } else if (grossMajor <= 102894) {
-        provGrossTax = 51446 * 0.0505 + (grossMajor - 51446) * 0.0915;
+      } else if (grossMajor <= b2Cap) {
+        provGrossTax = b1Cap * 0.0505 + (grossMajor - b1Cap) * 0.0915;
       } else if (grossMajor <= 150000) {
-        provGrossTax = 51446 * 0.0505 + (102894 - 51446) * 0.0915 + (grossMajor - 102894) * 0.1116;
+        provGrossTax = b1Cap * 0.0505 + (b2Cap - b1Cap) * 0.0915 + (grossMajor - b2Cap) * 0.1116;
       } else if (grossMajor <= 220000) {
         provGrossTax =
-          51446 * 0.0505 +
-          (102894 - 51446) * 0.0915 +
-          (150000 - 102894) * 0.1116 +
+          b1Cap * 0.0505 +
+          (b2Cap - b1Cap) * 0.0915 +
+          (150000 - b2Cap) * 0.1116 +
           (grossMajor - 150000) * 0.1216;
       } else {
         provGrossTax =
-          51446 * 0.0505 +
-          (102894 - 51446) * 0.0915 +
-          (150000 - 102894) * 0.1116 +
+          b1Cap * 0.0505 +
+          (b2Cap - b1Cap) * 0.0915 +
+          (150000 - b2Cap) * 0.1116 +
           (220000 - 150000) * 0.1216 +
           (grossMajor - 220000) * 0.1316;
       }
 
-      // Ontario BPA ($12,399 at 5.05%)
-      provBpaCredit = 12399 * 0.0505;
+      provBpaCredit = onBpa * 0.0505;
       const onBaseTax = Math.max(0, provGrossTax - provBpaCredit);
 
-      // Ontario Surtax:
-      // 20% on Ontario tax above $5,554
-      // 36% on Ontario tax above $7,108
-      if (onBaseTax > 7108) {
-        provSurtax = (onBaseTax - 5554) * 0.20 + (onBaseTax - 7108) * 0.36;
-      } else if (onBaseTax > 5554) {
-        provSurtax = (onBaseTax - 5554) * 0.20;
+      const surtax1Threshold = isHistorical2024 ? 5554 : 5704;
+      const surtax2Threshold = isHistorical2024 ? 7108 : 7300;
+
+      if (onBaseTax > surtax2Threshold) {
+        provSurtax = (onBaseTax - surtax1Threshold) * 0.20 + (onBaseTax - surtax2Threshold) * 0.36;
+      } else if (onBaseTax > surtax1Threshold) {
+        provSurtax = (onBaseTax - surtax1Threshold) * 0.20;
       }
     } else if (regionCode === 'BC') {
-      // British Columbia 2024:
-      // 5.06% on first $47,937
-      // 7.7% on $47,937 to $95,875
-      // 10.5% on $95,875 to $110,076
-      // 12.29% on $110,076 to $133,664
-      // 14.7% on $133,664 to $181,232
-      // 16.8% on $181,232 to $252,752
-      // 20.5% over $252,752
-      if (grossMajor <= 47937) {
+      const b1 = isHistorical2024 ? 47937 : 49279;
+      const b2 = isHistorical2024 ? 95875 : 98560;
+      const b3 = isHistorical2024 ? 110076 : 113158;
+      const b4 = isHistorical2024 ? 133664 : 137407;
+      const b5 = isHistorical2024 ? 181232 : 186306;
+
+      if (grossMajor <= b1) {
         provGrossTax = grossMajor * 0.0506;
-      } else if (grossMajor <= 95875) {
-        provGrossTax = 47937 * 0.0506 + (grossMajor - 47937) * 0.077;
-      } else if (grossMajor <= 110076) {
-        provGrossTax = 47937 * 0.0506 + (95875 - 47937) * 0.077 + (grossMajor - 95875) * 0.105;
-      } else if (grossMajor <= 133664) {
+      } else if (grossMajor <= b2) {
+        provGrossTax = b1 * 0.0506 + (grossMajor - b1) * 0.077;
+      } else if (grossMajor <= b3) {
+        provGrossTax = b1 * 0.0506 + (b2 - b1) * 0.077 + (grossMajor - b2) * 0.105;
+      } else if (grossMajor <= b4) {
         provGrossTax =
-          47937 * 0.0506 +
-          (95875 - 47937) * 0.077 +
-          (110076 - 95875) * 0.105 +
-          (grossMajor - 110076) * 0.1229;
+          b1 * 0.0506 +
+          (b2 - b1) * 0.077 +
+          (b3 - b2) * 0.105 +
+          (grossMajor - b3) * 0.1229;
       } else {
         provGrossTax =
-          47937 * 0.0506 +
-          (95875 - 47937) * 0.077 +
-          (110076 - 95875) * 0.105 +
-          (133664 - 110076) * 0.1229 +
-          (grossMajor - 133664) * 0.147;
+          b1 * 0.0506 +
+          (b2 - b1) * 0.077 +
+          (b3 - b2) * 0.105 +
+          (b4 - b3) * 0.1229 +
+          (grossMajor - b4) * 0.147;
       }
-      provBpaCredit = 12580 * 0.0506;
+      provBpaCredit = (isHistorical2024 ? 12580 : 12932) * 0.0506;
     } else {
-      // Alberta 2024:
-      // 10% on first $148,269
-      // 12% on $148,269 to $177,922
-      // 13% on $177,922 to $237,230
-      // 14% on $237,230 to $355,845
-      // 15% over $355,845
-      if (grossMajor <= 148269) {
+      // Alberta
+      const abCap = isHistorical2024 ? 148269 : 152272;
+      if (grossMajor <= abCap) {
         provGrossTax = grossMajor * 0.10;
       } else {
-        provGrossTax = 148269 * 0.10 + (grossMajor - 148269) * 0.12;
+        provGrossTax = abCap * 0.10 + (grossMajor - abCap) * 0.12;
       }
-      provBpaCredit = 21885 * 0.10;
+      provBpaCredit = (isHistorical2024 ? 21885 : 22476) * 0.10;
     }
 
     const provTaxTotal = Math.max(0, provGrossTax - provBpaCredit) + provSurtax;
@@ -167,6 +214,8 @@ export class CanadaTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
+    const evidenceRef = isHistorical2024 ? 'cra-income-tax-2024' : 'ca-cra-tax-2025';
+
     const components: TaxComponentBreakdown[] = [
       {
         id: 'ca-fed-tax',
@@ -175,7 +224,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
         category: 'federal',
         amount: fromMinor(federalTaxMinor, 'CAD'),
         effectiveRate: federalTaxMinor / (grossMinor || 1),
-        evidenceRefId: 'cra-income-tax-2024',
+        evidenceRefId: evidenceRef,
       },
       {
         id: 'ca-cpp',
@@ -184,7 +233,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(cppMinor, 'CAD'),
         effectiveRate: cppMinor / (grossMinor || 1),
-        evidenceRefId: 'cra-cpp-2024',
+        evidenceRefId: evidenceRef,
       },
       {
         id: 'ca-ei',
@@ -193,7 +242,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(eiMinor, 'CAD'),
         effectiveRate: eiMinor / (grossMinor || 1),
-        evidenceRefId: 'cra-ei-2024',
+        evidenceRefId: evidenceRef,
       },
       {
         id: 'ca-prov-tax',
@@ -202,9 +251,11 @@ export class CanadaTaxAdapter implements TaxAdapter {
         category: 'state',
         amount: fromMinor(stateTaxMinor, 'CAD'),
         effectiveRate: stateTaxMinor / (grossMinor || 1),
-        evidenceRefId: 'cra-provincial-rates-2024',
+        evidenceRefId: evidenceRef,
       },
     ];
+
+    const taxRuleVersion = isHistorical2024 ? 'CRA-2024.1' : 'CA-CRA-ON-2025.1';
 
     return {
       status: 'CALCULATED',
@@ -223,8 +274,8 @@ export class CanadaTaxAdapter implements TaxAdapter {
       effectiveTaxRate: totalDeductionsMinor / (grossMinor || 1),
       marginalTaxRate: 0.4341,
       components,
-      taxRuleVersion: 'CRA-2024.1',
-      evidenceSourceIds: ['cra-income-tax-2024', 'cra-cpp-2024', 'cra-ei-2024'],
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef],
     };
   }
 }

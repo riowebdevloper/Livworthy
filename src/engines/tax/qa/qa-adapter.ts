@@ -14,6 +14,11 @@ export class QatarTaxAdapter implements TaxAdapter {
   public calculate(grossCompensation: Money, profile: TaxProfile, context: TaxContext): TaxResult {
     const grossMinor = grossCompensation.amountMinor;
 
+    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const isHistorical2024 = requestedYear <= 2024;
+    const taxRuleVersion = isHistorical2024 ? 'GTA-2024.1' : 'QA-GTA-2025.1';
+    const evidenceRef = isHistorical2024 ? 'qatar-income-tax-law-2018' : 'qa-gta-tax-2025';
+
     const components: TaxComponentBreakdown[] = [
       {
         id: 'qa-statutory-tax',
@@ -22,7 +27,7 @@ export class QatarTaxAdapter implements TaxAdapter {
         category: 'federal',
         amount: createMoney(0, 'QAR'),
         effectiveRate: 0,
-        evidenceRefId: 'qatar-income-tax-law-2018',
+        evidenceRefId: evidenceRef,
       },
     ];
 
@@ -43,8 +48,8 @@ export class QatarTaxAdapter implements TaxAdapter {
       effectiveTaxRate: 0,
       marginalTaxRate: 0,
       components,
-      taxRuleVersion: 'GTA-2024.1',
-      evidenceSourceIds: ['qatar-income-tax-law-2018'],
+      taxRuleVersion,
+      evidenceSourceIds: [evidenceRef],
     };
   }
 }

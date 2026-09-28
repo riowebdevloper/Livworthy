@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Home, SlidersHorizontal, ShieldCheck, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import { CITIES } from '../../data/locations';
 import { calculateCostOfLiving } from '../../api/calculators';
+import { createMoney } from '../../lib/money';
 import { CostOfLivingResult, HouseholdProfile } from '../../types/col';
 import { LivingCostBreakdownCard } from './LivingCostBreakdownCard';
 
@@ -47,7 +48,10 @@ export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
             cityId: city.id,
             household,
             overrides: {
-              actualRentMonthlyMinor: actualRentMajor ? actualRentMajor * 100 : undefined,
+              actualRentMonthlyMinor:
+                actualRentMajor !== undefined && isFinite(actualRentMajor)
+                  ? createMoney(actualRentMajor, city.currency).amountMinor
+                  : undefined,
             },
           },
           { signal: controller.signal }
@@ -106,7 +110,10 @@ export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
               id="col-city-select"
               aria-label="Select City"
               value={selectedCityId}
-              onChange={(e) => setSelectedCityId(e.target.value)}
+              onChange={(e) => {
+                setSelectedCityId(e.target.value);
+                onUpdateRentOverride(undefined);
+              }}
               className="block w-full rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] px-3 py-2.5 text-base font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"
             >
               {Object.values(CITIES).map((c) => (

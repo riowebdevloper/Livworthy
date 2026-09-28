@@ -153,3 +153,38 @@ export function formatMoney(
 export function formatMajorAmount(amountMajor: number, currency: CurrencyCode, hideDecimals: boolean = true): string {
   return formatMoney(createMoney(amountMajor, currency), { hideDecimals });
 }
+
+export function getDefaultSalaryForCurrency(currency: CurrencyCode): number {
+  switch (currency) {
+    case 'USD': return 100_000;
+    case 'GBP': return 60_000;
+    case 'EUR': return 55_000;
+    case 'CAD': return 80_000;
+    case 'AUD': return 95_000;
+    case 'AED': return 300_000;
+    case 'SAR': return 280_000;
+    case 'CHF': return 110_000;
+    case 'SGD': return 90_000;
+    case 'QAR': return 280_000;
+    case 'NZD': return 90_000;
+    case 'JPY': return 7_500_000;
+    case 'KRW': return 65_000_000;
+    case 'INR': return 1_800_000;
+    case 'NOK': return 700_000;
+    case 'SEK': return 650_000;
+    case 'DKK': return 550_000;
+    case 'ILS': return 300_000;
+    case 'HKD': return 550_000;
+    case 'BRL': return 120_000;
+    case 'MXN': return 480_000;
+    case 'IDR': return 300_000_000;
+    case 'MYR': return 90_000;
+    case 'PHP': return 900_000;
+    case 'ZAR': return 600_000;
+    case 'PLN': return 140_000;
+    case 'CZK': return 850_000;
+    case 'THB': return 900_000;
+    case 'VND': return 450_000_000;
+    default: return 100_000;
+  }
+}

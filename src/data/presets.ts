@@ -15,7 +15,7 @@ export const DEFAULT_NYC_100K_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2024,
+    taxYear: 2025,
   },
   household: {
     adults: 1,
@@ -42,7 +42,7 @@ export const DEFAULT_AUSTIN_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2024,
+    taxYear: 2025,
   },
   household: {
     adults: 1,
@@ -66,7 +66,7 @@ export const DEFAULT_LONDON_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2024,
+    taxYear: 2025,
   },
   household: {
     adults: 1,
@@ -90,7 +90,7 @@ export const DEFAULT_SF_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2024,
+    taxYear: 2025,
   },
   household: {
     adults: 1,
@@ -114,7 +114,7 @@ export const DEFAULT_DUBAI_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2024,
+    taxYear: 2025,
   },
   household: {
     adults: 1,
@@ -138,7 +138,7 @@ export const DEFAULT_NYC_FAMILY_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'married_filing_jointly',
     dependentsCount: 2,
-    taxYear: 2024,
+    taxYear: 2025,
   },
   household: {
     adults: 2,
