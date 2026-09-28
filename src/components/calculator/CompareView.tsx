@@ -283,6 +283,23 @@ export const CompareView: React.FC<CompareViewProps> = ({
             <p className="font-medium">{comparison.delta.summaryNarrative}</p>
           </div>
 
+          {(comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ||
+            comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE') && (
+            <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-800 flex items-start space-x-2">
+              <AlertCircle className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
+              <div>
+                Statutory tax calculations are under institutional verification for{' '}
+                {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE' &&
+                comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                  ? `${cityA.name} and ${cityB.name}`
+                  : comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                  ? cityA.name
+                  : cityB.name}
+                . Net take-home pay and disposable surplus deltas cannot be derived until statutory tables are verified.
+              </div>
+            </div>
+          )}
+
           {/* Table Breakdown */}
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left">
@@ -312,14 +329,20 @@ export const CompareView: React.FC<CompareViewProps> = ({
                 <tr>
                   <td className="py-3 font-semibold text-[#102A2E]">Net Take-Home (Post-Tax)</td>
                   <td className="py-3 text-right font-tabular text-[#167D75] font-semibold">
-                    {formatMoney(comparison.convertedA.takeHomeAnnual, { hideDecimals: true })}
+                    {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                      ? 'Under Verification'
+                      : formatMoney(comparison.convertedA.takeHomeAnnual, { hideDecimals: true })}
                   </td>
                   <td className="py-3 text-right font-tabular text-[#167D75] font-semibold">
-                    {formatMoney(comparison.convertedB.takeHomeAnnual, { hideDecimals: true })}
+                    {comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                      ? 'Under Verification'
+                      : formatMoney(comparison.convertedB.takeHomeAnnual, { hideDecimals: true })}
                   </td>
                   <td className="py-3 text-right font-bold font-tabular text-[#167D75]">
-                    {comparison.delta.takeHomeAnnualDiff.amountMinor >= 0 ? '+' : ''}
-                    {formatMoney(comparison.delta.takeHomeAnnualDiff, { hideDecimals: true })}
+                    {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ||
+                    comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                      ? 'Unavailable'
+                      : `${comparison.delta.takeHomeAnnualDiff.amountMinor >= 0 ? '+' : ''}${formatMoney(comparison.delta.takeHomeAnnualDiff, { hideDecimals: true })}`}
                   </td>
                 </tr>
 
@@ -340,14 +363,20 @@ export const CompareView: React.FC<CompareViewProps> = ({
                 <tr className="bg-[#DDF2EC]/40 font-bold text-sm">
                   <td className="py-3.5 pl-2 rounded-l-lg text-[#102A2E]">Disposable Income Remaining</td>
                   <td className="py-3.5 text-right font-tabular text-[#102A2E]">
-                    {formatMoney(comparison.convertedA.disposableAnnual, { hideDecimals: true })}
+                    {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                      ? 'Under Verification'
+                      : formatMoney(comparison.convertedA.disposableAnnual, { hideDecimals: true })}
                   </td>
                   <td className="py-3.5 text-right font-tabular text-[#102A2E]">
-                    {formatMoney(comparison.convertedB.disposableAnnual, { hideDecimals: true })}
+                    {comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                      ? 'Under Verification'
+                      : formatMoney(comparison.convertedB.disposableAnnual, { hideDecimals: true })}
                   </td>
                   <td className="py-3.5 pr-2 rounded-r-lg text-right font-tabular font-extrabold text-[#167D75]">
-                    {comparison.delta.disposableIncomeAnnualDiff.amountMinor >= 0 ? '+' : ''}
-                    {formatMoney(comparison.delta.disposableIncomeAnnualDiff, { hideDecimals: true })}
+                    {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ||
+                    comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                      ? 'Unavailable'
+                      : `${comparison.delta.disposableIncomeAnnualDiff.amountMinor >= 0 ? '+' : ''}${formatMoney(comparison.delta.disposableIncomeAnnualDiff, { hideDecimals: true })}`}
                   </td>
                 </tr>
               </tbody>

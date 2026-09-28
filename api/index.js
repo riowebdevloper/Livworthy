@@ -6907,8 +6907,9 @@ var SalaryWorthCalculator = class {
       scenario.household,
       scenario.overrides
     );
-    const takeHomeAnnualMinor = taxResult.netIncome.amountMinor;
-    const takeHomeMonthlyMinor = Math.round(takeHomeAnnualMinor / 12);
+    const isTaxUnavailable = taxResult.status === "TAX_CALCULATION_UNAVAILABLE";
+    const takeHomeAnnualMinor = isTaxUnavailable ? 0 : taxResult.netIncome.amountMinor;
+    const takeHomeMonthlyMinor = isTaxUnavailable ? 0 : Math.round(takeHomeAnnualMinor / 12);
     let netLivingCostsAnnualMinor = colResult.annualTotal.amountMinor;
     if (scenario.compensation.housingAllowanceAnnual) {
       netLivingCostsAnnualMinor = Math.max(
@@ -6917,14 +6918,13 @@ var SalaryWorthCalculator = class {
       );
     }
     const netLivingCostsMonthlyMinor = Math.round(netLivingCostsAnnualMinor / 12);
-    const moneyRemainingAnnualMinor = takeHomeAnnualMinor - netLivingCostsAnnualMinor;
-    const moneyRemainingMonthlyMinor = Math.round(moneyRemainingAnnualMinor / 12);
-    const savingsCapacityAnnualMinor = Math.max(0, moneyRemainingAnnualMinor);
-    const savingsCapacityMonthlyMinor = Math.max(0, moneyRemainingMonthlyMinor);
-    const savingsRate = grossAnnual.amountMinor > 0 ? savingsCapacityAnnualMinor / grossAnnual.amountMinor * 100 : 0;
-    const allEvidenceSources = Array.from(
-      /* @__PURE__ */ new Set([...taxResult.evidenceSourceIds, ...colResult.evidenceSourceIds])
-    );
+    const moneyRemainingAnnualMinor = isTaxUnavailable ? 0 : takeHomeAnnualMinor - netLivingCostsAnnualMinor;
+    const moneyRemainingMonthlyMinor = isTaxUnavailable ? 0 : Math.round(moneyRemainingAnnualMinor / 12);
+    const savingsCapacityAnnualMinor = isTaxUnavailable ? 0 : Math.max(0, moneyRemainingAnnualMinor);
+    const savingsCapacityMonthlyMinor = isTaxUnavailable ? 0 : Math.max(0, moneyRemainingMonthlyMinor);
+    const savingsRate = !isTaxUnavailable && grossAnnual.amountMinor > 0 ? savingsCapacityAnnualMinor / grossAnnual.amountMinor * 100 : 0;
+    const allEvidenceSources = isTaxUnavailable ? colResult.evidenceSourceIds : Array.from(/* @__PURE__ */ new Set([...taxResult.evidenceSourceIds, ...colResult.evidenceSourceIds]));
+    const taxRuleVersion = isTaxUnavailable ? void 0 : taxResult.taxRuleVersion;
     return {
       id: `calc-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
       generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
@@ -6942,7 +6942,7 @@ var SalaryWorthCalculator = class {
       savingsCapacityMonthly: fromMinor(savingsCapacityMonthlyMinor, currency),
       savingsRatePercentage: Math.round(savingsRate * 10) / 10,
       evidenceSourceIds: allEvidenceSources,
-      taxRuleVersion: taxResult.taxRuleVersion,
+      taxRuleVersion,
       colDate: colResult.datasetVersion
     };
   }
@@ -6979,7 +6979,7 @@ var ComparisonEngine = class {
     const needsFx = currencyA !== displayCurrency || currencyB !== displayCurrency;
     if (needsFx) {
       if (!fxSnapshot || !fxSnapshot.rates || fxSnapshot.status === "UNAVAILABLE") {
-        const zeroMoney = createMoney(0, displayCurrency);
+        const zeroMoney2 = createMoney(0, displayCurrency);
         return {
           status: "FX_UNAVAILABLE",
           scenarioA,
@@ -6988,27 +6988,27 @@ var ComparisonEngine = class {
           outcomeB,
           displayCurrency,
           convertedA: {
-            grossAnnual: zeroMoney,
-            takeHomeAnnual: zeroMoney,
-            livingCostsAnnual: zeroMoney,
-            disposableAnnual: zeroMoney,
-            disposableMonthly: zeroMoney
+            grossAnnual: zeroMoney2,
+            takeHomeAnnual: zeroMoney2,
+            livingCostsAnnual: zeroMoney2,
+            disposableAnnual: zeroMoney2,
+            disposableMonthly: zeroMoney2
           },
           convertedB: {
-            grossAnnual: zeroMoney,
-            takeHomeAnnual: zeroMoney,
-            livingCostsAnnual: zeroMoney,
-            disposableAnnual: zeroMoney,
-            disposableMonthly: zeroMoney
+            grossAnnual: zeroMoney2,
+            takeHomeAnnual: zeroMoney2,
+            livingCostsAnnual: zeroMoney2,
+            disposableAnnual: zeroMoney2,
+            disposableMonthly: zeroMoney2
           },
           delta: {
-            grossAnnualDiff: zeroMoney,
-            takeHomeAnnualDiff: zeroMoney,
-            livingCostsAnnualDiff: zeroMoney,
-            disposableIncomeAnnualDiff: zeroMoney,
-            monthlyDisposableDiff: zeroMoney,
-            year1RelocationTotal: zeroMoney,
-            year1NetDisposableDiff: zeroMoney,
+            grossAnnualDiff: zeroMoney2,
+            takeHomeAnnualDiff: zeroMoney2,
+            livingCostsAnnualDiff: zeroMoney2,
+            disposableIncomeAnnualDiff: zeroMoney2,
+            monthlyDisposableDiff: zeroMoney2,
+            year1RelocationTotal: zeroMoney2,
+            year1NetDisposableDiff: zeroMoney2,
             summaryNarrative: "FX exchange rates are currently unavailable. Cross-currency comparison cannot be calculated."
           },
           fxSnapshotDate: (/* @__PURE__ */ new Date()).toISOString(),
@@ -7019,50 +7019,59 @@ var ComparisonEngine = class {
     }
     const fxStatus = fxSnapshot?.status === "STALE" ? "FX_STALE" : "SUCCESS";
     const effectiveSnapshot = fxSnapshot || { rates: { [displayCurrency]: 1 } };
+    const zeroMoney = createMoney(0, displayCurrency);
+    const isTaxAUnavailable = outcomeA.tax.status === "TAX_CALCULATION_UNAVAILABLE";
+    const isTaxBUnavailable = outcomeB.tax.status === "TAX_CALCULATION_UNAVAILABLE";
+    const isAnyTaxUnavailable = isTaxAUnavailable || isTaxBUnavailable;
     const convA = {
       grossAnnual: convertMoney(outcomeA.grossAnnual, displayCurrency, effectiveSnapshot),
-      takeHomeAnnual: convertMoney(outcomeA.takeHomeAnnual, displayCurrency, effectiveSnapshot),
+      takeHomeAnnual: isTaxAUnavailable ? zeroMoney : convertMoney(outcomeA.takeHomeAnnual, displayCurrency, effectiveSnapshot),
       livingCostsAnnual: convertMoney(outcomeA.livingCostsAnnual, displayCurrency, effectiveSnapshot),
-      disposableAnnual: convertMoney(outcomeA.moneyRemainingAnnual, displayCurrency, effectiveSnapshot),
-      disposableMonthly: convertMoney(outcomeA.moneyRemainingMonthly, displayCurrency, effectiveSnapshot)
+      disposableAnnual: isTaxAUnavailable ? zeroMoney : convertMoney(outcomeA.moneyRemainingAnnual, displayCurrency, effectiveSnapshot),
+      disposableMonthly: isTaxAUnavailable ? zeroMoney : convertMoney(outcomeA.moneyRemainingMonthly, displayCurrency, effectiveSnapshot)
     };
     const convB = {
       grossAnnual: convertMoney(outcomeB.grossAnnual, displayCurrency, effectiveSnapshot),
-      takeHomeAnnual: convertMoney(outcomeB.takeHomeAnnual, displayCurrency, effectiveSnapshot),
+      takeHomeAnnual: isTaxBUnavailable ? zeroMoney : convertMoney(outcomeB.takeHomeAnnual, displayCurrency, effectiveSnapshot),
       livingCostsAnnual: convertMoney(outcomeB.livingCostsAnnual, displayCurrency, effectiveSnapshot),
-      disposableAnnual: convertMoney(outcomeB.moneyRemainingAnnual, displayCurrency, effectiveSnapshot),
-      disposableMonthly: convertMoney(outcomeB.moneyRemainingMonthly, displayCurrency, effectiveSnapshot)
+      disposableAnnual: isTaxBUnavailable ? zeroMoney : convertMoney(outcomeB.moneyRemainingAnnual, displayCurrency, effectiveSnapshot),
+      disposableMonthly: isTaxBUnavailable ? zeroMoney : convertMoney(outcomeB.moneyRemainingMonthly, displayCurrency, effectiveSnapshot)
     };
     const grossDiff = subtractMoney(convB.grossAnnual, convA.grossAnnual);
-    const takeHomeDiff = subtractMoney(convB.takeHomeAnnual, convA.takeHomeAnnual);
+    const takeHomeDiff = isAnyTaxUnavailable ? zeroMoney : subtractMoney(convB.takeHomeAnnual, convA.takeHomeAnnual);
     const livingCostsDiff = subtractMoney(convB.livingCostsAnnual, convA.livingCostsAnnual);
-    const disposableDiff = subtractMoney(convB.disposableAnnual, convA.disposableAnnual);
-    const monthlyDispDiff = subtractMoney(convB.disposableMonthly, convA.disposableMonthly);
+    const disposableDiff = isAnyTaxUnavailable ? zeroMoney : subtractMoney(convB.disposableAnnual, convA.disposableAnnual);
+    const monthlyDispDiff = isAnyTaxUnavailable ? zeroMoney : subtractMoney(convB.disposableMonthly, convA.disposableMonthly);
     let year1RelocationMinor = 0;
     if (relocationB) {
       year1RelocationMinor = relocationB.flightsMinor + relocationB.tempHousingMinor + relocationB.securityDepositMinor + relocationB.shippingFurnitureMinor + relocationB.visaAdminMinor + relocationB.otherSetupMinor;
     }
     const year1RelocationTotal = fromMinor(year1RelocationMinor, displayCurrency);
-    const year1NetDisposableDiff = fromMinor(
-      disposableDiff.amountMinor - year1RelocationMinor,
-      displayCurrency
-    );
-    const absDispDiffMajor = Math.abs(toMajor(disposableDiff));
-    const formattedDiff = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: displayCurrency,
-      maximumFractionDigits: 0
-    }).format(absDispDiffMajor);
+    const year1NetDisposableDiff = isAnyTaxUnavailable ? zeroMoney : fromMinor(disposableDiff.amountMinor - year1RelocationMinor, displayCurrency);
     let summaryNarrative = "";
-    if (disposableDiff.amountMinor > 0) {
-      summaryNarrative = `Under these assumptions, ${scenarioB.location.name} leaves approximately ${formattedDiff} more disposable income annually before one-time relocation adjustments.`;
-    } else if (disposableDiff.amountMinor < 0) {
-      summaryNarrative = `Under these assumptions, ${scenarioA.location.name} leaves approximately ${formattedDiff} more disposable income annually before one-time relocation adjustments.`;
+    if (isTaxAUnavailable && isTaxBUnavailable) {
+      summaryNarrative = `Statutory tax calculations are unavailable for both ${scenarioA.location.name} and ${scenarioB.location.name}. Net take-home pay, disposable surplus, and purchasing power deltas cannot be derived without verified tax schedules.`;
+    } else if (isTaxAUnavailable) {
+      summaryNarrative = `Statutory tax calculation is unavailable for ${scenarioA.location.name}. Comparative net take-home pay and disposable surplus deltas cannot be derived.`;
+    } else if (isTaxBUnavailable) {
+      summaryNarrative = `Statutory tax calculation is unavailable for ${scenarioB.location.name}. Comparative net take-home pay and disposable surplus deltas cannot be derived.`;
     } else {
-      summaryNarrative = `Under these assumptions, both options yield approximately identical disposable income after local taxes and living costs.`;
+      const absDispDiffMajor = Math.abs(toMajor(disposableDiff));
+      const formattedDiff = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: displayCurrency,
+        maximumFractionDigits: 0
+      }).format(absDispDiffMajor);
+      if (disposableDiff.amountMinor > 0) {
+        summaryNarrative = `Under these assumptions, ${scenarioB.location.name} leaves approximately ${formattedDiff} more disposable income annually before one-time relocation adjustments.`;
+      } else if (disposableDiff.amountMinor < 0) {
+        summaryNarrative = `Under these assumptions, ${scenarioA.location.name} leaves approximately ${formattedDiff} more disposable income annually before one-time relocation adjustments.`;
+      } else {
+        summaryNarrative = `Under these assumptions, both options yield approximately identical disposable income after local taxes and living costs.`;
+      }
     }
     return {
-      status: fxStatus,
+      status: isAnyTaxUnavailable ? "TAX_CALCULATION_UNAVAILABLE" : fxStatus,
       scenarioA,
       outcomeA,
       scenarioB,
@@ -7081,7 +7090,8 @@ var ComparisonEngine = class {
         summaryNarrative
       },
       fxSnapshotDate: fxSnapshot?.timestamp || fxSnapshot?.providerTimestamp || (/* @__PURE__ */ new Date()).toISOString(),
-      fxStatus: fxSnapshot?.status
+      fxStatus: fxSnapshot?.status,
+      errorMessage: isAnyTaxUnavailable ? "Statutory tax schedules are under verification for one or both locations. Disposable and net income comparisons are unavailable." : void 0
     };
   }
 };
@@ -7126,6 +7136,42 @@ var SalaryNeededCalculator = class {
   }
   static calculate(scenarioTemplate, targetSavingsMonthly) {
     const currency = scenarioTemplate.location.currency;
+    const sampleOutcome = SalaryWorthCalculator.calculate(scenarioTemplate);
+    if (sampleOutcome.tax.status === "TAX_CALCULATION_UNAVAILABLE") {
+      const zeroMoney = createMoney(0, currency);
+      return {
+        status: "TAX_CALCULATION_UNAVAILABLE",
+        warnings: sampleOutcome.tax.warnings || [
+          `Statutory tax calculation is unavailable for ${scenarioTemplate.location.name} (${scenarioTemplate.location.countryId}).`
+        ],
+        unsupportedExplanation: sampleOutcome.tax.unsupportedExplanation || `Statutory tax schedules for ${scenarioTemplate.location.name} are currently under verification. Required gross salary cannot be determined without verified official tax brackets.`,
+        targetSavingsMonthly,
+        requiredGrossAnnual: zeroMoney,
+        requiredNetAnnual: zeroMoney,
+        monthlyExpensesTotal: sampleOutcome.livingCostsMonthly,
+        outcomeWithRequiredSalary: sampleOutcome,
+        threeTiers: {
+          essential: {
+            label: "Essential Baseline",
+            requiredGrossAnnual: zeroMoney,
+            monthlyLivingCosts: sampleOutcome.livingCostsMonthly,
+            monthlySavings: zeroMoney
+          },
+          moderate: {
+            label: "Moderate Standard (+15% Buffer)",
+            requiredGrossAnnual: zeroMoney,
+            monthlyLivingCosts: sampleOutcome.livingCostsMonthly,
+            monthlySavings: zeroMoney
+          },
+          target: {
+            label: "Your Target Scenario",
+            requiredGrossAnnual: zeroMoney,
+            monthlyLivingCosts: sampleOutcome.livingCostsMonthly,
+            monthlySavings: zeroMoney
+          }
+        }
+      };
+    }
     const targetGrossMinor = this.findRequiredGross(
       scenarioTemplate,
       targetSavingsMonthly.amountMinor
@@ -7161,6 +7207,7 @@ var SalaryNeededCalculator = class {
       compensation: { baseSalary: fromMinor(moderateGrossMinor, currency) }
     });
     return {
+      status: "CALCULATED",
       targetSavingsMonthly,
       requiredGrossAnnual: fromMinor(targetGrossMinor, currency),
       requiredNetAnnual: targetOutcome.takeHomeAnnual,
@@ -7670,12 +7717,13 @@ function configureApp() {
       };
       const result = TaxRegistry.calculate(grossMoney, profile, location);
       const support = TaxRegistry.getCountrySupport(countryId);
+      const isUnavailable = result.status === "TAX_CALCULATION_UNAVAILABLE";
       res.json({
         success: true,
         data: result,
-        verificationStatus: support.verificationStatus,
-        isStatutorilyVerified: support.isStatutorilyVerified,
-        notes: support.notes
+        verificationStatus: isUnavailable ? "UNDER_VERIFICATION" : support.verificationStatus,
+        isStatutorilyVerified: isUnavailable ? false : support.isStatutorilyVerified,
+        notes: isUnavailable ? result.unsupportedExplanation || support.notes : support.notes
       });
     } catch (err) {
       console.error("Tax calculation error:", err);

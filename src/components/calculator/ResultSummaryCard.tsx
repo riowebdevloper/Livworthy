@@ -67,13 +67,24 @@ export const ResultSummaryCard: React.FC<ResultSummaryCardProps> = ({
   const remainingMinor = Math.max(0, outcome.moneyRemainingAnnual.amountMinor);
 
   const taxPct = Math.max(0, Math.min(100, Math.round((taxesMinor / grossMinor) * 100)));
+  const isTaxUnavailable = outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE';
+
   const housingPct = Math.max(0, Math.min(100, Math.round((housingMinor / grossMinor) * 100)));
   const essentialPct = Math.max(0, Math.min(100, Math.round((otherEssentialMinor / grossMinor) * 100)));
   const discretionaryPct = Math.max(0, Math.min(100, Math.round((discretionaryMinor / grossMinor) * 100)));
   const remainingPct = Math.max(0, Math.min(100, Math.round((remainingMinor / grossMinor) * 100)));
 
   const handleCopySummary = () => {
-    const summary = `--- LivWorthy Financial Assessment ---
+    const summary = isTaxUnavailable
+      ? `--- LivWorthy Financial Assessment ---
+Location: ${outcome.scenario.location.name} (${outcome.scenario.location.countryId})
+Gross Salary: ${formatMoney(outcome.grossAnnual, { hideDecimals: true })}/year
+Tax Status: Under Verification (statutory tables not yet available)
+Take-Home Pay: Pending statutory verification
+Estimated Living Costs: ${formatMoney(outcome.livingCostsAnnual, { hideDecimals: true })}/year (${formatMoney(outcome.livingCostsMonthly, { hideDecimals: true })}/month)
+Spendable Surplus: Unavailable (requires statutory tax calculation)
+Methodology: Deterministic statutory schedules (https://livworthy.com)`
+      : `--- LivWorthy Financial Assessment ---
 Location: ${outcome.scenario.location.name} (${outcome.scenario.location.countryId})
 Gross Salary: ${formatMoney(outcome.grossAnnual, { hideDecimals: true })}/year
 Effective Tax Rate: ${(outcome.tax.effectiveTaxRate * 100).toFixed(1)}%
@@ -105,8 +116,8 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
             </span>
           </div>
           <p className="text-xs text-[#60706D] mt-0.5">
-            {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
-              ? 'Tax calculation not available yet for this jurisdiction • Pre-tax gross displayed'
+            {isTaxUnavailable
+              ? 'Statutory tax schedules under verification • Net income & savings pending verified tables'
               : `Statutory ${outcome.scenario.taxProfile.taxYear} schedule (${outcome.tax.taxRuleVersion || 'Official table'})`}
           </p>
         </div>
@@ -164,24 +175,22 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
           label={
             <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
               <span className="text-xs font-semibold uppercase tracking-wider text-[#167D75]">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
-                  ? 'Estimated Take-Home (Pre-Tax)'
-                  : 'Estimated Take-Home'}
+                Estimated Take-Home
               </span>
               <span className="text-xs text-[#60706D]">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                {isTaxUnavailable
                   ? '(Tax calculation under verification)'
                   : `(${(outcome.tax.effectiveTaxRate * 100).toFixed(1)}% total tax & FICA)`}
               </span>
             </div>
           }
           description={
-            outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
-              ? 'Statutory tax schedules under verification; pre-tax gross displayed pending verified tables'
+            isTaxUnavailable
+              ? 'Statutory tax schedules are under institutional verification; take-home pay is not calculated without official tables'
               : 'After federal, state, local resident taxes & social contributions'
           }
-          amount={takeHomeDisplay}
-          period={`/${isMonthly ? 'mo' : 'yr'}`}
+          amount={isTaxUnavailable ? 'Pending Verification' : takeHomeDisplay}
+          period={isTaxUnavailable ? '' : `/${isMonthly ? 'mo' : 'yr'}`}
           color="teal"
           size="xl"
         />
@@ -226,25 +235,29 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
                 </span>
               </div>
               <p className="text-xs text-[#60706D] mt-1 max-w-md leading-relaxed">
-                Money you actually keep each {isMonthly ? 'month' : 'year'} after taxes and estimated living costs — available for savings, investments, or discretionary spending.
+                {isTaxUnavailable
+                  ? 'Spendable surplus and savings capacity cannot be derived without authoritative statutory tax calculations.'
+                  : `Money you actually keep each ${isMonthly ? 'month' : 'year'} after taxes and estimated living costs — available for savings, investments, or discretionary spending.`}
               </p>
             </div>
 
             <div className="shrink-0 text-left sm:text-right space-y-0.5 pt-1 sm:pt-0">
               <div className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight whitespace-nowrap">
-                {moneyRemainingDisplay}
+                {isTaxUnavailable ? 'Pending Verification' : moneyRemainingDisplay}
               </div>
-              <div className="text-xs font-medium text-[#60706D] whitespace-normal sm:whitespace-nowrap">
-                {isMonthly ? (
-                  <span>
-                    Equivalent to {formatMoney(outcome.moneyRemainingAnnual, { hideDecimals: true })}/year
-                  </span>
-                ) : (
-                  <span>
-                    Equivalent to {formatMoney(outcome.moneyRemainingMonthly, { hideDecimals: true })}/month
-                  </span>
-                )}
-              </div>
+              {!isTaxUnavailable && (
+                <div className="text-xs font-medium text-[#60706D] whitespace-normal sm:whitespace-nowrap">
+                  {isMonthly ? (
+                    <span>
+                      Equivalent to {formatMoney(outcome.moneyRemainingAnnual, { hideDecimals: true })}/year
+                    </span>
+                  ) : (
+                    <span>
+                      Equivalent to {formatMoney(outcome.moneyRemainingMonthly, { hideDecimals: true })}/month
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -254,12 +267,14 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
               <PiggyBank className="w-4 h-4 text-[#167D75] shrink-0" />
               <span className="font-bold text-[#0D625B]">Potential Monthly Savings:</span>
               <span className="font-extrabold text-[#102A2E] text-sm">
-                {formatMoney(outcome.savingsCapacityMonthly, { hideDecimals: true })}/mo
+                {isTaxUnavailable ? 'Under Verification' : `${formatMoney(outcome.savingsCapacityMonthly, { hideDecimals: true })}/mo`}
               </span>
             </div>
-            <span className="text-[#0D625B] font-medium">
-              ({outcome.savingsRatePercentage}% of gross income)
-            </span>
+            {!isTaxUnavailable && (
+              <span className="text-[#0D625B] font-medium">
+                ({outcome.savingsRatePercentage}% of gross income)
+              </span>
+            )}
           </div>
 
           {/* Visual Income Allocation Stack */}
@@ -270,62 +285,69 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
                 <span>Gross Compensation Allocation</span>
               </span>
               <span className="text-xs text-[#60706D]">
-                Where every 100% of income goes
+                {isTaxUnavailable ? 'Pending verified tax schedule' : 'Where every 100% of income goes'}
               </span>
             </div>
 
-            {/* Stacked Progress Bar */}
-            <div className="h-4 w-full rounded-full bg-[#DCE3E0]/50 overflow-hidden flex shadow-inner">
-              <div
-                style={{ width: `${taxPct}%` }}
-                className="bg-[#D9534F] h-full transition-all duration-300 relative group cursor-pointer"
-                title={`Taxes & FICA: ${taxPct}%`}
-              />
-              <div
-                style={{ width: `${housingPct}%` }}
-                className="bg-[#2B6CB0] h-full transition-all duration-300 relative group cursor-pointer"
-                title={`Housing: ${housingPct}%`}
-              />
-              <div
-                style={{ width: `${essentialPct}%` }}
-                className="bg-[#167D75] h-full transition-all duration-300 relative group cursor-pointer"
-                title={`Essential Living: ${essentialPct}%`}
-              />
-              <div
-                style={{ width: `${discretionaryPct}%` }}
-                className="bg-[#D97706] h-full transition-all duration-300 relative group cursor-pointer"
-                title={`Discretionary: ${discretionaryPct}%`}
-              />
-              <div
-                style={{ width: `${remainingPct}%` }}
-                className="bg-[#10B981] h-full transition-all duration-300 relative group cursor-pointer"
-                title={`Savings Buffer: ${remainingPct}%`}
-              />
-            </div>
+            {isTaxUnavailable ? (
+              <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-800">
+                Gross income allocation and savings capacity cannot be calculated because statutory tax schedules for this jurisdiction/tax year are currently under verification.
+              </div>
+            ) : (
+              <>
+                <div className="h-4 w-full rounded-full bg-[#DCE3E0]/50 overflow-hidden flex shadow-inner">
+                  <div
+                    style={{ width: `${taxPct}%` }}
+                    className="bg-[#D9534F] h-full transition-all duration-300 relative group cursor-pointer"
+                    title={`Taxes & FICA: ${taxPct}%`}
+                  />
+                  <div
+                    style={{ width: `${housingPct}%` }}
+                    className="bg-[#2B6CB0] h-full transition-all duration-300 relative group cursor-pointer"
+                    title={`Housing: ${housingPct}%`}
+                  />
+                  <div
+                    style={{ width: `${essentialPct}%` }}
+                    className="bg-[#167D75] h-full transition-all duration-300 relative group cursor-pointer"
+                    title={`Essential Living: ${essentialPct}%`}
+                  />
+                  <div
+                    style={{ width: `${discretionaryPct}%` }}
+                    className="bg-[#D97706] h-full transition-all duration-300 relative group cursor-pointer"
+                    title={`Discretionary: ${discretionaryPct}%`}
+                  />
+                  <div
+                    style={{ width: `${remainingPct}%` }}
+                    className="bg-[#10B981] h-full transition-all duration-300 relative group cursor-pointer"
+                    title={`Savings Buffer: ${remainingPct}%`}
+                  />
+                </div>
 
-            {/* Legend */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-2.5 text-xs text-[#60706D]">
-              <div className="flex items-center space-x-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#D9534F] shrink-0" />
-                <span>Taxes & FICA ({taxPct}%)</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#2B6CB0] shrink-0" />
-                <span>Housing ({housingPct}%)</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#167D75] shrink-0" />
-                <span>Essentials ({essentialPct}%)</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#D97706] shrink-0" />
-                <span>Discretionary ({discretionaryPct}%)</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] shrink-0" />
-                <span className="font-semibold text-[#102A2E]">Savings ({remainingPct}%)</span>
-              </div>
-            </div>
+                {/* Legend */}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-2.5 text-xs text-[#60706D]">
+                  <div className="flex items-center space-x-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#D9534F] shrink-0" />
+                    <span>Taxes & FICA ({taxPct}%)</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#2B6CB0] shrink-0" />
+                    <span>Housing ({housingPct}%)</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#167D75] shrink-0" />
+                    <span>Essentials ({essentialPct}%)</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#D97706] shrink-0" />
+                    <span>Discretionary ({discretionaryPct}%)</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] shrink-0" />
+                    <span className="font-semibold text-[#102A2E]">Savings ({remainingPct}%)</span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Savings Capacity Bar */}
@@ -333,8 +355,14 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
             <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
               <PiggyBank className="w-4 h-4 text-[#167D75] shrink-0" />
               <span className="font-semibold text-[#102A2E]">Potential Savings Rate:</span>
-              <span className="font-bold text-[#167D75]">{outcome.savingsRatePercentage}%</span>
-              <span className="text-[#60706D]">of gross earnings</span>
+              {isTaxUnavailable ? (
+                <span className="text-[#60706D] italic">Under Verification</span>
+              ) : (
+                <>
+                  <span className="font-bold text-[#167D75]">{outcome.savingsRatePercentage}%</span>
+                  <span className="text-[#60706D]">of gross earnings</span>
+                </>
+              )}
             </div>
             <button
               onClick={onOpenEvidence}

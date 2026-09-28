@@ -145,7 +145,32 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
       )}
 
       {/* The 3 Scenario Tiers (Essential, Moderate, Your Target) */}
-      {result && (
+      {result && (result.status === 'TAX_CALCULATION_UNAVAILABLE' || result.outcomeWithRequiredSalary?.tax?.status === 'TAX_CALCULATION_UNAVAILABLE') ? (
+        <div className="bg-[#FFFFFF] rounded-2xl border border-amber-200 p-6 sm:p-8 shadow-xs">
+          <div className="flex items-start space-x-3">
+            <AlertCircle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+            <div className="space-y-3">
+              <h3 className="font-bold text-lg text-[#102A2E]">
+                Salary Requirement Solver Unavailable for {city.name} ({city.countryId})
+              </h3>
+              <p className="text-xs sm:text-sm text-[#60706D] leading-relaxed">
+                {result.unsupportedExplanation ||
+                  `Solving for required gross salary requires authoritative statutory tax tables for ${city.name}. In accordance with LivWorthy's Data Integrity Charter, we do not approximate tax obligations or synthesize gross income requirements without verified statutory legislation.`}
+              </p>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => onSwitchToSalaryWorthWithSalary(50000, city.id)}
+                  className="px-4 py-2.5 bg-[#102A2E] hover:bg-[#167D75] text-white text-xs font-bold rounded-xl transition-colors inline-flex items-center space-x-1.5"
+                >
+                  <span>Evaluate Cost of Living in {city.name}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : result ? (
         <div>
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-lg text-[#102A2E]">Calculated Salary Thresholds</h3>
@@ -305,7 +330,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

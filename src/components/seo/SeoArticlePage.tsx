@@ -23,6 +23,8 @@ import { ResultSummaryCard } from '../calculator/ResultSummaryCard';
 import { TaxBreakdownCard } from '../calculator/TaxBreakdownCard';
 import { AnswerSummary } from './AnswerSummary';
 import { FinancialGlossary } from './FinancialGlossary';
+import { CapabilityResolver } from '../../engines/capabilities/capability-resolver';
+import { LATEST_STATUTORY_TAX_YEAR } from '../../engines/tax/tax-registry';
 
 interface SeoArticlePageProps {
   initialGuideSlug?: string;
@@ -107,7 +109,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
     taxProfile: {
       filingStatus: 'single',
       dependentsCount: 0,
-      taxYear: 2025,
+      taxYear: CapabilityResolver.resolve(activeGuide.countryId).taxYear || LATEST_STATUTORY_TAX_YEAR,
     },
     overrides: {
       actualRentMonthlyMinor:
@@ -350,7 +352,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
         currency={activeGuide.currency}
         grossSalaryMajor={activeGuide.salaryMajor}
         outcome={outcome}
-        taxYear={2025}
+        taxYear={CapabilityResolver.resolve(activeGuide.countryId).taxYear || LATEST_STATUTORY_TAX_YEAR}
         onOpenMethodology={onOpenMethodology}
         onOpenEvidence={onOpenEvidence}
         onReportCorrection={() => onReportCorrection?.(`${city.name}, ${country.name}`)}

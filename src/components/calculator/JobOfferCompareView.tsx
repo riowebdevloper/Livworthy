@@ -450,7 +450,9 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
                 <span className="text-[#60706D] min-w-0 flex-1 pr-1">Net Take-Home (After Tax & Social):</span>
                 <span className="font-bold text-[#167D75] font-tabular tabular-nums shrink-0 whitespace-nowrap">
-                  {formatMoney(comparison.outcomeA.takeHomeAnnual, { hideDecimals: true })}
+                  {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                    ? 'Under Verification'
+                    : formatMoney(comparison.outcomeA.takeHomeAnnual, { hideDecimals: true })}
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
@@ -463,9 +465,17 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               <div className="flex items-baseline justify-between gap-2 py-2 bg-[#DDF2EC]/40 border border-[#167D75]/20 px-3 rounded-lg mt-2">
                 <span className="font-bold text-[#102A2E] min-w-0 flex-1 pr-1">Net Money Remaining:</span>
                 <span className="font-extrabold text-[#102A2E] font-tabular tabular-nums text-sm shrink-0 whitespace-nowrap">
-                  {formatMoney(comparison.outcomeA.moneyRemainingAnnual, { hideDecimals: true })}
+                  {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                    ? 'Unavailable (Tax Pending)'
+                    : formatMoney(comparison.outcomeA.moneyRemainingAnnual, { hideDecimals: true })}
                 </span>
               </div>
+
+              {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE' && (
+                <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-800">
+                  Statutory tax calculations for {cityA.name} are under verification. Net take-home pay and surplus cannot be derived.
+                </div>
+              )}
             </div>
           </div>
 
@@ -500,7 +510,9 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
                 <span className="text-[#60706D] min-w-0 flex-1 pr-1">Net Take-Home (After Tax & Social):</span>
                 <span className="font-bold text-[#167D75] font-tabular tabular-nums shrink-0 whitespace-nowrap">
-                  {formatMoney(comparison.outcomeB.takeHomeAnnual, { hideDecimals: true })}
+                  {comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                    ? 'Under Verification'
+                    : formatMoney(comparison.outcomeB.takeHomeAnnual, { hideDecimals: true })}
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
@@ -524,7 +536,9 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                   {displayYear === 'year1' ? 'Year 1 Net Remaining:' : 'Year 2+ Recurring Remaining:'}
                 </span>
                 <span className="font-extrabold text-[#102A2E] font-tabular tabular-nums text-sm shrink-0 whitespace-nowrap">
-                  {displayYear === 'year1'
+                  {comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+                    ? 'Unavailable (Tax Pending)'
+                    : displayYear === 'year1'
                     ? formatMoney(
                         createMoney(
                           toMajor(comparison.outcomeB.moneyRemainingAnnual) - year1TotalRelocation,
@@ -535,6 +549,12 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                     : formatMoney(comparison.outcomeB.moneyRemainingAnnual, { hideDecimals: true })}
                 </span>
               </div>
+
+              {comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE' && (
+                <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-800">
+                  Statutory tax calculations for {cityB.name} are under verification. Net take-home pay and surplus cannot be derived.
+                </div>
+              )}
             </div>
           </div>
         </div>

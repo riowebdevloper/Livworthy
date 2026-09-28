@@ -90,7 +90,7 @@ export function runSeoGenerator() {
         description:
           'Income and living-cost intelligence across 39 target markets, with statutory tax calculations available for supported jurisdictions, fair-market rent benchmarks, and essential goods expenditure models.',
         creator: { '@id': `${BASE_URL}/#organization` },
-        temporalCoverage: '2024/2026',
+        temporalCoverage: `2024/${LATEST_STATUTORY_TAX_YEAR}`,
         spatialCoverage: 'Global (39 Target Commercial Markets)',
         license: `${BASE_URL}/terms`,
       },
@@ -460,7 +460,7 @@ export function runSeoGenerator() {
         </nav>
 
         <div class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold rounded-full mb-3">
-          <span>${country.name}</span> • ${region ? `<span>${region.name}</span> • ` : ''}<span>${city.name}</span> • <span>Verified Statutory Benchmark (Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR})</span>
+          <span>${country.name}</span> • ${region ? `<span>${region.name}</span> • ` : ''}<span>${city.name}</span> • <span>${cap.hasDedicatedTaxAdapter ? `Verified Statutory Benchmark (Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR})` : 'Cost of Living & Purchasing Power Benchmark (Tax Under Verification)'}</span>
         </div>
 
         <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] tracking-tight leading-tight">
@@ -475,7 +475,7 @@ export function runSeoGenerator() {
         <section aria-label="Direct Financial Answer & Verdict" class="mt-6 p-6 sm:p-7 bg-white border-l-4 border-l-teal-600 border border-slate-200 rounded-2xl shadow-xs space-y-4">
           <div class="flex items-center justify-between border-b border-slate-100 pb-2">
             <span class="text-xs font-bold uppercase tracking-wider text-teal-700">AEO Direct Answer & Verdict</span>
-            <span class="text-xs text-slate-500">Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR} / Deterministic Statutory Model</span>
+            <span class="text-xs text-slate-500">${cap.hasDedicatedTaxAdapter ? `Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR} / Deterministic Statutory Model` : 'Cost of Living Benchmark / Statutory Tax Schedules Under Verification'}</span>
           </div>
           <p class="text-base text-slate-900 leading-relaxed font-semibold">
             ${g.headlineSummary}
@@ -518,8 +518,8 @@ export function runSeoGenerator() {
                 </tr>
                 <tr>
                   <td class="p-3 font-semibold">Statutory Deductions Status</td>
-                  <td class="p-3 text-teal-800 font-semibold">${country.verificationStatus}</td>
-                  <td class="p-3">Official Schedule</td>
+                  <td class="p-3 text-teal-800 font-semibold">${cap.hasDedicatedTaxAdapter ? country.verificationStatus : 'UNDER VERIFICATION'}</td>
+                  <td class="p-3">${cap.hasDedicatedTaxAdapter ? 'Official Schedule' : 'Research Phase'}</td>
                 </tr>
               </tbody>
             </table>

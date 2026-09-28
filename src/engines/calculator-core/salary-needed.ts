@@ -1,9 +1,12 @@
-import { fromMinor } from '../../lib/money';
+import { createMoney, fromMinor } from '../../lib/money';
 import { Money } from '../../types/money';
 import { LivWorthCalculationOutcome, LivWorthScenario } from '../../types/scenario';
 import { SalaryWorthCalculator } from './salary-worth';
 
 export interface SalaryNeededResult {
+  status?: 'CALCULATED' | 'TAX_CALCULATION_UNAVAILABLE';
+  warnings?: string[];
+  unsupportedExplanation?: string;
   targetSavingsMonthly: Money;
   requiredGrossAnnual: Money;
   requiredNetAnnual: Money;
@@ -90,6 +93,46 @@ export class SalaryNeededCalculator {
   ): SalaryNeededResult {
     const currency = scenarioTemplate.location.currency;
 
+    // Fast-fail if statutory tax calculation is unavailable for this jurisdiction/year
+    const sampleOutcome = SalaryWorthCalculator.calculate(scenarioTemplate);
+    if (sampleOutcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE') {
+      const zeroMoney = createMoney(0, currency);
+      return {
+        status: 'TAX_CALCULATION_UNAVAILABLE',
+        warnings: sampleOutcome.tax.warnings || [
+          `Statutory tax calculation is unavailable for ${scenarioTemplate.location.name} (${scenarioTemplate.location.countryId}).`,
+        ],
+        unsupportedExplanation:
+          sampleOutcome.tax.unsupportedExplanation ||
+          `Statutory tax schedules for ${scenarioTemplate.location.name} are currently under verification. Required gross salary cannot be determined without verified official tax brackets.`,
+        targetSavingsMonthly,
+        requiredGrossAnnual: zeroMoney,
+        requiredNetAnnual: zeroMoney,
+        monthlyExpensesTotal: sampleOutcome.livingCostsMonthly,
+        outcomeWithRequiredSalary: sampleOutcome,
+        threeTiers: {
+          essential: {
+            label: 'Essential Baseline',
+            requiredGrossAnnual: zeroMoney,
+            monthlyLivingCosts: sampleOutcome.livingCostsMonthly,
+            monthlySavings: zeroMoney,
+          },
+          moderate: {
+            label: 'Moderate Standard (+15% Buffer)',
+            requiredGrossAnnual: zeroMoney,
+            monthlyLivingCosts: sampleOutcome.livingCostsMonthly,
+            monthlySavings: zeroMoney,
+          },
+          target: {
+            label: 'Your Target Scenario',
+            requiredGrossAnnual: zeroMoney,
+            monthlyLivingCosts: sampleOutcome.livingCostsMonthly,
+            monthlySavings: zeroMoney,
+          },
+        },
+      };
+    }
+
     // 1. Calculate for Target savings
     const targetGrossMinor = this.findRequiredGross(
       scenarioTemplate,
@@ -131,6 +174,7 @@ export class SalaryNeededCalculator {
     });
 
     return {
+      status: 'CALCULATED',
       targetSavingsMonthly,
       requiredGrossAnnual: fromMinor(targetGrossMinor, currency),
       requiredNetAnnual: targetOutcome.takeHomeAnnual,

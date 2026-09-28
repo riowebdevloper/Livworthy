@@ -34,8 +34,9 @@ export class SalaryWorthCalculator {
     );
 
     // 4. Net & Disposable
-    const takeHomeAnnualMinor = taxResult.netIncome.amountMinor;
-    const takeHomeMonthlyMinor = Math.round(takeHomeAnnualMinor / 12);
+    const isTaxUnavailable = taxResult.status === 'TAX_CALCULATION_UNAVAILABLE';
+    const takeHomeAnnualMinor = isTaxUnavailable ? 0 : taxResult.netIncome.amountMinor;
+    const takeHomeMonthlyMinor = isTaxUnavailable ? 0 : Math.round(takeHomeAnnualMinor / 12);
 
     // Handle expense-replacing benefits (e.g. employer housing allowance)
     let netLivingCostsAnnualMinor = colResult.annualTotal.amountMinor;
@@ -47,18 +48,22 @@ export class SalaryWorthCalculator {
     }
     const netLivingCostsMonthlyMinor = Math.round(netLivingCostsAnnualMinor / 12);
 
-    const moneyRemainingAnnualMinor = takeHomeAnnualMinor - netLivingCostsAnnualMinor;
-    const moneyRemainingMonthlyMinor = Math.round(moneyRemainingAnnualMinor / 12);
+    const moneyRemainingAnnualMinor = isTaxUnavailable ? 0 : (takeHomeAnnualMinor - netLivingCostsAnnualMinor);
+    const moneyRemainingMonthlyMinor = isTaxUnavailable ? 0 : Math.round(moneyRemainingAnnualMinor / 12);
 
-    // Savings capacity
-    const savingsCapacityAnnualMinor = Math.max(0, moneyRemainingAnnualMinor);
-    const savingsCapacityMonthlyMinor = Math.max(0, moneyRemainingMonthlyMinor);
+    // Savings capacity: never derive savings from an unavailable tax calculation
+    const savingsCapacityAnnualMinor = isTaxUnavailable ? 0 : Math.max(0, moneyRemainingAnnualMinor);
+    const savingsCapacityMonthlyMinor = isTaxUnavailable ? 0 : Math.max(0, moneyRemainingMonthlyMinor);
     const savingsRate =
-      grossAnnual.amountMinor > 0 ? (savingsCapacityAnnualMinor / grossAnnual.amountMinor) * 100 : 0;
+      !isTaxUnavailable && grossAnnual.amountMinor > 0
+        ? (savingsCapacityAnnualMinor / grossAnnual.amountMinor) * 100
+        : 0;
 
-    const allEvidenceSources = Array.from(
-      new Set([...taxResult.evidenceSourceIds, ...colResult.evidenceSourceIds])
-    );
+    const allEvidenceSources = isTaxUnavailable
+      ? colResult.evidenceSourceIds
+      : Array.from(new Set([...taxResult.evidenceSourceIds, ...colResult.evidenceSourceIds]));
+
+    const taxRuleVersion = isTaxUnavailable ? undefined : taxResult.taxRuleVersion;
 
     return {
       id: `calc-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -77,7 +82,7 @@ export class SalaryWorthCalculator {
       savingsCapacityMonthly: fromMinor(savingsCapacityMonthlyMinor, currency),
       savingsRatePercentage: Math.round(savingsRate * 10) / 10,
       evidenceSourceIds: allEvidenceSources,
-      taxRuleVersion: taxResult.taxRuleVersion,
+      taxRuleVersion,
       colDate: colResult.datasetVersion,
     };
   }

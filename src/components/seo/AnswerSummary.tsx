@@ -94,7 +94,11 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
             Tax Year: <strong>{taxYear}</strong>
           </span>
           <span>•</span>
-          <span className="text-teal-700 font-semibold">{taxRuleVersion}</span>
+          <span className="text-teal-700 font-semibold">
+            {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
+              ? 'Tax Schedule Under Verification'
+              : taxRuleVersion}
+          </span>
         </div>
       </div>
 
@@ -104,12 +108,25 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
 
       {/* 2. Structured Factual Answer Paragraph (Extracted by Google AI & LLMs) */}
       <div className="text-sm sm:text-base text-[#102A2E] leading-relaxed space-y-2">
-        <p>
-          <strong>{headlineSummary}</strong> A <strong>{grossFormatted}</strong> gross salary in {cityName} produces an estimated <strong>{netAnnualFormatted}</strong> in annual statutory take-home pay (approximately <strong>{netMonthlyFormatted}/month</strong>) under {taxYear} statutory schedules (an effective deduction rate of {effectiveRate}%).
-        </p>
-        <p className="text-slate-700 text-xs sm:text-sm">
-          After accounting for an assumed baseline rent of <strong>{rentMonthlyFormatted}/month</strong> ({rentAnnualFormatted}/year) and essential household necessities of <strong>{livingCostsMonthlyFormatted}/month</strong>, approximately <strong>{disposableMonthlyFormatted}/month ({disposableAnnualFormatted}/year)</strong> remains as uncommitted disposable savings capacity.
-        </p>
+        {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? (
+          <>
+            <p>
+              <strong>{headlineSummary}</strong> For a <strong>{grossFormatted}</strong> gross salary in {cityName}, statutory personal income tax schedules are currently undergoing official verification. In accordance with LivWorthy's Data Integrity Charter, net take-home pay is not approximated or estimated without verified statutory schedules.
+            </p>
+            <p className="text-slate-700 text-xs sm:text-sm">
+              Local baseline rent benchmarks are estimated at <strong>{rentMonthlyFormatted}/month</strong> ({rentAnnualFormatted}/year) and essential household necessities at <strong>{livingCostsMonthlyFormatted}/month</strong> ({livingCostsAnnualFormatted}/year). Uncommitted savings capacity will be determined once official statutory tax brackets are verified.
+            </p>
+          </>
+        ) : (
+          <>
+            <p>
+              <strong>{headlineSummary}</strong> A <strong>{grossFormatted}</strong> gross salary in {cityName} produces an estimated <strong>{netAnnualFormatted}</strong> in annual statutory take-home pay (approximately <strong>{netMonthlyFormatted}/month</strong>) under {taxYear} statutory schedules (an effective deduction rate of {effectiveRate}%).
+            </p>
+            <p className="text-slate-700 text-xs sm:text-sm">
+              After accounting for an assumed baseline rent of <strong>{rentMonthlyFormatted}/month</strong> ({rentAnnualFormatted}/year) and essential household necessities of <strong>{livingCostsMonthlyFormatted}/month</strong>, approximately <strong>{disposableMonthlyFormatted}/month ({disposableAnnualFormatted}/year)</strong> remains as uncommitted disposable savings capacity.
+            </p>
+          </>
+        )}
         {lifestyleContext && (
           <p className="text-xs text-slate-600 italic pt-1">
             {lifestyleContext}
@@ -137,15 +154,27 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
             </tr>
             <tr className="bg-slate-50/50">
               <td className="py-2 px-3 font-semibold text-[#102A2E]">Total Statutory Taxes & Levies</td>
-              <td className="py-2 px-3 font-semibold text-rose-700">-{totalTaxFormatted}</td>
-              <td className="py-2 px-3 text-rose-700 font-medium">-{totalTaxMonthlyFormatted}</td>
-              <td className="py-2 px-3 text-[11px] text-teal-800 font-semibold">Official Statutory Schedule</td>
+              <td className="py-2 px-3 font-semibold text-rose-700">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : `-${totalTaxFormatted}`}
+              </td>
+              <td className="py-2 px-3 text-rose-700 font-medium">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : `-${totalTaxMonthlyFormatted}`}
+              </td>
+              <td className="py-2 px-3 text-[11px] text-teal-800 font-semibold">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Pending Statutory Verification' : 'Official Statutory Schedule'}
+              </td>
             </tr>
             <tr>
               <td className="py-2 px-3 font-bold text-[#102A2E]">Net Take-Home Pay</td>
-              <td className="py-2 px-3 font-extrabold text-[#167D75]">{netAnnualFormatted}</td>
-              <td className="py-2 px-3 font-bold text-[#167D75]">{netMonthlyFormatted}</td>
-              <td className="py-2 px-3 text-[11px] text-teal-800 font-semibold">Statutory Net Income</td>
+              <td className="py-2 px-3 font-extrabold text-[#167D75]">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : netAnnualFormatted}
+              </td>
+              <td className="py-2 px-3 font-bold text-[#167D75]">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : netMonthlyFormatted}
+              </td>
+              <td className="py-2 px-3 text-[11px] text-teal-800 font-semibold">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Pending Tax Verification' : 'Statutory Net Income'}
+              </td>
             </tr>
             <tr className="bg-slate-50/50">
               <td className="py-2 px-3 font-semibold text-[#102A2E]">Baseline Housing (1-Bed Typical)</td>
@@ -161,9 +190,15 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
             </tr>
             <tr className="bg-[#DDF2EC]/40 font-bold border-t-2 border-teal-600">
               <td className="py-2.5 px-3 text-[#0D524D]">Uncommitted Disposable Cash</td>
-              <td className="py-2.5 px-3 text-[#0D524D]">{disposableAnnualFormatted}</td>
-              <td className="py-2.5 px-3 text-[#0D524D]">{disposableMonthlyFormatted}</td>
-              <td className="py-2.5 px-3 text-[11px] text-[#0D524D] font-bold">LivWorthy Derived Model</td>
+              <td className="py-2.5 px-3 text-[#0D524D]">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : disposableAnnualFormatted}
+              </td>
+              <td className="py-2.5 px-3 text-[#0D524D]">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : disposableMonthlyFormatted}
+              </td>
+              <td className="py-2.5 px-3 text-[11px] text-[#0D524D] font-bold">
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Pending Tax Verification' : 'LivWorthy Derived Model'}
+              </td>
             </tr>
           </tbody>
         </table>

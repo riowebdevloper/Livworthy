@@ -314,7 +314,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     expect(currentData.data.taxRuleVersion).toBe('US-FED-NY-NYC-2025.1');
     expect(currentData.data.netIncome.amountMinor).toBe(7034316); // $70,343.16 under 2025 IRS Rev. Proc. 2024-40
 
-    // 3. Verify unsupported country returns TAX_CALCULATION_UNAVAILABLE
+    // 3. Verify unsupported country returns TAX_CALCULATION_UNAVAILABLE with false verification
     const unsupportedRes = await request.post('/api/tax/estimate', {
       data: {
         grossSalaryMinor: 7500000,
@@ -327,6 +327,26 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     expect(unsupportedRes.status()).toBe(200);
     const unsupportedData = await unsupportedRes.json();
     expect(unsupportedData.data.status).toBe('TAX_CALCULATION_UNAVAILABLE');
+    expect(unsupportedData.isStatutorilyVerified).toBe(false);
+    expect(unsupportedData.verificationStatus).toBe('UNDER_VERIFICATION');
+
+    // 4. Verify TY 2026 forward request returns TAX_CALCULATION_UNAVAILABLE with false verification
+    const futureRes = await request.post('/api/tax/estimate', {
+      data: {
+        grossSalaryMinor: 10000000,
+        currency: 'USD',
+        countryId: 'US',
+        regionId: 'NY',
+        cityId: 'nyc',
+        taxJurisdictionId: 'US-FED-NY-NYC',
+        taxYear: 2026,
+      },
+    });
+    expect(futureRes.status()).toBe(200);
+    const futureData = await futureRes.json();
+    expect(futureData.data.status).toBe('TAX_CALCULATION_UNAVAILABLE');
+    expect(futureData.isStatutorilyVerified).toBe(false);
+    expect(futureData.verificationStatus).toBe('UNDER_VERIFICATION');
   });
 
   test('12. FOOTER HEADLINES & BREADCRUMB INTERLINKING: Headlines clickable, breadcrumbs clickable, country/city guides functional', async ({ page }) => {
@@ -385,5 +405,39 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await methodBtn.click();
     await expect(page.locator('text=LivWorthy Calculation Methodology').first()).toBeVisible();
     await page.keyboard.press('Escape');
+  });
+
+  test('13. UNAVAILABLE TAX INVARIANTS: Unsupported cities show pending tax verification across Salary Worth, Salary Needed, and Comparisons', async ({ page }) => {
+    // 1. Salary Worth with Tokyo (unsupported country JP)
+    await page.goto('/?city=tokyo&salary=10000000&tab=salary-worth');
+    await expect(page.locator('#result-summary-card')).toBeVisible();
+
+    // Take-Home should display "Pending Verification", NOT gross ¥10,000,000
+    await expect(page.locator('text=Pending Verification').first()).toBeVisible();
+    await expect(page.locator('text=Under Verification').first()).toBeVisible();
+
+    // Tax warning banner should be visible in ResultSummaryCard
+    await expect(page.locator('text=Pending verified tax schedule').first()).toBeVisible();
+
+    // Evidence drawer should show "No Verified Tax Schedule Active"
+    await page.click('#btn-open-evidence');
+    await expect(page.locator('text=No Verified Tax Schedule Active').first()).toBeVisible();
+    await page.keyboard.press('Escape');
+
+    // 2. Salary Needed with Tokyo
+    await page.goto('/?city=tokyo&tab=salary-needed');
+    await expect(page.locator('#salary-needed-view')).toBeVisible();
+    const neededLocSelect = page.locator('#target-location-select');
+    await neededLocSelect.selectOption('tokyo');
+    await expect(page.locator('text=Salary Requirement Solver Unavailable').first()).toBeVisible();
+
+    // 3. Compare with Tokyo
+    await page.goto('/?tab=compare');
+    await expect(page.locator('#compare-view')).toBeVisible();
+    const cityBSelect = page.locator('#compare-city-b-select');
+    await cityBSelect.selectOption('tokyo');
+    await expect(page.locator('text=Statutory tax calculations are under institutional verification').first()).toBeVisible();
+    await expect(page.locator('text=Under Verification').first()).toBeVisible();
+    await expect(page.locator('text=Unavailable').first()).toBeVisible();
   });
 });

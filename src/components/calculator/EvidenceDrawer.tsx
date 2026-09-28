@@ -72,7 +72,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
             <div className="flex items-center justify-between">
               <span className="font-bold text-[#102A2E]">Active Rule System:</span>
               <span className="font-mono text-[11px] font-semibold text-[#167D75] bg-white px-2 py-0.5 rounded border border-[#DCE3E0]">
-                {ruleVersions?.taxRuleVersion || 'Statutory Schedule Active'}
+                {ruleVersions?.taxRuleVersion || 'No Verified Tax Schedule Active'}
               </span>
             </div>
             <p className="text-[11px] text-[#60706D]">

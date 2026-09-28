@@ -4,7 +4,7 @@ import { CurrencyCode, Money } from '../../types/money';
 import { LivWorthCalculationOutcome, LivWorthScenario } from '../../types/scenario';
 import { SalaryWorthCalculator } from './salary-worth';
 
-export type ComparisonStatus = 'SUCCESS' | 'FX_UNAVAILABLE' | 'FX_STALE';
+export type ComparisonStatus = 'SUCCESS' | 'FX_UNAVAILABLE' | 'FX_STALE' | 'TAX_CALCULATION_UNAVAILABLE';
 
 export interface RelocationProfile {
   flightsMinor: number;
@@ -114,29 +114,34 @@ export class ComparisonEngine {
 
     const fxStatus = fxSnapshot?.status === 'STALE' ? 'FX_STALE' : 'SUCCESS';
     const effectiveSnapshot = fxSnapshot || { rates: { [displayCurrency]: 1.0 } };
+    const zeroMoney = createMoney(0, displayCurrency);
+
+    const isTaxAUnavailable = outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE';
+    const isTaxBUnavailable = outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE';
+    const isAnyTaxUnavailable = isTaxAUnavailable || isTaxBUnavailable;
 
     const convA = {
       grossAnnual: convertMoney(outcomeA.grossAnnual, displayCurrency, effectiveSnapshot),
-      takeHomeAnnual: convertMoney(outcomeA.takeHomeAnnual, displayCurrency, effectiveSnapshot),
+      takeHomeAnnual: isTaxAUnavailable ? zeroMoney : convertMoney(outcomeA.takeHomeAnnual, displayCurrency, effectiveSnapshot),
       livingCostsAnnual: convertMoney(outcomeA.livingCostsAnnual, displayCurrency, effectiveSnapshot),
-      disposableAnnual: convertMoney(outcomeA.moneyRemainingAnnual, displayCurrency, effectiveSnapshot),
-      disposableMonthly: convertMoney(outcomeA.moneyRemainingMonthly, displayCurrency, effectiveSnapshot),
+      disposableAnnual: isTaxAUnavailable ? zeroMoney : convertMoney(outcomeA.moneyRemainingAnnual, displayCurrency, effectiveSnapshot),
+      disposableMonthly: isTaxAUnavailable ? zeroMoney : convertMoney(outcomeA.moneyRemainingMonthly, displayCurrency, effectiveSnapshot),
     };
 
     const convB = {
       grossAnnual: convertMoney(outcomeB.grossAnnual, displayCurrency, effectiveSnapshot),
-      takeHomeAnnual: convertMoney(outcomeB.takeHomeAnnual, displayCurrency, effectiveSnapshot),
+      takeHomeAnnual: isTaxBUnavailable ? zeroMoney : convertMoney(outcomeB.takeHomeAnnual, displayCurrency, effectiveSnapshot),
       livingCostsAnnual: convertMoney(outcomeB.livingCostsAnnual, displayCurrency, effectiveSnapshot),
-      disposableAnnual: convertMoney(outcomeB.moneyRemainingAnnual, displayCurrency, effectiveSnapshot),
-      disposableMonthly: convertMoney(outcomeB.moneyRemainingMonthly, displayCurrency, effectiveSnapshot),
+      disposableAnnual: isTaxBUnavailable ? zeroMoney : convertMoney(outcomeB.moneyRemainingAnnual, displayCurrency, effectiveSnapshot),
+      disposableMonthly: isTaxBUnavailable ? zeroMoney : convertMoney(outcomeB.moneyRemainingMonthly, displayCurrency, effectiveSnapshot),
     };
 
     // Deltas: B minus A
     const grossDiff = subtractMoney(convB.grossAnnual, convA.grossAnnual);
-    const takeHomeDiff = subtractMoney(convB.takeHomeAnnual, convA.takeHomeAnnual);
+    const takeHomeDiff = isAnyTaxUnavailable ? zeroMoney : subtractMoney(convB.takeHomeAnnual, convA.takeHomeAnnual);
     const livingCostsDiff = subtractMoney(convB.livingCostsAnnual, convA.livingCostsAnnual);
-    const disposableDiff = subtractMoney(convB.disposableAnnual, convA.disposableAnnual);
-    const monthlyDispDiff = subtractMoney(convB.disposableMonthly, convA.disposableMonthly);
+    const disposableDiff = isAnyTaxUnavailable ? zeroMoney : subtractMoney(convB.disposableAnnual, convA.disposableAnnual);
+    const monthlyDispDiff = isAnyTaxUnavailable ? zeroMoney : subtractMoney(convB.disposableMonthly, convA.disposableMonthly);
 
     // Relocation costs for Scenario B
     let year1RelocationMinor = 0;
@@ -151,30 +156,37 @@ export class ComparisonEngine {
     }
 
     const year1RelocationTotal = fromMinor(year1RelocationMinor, displayCurrency);
-    const year1NetDisposableDiff = fromMinor(
-      disposableDiff.amountMinor - year1RelocationMinor,
-      displayCurrency
-    );
+    const year1NetDisposableDiff = isAnyTaxUnavailable
+      ? zeroMoney
+      : fromMinor(disposableDiff.amountMinor - year1RelocationMinor, displayCurrency);
 
     // Objective neutral narrative (No "winner" or color judgment)
-    const absDispDiffMajor = Math.abs(toMajor(disposableDiff));
-    const formattedDiff = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: displayCurrency,
-      maximumFractionDigits: 0,
-    }).format(absDispDiffMajor);
-
     let summaryNarrative = '';
-    if (disposableDiff.amountMinor > 0) {
-      summaryNarrative = `Under these assumptions, ${scenarioB.location.name} leaves approximately ${formattedDiff} more disposable income annually before one-time relocation adjustments.`;
-    } else if (disposableDiff.amountMinor < 0) {
-      summaryNarrative = `Under these assumptions, ${scenarioA.location.name} leaves approximately ${formattedDiff} more disposable income annually before one-time relocation adjustments.`;
+    if (isTaxAUnavailable && isTaxBUnavailable) {
+      summaryNarrative = `Statutory tax calculations are unavailable for both ${scenarioA.location.name} and ${scenarioB.location.name}. Net take-home pay, disposable surplus, and purchasing power deltas cannot be derived without verified tax schedules.`;
+    } else if (isTaxAUnavailable) {
+      summaryNarrative = `Statutory tax calculation is unavailable for ${scenarioA.location.name}. Comparative net take-home pay and disposable surplus deltas cannot be derived.`;
+    } else if (isTaxBUnavailable) {
+      summaryNarrative = `Statutory tax calculation is unavailable for ${scenarioB.location.name}. Comparative net take-home pay and disposable surplus deltas cannot be derived.`;
     } else {
-      summaryNarrative = `Under these assumptions, both options yield approximately identical disposable income after local taxes and living costs.`;
+      const absDispDiffMajor = Math.abs(toMajor(disposableDiff));
+      const formattedDiff = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: displayCurrency,
+        maximumFractionDigits: 0,
+      }).format(absDispDiffMajor);
+
+      if (disposableDiff.amountMinor > 0) {
+        summaryNarrative = `Under these assumptions, ${scenarioB.location.name} leaves approximately ${formattedDiff} more disposable income annually before one-time relocation adjustments.`;
+      } else if (disposableDiff.amountMinor < 0) {
+        summaryNarrative = `Under these assumptions, ${scenarioA.location.name} leaves approximately ${formattedDiff} more disposable income annually before one-time relocation adjustments.`;
+      } else {
+        summaryNarrative = `Under these assumptions, both options yield approximately identical disposable income after local taxes and living costs.`;
+      }
     }
 
     return {
-      status: fxStatus,
+      status: isAnyTaxUnavailable ? 'TAX_CALCULATION_UNAVAILABLE' : fxStatus,
       scenarioA,
       outcomeA,
       scenarioB,
@@ -194,6 +206,9 @@ export class ComparisonEngine {
       },
       fxSnapshotDate: fxSnapshot?.timestamp || (fxSnapshot as any)?.providerTimestamp || new Date().toISOString(),
       fxStatus: fxSnapshot?.status,
+      errorMessage: isAnyTaxUnavailable
+        ? 'Statutory tax schedules are under verification for one or both locations. Disposable and net income comparisons are unavailable.'
+        : undefined,
     };
   }
 }

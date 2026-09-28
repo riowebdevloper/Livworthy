@@ -400,13 +400,14 @@ function configureApp() {
 
       const result = TaxRegistry.calculate(grossMoney, profile, location);
       const support = TaxRegistry.getCountrySupport(countryId);
+      const isUnavailable = result.status === 'TAX_CALCULATION_UNAVAILABLE';
 
       res.json({
         success: true,
         data: result,
-        verificationStatus: support.verificationStatus,
-        isStatutorilyVerified: support.isStatutorilyVerified,
-        notes: support.notes,
+        verificationStatus: isUnavailable ? 'UNDER_VERIFICATION' : support.verificationStatus,
+        isStatutorilyVerified: isUnavailable ? false : support.isStatutorilyVerified,
+        notes: isUnavailable ? (result.unsupportedExplanation || support.notes) : support.notes,
       });
     } catch (err: any) {
       console.error('Tax calculation error:', err);

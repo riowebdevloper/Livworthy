@@ -261,10 +261,13 @@ export default function App() {
 
   // Dynamic evidence update callbacks from calculator views
   const handleSalaryWorthOutcome = useCallback((outcome: LivWorthCalculationOutcome) => {
+    const isTaxUnavailable = outcome.tax?.status === 'TAX_CALCULATION_UNAVAILABLE';
     setCalculationMetadata({
-      evidenceSourceIds: outcome.evidenceSourceIds,
+      evidenceSourceIds: isTaxUnavailable
+        ? (outcome.costOfLiving?.evidenceSourceIds || [])
+        : outcome.evidenceSourceIds,
       ruleVersions: {
-        taxRuleVersion: outcome.taxRuleVersion || outcome.tax?.taxRuleVersion,
+        taxRuleVersion: isTaxUnavailable ? undefined : (outcome.taxRuleVersion || outcome.tax?.taxRuleVersion),
         colDate: outcome.colDate || outcome.costOfLiving?.datasetVersion,
       },
     });
@@ -272,10 +275,13 @@ export default function App() {
 
   const handleSalaryNeededResult = useCallback((result: SalaryNeededResult) => {
     if (result.outcomeWithRequiredSalary) {
+      const isTaxUnavailable = result.outcomeWithRequiredSalary.tax?.status === 'TAX_CALCULATION_UNAVAILABLE';
       setCalculationMetadata({
-        evidenceSourceIds: result.outcomeWithRequiredSalary.evidenceSourceIds,
+        evidenceSourceIds: isTaxUnavailable
+          ? (result.outcomeWithRequiredSalary.costOfLiving?.evidenceSourceIds || [])
+          : result.outcomeWithRequiredSalary.evidenceSourceIds,
         ruleVersions: {
-          taxRuleVersion: result.outcomeWithRequiredSalary.taxRuleVersion || result.outcomeWithRequiredSalary.tax?.taxRuleVersion,
+          taxRuleVersion: isTaxUnavailable ? undefined : (result.outcomeWithRequiredSalary.taxRuleVersion || result.outcomeWithRequiredSalary.tax?.taxRuleVersion),
           colDate: result.outcomeWithRequiredSalary.colDate || result.outcomeWithRequiredSalary.costOfLiving?.datasetVersion,
         },
       });
@@ -283,33 +289,46 @@ export default function App() {
   }, []);
 
   const handleTaxResult = useCallback((tax: TaxResult) => {
-    setCalculationMetadata((prev) => ({
-      evidenceSourceIds: tax.evidenceSourceIds,
+    const isUnavailable = tax.status === 'TAX_CALCULATION_UNAVAILABLE';
+    setCalculationMetadata({
+      evidenceSourceIds: isUnavailable ? [] : (tax.evidenceSourceIds || []),
       ruleVersions: {
-        ...prev.ruleVersions,
-        taxRuleVersion: tax.taxRuleVersion,
+        taxRuleVersion: isUnavailable ? undefined : tax.taxRuleVersion,
       },
-    }));
+    });
   }, []);
 
   const handleColResult = useCallback((col: CostOfLivingResult) => {
-    setCalculationMetadata((prev) => ({
-      evidenceSourceIds: col.evidenceSourceIds,
+    setCalculationMetadata({
+      evidenceSourceIds: col.evidenceSourceIds || [],
       ruleVersions: {
-        ...prev.ruleVersions,
         colDate: col.datasetVersion,
       },
-    }));
+    });
   }, []);
 
   const handleComparisonResult = useCallback((comp: ComparisonResult) => {
+    const isTaxAUnavailable = comp.outcomeA.tax?.status === 'TAX_CALCULATION_UNAVAILABLE';
+    const isTaxBUnavailable = comp.outcomeB.tax?.status === 'TAX_CALCULATION_UNAVAILABLE';
+    const evidenceA = isTaxAUnavailable ? (comp.outcomeA.costOfLiving?.evidenceSourceIds || []) : comp.outcomeA.evidenceSourceIds;
+    const evidenceB = isTaxBUnavailable ? (comp.outcomeB.costOfLiving?.evidenceSourceIds || []) : comp.outcomeB.evidenceSourceIds;
     const combinedEvidence = Array.from(
-      new Set([...comp.outcomeA.evidenceSourceIds, ...comp.outcomeB.evidenceSourceIds])
+      new Set([...evidenceA, ...evidenceB])
     );
+
+    let taxRuleVersion: string | undefined = undefined;
+    if (!isTaxAUnavailable && !isTaxBUnavailable) {
+      taxRuleVersion = `${comp.outcomeA.taxRuleVersion || comp.outcomeA.tax.taxRuleVersion} / ${comp.outcomeB.taxRuleVersion || comp.outcomeB.tax.taxRuleVersion}`;
+    } else if (!isTaxAUnavailable) {
+      taxRuleVersion = comp.outcomeA.taxRuleVersion || comp.outcomeA.tax.taxRuleVersion;
+    } else if (!isTaxBUnavailable) {
+      taxRuleVersion = comp.outcomeB.taxRuleVersion || comp.outcomeB.tax.taxRuleVersion;
+    }
+
     setCalculationMetadata({
       evidenceSourceIds: combinedEvidence,
       ruleVersions: {
-        taxRuleVersion: `${comp.outcomeA.taxRuleVersion || comp.outcomeA.tax.taxRuleVersion} / ${comp.outcomeB.taxRuleVersion || comp.outcomeB.tax.taxRuleVersion}`,
+        taxRuleVersion,
         colDate: comp.outcomeA.colDate || comp.outcomeA.costOfLiving.datasetVersion,
       },
     });
