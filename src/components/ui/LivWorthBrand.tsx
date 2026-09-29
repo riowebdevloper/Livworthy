@@ -57,15 +57,34 @@ export const LivWorthyLogo: React.FC<BrandProps> = ({
     xl: 'h-16 sm:h-20',
   };
 
+  const dimensions = {
+    sm: { width: 108, height: 36 },
+    md: { width: 132, height: 44 },
+    lg: { width: 168, height: 56 },
+    xl: { width: 240, height: 80 },
+  };
+
+  const dim = dimensions[size];
+
   return (
     <div className={`inline-flex items-center select-none ${className}`}>
-      <img
-        src="/logo.png"
-        alt="LivWorthy"
-        className={`w-auto ${heights[size]} object-contain`}
-        style={{ aspectRatio: '3836 / 1340' }}
-        loading="eager"
-      />
+      <picture>
+        <source
+          type="image/webp"
+          srcSet="/logo-300.webp 1x, /logo-600.webp 2x"
+        />
+        <img
+          src="/logo-300.png"
+          srcSet="/logo-300.png 1x, /logo-600.png 2x"
+          alt="LivWorthy"
+          width={dim.width}
+          height={dim.height}
+          className={`w-auto ${heights[size]} object-contain`}
+          style={{ aspectRatio: '3 / 1' }}
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
     </div>
   );
 };

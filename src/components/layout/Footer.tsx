@@ -311,9 +311,17 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <a
                   href="/data-policy"
-                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
+                  className="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
                 >
                   Data Policy (Zero PII & Zero Fabrication)
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/privacy"
+                  className="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
+                >
+                  Privacy Policy
                 </a>
               </li>
             </ul>
@@ -351,7 +359,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }
                   scrollToTop();
                 }}
-                className="px-2.5 py-1 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 transition-colors cursor-pointer"
+                className="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 transition-colors cursor-pointer flex items-center"
                 title={`Switch to ${c.name}, ${c.country}`}
               >
                 {c.name} ({c.country})
@@ -361,25 +369,25 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-[#F7F8F5] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#60706D] gap-2">
+        <div className="border-t border-[#F7F8F5] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#60706D] gap-3">
           <p>© {new Date().getFullYear()} LivWorthy. Know what your income is really worth.</p>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-            <a href="/about" className="hover:underline hover:text-[#167D75]">About</a>
-            <span>·</span>
-            <a href="/methodology" className="hover:underline hover:text-[#167D75]">Methodology</a>
-            <span>·</span>
-            <a href="/sources" className="hover:underline hover:text-[#167D75]">Sources</a>
-            <span>·</span>
-            <a href="/editorial-policy" className="hover:underline hover:text-[#167D75]">Editorial Policy</a>
-            <span>·</span>
-            <a href="/data-policy" className="hover:underline hover:text-[#167D75]">Data Policy</a>
-            <span>·</span>
-            <a href="/corrections" className="hover:underline hover:text-[#167D75]">Corrections</a>
-            <span>·</span>
-            <a href="/terms" className="hover:underline hover:text-[#167D75]">Terms & YMYL Disclaimer</a>
-            <span>·</span>
-            <a href="/privacy" className="hover:underline hover:text-[#167D75]">Privacy Policy</a>
-          </div>
+          <nav aria-label="Legal and policy links" className="flex flex-wrap items-center justify-center sm:justify-end gap-x-2 sm:gap-x-3 gap-y-2 text-xs">
+            <a href="/about" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">About</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <a href="/methodology" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Methodology</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <a href="/sources" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Sources</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <a href="/editorial-policy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Editorial Policy</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <a href="/data-policy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Data Policy</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <a href="/corrections" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Corrections</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <a href="/terms" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Terms & YMYL Disclaimer</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <a href="/privacy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Privacy Policy</a>
+          </nav>
         </div>
       </div>
     </footer>

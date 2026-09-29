@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { CustomizationDrawer } from './components/calculator/CustomizationDrawer';
-import { EvidenceDrawer } from './components/calculator/EvidenceDrawer';
 import { SalaryWorthView } from './components/calculator/SalaryWorthView';
 import { SalaryNeededView } from './components/calculator/SalaryNeededView';
 import { SalaryAfterTaxView } from './components/calculator/SalaryAfterTaxView';
@@ -9,10 +7,26 @@ import { CompareView } from './components/calculator/CompareView';
 import { JobOfferCompareView } from './components/calculator/JobOfferCompareView';
 import { Header, ActiveTab } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
-import { MethodologyModal } from './components/seo/MethodologyModal';
-import { SeoArticlePage } from './components/seo/SeoArticlePage';
-import { SystemDiagnosticsModal } from './components/system/SystemDiagnosticsModal';
-import { DataCorrectionModal } from './components/system/DataCorrectionModal';
+
+// Defer non-critical modals, drawers, and guide articles to reduce initial JS payload
+const CustomizationDrawer = React.lazy(() =>
+  import('./components/calculator/CustomizationDrawer').then((m) => ({ default: m.CustomizationDrawer }))
+);
+const EvidenceDrawer = React.lazy(() =>
+  import('./components/calculator/EvidenceDrawer').then((m) => ({ default: m.EvidenceDrawer }))
+);
+const MethodologyModal = React.lazy(() =>
+  import('./components/seo/MethodologyModal').then((m) => ({ default: m.MethodologyModal }))
+);
+const SystemDiagnosticsModal = React.lazy(() =>
+  import('./components/system/SystemDiagnosticsModal').then((m) => ({ default: m.SystemDiagnosticsModal }))
+);
+const DataCorrectionModal = React.lazy(() =>
+  import('./components/system/DataCorrectionModal').then((m) => ({ default: m.DataCorrectionModal }))
+);
+const SeoArticlePage = React.lazy(() =>
+  import('./components/seo/SeoArticlePage').then((m) => ({ default: m.SeoArticlePage }))
+);
 import { CITIES } from './data/locations';
 import { DEFAULT_NYC_100K_SCENARIO } from './data/presets';
 import { SALARY_GUIDES } from './data/salary-guides';
@@ -468,22 +482,24 @@ export default function App() {
         )}
 
         {activeTab === 'nyc-100k-guide' && (
-          <SeoArticlePage
-            initialGuideSlug={selectedGuideSlug}
-            onOpenCustomizer={() => setIsCustomizerOpen(true)}
-            onOpenEvidence={() => setIsEvidenceOpen(true)}
-            onOpenMethodology={() => setIsMethodologyOpen(true)}
-            onReportCorrection={(jurisdiction) => {
-              setCorrectionJurisdiction(jurisdiction || scenario.location.name);
-              setIsCorrectionOpen(true);
-            }}
-            onNavigateToCompare={() => handleSelectTab('compare')}
-            onNavigateHome={() => handleSelectTab('salary-worth')}
-            onNavigateCity={handleSelectCityFromLink}
-            onNavigateCountry={handleSelectCountryFromLink}
-            onNavigateRegion={handleSelectRegionFromLink}
-            onSelectGuide={handleSelectGuide}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-6 h-6 border-2 border-teal-700 border-t-transparent rounded-full animate-spin"></div></div>}>
+            <SeoArticlePage
+              initialGuideSlug={selectedGuideSlug}
+              onOpenCustomizer={() => setIsCustomizerOpen(true)}
+              onOpenEvidence={() => setIsEvidenceOpen(true)}
+              onOpenMethodology={() => setIsMethodologyOpen(true)}
+              onReportCorrection={(jurisdiction) => {
+                setCorrectionJurisdiction(jurisdiction || scenario.location.name);
+                setIsCorrectionOpen(true);
+              }}
+              onNavigateToCompare={() => handleSelectTab('compare')}
+              onNavigateHome={() => handleSelectTab('salary-worth')}
+              onNavigateCity={handleSelectCityFromLink}
+              onNavigateCountry={handleSelectCountryFromLink}
+              onNavigateRegion={handleSelectRegionFromLink}
+              onSelectGuide={handleSelectGuide}
+            />
+          </React.Suspense>
         )}
       </main>
 
@@ -501,44 +517,56 @@ export default function App() {
         onSelectCity={handleSelectCityFromLink}
       />
 
-      {/* Drawers and Modals */}
-      <CustomizationDrawer
-        isOpen={isCustomizerOpen}
-        onClose={() => setIsCustomizerOpen(false)}
-        household={scenario.household}
-        taxProfile={scenario.taxProfile}
-        actualRentMajor={actualRentMajor}
-        onUpdateHousehold={handleUpdateHousehold}
-        onUpdateTaxProfile={handleUpdateTaxProfile}
-        onUpdateRentOverride={handleUpdateRentOverride}
-      />
+      {/* Drawers and Modals: Suspended to avoid unused JS on initial load */}
+      <React.Suspense fallback={null}>
+        {isCustomizerOpen && (
+          <CustomizationDrawer
+            isOpen={isCustomizerOpen}
+            onClose={() => setIsCustomizerOpen(false)}
+            household={scenario.household}
+            taxProfile={scenario.taxProfile}
+            actualRentMajor={actualRentMajor}
+            onUpdateHousehold={handleUpdateHousehold}
+            onUpdateTaxProfile={handleUpdateTaxProfile}
+            onUpdateRentOverride={handleUpdateRentOverride}
+          />
+        )}
 
-      <EvidenceDrawer
-        isOpen={isEvidenceOpen}
-        onClose={() => setIsEvidenceOpen(false)}
-        sourceIds={calculationMetadata.evidenceSourceIds}
-        ruleVersions={calculationMetadata.ruleVersions}
-      />
+        {isEvidenceOpen && (
+          <EvidenceDrawer
+            isOpen={isEvidenceOpen}
+            onClose={() => setIsEvidenceOpen(false)}
+            sourceIds={calculationMetadata.evidenceSourceIds}
+            ruleVersions={calculationMetadata.ruleVersions}
+          />
+        )}
 
-      <MethodologyModal
-        isOpen={isMethodologyOpen}
-        onClose={() => setIsMethodologyOpen(false)}
-        onOpenEvidence={() => {
-          setIsMethodologyOpen(false);
-          setIsEvidenceOpen(true);
-        }}
-      />
+        {isMethodologyOpen && (
+          <MethodologyModal
+            isOpen={isMethodologyOpen}
+            onClose={() => setIsMethodologyOpen(false)}
+            onOpenEvidence={() => {
+              setIsMethodologyOpen(false);
+              setIsEvidenceOpen(true);
+            }}
+          />
+        )}
 
-      <SystemDiagnosticsModal
-        isOpen={isDiagnosticsOpen}
-        onClose={() => setIsDiagnosticsOpen(false)}
-      />
+        {isDiagnosticsOpen && (
+          <SystemDiagnosticsModal
+            isOpen={isDiagnosticsOpen}
+            onClose={() => setIsDiagnosticsOpen(false)}
+          />
+        )}
 
-      <DataCorrectionModal
-        isOpen={isCorrectionOpen}
-        onClose={() => setIsCorrectionOpen(false)}
-        defaultJurisdiction={correctionJurisdiction}
-      />
+        {isCorrectionOpen && (
+          <DataCorrectionModal
+            isOpen={isCorrectionOpen}
+            onClose={() => setIsCorrectionOpen(false)}
+            defaultJurisdiction={correctionJurisdiction}
+          />
+        )}
+      </React.Suspense>
     </div>
   );
 }

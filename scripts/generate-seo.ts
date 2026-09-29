@@ -98,46 +98,289 @@ export function runSeoGenerator() {
   };
 
   const homeHtmlBody = `
-    <header class="max-w-7xl mx-auto px-4 py-8">
-      <h1 class="text-3xl font-extrabold text-[#102A2E]">LivWorthy — Know what your income is really worth.</h1>
-      <p class="mt-2 text-lg text-slate-600">${PLATFORM_IDENTITY.coreDefinition} Income and living-cost intelligence across 39 target markets, with statutory tax calculations available for supported jurisdictions, realistic cost of living, household budgets, and purchasing power.</p>
-    </header>
-    <main class="max-w-7xl mx-auto px-4 py-6">
-      <section class="mb-10">
-        <h2 class="text-xl font-bold text-[#102A2E] mb-4">Core Financial Intelligence Capabilities</h2>
-        <ul class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-700">
-          <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Salary Worth:</strong> Evaluate actual disposable income and savings capacity after statutory taxes, rent, and household necessities.</li>
-          <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Salary After Tax:</strong> Authoritative statutory net income calculation accounting for federal, regional/state, local taxes, and mandatory social security contributions.</li>
-          <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Salary Needed:</strong> Solve backwards from target lifestyle or savings goals to determine the gross compensation required.</li>
-          <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Cost of Living:</strong> City-level living cost benchmarks across housing, groceries, transit, healthcare, and utilities.</li>
-          <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>City Comparison:</strong> Cross-border financial equivalency modeling with real-time FX snapshot tracking.</li>
-          <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Job Offer Value:</strong> Multi-currency total compensation evaluator separating cash earnings from non-cash benefits.</li>
-        </ul>
-      </section>
-      <section class="mb-10">
-        <h2 class="text-xl font-bold text-[#102A2E] mb-4">Supported Commercial Markets</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 text-sm">
-          ${Object.values(COUNTRIES)
-            .map(
-              (c) =>
-                `<a href="/countries/${c.id.toLowerCase()}" class="p-2 bg-slate-50 hover:bg-slate-100 rounded text-teal-800 font-medium">${c.name} (${c.verificationStatus})</a>`
-            )
-            .join('')}
+    <div class="min-h-screen flex flex-col bg-[#F7F8F5]">
+      <header id="livworthy-header" data-testid="livworth-header" class="bg-[#FFFFFF] border-b border-[#DCE3E0] sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between h-16">
+            <a href="/" id="header-logo-link" class="flex items-center space-x-3 group py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] focus-visible:ring-offset-2 rounded" aria-label="LivWorthy — Home" title="LivWorthy - Home">
+              <picture>
+                <source type="image/webp" srcset="/logo-300.webp 1x, /logo-600.webp 2x" />
+                <img src="/logo-300.png" srcset="/logo-300.png 1x, /logo-600.png 2x" alt="LivWorthy" width="108" height="36" class="h-9 w-auto object-contain transition-transform group-hover:scale-[1.02]" style="aspect-ratio: 3 / 1;" loading="eager" decoding="async" />
+              </picture>
+              <span class="text-xs font-semibold uppercase tracking-wider text-[#167D75] border-l border-[#DCE3E0] pl-3 hidden sm:inline">Living Intelligence</span>
+            </a>
+            <nav aria-label="Site navigation" class="flex items-center space-x-2 sm:space-x-3">
+              <a id="nav-how-it-works" href="/methodology" class="inline-flex items-center space-x-1.5 text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]" aria-label="How It Works — Methodology">
+                <span>How It Works</span>
+              </a>
+              <a id="nav-sources" href="/sources" class="inline-flex items-center space-x-1.5 text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]" aria-label="Sources — Data & Evidence Registry">
+                <span>Sources</span>
+              </a>
+            </nav>
+          </div>
+          <nav aria-label="Calculator tabs" class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none border-t border-[#F7F8F5] bg-white">
+            <a href="/?tab=salary-worth" id="tab-salary-worth" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-[#102A2E] text-white shadow-sm">
+              <span>Is My Salary Enough?</span>
+            </a>
+            <a href="/?tab=salary-needed" id="tab-salary-needed" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <span>How Much Should I Earn?</span>
+            </a>
+            <a href="/?tab=salary-after-tax" id="tab-salary-after-tax" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <span>Salary After Tax</span>
+            </a>
+            <a href="/?tab=cost-of-living" id="tab-cost-of-living" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <span>Cost of Living</span>
+            </a>
+            <a href="/?tab=compare" id="tab-compare" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <span>Compare Cities</span>
+            </a>
+            <a href="/?tab=job-offers" id="tab-job-offers" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <span>Compare Job Offers</span>
+            </a>
+            <a href="/guides/nyc-100k" id="tab-guides" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#167D75] font-semibold hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <span>City Salary Guides</span>
+            </a>
+          </nav>
         </div>
-      </section>
-      <section class="mb-10 p-6 bg-slate-50 rounded-2xl border border-slate-200">
-        <h2 class="text-xl font-bold text-[#102A2E] mb-2">Algorithmic & Data Integrity Charter</h2>
-        <p class="text-sm text-slate-700 leading-relaxed mb-4">${PLATFORM_IDENTITY.zeroAiMathPolicy}</p>
-        <div class="flex flex-wrap gap-4 text-xs font-semibold text-teal-800">
-          <a href="/about" class="hover:underline">About LivWorthy →</a>
-          <a href="/methodology" class="hover:underline">Calculation Methodology →</a>
-          <a href="/sources" class="hover:underline">Verified Sources Registry →</a>
-          <a href="/editorial-policy" class="hover:underline">Editorial Policy →</a>
-          <a href="/data-policy" class="hover:underline">Data Policy →</a>
-          <a href="/corrections" class="hover:underline">Corrections & Feedback →</a>
+      </header>
+
+      <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div id="salary-worth-view" class="space-y-8">
+          <div class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
+            <div class="max-w-2xl">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">
+                Global Income & Living Intelligence
+              </span>
+              <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
+                What is your salary really worth?
+              </h1>
+              <p class="text-sm sm:text-base text-[#60706D] mt-2 leading-relaxed">
+                Enter your salary and city to see how much you could take home, spend and save.
+              </p>
+              <p class="text-xs text-[#167D75] mt-1 font-medium">
+                See if your salary covers living costs and allows you to save in your chosen city.
+              </p>
+            </div>
+
+            <div class="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
+              <span class="text-xs font-semibold text-[#60706D] whitespace-nowrap flex items-center space-x-1">
+                <span>Popular Scenarios:</span>
+              </span>
+              <div class="flex items-center space-x-1.5">
+                <span class="text-xs px-2.5 py-1 rounded-full whitespace-nowrap border bg-[#102A2E] text-white border-[#102A2E]">NYC $100k Single</span>
+                <span class="text-xs px-2.5 py-1 rounded-full whitespace-nowrap border bg-[#F7F8F5] text-[#102A2E] border-[#DCE3E0]">London £60k Single</span>
+                <span class="text-xs px-2.5 py-1 rounded-full whitespace-nowrap border bg-[#F7F8F5] text-[#102A2E] border-[#DCE3E0]">SF $150k Single</span>
+                <span class="text-xs px-2.5 py-1 rounded-full whitespace-nowrap border bg-[#F7F8F5] text-[#102A2E] border-[#DCE3E0]">Toronto $90k Single</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
+              <div class="sm:col-span-5">
+                <label for="hero-location-select" class="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
+                  1. Choose City / Location
+                </label>
+                <div class="relative">
+                  <select id="hero-location-select" aria-label="1. Choose City / Location" class="block w-full rounded-xl border border-[#DCE3E0] bg-[#FFFFFF] px-3.5 py-3 text-base sm:text-lg font-bold text-[#102A2E]">
+                    <option value="nyc">New York City (US)</option>
+                  </select>
+                </div>
+                <p class="mt-1 text-xs text-[#60706D]">
+                  Statutory tax jurisdiction: US-NY-NYC
+                </p>
+              </div>
+
+              <div class="sm:col-span-5">
+                <div>
+                  <label for="hero-annual-salary-input" class="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
+                    2. Annual Salary
+                  </label>
+                  <div class="relative rounded-xl shadow-xs">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                      <span class="text-base sm:text-lg font-bold text-[#60706D]">$</span>
+                    </div>
+                    <input type="text" id="hero-annual-salary-input" aria-label="2. Annual Salary" class="block w-full rounded-xl border border-[#DCE3E0] bg-[#FFFFFF] pl-8 pr-12 py-3 text-base sm:text-lg font-bold text-[#102A2E]" value="100,000" />
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5">
+                      <span class="text-xs font-bold text-[#60706D]">USD</span>
+                    </div>
+                  </div>
+                  <p class="mt-1 text-xs text-[#60706D]">Pre-tax compensation (base salary).</p>
+                </div>
+              </div>
+
+              <div class="sm:col-span-2 flex flex-col justify-end">
+                <button id="btn-calculate" type="button" class="w-full h-[52px] bg-[#102A2E] text-white font-bold rounded-xl flex items-center justify-center space-x-1.5">
+                  <span>Calculate</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0]">
+                <div class="text-xs font-semibold text-[#60706D] uppercase tracking-wider">Annual Take-Home Pay</div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1">$70,343</div>
+                <div class="text-xs text-[#167D75] mt-1 font-medium">~$5,862 / month (after federal, NY State & NYC local tax)</div>
+              </div>
+              <div class="p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0]">
+                <div class="text-xs font-semibold text-[#60706D] uppercase tracking-wider">Estimated Monthly Expenses</div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1">~$5,270</div>
+                <div class="text-xs text-[#60706D] mt-1">Rent: ~$3,850 · Living & Essentials: ~$1,420</div>
+              </div>
+              <div class="p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0]">
+                <div class="text-xs font-semibold text-[#60706D] uppercase tracking-wider">Estimated Monthly Savings</div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#167D75] mt-1">+$592 / mo</div>
+                <div class="text-xs text-[#60706D] mt-1">Estimated annual buffer: ~$7,100</div>
+              </div>
+            </div>
+          </div>
+
+          <section class="mt-8">
+            <h2 class="text-xl font-bold text-[#102A2E] mb-4">Core Financial Intelligence Capabilities</h2>
+            <ul class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-700">
+              <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Salary Worth:</strong> Evaluate actual disposable income and savings capacity after statutory taxes, rent, and household necessities.</li>
+              <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Salary After Tax:</strong> Authoritative statutory net income calculation accounting for federal, regional/state, local taxes, and mandatory social security contributions.</li>
+              <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Salary Needed:</strong> Solve backwards from target lifestyle or savings goals to determine the gross compensation required.</li>
+              <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Cost of Living:</strong> City-level living cost benchmarks across housing, groceries, transit, healthcare, and utilities.</li>
+              <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>City Comparison:</strong> Cross-border financial equivalency modeling with real-time FX snapshot tracking.</li>
+              <li class="p-4 bg-white rounded-lg border border-slate-200"><strong>Job Offer Value:</strong> Multi-currency total compensation evaluator separating cash earnings from non-cash benefits.</li>
+            </ul>
+          </section>
+
+          <section class="mt-8">
+            <h2 class="text-xl font-bold text-[#102A2E] mb-4">Supported Commercial Markets</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 text-sm">
+              ${Object.values(COUNTRIES)
+                .map(
+                  (c) =>
+                    `<a href="/countries/${c.id.toLowerCase()}" class="p-2 bg-slate-50 hover:bg-slate-100 rounded text-teal-800 font-medium">${c.name} (${c.verificationStatus})</a>`
+                )
+                .join('')}
+            </div>
+          </section>
+
+          <section class="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-200">
+            <h2 class="text-xl font-bold text-[#102A2E] mb-2">Algorithmic & Data Integrity Charter</h2>
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">${PLATFORM_IDENTITY.zeroAiMathPolicy}</p>
+            <div class="flex flex-wrap gap-4 text-xs font-semibold text-teal-800">
+              <a href="/about" class="hover:underline">About LivWorthy →</a>
+              <a href="/methodology" class="hover:underline">Calculation Methodology →</a>
+              <a href="/sources" class="hover:underline">Verified Sources Registry →</a>
+              <a href="/editorial-policy" class="hover:underline">Editorial Policy →</a>
+              <a href="/data-policy" class="hover:underline">Data Policy →</a>
+              <a href="/corrections" class="hover:underline">Corrections & Feedback →</a>
+            </div>
+          </section>
         </div>
-      </section>
-    </main>
+      </main>
+
+      <footer id="livworthy-footer" data-testid="livworth-footer" class="bg-[#FFFFFF] border-t border-[#DCE3E0] mt-16 py-12 text-sm text-[#60706D]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+            <div class="space-y-4">
+              <a href="/" class="text-left group cursor-pointer inline-block" title="LivWorthy Home">
+                <picture>
+                  <source type="image/webp" srcset="/logo-300.webp 1x, /logo-600.webp 2x" />
+                  <img src="/logo-300.png" srcset="/logo-300.png 1x, /logo-600.png 2x" alt="LivWorthy" width="108" height="36" class="h-9 w-auto object-contain" style="aspect-ratio: 3 / 1;" loading="eager" decoding="async" />
+                </picture>
+              </a>
+              <p class="text-xs leading-relaxed text-[#60706D]">
+                LivWorthy provides deterministic income and living intelligence across 39 international commercial markets, with statutory tax calculations available for supported jurisdictions, verified consumer price indexes, and official government statistics.
+              </p>
+              <div class="space-y-1.5 text-xs pt-1">
+                <a href="/sources" class="flex items-center text-[#167D75] hover:text-[#0D524D] font-medium transition-colors">
+                  <span>Tier 1 Statutory Data Priority</span>
+                </a>
+                <a href="/methodology" class="flex items-center text-[#60706D] hover:text-[#102A2E] transition-colors">
+                  <span>IRS · HMRC · CRA · ATO · EStG · FTA</span>
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">Calculators & Tools</div>
+              <ul class="space-y-2 text-xs">
+                <li><a href="/?tab=salary-worth" class="hover:text-[#102A2E]">Is My Salary Enough?</a></li>
+                <li><a href="/?tab=salary-needed" class="hover:text-[#102A2E]">How Much Should I Earn?</a></li>
+                <li><a href="/?tab=salary-after-tax" class="hover:text-[#102A2E]">Salary After Tax</a></li>
+                <li><a href="/?tab=cost-of-living" class="hover:text-[#102A2E]">Cost of Living</a></li>
+                <li><a href="/?tab=compare" class="hover:text-[#102A2E]">Compare Cities</a></li>
+                <li><a href="/?tab=job-offers" class="hover:text-[#102A2E]">Compare Job Offers</a></li>
+                <li><a href="/guides/nyc-100k" class="hover:text-[#102A2E] text-[#167D75] font-semibold">City Salary Intelligence Guides →</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">City Salary Guides</div>
+              <ul class="space-y-1 text-xs">
+                <li><a href="/guides/nyc-100k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $100k Enough to Live in NYC?</a></li>
+                <li><a href="/guides/london-60k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is £60k Enough to Live in London?</a></li>
+                <li><a href="/guides/sf-150k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $150k Enough to Live in San Francisco?</a></li>
+                <li><a href="/guides/toronto-90k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $90k CAD Enough to Live in Toronto?</a></li>
+                <li><a href="/guides/sydney-120k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $120k AUD Enough to Live in Sydney?</a></li>
+                <li><a href="/guides/dubai-30k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is 30k AED/mo Enough to Live in Dubai?</a></li>
+                <li><a href="/guides/singapore-10k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $10k SGD/mo Enough to Live in Singapore?</a></li>
+                <li><a href="/guides/berlin-65k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is €65k Enough to Live in Berlin?</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">Integrity & Governance</div>
+              <ul class="space-y-1 text-xs">
+                <li><a href="/methodology" class="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] underline">Calculation Methodology</a></li>
+                <li><a href="/sources" class="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] underline">Sources & Evidence Registry</a></li>
+                <li><a href="/about" class="min-h-[24px] py-1 flex items-center hover:text-[#102A2E]">About LivWorthy</a></li>
+                <li><a href="/editorial-policy" class="min-h-[24px] py-1 flex items-center hover:text-[#102A2E]">Editorial & Verification Policy</a></li>
+                <li><a href="/data-policy" class="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Data Policy (Zero PII & Zero Fabrication)</a></li>
+                <li><a href="/privacy" class="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Privacy Policy</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="border-t border-[#F7F8F5] pt-6 pb-6">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <span class="font-bold text-xs uppercase tracking-wider text-[#102A2E]">Popular City Income Hubs</span>
+              <span class="text-[11px] text-slate-600 font-medium">Explore city salary benchmarks</span>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <a href="/cities/nyc" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">New York City (US)</a>
+              <a href="/cities/sf" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">San Francisco (US)</a>
+              <a href="/cities/london" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">London (UK)</a>
+              <a href="/cities/dubai" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Dubai (UAE)</a>
+              <a href="/cities/toronto" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Toronto (Canada)</a>
+              <a href="/cities/sydney" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Sydney (Australia)</a>
+              <a href="/cities/berlin" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Berlin (Germany)</a>
+              <a href="/cities/singapore" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Singapore (Singapore)</a>
+              <a href="/cities/tokyo" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Tokyo (Japan)</a>
+              <a href="/cities/zurich" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Zurich (Switzerland)</a>
+              <a href="/cities/dublin" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Dublin (Ireland)</a>
+              <a href="/cities/mumbai" class="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 flex items-center">Mumbai (India)</a>
+            </div>
+          </div>
+
+          <div class="border-t border-[#F7F8F5] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#60706D] gap-3">
+            <p>© ${new Date().getFullYear()} LivWorthy. Know what your income is really worth.</p>
+            <nav aria-label="Legal and policy links" class="flex flex-wrap items-center justify-center sm:justify-end gap-x-2 sm:gap-x-3 gap-y-2 text-xs">
+              <a href="/about" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">About</a>
+              <span class="hidden sm:inline" aria-hidden="true">·</span>
+              <a href="/methodology" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Methodology</a>
+              <span class="hidden sm:inline" aria-hidden="true">·</span>
+              <a href="/sources" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Sources</a>
+              <span class="hidden sm:inline" aria-hidden="true">·</span>
+              <a href="/editorial-policy" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Editorial Policy</a>
+              <span class="hidden sm:inline" aria-hidden="true">·</span>
+              <a href="/data-policy" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Data Policy</a>
+              <span class="hidden sm:inline" aria-hidden="true">·</span>
+              <a href="/corrections" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Corrections</a>
+              <span class="hidden sm:inline" aria-hidden="true">·</span>
+              <a href="/terms" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Terms & YMYL Disclaimer</a>
+              <span class="hidden sm:inline" aria-hidden="true">·</span>
+              <a href="/privacy" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Privacy Policy</a>
+            </nav>
+          </div>
+        </div>
+      </footer>
+    </div>
   `;
 
   // Update dist/index.html with pre-rendered homepage body
