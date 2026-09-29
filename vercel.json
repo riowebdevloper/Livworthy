@@ -8,7 +8,7 @@
       "destination": "/api"
     },
     {
-      "source": "/((?!api/|assets/|favicon|logo|icon|manifest).*)",
+      "source": "/((?!api/|assets/|favicon|logo|icon|manifest|robots\\.txt|sitemap|ads\\.txt|llms\\.txt|about|methodology|sources|editorial-policy|data-policy|corrections|terms|privacy|countries|cities|compare|guides).*)",
       "destination": "/index.html"
     }
   ]

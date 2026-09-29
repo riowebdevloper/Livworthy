@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, ShieldCheck, Scale, ArrowLeftRight, Calculator, DollarSign, Home, Server } from 'lucide-react';
+import { BookOpen, ShieldCheck, Scale, ArrowLeftRight, Calculator, DollarSign, Home } from 'lucide-react';
 import { LivWorthLogo } from '../ui/LivWorthBrand';
 
 export type ActiveTab =
@@ -22,60 +22,56 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   onSelectTab,
-  onOpenEvidence,
-  onOpenMethodology,
-  onOpenDiagnostics,
+  // onOpenEvidence and onOpenMethodology are kept in props for compatibility
+  // with EvidenceDrawer/MethodologyModal triggering from other components;
+  // the header now uses real anchor navigation for these pages.
+  // onOpenDiagnostics is kept accessible via the footer control.
 }) => {
   return (
     <header id="livworthy-header" data-testid="livworth-header" className="bg-[#FFFFFF] border-b border-[#DCE3E0] sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Brand Logo & Tagline */}
-          <div
-            className="flex items-center space-x-3 cursor-pointer group py-1"
-            onClick={() => onSelectTab('salary-worth')}
+          {/* Brand Logo — keyboard-accessible anchor to homepage */}
+          <a
+            href="/"
+            id="header-logo-link"
+            className="flex items-center space-x-3 group py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] focus-visible:ring-offset-2 rounded"
+            aria-label="LivWorthy — Home"
             title="LivWorthy - Home"
+            onClick={(e) => {
+              e.preventDefault();
+              onSelectTab('salary-worth');
+              window.history.pushState(null, '', '/');
+            }}
           >
             <LivWorthLogo size="sm" showTagline={true} />
-            <span className="hidden md:inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#DDF2EC] text-[#0D625B] border border-[#167D75]/20">
-              Deterministic v1.2
-            </span>
-          </div>
+          </a>
 
-          {/* Secondary Actions: Evidence, Methodology & Architecture */}
-          <div className="flex items-center space-x-2 sm:space-x-2.5">
-            {onOpenDiagnostics && (
-              <button
-                id="btn-open-diagnostics"
-                onClick={onOpenDiagnostics}
-                className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#0D625B] bg-[#EBF6F3] hover:bg-[#DDF2EC] px-2.5 py-1.5 rounded border border-[#0D625B]/30 transition-colors"
-                title="System Architecture, PostgreSQL, and 15 Statutory Tax Adapters"
-              >
-                <Server className="w-3.5 h-3.5 text-[#0D625B]" />
-                <span className="hidden sm:inline">Architecture</span>
-              </button>
-            )}
-            <button
-              id="btn-open-evidence"
-              onClick={onOpenEvidence}
-              className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#0D625B] hover:text-[#102A2E] px-2.5 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors"
+          {/* Public navigation: How It Works and Sources */}
+          <nav aria-label="Site navigation" className="flex items-center space-x-2 sm:space-x-3">
+            <a
+              id="nav-how-it-works"
+              href="/methodology"
+              className="inline-flex items-center space-x-1.5 text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
+              aria-label="How It Works — Methodology"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-[#167D75]" />
-              <span className="hidden sm:inline">Data &</span> Evidence
-            </button>
-            <button
-              id="btn-open-methodology"
-              onClick={onOpenMethodology}
-              className="inline-flex items-center space-x-1.5 text-xs font-medium text-[#334D4A] hover:text-[#102A2E] px-2.5 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors"
+              <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>How It Works</span>
+            </a>
+            <a
+              id="nav-sources"
+              href="/sources"
+              className="inline-flex items-center space-x-1.5 text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
+              aria-label="Sources — Data & Evidence Registry"
             >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>Methodology</span>
-            </button>
-          </div>
+              <ShieldCheck className="w-3.5 h-3.5 text-[#167D75]" aria-hidden="true" />
+              <span>Sources</span>
+            </a>
+          </nav>
         </div>
 
-        {/* Navigation Tabs Bar */}
-        <nav className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none border-t border-[#F7F8F5] bg-white">
+        {/* Calculator Navigation Tabs Bar — unchanged */}
+        <nav aria-label="Calculator tabs" className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none border-t border-[#F7F8F5] bg-white">
           <button
             id="tab-salary-worth"
             onClick={() => onSelectTab('salary-worth')}
@@ -85,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
-            <Calculator className="w-3.5 h-3.5" />
+            <Calculator className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Is My Salary Enough?</span>
           </button>
 
@@ -98,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
-            <DollarSign className="w-3.5 h-3.5" />
+            <DollarSign className="w-3.5 h-3.5" aria-hidden="true" />
             <span>How Much Should I Earn?</span>
           </button>
 
@@ -123,7 +119,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
-            <Home className="w-3.5 h-3.5" />
+            <Home className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Living Costs</span>
           </button>
 
@@ -136,7 +132,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
-            <ArrowLeftRight className="w-3.5 h-3.5" />
+            <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Compare Cities</span>
           </button>
 
@@ -149,7 +145,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
-            <Scale className="w-3.5 h-3.5" />
+            <Scale className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Compare Job Offers</span>
           </button>
 
