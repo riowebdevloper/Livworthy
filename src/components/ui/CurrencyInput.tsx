@@ -100,7 +100,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
           {label}
         </label>
       )}
-      <div className="relative flex items-center rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] focus-within:border-[#167D75] focus-within:ring-2 focus-within:ring-[#167D75]/20 shadow-xs transition-colors">
+      <div className="relative flex items-center rounded-xl border border-[#DCE3E0] bg-[#FFFFFF] focus-within:border-[#167D75] focus-within:ring-2 focus-within:ring-[#167D75]/20 shadow-xs transition-colors">
         {/* Dedicated currency badge container with distinct spacing preventing overlap */}
         <div className="flex items-center pl-3.5 pr-2.5 select-none shrink-0 pointer-events-none">
           <span className="text-[#60706D] font-bold text-base sm:text-lg">
@@ -119,7 +119,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           onChange={handleChange}
-          className="block w-full rounded-r-lg bg-transparent pr-4 py-2.5 sm:py-3 text-base sm:text-lg font-bold text-[#102A2E] font-tabular tabular-nums placeholder-[#60706D]/40 focus:outline-hidden"
+          className="block w-full rounded-r-xl bg-transparent pr-4 py-3 text-base sm:text-lg font-bold text-[#102A2E] font-tabular tabular-nums placeholder-[#60706D]/40 focus:outline-hidden"
         />
       </div>
       {helperText && <p className="mt-1 text-xs text-[#60706D]">{helperText}</p>}

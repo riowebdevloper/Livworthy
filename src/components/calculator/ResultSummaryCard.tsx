@@ -105,49 +105,55 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
       className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs overflow-hidden transition-all"
     >
       {/* Card Header & Frequency Toggle */}
-      <div className="bg-[#F7F8F5] px-6 py-4 border-b border-[#DCE3E0] flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center space-x-2">
-            <h2 className="font-bold text-base text-[#102A2E]">
-              {outcome.scenario.location.name} Living Worth Result
-            </h2>
-            <span className="text-xs font-semibold bg-[#DDF2EC] text-[#0D625B] px-2 py-0.5 rounded-full">
-              {outcome.scenario.taxProfile.filingStatus.replace(/_/g, ' ')}
-            </span>
+      <div className="bg-[#F7F8F5] px-6 py-4 border-b border-[#DCE3E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <div>
+            <div className="flex items-center space-x-2">
+              <h2 className="font-bold text-base text-[#102A2E]">
+                {outcome.scenario.location.name} Living Worth Result
+              </h2>
+              <span className="text-xs font-semibold bg-[#DDF2EC] text-[#0D625B] px-2 py-0.5 rounded-full">
+                {outcome.scenario.taxProfile.filingStatus.replace(/_/g, ' ')}
+              </span>
+            </div>
+            <p className="text-xs text-[#60706D] mt-0.5">
+              {isTaxUnavailable
+                ? 'Statutory tax schedules under verification • Net income & savings pending verified tables'
+                : `Statutory ${outcome.scenario.taxProfile.taxYear} schedule (${outcome.tax.taxRuleVersion || 'Official table'})`}
+            </p>
           </div>
-          <p className="text-xs text-[#60706D] mt-0.5">
-            {isTaxUnavailable
-              ? 'Statutory tax schedules under verification • Net income & savings pending verified tables'
-              : `Statutory ${outcome.scenario.taxProfile.taxYear} schedule (${outcome.tax.taxRuleVersion || 'Official table'})`}
-          </p>
-        </div>
 
-        {/* Period Selector */}
-        <div className="inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF]">
-          <button
-            id="period-annual-btn"
-            type="button"
-            onClick={() => setPeriod('annual')}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
-              period === 'annual'
-                ? 'bg-[#102A2E] text-white'
-                : 'text-[#60706D] hover:text-[#102A2E]'
-            }`}
-          >
-            Annual
-          </button>
-          <button
-            id="period-monthly-btn"
-            type="button"
-            onClick={() => setPeriod('monthly')}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
-              period === 'monthly'
-                ? 'bg-[#102A2E] text-white'
-                : 'text-[#60706D] hover:text-[#102A2E]'
-            }`}
-          >
-            Monthly
-          </button>
+          {/* Period Selector: Grouped closely with result header */}
+          <div className="inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF] shrink-0 self-start sm:self-center">
+            <button
+              id="period-annual-btn"
+              type="button"
+              aria-label="View annual figures"
+              aria-pressed={period === 'annual'}
+              onClick={() => setPeriod('annual')}
+              className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
+                period === 'annual'
+                  ? 'bg-[#102A2E] text-white'
+                  : 'text-[#60706D] hover:text-[#102A2E]'
+              }`}
+            >
+              Annual
+            </button>
+            <button
+              id="period-monthly-btn"
+              type="button"
+              aria-label="View monthly figures"
+              aria-pressed={period === 'monthly'}
+              onClick={() => setPeriod('monthly')}
+              className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
+                period === 'monthly'
+                  ? 'bg-[#102A2E] text-white'
+                  : 'text-[#60706D] hover:text-[#102A2E]'
+              }`}
+            >
+              Monthly
+            </button>
+          </div>
         </div>
       </div>
 
@@ -219,7 +225,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
 
         {/* Flow indicator */}
         <div className="flex justify-center -my-2">
-          <div className="w-6 h-6 rounded-full bg-[#102A2E] text-[#DDF2EC] flex items-center justify-center">
+          <div className="w-6 h-6 rounded-full bg-[#F7F8F5] border border-[#DCE3E0] flex items-center justify-center text-[#60706D]">
             <ArrowDown className="w-3.5 h-3.5" />
           </div>
         </div>
@@ -319,7 +325,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
                   <div
                     style={{ width: `${remainingPct}%` }}
                     className="bg-[#10B981] h-full transition-all duration-300 relative group cursor-pointer"
-                    title={`Savings Buffer: ${remainingPct}%`}
+                    title={`Savings Buffer: ${outcome.savingsRatePercentage}%`}
                   />
                 </div>
 
@@ -343,32 +349,20 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
                   </div>
                   <div className="flex items-center space-x-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] shrink-0" />
-                    <span className="font-semibold text-[#102A2E]">Savings ({remainingPct}%)</span>
+                    <span className="font-semibold text-[#102A2E]">Savings ({outcome.savingsRatePercentage}%)</span>
                   </div>
                 </div>
               </>
             )}
           </div>
 
-          {/* Savings Capacity Bar */}
-          <div className="mt-4 pt-4 border-t border-[#DCE3E0]/70 flex flex-wrap items-center justify-between gap-2 text-xs">
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-              <PiggyBank className="w-4 h-4 text-[#167D75] shrink-0" />
-              <span className="font-semibold text-[#102A2E]">Potential Savings Rate:</span>
-              {isTaxUnavailable ? (
-                <span className="text-[#60706D] italic">Under Verification</span>
-              ) : (
-                <>
-                  <span className="font-bold text-[#167D75]">{outcome.savingsRatePercentage}%</span>
-                  <span className="text-[#60706D]">of gross earnings</span>
-                </>
-              )}
-            </div>
+          {/* Evidence verification link */}
+          <div className="mt-3 pt-3 border-t border-[#DCE3E0]/70 flex justify-end text-xs">
             <button
               onClick={onOpenEvidence}
-              className="text-[#167D75] hover:underline font-medium inline-flex items-center text-xs"
+              className="text-[#167D75] hover:underline font-medium inline-flex items-center text-xs cursor-pointer"
             >
-              Inspect evidence & sources
+              Inspect evidence & sources →
             </button>
           </div>
         </div>

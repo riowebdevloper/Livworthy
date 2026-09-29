@@ -99,7 +99,7 @@ export const Footer: React.FC<FooterProps> = ({
               <span>Calculators & Tools</span>
               <ChevronRight className="w-3 h-3 ml-1 text-[#167D75] opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-1 text-xs">
               <li>
                 <button
                   type="button"
@@ -107,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('salary-worth');
                     scrollToTop();
                   }}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
                   Is My Salary Enough?
                 </button>
@@ -119,7 +119,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('salary-needed');
                     scrollToTop();
                   }}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
                   How Much Should I Earn?
                 </button>
@@ -131,7 +131,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('salary-after-tax');
                     scrollToTop();
                   }}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
                   Salary After Tax
                 </button>
@@ -143,7 +143,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('cost-of-living');
                     scrollToTop();
                   }}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
                   Living Costs
                 </button>
@@ -155,7 +155,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('compare');
                     scrollToTop();
                   }}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
                   Compare Cities
                 </button>
@@ -167,7 +167,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('job-offers');
                     scrollToTop();
                   }}
-                  className="hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
                   Compare Job Offers
                 </button>
@@ -179,7 +179,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onSelectTab?.('nyc-100k-guide');
                     scrollToTop();
                   }}
-                  className="hover:text-[#102A2E] text-left text-[#167D75] font-semibold transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left text-[#167D75] font-semibold transition-colors cursor-pointer"
                 >
                   City Salary Intelligence Guides →
                 </button>
@@ -253,7 +253,7 @@ export const Footer: React.FC<FooterProps> = ({
                   type="button"
                   id="footer-methodology-btn"
                   onClick={onOpenMethodology}
-                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] underline text-left transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors cursor-pointer"
                 >
                   Calculation Methodology
                 </button>
@@ -263,7 +263,7 @@ export const Footer: React.FC<FooterProps> = ({
                   type="button"
                   id="footer-evidence-btn"
                   onClick={onOpenEvidence}
-                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] underline text-left transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors cursor-pointer"
                 >
                   Sources & Evidence Registry
                 </button>
@@ -274,7 +274,7 @@ export const Footer: React.FC<FooterProps> = ({
                     type="button"
                     id="footer-corrections-btn"
                     onClick={onOpenCorrections}
-                    className="min-h-[24px] py-1 flex items-center text-[#167D75] font-semibold hover:underline text-left transition-colors cursor-pointer"
+                    className="w-full min-h-[24px] py-1 flex items-center text-[#167D75] font-semibold hover:underline text-left transition-colors cursor-pointer"
                   >
                     Report Data Correction
                   </button>
@@ -286,7 +286,7 @@ export const Footer: React.FC<FooterProps> = ({
                     type="button"
                     id="footer-diagnostics-btn"
                     onClick={onOpenDiagnostics}
-                    className="min-h-[24px] py-1 flex items-center text-slate-700 hover:text-[#102A2E] text-left transition-colors cursor-pointer"
+                    className="w-full min-h-[24px] py-1 flex items-center text-slate-700 hover:text-[#102A2E] hover:underline text-left transition-colors cursor-pointer"
                   >
                     System Architecture & Diagnostics
                   </button>
@@ -295,7 +295,7 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <a
                   href="/about"
-                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors"
                 >
                   About LivWorthy
                 </a>
@@ -303,7 +303,7 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <a
                   href="/editorial-policy"
-                  className="min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors"
                 >
                   Editorial & Verification Policy
                 </a>
@@ -311,7 +311,7 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <a
                   href="/data-policy"
-                  className="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
+                  className="w-full min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
                 >
                   Data Policy (Zero PII & Zero Fabrication)
                 </a>
@@ -319,7 +319,7 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <a
                   href="/privacy"
-                  className="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
+                  className="w-full min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
                 >
                   Privacy Policy
                 </a>
@@ -331,20 +331,22 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Popular City Hubs Section - All Clickable Interlinked */}
         <div className="border-t border-[#F7F8F5] pt-6 pb-6">
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-2.5">
             <button
               type="button"
               onClick={() => {
                 onSelectTab?.('salary-worth');
                 scrollToTop();
               }}
-              className="font-bold text-xs uppercase tracking-wider text-[#102A2E] hover:text-[#167D75] transition-colors cursor-pointer flex items-center group"
+              className="font-bold text-xs tracking-wider text-[#102A2E] hover:text-[#167D75] transition-colors cursor-pointer flex items-center group shrink-0"
               title="Click to view city salary calculators"
             >
               <span>Popular City Income Hubs</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
-            <span className="text-[11px] text-slate-600 font-medium">Click any city to switch calculator benchmarks</span>
+            <span className="text-xs text-[#60706D] font-medium sm:border-l sm:border-[#DCE3E0] sm:pl-3">
+              Click any city to switch calculator benchmarks
+            </span>
           </div>
           <div className="flex flex-wrap gap-2 text-xs">
             {FEATURED_CITIES.map((c) => (

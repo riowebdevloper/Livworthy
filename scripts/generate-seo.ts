@@ -160,7 +160,7 @@ export function runSeoGenerator() {
         <div id="salary-worth-view" class="space-y-8">
           <div class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
             <div class="max-w-2xl">
-              <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">
+              <span class="text-xs font-bold tracking-wider text-[#167D75]">
                 Global Income & Living Intelligence
               </span>
               <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
@@ -219,7 +219,10 @@ export function runSeoGenerator() {
                 </div>
               </div>
 
-              <div class="sm:col-span-2 flex flex-col justify-end">
+              <div class="sm:col-span-2 flex flex-col">
+                <span class="hidden sm:block text-xs font-semibold mb-1.5 uppercase tracking-wider invisible select-none" aria-hidden="true">
+                  Action
+                </span>
                 <button id="btn-calculate" type="button" class="w-full h-[52px] bg-[#102A2E] text-white font-bold rounded-xl flex items-center justify-center space-x-1.5">
                   <span>Calculate</span>
                 </button>
@@ -228,17 +231,19 @@ export function runSeoGenerator() {
           </div>
 
           <div id="result-summary-card" class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs overflow-hidden transition-all">
-            <div class="bg-[#F7F8F5] px-6 py-4 border-b border-[#DCE3E0] flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <div class="flex items-center space-x-2">
-                  <h2 class="font-bold text-base text-[#102A2E]">New York City Living Worth Result</h2>
-                  <span class="text-xs font-semibold bg-[#DDF2EC] text-[#0D625B] px-2 py-0.5 rounded-full">SINGLE</span>
+            <div class="bg-[#F7F8F5] px-6 py-4 border-b border-[#DCE3E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <h2 class="font-bold text-base text-[#102A2E]">New York City Living Worth Result</h2>
+                    <span class="text-xs font-semibold bg-[#DDF2EC] text-[#0D625B] px-2 py-0.5 rounded-full">SINGLE</span>
+                  </div>
+                  <p class="text-xs text-[#60706D] mt-0.5">Statutory 2025 schedule (Official table)</p>
                 </div>
-                <p class="text-xs text-[#60706D] mt-0.5">Statutory 2025 schedule (Official table)</p>
-              </div>
-              <div class="inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF]">
-                <button id="period-annual-btn" type="button" class="px-3 py-1 text-xs font-semibold rounded-md bg-[#102A2E] text-white">Annual</button>
-                <button id="period-monthly-btn" type="button" class="px-3 py-1 text-xs font-semibold rounded-md text-[#60706D]">Monthly</button>
+                <div class="inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF] shrink-0 self-start sm:self-center">
+                  <button id="period-annual-btn" type="button" class="px-3 py-1 text-xs font-semibold rounded-md bg-[#102A2E] text-white">Annual</button>
+                  <button id="period-monthly-btn" type="button" class="px-3 py-1 text-xs font-semibold rounded-md text-[#60706D]">Monthly</button>
+                </div>
               </div>
             </div>
 
@@ -301,21 +306,18 @@ export function runSeoGenerator() {
                 <span class="text-xs font-bold uppercase tracking-wider text-[#60706D] block">Detailed Financial Intelligence</span>
                 <p class="text-xs text-[#60706D] mt-0.5">Explore statutory tax brackets, itemized living costs, and methodology</p>
               </div>
-              <div class="flex flex-wrap items-center gap-2">
-                <button id="btn-toggle-tax-breakdown" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-center gap-2">
+                <button id="btn-toggle-tax-breakdown" type="button" class="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 sm:py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
                   <span>See tax breakdown</span>
                 </button>
-                <button id="btn-toggle-col-breakdown" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
+                <button id="btn-toggle-col-breakdown" type="button" class="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 sm:py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
                   <span>See living-cost breakdown</span>
                 </button>
-                <button id="btn-toggle-methodology-summary" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
+                <button id="btn-toggle-methodology-summary" type="button" class="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 sm:py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
                   <span>How was this calculated?</span>
                 </button>
-                <button id="btn-open-evidence" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#167D75] hover:bg-[#DDF2EC]">
+                <button id="btn-open-evidence" type="button" class="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 sm:py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
                   <span>View data sources</span>
-                </button>
-                <button id="btn-open-customizer" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
-                  <span>Customize Assumptions</span>
                 </button>
               </div>
             </div>
