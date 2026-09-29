@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  ArrowRight,
   Sparkles,
-  Building2,
-  MapPin,
   SlidersHorizontal,
   ShieldCheck,
   Loader2,
@@ -82,17 +79,6 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
 
   const isInitialMount = useRef<boolean>(true);
 
-  // Prefetch non-critical cards during browser idle time
-  useEffect(() => {
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      const handle = (window as any).requestIdleCallback(() => {
-        import('./TaxBreakdownCard');
-        import('./LivingCostBreakdownCard');
-        import('./AssumptionPills');
-      });
-      return () => (window as any).cancelIdleCallback?.(handle);
-    }
-  }, []);
 
   // Execute authoritative backend calculation whenever scenario changes
   useEffect(() => {

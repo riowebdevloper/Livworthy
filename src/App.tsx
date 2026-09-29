@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { SalaryWorthView } from './components/calculator/SalaryWorthView';
 import { Header, ActiveTab } from './components/layout/Header';
-import { Footer } from './components/layout/Footer';
+// Defer below-the-fold Footer to reduce initial JS payload
+const Footer = React.lazy(() =>
+  import('./components/layout/Footer').then((m) => ({ default: m.Footer }))
+);
 
 // Defer secondary calculator views so initial bundle only loads SalaryWorthView
 const SalaryNeededView = React.lazy(() =>
@@ -525,19 +528,21 @@ export default function App() {
         )}
       </main>
 
-      {/* Persistent Global Footer */}
-      <Footer
-        onOpenMethodology={() => setIsMethodologyOpen(true)}
-        onOpenEvidence={() => setIsEvidenceOpen(true)}
-        onOpenCorrections={() => {
-          setCorrectionJurisdiction(scenario.location.name);
-          setIsCorrectionOpen(true);
-        }}
-        onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
-        onSelectTab={handleSelectTab}
-        onSelectGuide={handleSelectGuide}
-        onSelectCity={handleSelectCityFromLink}
-      />
+      {/* Persistent Global Footer: Suspended so it does not block initial above-the-fold render */}
+      <React.Suspense fallback={null}>
+        <Footer
+          onOpenMethodology={() => setIsMethodologyOpen(true)}
+          onOpenEvidence={() => setIsEvidenceOpen(true)}
+          onOpenCorrections={() => {
+            setCorrectionJurisdiction(scenario.location.name);
+            setIsCorrectionOpen(true);
+          }}
+          onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
+          onSelectTab={handleSelectTab}
+          onSelectGuide={handleSelectGuide}
+          onSelectCity={handleSelectCityFromLink}
+        />
+      </React.Suspense>
 
       {/* Drawers and Modals: Suspended to avoid unused JS on initial load */}
       <React.Suspense fallback={null}>
