@@ -247,7 +247,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   return (
     <div id="salary-worth-view" className="space-y-8">
       {/* Hero Section: Calculator is the Hero */}
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isCalculating && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
@@ -271,7 +271,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
         </div>
 
         {/* Quick Scenario Benchmark Presets */}
-        <div className="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 [scrollbar-width:thin]">
           <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap flex items-center space-x-1 shrink-0">
             <Sparkles className="w-3.5 h-3.5 text-[#167D75]" />
             <span>Popular Scenarios:</span>

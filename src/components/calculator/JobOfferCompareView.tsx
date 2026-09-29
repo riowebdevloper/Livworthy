@@ -154,7 +154,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
   return (
     <div id="job-offer-compare-view" className="space-y-8">
       {/* Header */}
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isComparing && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
@@ -175,35 +175,37 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
         </div>
 
         {/* Year 1 vs Year 2 Selector */}
-        <div className="mt-6 pt-4 border-t border-[#F7F8F5] flex items-center justify-between">
-          <div className="inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF]">
+        <div className="mt-6 pt-4 border-t border-[#F7F8F5] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF] w-full sm:w-auto">
             <button
               id="btn-offer-year1"
               type="button"
               onClick={() => setDisplayYear('year1')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
+              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors text-center ${
                 displayYear === 'year1'
                   ? 'bg-[#102A2E] text-white'
                   : 'text-[#60706D] hover:text-[#102A2E]'
               }`}
             >
-              Year 1 (With Relocation Setup Costs)
+              <span className="hidden sm:inline">Year 1 (With Relocation Setup Costs)</span>
+              <span className="sm:hidden">Year 1 (With Relocation)</span>
             </button>
             <button
               id="btn-offer-year2"
               type="button"
               onClick={() => setDisplayYear('year2')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
+              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors text-center ${
                 displayYear === 'year2'
                   ? 'bg-[#102A2E] text-white'
                   : 'text-[#60706D] hover:text-[#102A2E]'
               }`}
             >
-              Year 2+ (Steady-State Recurring)
+              <span className="hidden sm:inline">Year 2+ (Steady-State Recurring)</span>
+              <span className="sm:hidden">Year 2+ (Steady-State)</span>
             </button>
           </div>
 
-          <button onClick={onOpenEvidence} className="text-xs text-[#167D75] font-semibold hover:underline flex items-center">
+          <button onClick={onOpenEvidence} className="text-xs text-[#167D75] font-semibold hover:underline flex items-center self-start sm:self-center">
             <ShieldCheck className="w-3.5 h-3.5 mr-1" /> Verified Data
           </button>
         </div>
@@ -220,7 +222,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
       {/* Offer Input Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Offer A */}
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex items-center space-x-2 border-b border-[#F7F8F5] pb-3">
             <Briefcase className="w-4 h-4 text-[#167D75]" />
             <h3 className="font-bold text-sm text-[#102A2E]">Job Offer A (Current / Baseline)</h3>
@@ -294,7 +296,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
         </div>
 
         {/* Offer B */}
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex items-center space-x-2 border-b border-[#F7F8F5] pb-3">
             <Building className="w-4 h-4 text-[#167D75]" />
             <h3 className="font-bold text-sm text-[#102A2E]">Job Offer B (Target Opportunity)</h3>
@@ -372,7 +374,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               <Plane className="w-3.5 h-3.5 text-[#167D75]" />
               <span>One-Time Moving & Setup Costs for Offer B (Total: {formatMoney(createMoney(year1TotalRelocation, cityB.currency), { hideDecimals: true })})</span>
             </span>
-            <div className="grid grid-cols-4 gap-2 text-[11px]">
+            <div className="grid grid-cols-2 xs:grid-cols-4 gap-2 text-[11px]">
               <div>
                 <span className="text-[#60706D] block">Flights</span>
                 <input
@@ -422,7 +424,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
       {comparison && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Outcome A */}
-          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
             <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
               <h4 className="font-bold text-base text-[#102A2E]">{cityA.name} Package Outcome</h4>
               <span className="text-xs text-[#60706D]">Offer A</span>
@@ -480,7 +482,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
           </div>
 
           {/* Outcome B */}
-          <div className="bg-[#FFFFFF] rounded-2xl border-2 border-[#167D75] p-6 shadow-sm space-y-4">
+          <div className="bg-[#FFFFFF] rounded-2xl border-2 border-[#167D75] p-4 sm:p-6 shadow-sm space-y-4">
             <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
               <h4 className="font-bold text-base text-[#102A2E]">{cityB.name} Package Outcome</h4>
               <span className="text-xs text-[#167D75] font-bold bg-[#DDF2EC] px-2 py-0.5 rounded">

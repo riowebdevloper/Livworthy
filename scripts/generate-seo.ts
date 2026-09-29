@@ -231,7 +231,7 @@ export function runSeoGenerator() {
           </div>
 
           <div id="result-summary-card" class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs overflow-hidden transition-all">
-            <div class="bg-[#F7F8F5] px-6 py-4 border-b border-[#DCE3E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="bg-[#F7F8F5] p-4 sm:px-6 sm:py-4 border-b border-[#DCE3E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div>
                   <div class="flex items-center space-x-2">
@@ -247,7 +247,7 @@ export function runSeoGenerator() {
               </div>
             </div>
 
-            <div class="p-6 sm:p-8 space-y-6">
+            <div class="p-4 sm:p-8 space-y-6">
               <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 border-b border-[#F7F8F5] gap-1">
                 <div>
                   <div class="font-bold text-sm text-[#102A2E]">Gross Compensation</div>

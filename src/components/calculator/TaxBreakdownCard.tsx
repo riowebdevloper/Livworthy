@@ -13,7 +13,7 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
 
   if (tax.status === 'TAX_CALCULATION_UNAVAILABLE') {
     return (
-      <div id="tax-breakdown-card" className="bg-[#FFFFFF] rounded-2xl border border-amber-200 shadow-xs p-6">
+      <div id="tax-breakdown-card" className="bg-[#FFFFFF] rounded-2xl border border-amber-200 shadow-xs p-4 sm:p-6">
         <div className="flex items-start space-x-3">
           <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
           <div>
@@ -33,21 +33,21 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
   }
 
   return (
-    <div id="tax-breakdown-card" className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs p-6">
+    <div id="tax-breakdown-card" className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs p-4 sm:p-6">
       {tax.warnings && tax.warnings.length > 0 && (
         <div className="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 flex items-start space-x-2">
           <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
           <div>{tax.warnings.join(' ')}</div>
         </div>
       )}
-      <div className="flex items-center justify-between pb-4 border-b border-[#F7F8F5]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#F7F8F5] gap-2">
         <div>
           <h3 className="font-bold text-base text-[#102A2E]">Tax & Statutory Contribution Breakdown</h3>
           <p className="text-xs text-[#60706D] mt-0.5">
             Rule Version: <span className="font-mono text-[#102A2E]">{tax.taxRuleVersion}</span>
           </p>
         </div>
-        <div className="text-right">
+        <div className="text-left sm:text-right">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#60706D]">Effective Tax Rate</div>
           <div className="text-lg sm:text-xl font-bold text-[#102A2E] font-tabular">
             {(tax.effectiveTaxRate * 100).toFixed(2)}%
@@ -57,25 +57,25 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
 
       {/* Summary Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 my-4">
-        <div className="bg-[#F7F8F5] p-3 rounded-xl min-w-0">
+        <div className="bg-[#F7F8F5] p-2.5 sm:p-3 rounded-xl min-w-0">
           <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Gross Income</span>
-          <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block truncate sm:overflow-visible">
+          <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block">
             {formatMoney(tax.grossIncome, { hideDecimals: true })}
           </span>
         </div>
-        <div className="bg-[#F7F8F5] p-3 rounded-xl min-w-0">
+        <div className="bg-[#F7F8F5] p-2.5 sm:p-3 rounded-xl min-w-0">
           <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Total Taxes & FICA</span>
-          <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block truncate sm:overflow-visible">
+          <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block">
             {formatMoney(tax.totalDeductionsAndTaxes, { hideDecimals: true })}
           </span>
         </div>
-        <div className="bg-[#F7F8F5] p-3 rounded-xl min-w-0">
+        <div className="bg-[#F7F8F5] p-2.5 sm:p-3 rounded-xl min-w-0">
           <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Annual Take-Home</span>
-          <span className="text-xs sm:text-sm font-bold text-[#167D75] font-tabular tabular-nums tracking-tight block truncate sm:overflow-visible">
+          <span className="text-xs sm:text-sm font-bold text-[#167D75] font-tabular tabular-nums tracking-tight block">
             {formatMoney(tax.netIncome, { hideDecimals: true })}
           </span>
         </div>
-        <div className="bg-[#F7F8F5] p-3 rounded-xl min-w-0">
+        <div className="bg-[#F7F8F5] p-2.5 sm:p-3 rounded-xl min-w-0">
           <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Combined Marginal</span>
           <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block">
             {(tax.marginalTaxRate * 100).toFixed(2)}%

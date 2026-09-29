@@ -94,7 +94,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
   return (
     <div id="compare-view" className="space-y-8">
       {/* Header */}
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isComparing && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
@@ -116,7 +116,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
 
           {/* Currency Switcher */}
-          <div className="flex items-center space-x-1.5 bg-[#F7F8F5] p-1 rounded-xl border border-[#DCE3E0] overflow-x-auto max-w-full">
+          <div className="flex items-center space-x-1.5 bg-[#F7F8F5] p-1 rounded-xl border border-[#DCE3E0] overflow-x-auto max-w-full [scrollbar-width:thin]">
             <span className="text-xs text-[#60706D] font-medium pl-2 whitespace-nowrap">Display in:</span>
             {(['USD', 'EUR', 'GBP', 'AED', 'CAD', 'AUD', 'SGD'] as CurrencyCode[]).map((curr) => (
               <button
@@ -137,7 +137,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
         </div>
 
         {/* Quick Comparisons */}
-        <div className="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 [scrollbar-width:thin]">
           <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap">Popular Pairs:</span>
           {[
             { a: 'nyc', aSal: 100000, b: 'austin', bSal: 100000, label: 'NYC vs Austin ($100k)' },
@@ -173,7 +173,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
       {/* Comparison Inputs (City A vs City B) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* City A Input */}
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
             <span className="font-bold text-sm text-[#102A2E]">Location A (Baseline)</span>
             <span className="text-xs bg-[#DDF2EC] text-[#0D625B] font-bold px-2 py-0.5 rounded">
@@ -214,7 +214,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
         </div>
 
         {/* City B Input */}
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
             <span className="font-bold text-sm text-[#102A2E]">Location B (Target)</span>
             <span className="text-xs bg-[#DDF2EC] text-[#0D625B] font-bold px-2 py-0.5 rounded">
@@ -257,8 +257,8 @@ export const CompareView: React.FC<CompareViewProps> = ({
 
       {/* Comparison Results Card */}
       {comparison && (
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F7F8F5] pb-4">
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#F7F8F5] pb-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
                 Normalized Comparison Delta
@@ -268,7 +268,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
               </h3>
             </div>
 
-            <div className="flex items-center space-x-3 text-xs text-[#60706D]">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-[#60706D]">
               <span className="bg-[#F7F8F5] px-2.5 py-1 rounded-full border border-[#DCE3E0]">
                 All metrics converted to <strong className="text-[#102A2E]">{displayCurrency}</strong>
               </span>
@@ -301,8 +301,8 @@ export const CompareView: React.FC<CompareViewProps> = ({
           )}
 
           {/* Table Breakdown */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left">
+          <div className="overflow-x-auto [scrollbar-width:thin]">
+            <table className="w-full min-w-[480px] sm:min-w-0 text-xs text-left">
               <thead>
                 <tr className="border-b border-[#DCE3E0] text-[#60706D] font-bold">
                   <th className="py-2.5">Financial Metric</th>

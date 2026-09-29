@@ -110,7 +110,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
   return (
     <div id="salary-after-tax-view" className="space-y-8">
       {/* Input Header */}
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isCalculating && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
@@ -237,7 +237,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
       {/* Result Cards */}
       {taxResult && (isUnavailable ? (
-        <div className="bg-[#FFFFFF] rounded-2xl border border-amber-200 p-6 sm:p-8 shadow-xs">
+        <div className="bg-[#FFFFFF] rounded-2xl border border-amber-200 p-4 sm:p-8 shadow-xs">
           <div className="flex items-start space-x-3">
             <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
             <div className="space-y-3">
@@ -269,7 +269,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between">
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#60706D]">
                 Spendable Cash
@@ -282,7 +282,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-[#F7F8F5]">
-              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#167D75] font-tabular tabular-nums tracking-tight block whitespace-nowrap overflow-hidden text-ellipsis">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#167D75] font-tabular tabular-nums tracking-tight block break-words sm:whitespace-nowrap">
                 {netDisplay}
               </span>
               <span className="text-xs text-[#60706D] block mt-1">
@@ -291,7 +291,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             </div>
           </div>
 
-          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between">
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#60706D]">
                 Total Deductions
@@ -304,7 +304,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-[#F7F8F5]">
-              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#60706D] font-tabular tabular-nums tracking-tight block whitespace-nowrap overflow-hidden text-ellipsis">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#60706D] font-tabular tabular-nums tracking-tight block break-words sm:whitespace-nowrap">
                 {taxDisplay}
               </span>
               <span className="text-xs text-[#60706D] block mt-1">
@@ -313,7 +313,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             </div>
           </div>
 
-          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between">
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#60706D]">
                 Living Worth
@@ -340,7 +340,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
       {/* Itemized Deductions Table */}
       {taxResult && !isUnavailable && (
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs">
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs">
           <div className="flex items-center justify-between pb-4 border-b border-[#F7F8F5]">
             <div>
               <h3 className="text-base font-bold text-[#102A2E]">Itemized Statutory Tax Schedule</h3>

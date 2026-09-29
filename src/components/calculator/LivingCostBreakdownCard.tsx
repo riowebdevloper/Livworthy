@@ -61,9 +61,9 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
   };
 
   return (
-    <div id="living-cost-breakdown-card" className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs p-6">
+    <div id="living-cost-breakdown-card" className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs p-4 sm:p-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between pb-4 border-b border-[#F7F8F5] gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#F7F8F5] gap-3">
         <div>
           <h3 className="font-bold text-base text-[#102A2E]">Estimated Household Living Costs</h3>
           <p className="text-xs text-[#60706D] mt-0.5">
@@ -72,12 +72,12 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
         </div>
 
         {/* View Toggle: With Rent vs Without Rent */}
-        <div className="inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF]">
+        <div className="grid grid-cols-2 sm:inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF] w-full sm:w-auto shrink-0 text-center">
           <button
             id="btn-with-rent"
             type="button"
             onClick={() => setViewMode('with-rent')}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
+            className={`px-2 sm:px-3 py-1.5 sm:py-1 text-xs font-semibold rounded-md transition-colors text-center ${
               viewMode === 'with-rent'
                 ? 'bg-[#102A2E] text-white'
                 : 'text-[#60706D] hover:text-[#102A2E]'
@@ -89,7 +89,7 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
             id="btn-without-rent"
             type="button"
             onClick={() => setViewMode('without-rent')}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
+            className={`px-2 sm:px-3 py-1.5 sm:py-1 text-xs font-semibold rounded-md transition-colors text-center ${
               viewMode === 'without-rent'
                 ? 'bg-[#102A2E] text-white'
                 : 'text-[#60706D] hover:text-[#102A2E]'
@@ -117,9 +117,9 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
             {isEditingRent ? (
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <div className="relative flex items-center rounded-md border border-[#167D75] bg-white px-2 py-1">
                   <span className="text-xs text-[#60706D] font-bold mr-1">{currency}</span>
                   <input
@@ -132,20 +132,20 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
                 </div>
                 <button
                   onClick={handleSaveRent}
-                  className="px-2.5 py-1 text-xs font-semibold bg-[#167D75] text-white rounded-md hover:bg-[#102A2E] flex items-center space-x-1"
+                  className="px-2.5 py-1 text-xs font-semibold bg-[#167D75] text-white rounded-md hover:bg-[#102A2E] flex items-center space-x-1 cursor-pointer"
                 >
                   <Check className="w-3 h-3" />
                   <span>Apply</span>
                 </button>
                 <button
                   onClick={() => setIsEditingRent(false)}
-                  className="px-2 py-1 text-xs text-[#60706D] hover:text-[#102A2E]"
+                  className="px-2 py-1 text-xs text-[#60706D] hover:text-[#102A2E] cursor-pointer"
                 >
                   Cancel
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {actualRentMajor !== undefined && (
                   <button
                     onClick={handleResetRent}

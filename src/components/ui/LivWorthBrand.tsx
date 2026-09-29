@@ -51,7 +51,7 @@ export const LivWorthyLogo: React.FC<BrandProps> = ({
 }) => {
   // Height classes scaled for crisp desktop & mobile viewports
   const heights = {
-    sm: 'h-8 sm:h-9',
+    sm: 'h-7 sm:h-9',
     md: 'h-10 sm:h-11',
     lg: 'h-12 sm:h-14',
     xl: 'h-16 sm:h-20',

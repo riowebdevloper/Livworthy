@@ -105,7 +105,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
       className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs overflow-hidden transition-all"
     >
       {/* Card Header & Frequency Toggle */}
-      <div className="bg-[#F7F8F5] px-6 py-4 border-b border-[#DCE3E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="bg-[#F7F8F5] p-4 sm:px-6 sm:py-4 border-b border-[#DCE3E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
           <div>
             <div className="flex items-center space-x-2">
@@ -158,7 +158,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
       </div>
 
       {/* Main Metric Cascade Flow */}
-      <div className="p-6 sm:p-8 space-y-6">
+      <div className="p-4 sm:p-8 space-y-6">
         {/* Step 1: Gross Compensation */}
         <MoneyRow
           label="Gross Compensation"
@@ -248,7 +248,7 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
             </div>
 
             <div className="shrink-0 text-left sm:text-right space-y-0.5 pt-1 sm:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight whitespace-nowrap">
+              <div className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight break-words sm:whitespace-nowrap">
                 {isTaxUnavailable ? 'Pending Verification' : moneyRemainingDisplay}
               </div>
               {!isTaxUnavailable && (
@@ -369,45 +369,45 @@ Methodology: Deterministic statutory schedules (https://livworthy.com)`;
       </div>
 
       {/* Action Footer */}
-      <div className="bg-[#FFFFFF] px-6 py-4 border-t border-[#DCE3E0] flex flex-wrap items-center justify-between gap-3">
-        <div className="text-xs text-[#60706D] flex items-center space-x-1 min-w-0">
-          <span className="shrink-0">Assumptions:</span>
-          <span className="font-medium text-[#102A2E] truncate max-w-xs sm:max-w-md bg-white">
+      <div className="bg-[#FFFFFF] p-4 sm:px-6 sm:py-4 border-t border-[#DCE3E0] flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+        <div id="assumptions-summary-container" className="text-xs text-[#60706D] flex flex-wrap items-baseline gap-1.5 min-w-0">
+          <span className="font-semibold text-[#60706D] shrink-0">Assumptions:</span>
+          <span className="font-medium text-[#102A2E] break-words">
             {outcome.costOfLiving.assumptionsSummary}
           </span>
         </div>
 
-        <div className="flex items-center space-x-2 shrink-0">
+        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 w-full md:w-auto shrink-0">
           <button
             id="btn-copy-assessment"
             type="button"
             onClick={handleCopySummary}
-            className={`inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
+            className={`inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 min-h-[38px] rounded-lg border transition-colors cursor-pointer w-full sm:w-auto ${
               copied
                 ? 'border-[#167D75] bg-[#DDF2EC] text-[#0D625B]'
                 : 'border-[#DCE3E0] text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
             }`}
           >
-            {copied ? <Check className="w-3.5 h-3.5" /> : <Share2 className="w-3.5 h-3.5" />}
-            <span>{copied ? 'Summary Copied!' : 'Share / Copy'}</span>
+            {copied ? <Check className="w-3.5 h-3.5 shrink-0" /> : <Share2 className="w-3.5 h-3.5 shrink-0" />}
+            <span className="whitespace-nowrap">{copied ? 'Summary Copied!' : 'Share / Copy'}</span>
           </button>
           <button
             id="btn-result-customize"
             type="button"
             onClick={onOpenCustomizer}
-            className="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5] transition-colors"
+            className="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 min-h-[38px] rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5] transition-colors cursor-pointer w-full sm:w-auto"
           >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-[#167D75]" />
-            <span>Customize Assumptions</span>
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#167D75] shrink-0" />
+            <span className="whitespace-nowrap">Customize Assumptions</span>
           </button>
           <button
             id="btn-result-compare"
             type="button"
             onClick={onCompareCity}
-            className="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#102A2E] text-white hover:bg-[#167D75] transition-colors"
+            className="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3.5 py-2 min-h-[38px] rounded-lg bg-[#102A2E] text-white hover:bg-[#167D75] transition-colors cursor-pointer w-full sm:w-auto"
           >
-            <ArrowLeftRight className="w-3.5 h-3.5" />
-            <span>Compare Another City</span>
+            <ArrowLeftRight className="w-3.5 h-3.5 shrink-0" />
+            <span className="whitespace-nowrap">Compare Another City</span>
           </button>
         </div>
       </div>

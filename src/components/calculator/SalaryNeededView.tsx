@@ -82,7 +82,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
   return (
     <div id="salary-needed-view" className="space-y-8">
       {/* Question Hero */}
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isCalculating && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
@@ -184,7 +184,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Tier 1: Essential Baseline */}
-            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between">
+            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold text-[#60706D] uppercase tracking-wider">
                   Baseline (0 Savings)
@@ -197,7 +197,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-[#F7F8F5]">
-                  <span className="text-xl sm:text-2xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight block whitespace-nowrap">
+                  <span className="text-xl sm:text-2xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight block break-words sm:whitespace-nowrap">
                     {formatMoney(result.threeTiers.essential.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
                   <span className="text-xs text-[#60706D] block mt-0.5">Required Annual Gross</span>
@@ -231,7 +231,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
             </div>
 
             {/* Tier 2: Moderate Comfortable */}
-            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between">
+            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold text-[#167D75] uppercase tracking-wider">
                   Recommended Pace
@@ -244,7 +244,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-[#F7F8F5]">
-                  <span className="text-xl sm:text-2xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight block whitespace-nowrap">
+                  <span className="text-xl sm:text-2xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight block break-words sm:whitespace-nowrap">
                     {formatMoney(result.threeTiers.moderate.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
                   <span className="text-xs text-[#60706D] block mt-0.5">Required Annual Gross</span>
@@ -278,7 +278,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
             </div>
 
             {/* Tier 3: Custom Target Goal */}
-            <div className="bg-[#FFFFFF] rounded-2xl border-2 border-[#167D75] p-6 shadow-md flex flex-col justify-between relative">
+            <div className="bg-[#FFFFFF] rounded-2xl border-2 border-[#167D75] p-4 sm:p-6 shadow-md flex flex-col justify-between relative">
               <div className="absolute -top-3 right-4 bg-[#167D75] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs">
                 Your Exact Target
               </div>
@@ -295,7 +295,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-[#F7F8F5]">
-                  <span className="text-2xl sm:text-3xl font-black text-[#102A2E] font-tabular tabular-nums tracking-tight block whitespace-nowrap">
+                  <span className="text-2xl sm:text-3xl font-black text-[#102A2E] font-tabular tabular-nums tracking-tight block break-words sm:whitespace-nowrap">
                     {formatMoney(result.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
                   <span className="text-xs font-semibold text-[#167D75] block mt-0.5">Annual Gross Compensation</span>
