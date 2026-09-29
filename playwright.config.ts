@@ -37,12 +37,11 @@ export default defineConfig({
     },
   ],
   webServer: {
-    // Use the dev server. server.ts now serves pre-rendered dist/ pages for institutional
-    // routes (/about, /methodology, etc.) before the Vite SPA middleware, so routing
-    // regression tests work correctly without needing env vars or a production build server.
-    command: 'npx tsx server.ts',
+    // Run against the production build in dist/ to verify static documents, SPA homepage,
+    // assets, API endpoints, and 404 behavior exactly as served in production.
+    command: 'SERVE_STATIC=1 npx tsx server.ts',
     url: 'http://127.0.0.1:3000/api/health',
-    reuseExistingServer: true,
+    reuseExistingServer: false,
     timeout: 30000,
   },
 });

@@ -749,8 +749,8 @@ configureApp();
 export async function startServer() {
   await ensureDatabaseReady();
 
-  // Vite middleware for development vs static build in production
-  if (process.env.NODE_ENV !== 'production') {
+  // Vite middleware for development vs static build in production (or SERVE_STATIC=1)
+  if (process.env.NODE_ENV !== 'production' && !process.env.SERVE_STATIC) {
     const fs = await import('fs');
     const distPath = path.join(process.cwd(), 'dist');
 

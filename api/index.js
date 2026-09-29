@@ -8016,7 +8016,7 @@ function configureApp() {
 configureApp();
 async function startServer() {
   await ensureDatabaseReady();
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== "production" && !process.env.SERVE_STATIC) {
     const fs2 = await import("fs");
     const distPath = path2.join(process.cwd(), "dist");
     app.use((req, res, next) => {

@@ -700,13 +700,13 @@ test.describe('Institutional Routing Regression — Eight Footer Links', () => {
 
     // Back to about
     await page.goBack();
-    expect(new URL(page.url()).pathname).toBe('/about');
+    expect(new URL(page.url()).pathname.replace(/\/$/, '')).toBe('/about');
     const h1About = await page.locator('h1').first().textContent({ timeout: 10000 });
     expect(h1About?.toLowerCase()).toContain('about');
 
     // Forward to methodology
     await page.goForward();
-    expect(new URL(page.url()).pathname).toBe('/methodology');
+    expect(new URL(page.url()).pathname.replace(/\/$/, '')).toBe('/methodology');
     const h1Methodology = await page.locator('h1').first().textContent({ timeout: 10000 });
     expect(h1Methodology?.toLowerCase()).toContain('methodology');
   });
