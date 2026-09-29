@@ -59,7 +59,7 @@ test.describe('LivWorthy Accessibility (Axe) Audit Suite', () => {
 
   test('Methodology Modal dialog meets accessibility standards', async ({ page }) => {
     await page.goto('/');
-    await page.click('#btn-open-methodology');
+    await page.click('#footer-methodology-btn');
     await page.waitForSelector('text=LivWorthy Calculation Methodology');
 
     const results = await new AxeBuilder({ page })
@@ -78,7 +78,7 @@ test.describe('LivWorthy Accessibility (Axe) Audit Suite', () => {
     // Press Tab to navigate into header elements
     await page.keyboard.press('Tab');
     // Open methodology with enter when focused, or open via click and close via Escape
-    await page.click('#btn-open-methodology');
+    await page.click('#footer-methodology-btn');
     await expect(page.locator('text=LivWorthy Calculation Methodology')).toBeVisible();
 
     // Close modal via Escape

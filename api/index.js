@@ -8017,6 +8017,21 @@ configureApp();
 async function startServer() {
   await ensureDatabaseReady();
   if (process.env.NODE_ENV !== "production") {
+    const fs2 = await import("fs");
+    const distPath = path2.join(process.cwd(), "dist");
+    app.use((req, res, next) => {
+      if (req.method !== "GET") return next();
+      const pathname = req.path.replace(/\/$/, "") || "/";
+      if (pathname === "/") return next();
+      if (pathname.startsWith("/api/") || pathname.startsWith("/assets/") || pathname.startsWith("/src/") || pathname.startsWith("/@") || pathname.startsWith("/node_modules/") || /\.[a-zA-Z0-9]+$/.test(pathname)) {
+        return next();
+      }
+      const candidatePath = path2.join(distPath, pathname, "index.html");
+      if (fs2.existsSync(candidatePath)) {
+        return res.sendFile(candidatePath);
+      }
+      return res.status(404).send("<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>");
+    });
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -8024,10 +8039,19 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
+    const fs2 = await import("fs");
     const distPath = path2.join(process.cwd(), "dist");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
-      res.sendFile(path2.join(distPath, "index.html"));
+      const pathname = req.path.replace(/\/$/, "") || "/";
+      if (pathname === "/") {
+        return res.sendFile(path2.join(distPath, "index.html"));
+      }
+      const candidatePath = path2.join(distPath, pathname, "index.html");
+      if (fs2.existsSync(candidatePath)) {
+        return res.sendFile(candidatePath);
+      }
+      res.status(404).send("<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>");
     });
   }
   app.listen(PORT, "0.0.0.0", () => {

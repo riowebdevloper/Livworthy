@@ -480,7 +480,8 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
                 </button>
 
                 <button
-                  id="btn-view-data-sources"
+                  id="btn-open-evidence"
+                  data-testid="btn-view-data-sources"
                   type="button"
                   onClick={onOpenEvidence}
                   className="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#167D75] hover:bg-[#DDF2EC] transition-colors cursor-pointer"

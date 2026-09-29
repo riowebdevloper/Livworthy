@@ -141,14 +141,18 @@ export function runSeoGenerator() {
   `;
 
   // Update dist/index.html with pre-rendered homepage body
-  const prerenderedHome = renderPageHtml(baseHtml, {
-    title: 'LivWorthy — Know what your income is really worth',
-    description: 'Know what your income is really worth. Precision global income and living intelligence platform across 39 international markets.',
-    canonicalUrl: `${BASE_URL}/`,
-    robots: 'index, follow',
-    bodyContent: homeHtmlBody,
-    structuredData: homeStructuredData,
-  });
+  const prerenderedHome = renderPageHtml(
+    baseHtml,
+    {
+      title: 'LivWorthy — Know what your income is really worth',
+      description: 'Know what your income is really worth. Precision global income and living intelligence platform across 39 international markets.',
+      canonicalUrl: `${BASE_URL}/`,
+      robots: 'index, follow',
+      bodyContent: homeHtmlBody,
+      structuredData: homeStructuredData,
+    },
+    true
+  );
   fs.writeFileSync(templatePath, prerenderedHome);
 
   // 2. Transparency & E-E-A-T Institutional Pages
@@ -932,9 +936,16 @@ function renderPageHtml(
     robots: 'index, follow' | 'noindex, follow';
     bodyContent: string;
     structuredData?: any;
-  }
+  },
+  isHomepage = false
 ): string {
   let html = template;
+
+  // For static institutional and SEO pages, strip the SPA module script bundle
+  // so the React calculator does not load or overwrite the pre-rendered content.
+  if (!isHomepage) {
+    html = html.replace(/<script\s+type="module"[^>]*><\/script>\s*/gi, '');
+  }
 
   // Replace Title
   html = html.replace(/<title>.*?<\/title>/i, `<title>${escapeHtml(page.title)}</title>`);

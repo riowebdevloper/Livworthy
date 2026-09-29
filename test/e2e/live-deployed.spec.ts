@@ -66,7 +66,7 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
     await page.goto(LIVE_URL, { waitUntil: 'networkidle' });
 
     // 1. Methodology Modal
-    await page.click('#btn-open-methodology');
+    await page.click('#footer-methodology-btn');
     await expect(page.locator('text=LivWorthy Calculation Methodology').first()).toBeVisible({ timeout: 10000 });
     await page.keyboard.press('Escape');
 

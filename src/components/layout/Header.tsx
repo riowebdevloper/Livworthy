@@ -38,11 +38,6 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center space-x-3 group py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] focus-visible:ring-offset-2 rounded"
             aria-label="LivWorthy — Home"
             title="LivWorthy - Home"
-            onClick={(e) => {
-              e.preventDefault();
-              onSelectTab('salary-worth');
-              window.history.pushState(null, '', '/');
-            }}
           >
             <LivWorthLogo size="sm" showTagline={true} />
           </a>

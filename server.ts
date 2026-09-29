@@ -751,6 +751,41 @@ export async function startServer() {
 
   // Vite middleware for development vs static build in production
   if (process.env.NODE_ENV !== 'production') {
+    const fs = await import('fs');
+    const distPath = path.join(process.cwd(), 'dist');
+
+    // In dev mode, serve pre-generated institutional HTML pages from dist/ before
+    // handing off to Vite's SPA middleware. This allows routing regression tests
+    // (which run against the dev server) to correctly receive standalone pages for
+    // /about, /methodology, /sources, /editorial-policy, /data-policy, /corrections,
+    // /terms, /privacy, /countries/*, /cities/*, /compare/*, /guides/*
+    // without being rewritten to the SPA shell.
+    app.use((req, res, next) => {
+      // Only handle GET requests for paths that may have a prerendered file
+      if (req.method !== 'GET') return next();
+      const pathname = req.path.replace(/\/$/, '') || '/';
+      // Do NOT intercept root route / in dev mode; let Vite handle the SPA
+      if (pathname === '/') return next();
+      // Skip API routes, asset paths, and Vite internal paths
+      if (
+        pathname.startsWith('/api/') ||
+        pathname.startsWith('/assets/') ||
+        pathname.startsWith('/src/') ||
+        pathname.startsWith('/@') ||
+        pathname.startsWith('/node_modules/') ||
+        /\.[a-zA-Z0-9]+$/.test(pathname)
+      ) {
+        return next();
+      }
+      // Build the candidate file path: /about -> dist/about/index.html
+      const candidatePath = path.join(distPath, pathname, 'index.html');
+      if (fs.existsSync(candidatePath)) {
+        return res.sendFile(candidatePath);
+      }
+      // Unknown HTML paths return 404
+      return res.status(404).send('<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
+    });
+
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -758,10 +793,19 @@ export async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
+    const fs = await import('fs');
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+      const pathname = req.path.replace(/\/$/, '') || '/';
+      if (pathname === '/') {
+        return res.sendFile(path.join(distPath, 'index.html'));
+      }
+      const candidatePath = path.join(distPath, pathname, 'index.html');
+      if (fs.existsSync(candidatePath)) {
+        return res.sendFile(candidatePath);
+      }
+      res.status(404).send('<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
     });
   }
 
