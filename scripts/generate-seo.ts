@@ -215,22 +215,96 @@ export function runSeoGenerator() {
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div class="p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0]">
-                <div class="text-xs font-semibold text-[#60706D] uppercase tracking-wider">Annual Take-Home Pay</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1">$70,343</div>
-                <div class="text-xs text-[#167D75] mt-1 font-medium">~$5,862 / month (after federal, NY State & NYC local tax)</div>
+          <div id="result-summary-card" class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] shadow-xs overflow-hidden transition-all">
+            <div class="bg-[#F7F8F5] px-6 py-4 border-b border-[#DCE3E0] flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center space-x-2">
+                  <h2 class="font-bold text-base text-[#102A2E]">New York City Living Worth Result</h2>
+                  <span class="text-xs font-semibold bg-[#DDF2EC] text-[#0D625B] px-2 py-0.5 rounded-full">SINGLE</span>
+                </div>
+                <p class="text-xs text-[#60706D] mt-0.5">Statutory 2025 schedule (Official table)</p>
               </div>
-              <div class="p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0]">
-                <div class="text-xs font-semibold text-[#60706D] uppercase tracking-wider">Estimated Monthly Expenses</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1">~$5,270</div>
-                <div class="text-xs text-[#60706D] mt-1">Rent: ~$3,850 · Living & Essentials: ~$1,420</div>
+              <div class="inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF]">
+                <button id="period-annual-btn" type="button" class="px-3 py-1 text-xs font-semibold rounded-md bg-[#102A2E] text-white">Annual</button>
+                <button id="period-monthly-btn" type="button" class="px-3 py-1 text-xs font-semibold rounded-md text-[#60706D]">Monthly</button>
               </div>
-              <div class="p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0]">
-                <div class="text-xs font-semibold text-[#60706D] uppercase tracking-wider">Estimated Monthly Savings</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-[#167D75] mt-1">+$592 / mo</div>
-                <div class="text-xs text-[#60706D] mt-1">Estimated annual buffer: ~$7,100</div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-6">
+              <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 border-b border-[#F7F8F5] gap-1">
+                <div>
+                  <div class="font-bold text-sm text-[#102A2E]">Gross Compensation</div>
+                  <div class="text-xs text-[#60706D]">Stated total cash salary</div>
+                </div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#102A2E]">$100,000<span class="text-sm font-medium text-[#60706D]">/yr</span></div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 border-b border-[#F7F8F5] gap-1">
+                <div>
+                  <div class="font-bold text-sm text-[#167D75]">Estimated Take-Home <span class="text-xs text-[#60706D] font-normal">(29.7% total tax &amp; FICA)</span></div>
+                  <div class="text-xs text-[#60706D]">After federal, state, local resident taxes &amp; social contributions</div>
+                </div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#167D75]">$70,343<span class="text-sm font-medium text-[#60706D]">/yr</span></div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 border-b border-[#F7F8F5] gap-1">
+                <div>
+                  <div class="font-bold text-sm text-[#60706D]">Estimated Living Costs</div>
+                  <div class="text-xs text-[#60706D]">Housing (ONE BEDROOM), food, utilities, transit &amp; healthcare</div>
+                </div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#60706D]">−$63,240<span class="text-sm font-medium text-[#60706D]">/yr</span></div>
+              </div>
+
+              <div class="bg-[#F7F8F5] rounded-xl p-4 sm:p-5 border border-[#DCE3E0]">
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 sm:gap-4">
+                  <div class="min-w-0 flex-1">
+                    <span class="text-sm font-bold uppercase tracking-wider text-[#102A2E]">Money Left After Expenses</span>
+                    <p class="text-xs text-[#60706D] mt-1 max-w-md leading-relaxed">Money you actually keep each year after taxes and estimated living costs — available for savings, investments, or discretionary spending.</p>
+                  </div>
+                  <div class="text-left sm:text-right shrink-0">
+                    <span class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#167D75]">+$7,103</span>
+                    <span class="text-sm font-bold text-[#60706D] block mt-0.5">+$592 / month</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-2 pt-2">
+                <div class="flex justify-between text-xs font-semibold text-[#102A2E]">
+                  <span>Where your salary goes:</span>
+                  <span class="text-[#167D75]">Savings: 7%</span>
+                </div>
+                <div class="h-4 w-full rounded-full bg-[#E5EAE8] overflow-hidden flex shadow-inner">
+                  <div style="width: 30%;" class="bg-red-500 h-full" title="Taxes & Deductions: 30%"></div>
+                  <div style="width: 46%;" class="bg-blue-600 h-full" title="Housing: 46%"></div>
+                  <div style="width: 17%;" class="bg-amber-500 h-full" title="Living Essentials: 17%"></div>
+                  <div style="width: 7%;" class="bg-[#167D75] h-full" title="Remaining Surplus: 7%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-5 shadow-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-[#60706D] block">Detailed Financial Intelligence</span>
+                <p class="text-xs text-[#60706D] mt-0.5">Explore statutory tax brackets, itemized living costs, and methodology</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button id="btn-toggle-tax-breakdown" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
+                  <span>See tax breakdown</span>
+                </button>
+                <button id="btn-toggle-col-breakdown" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
+                  <span>See living-cost breakdown</span>
+                </button>
+                <button id="btn-toggle-methodology-summary" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
+                  <span>How was this calculated?</span>
+                </button>
+                <button id="btn-open-evidence" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#167D75] hover:bg-[#DDF2EC]">
+                  <span>View data sources</span>
+                </button>
+                <button id="btn-open-customizer" type="button" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5]">
+                  <span>Customize Assumptions</span>
+                </button>
               </div>
             </div>
           </div>

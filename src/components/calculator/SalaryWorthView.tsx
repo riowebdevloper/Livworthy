@@ -18,6 +18,7 @@ import {
 import { CITIES } from '../../data/locations';
 import { PRESET_LIST } from '../../data/presets';
 import { calculateSalaryWorth } from '../../api/calculators';
+import { SalaryWorthCalculator } from '../../engines/calculator-core/salary-worth';
 import { createMoney, formatMoney, getDefaultSalaryForCurrency, toMajor } from '../../lib/money';
 import { HouseholdProfile } from '../../types/col';
 import { LivWorthCalculationOutcome, LivWorthScenario } from '../../types/scenario';
@@ -51,8 +52,14 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   const [salaryInputMajor, setSalaryInputMajor] = useState<number>(
     toMajor(scenario.compensation.baseSalary)
   );
-  const [outcome, setOutcome] = useState<LivWorthCalculationOutcome | null>(null);
-  const [isCalculating, setIsCalculating] = useState<boolean>(true);
+  const [outcome, setOutcome] = useState<LivWorthCalculationOutcome>(() => {
+    try {
+      return SalaryWorthCalculator.calculate(scenario);
+    } catch {
+      return null as any;
+    }
+  });
+  const [isCalculating, setIsCalculating] = useState<boolean>(false);
   const [calcError, setCalcError] = useState<string | null>(null);
 
   const currentCity = scenario.location;
@@ -67,6 +74,13 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
 
   // Execute authoritative backend calculation whenever scenario changes
   useEffect(() => {
+    // Immediately compute synchronous outcome to eliminate layout jumps
+    try {
+      const immediate = SalaryWorthCalculator.calculate(scenario);
+      setOutcome(immediate);
+      onCalculationOutcome?.(immediate);
+    } catch {}
+
     // Cancel any ongoing calculation in flight
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
