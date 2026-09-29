@@ -1,12 +1,24 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { SalaryWorthView } from './components/calculator/SalaryWorthView';
-import { SalaryNeededView } from './components/calculator/SalaryNeededView';
-import { SalaryAfterTaxView } from './components/calculator/SalaryAfterTaxView';
-import { CostOfLivingView } from './components/calculator/CostOfLivingView';
-import { CompareView } from './components/calculator/CompareView';
-import { JobOfferCompareView } from './components/calculator/JobOfferCompareView';
 import { Header, ActiveTab } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
+
+// Defer secondary calculator views so initial bundle only loads SalaryWorthView
+const SalaryNeededView = React.lazy(() =>
+  import('./components/calculator/SalaryNeededView').then((m) => ({ default: m.SalaryNeededView }))
+);
+const SalaryAfterTaxView = React.lazy(() =>
+  import('./components/calculator/SalaryAfterTaxView').then((m) => ({ default: m.SalaryAfterTaxView }))
+);
+const CostOfLivingView = React.lazy(() =>
+  import('./components/calculator/CostOfLivingView').then((m) => ({ default: m.CostOfLivingView }))
+);
+const CompareView = React.lazy(() =>
+  import('./components/calculator/CompareView').then((m) => ({ default: m.CompareView }))
+);
+const JobOfferCompareView = React.lazy(() =>
+  import('./components/calculator/JobOfferCompareView').then((m) => ({ default: m.JobOfferCompareView }))
+);
 
 // Defer non-critical modals, drawers, and guide articles to reduce initial JS payload
 const CustomizationDrawer = React.lazy(() =>
@@ -437,48 +449,58 @@ export default function App() {
         )}
 
         {activeTab === 'salary-needed' && (
-          <SalaryNeededView
-            initialScenario={scenario}
-            onOpenCustomizer={() => setIsCustomizerOpen(true)}
-            onOpenEvidence={() => setIsEvidenceOpen(true)}
-            onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
-            onCalculationResult={handleSalaryNeededResult}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-6 h-6 border-2 border-teal-700 border-t-transparent rounded-full animate-spin"></div></div>}>
+            <SalaryNeededView
+              initialScenario={scenario}
+              onOpenCustomizer={() => setIsCustomizerOpen(true)}
+              onOpenEvidence={() => setIsEvidenceOpen(true)}
+              onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
+              onCalculationResult={handleSalaryNeededResult}
+            />
+          </React.Suspense>
         )}
 
         {activeTab === 'salary-after-tax' && (
-          <SalaryAfterTaxView
-            onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
-            onOpenEvidence={() => setIsEvidenceOpen(true)}
-            onCalculationResult={handleTaxResult}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-6 h-6 border-2 border-teal-700 border-t-transparent rounded-full animate-spin"></div></div>}>
+            <SalaryAfterTaxView
+              onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
+              onOpenEvidence={() => setIsEvidenceOpen(true)}
+              onCalculationResult={handleTaxResult}
+            />
+          </React.Suspense>
         )}
 
         {activeTab === 'cost-of-living' && (
-          <CostOfLivingView
-            household={scenario.household}
-            actualRentMajor={actualRentMajor}
-            onUpdateRentOverride={handleUpdateRentOverride}
-            onOpenCustomizer={() => setIsCustomizerOpen(true)}
-            onOpenEvidence={() => setIsEvidenceOpen(true)}
-            onCalculationResult={handleColResult}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-6 h-6 border-2 border-teal-700 border-t-transparent rounded-full animate-spin"></div></div>}>
+            <CostOfLivingView
+              household={scenario.household}
+              actualRentMajor={actualRentMajor}
+              onUpdateRentOverride={handleUpdateRentOverride}
+              onOpenCustomizer={() => setIsCustomizerOpen(true)}
+              onOpenEvidence={() => setIsEvidenceOpen(true)}
+              onCalculationResult={handleColResult}
+            />
+          </React.Suspense>
         )}
 
         {activeTab === 'compare' && (
-          <CompareView
-            initialScenarioA={scenario}
-            onOpenEvidence={() => setIsEvidenceOpen(true)}
-            onComparisonResult={handleComparisonResult}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-6 h-6 border-2 border-teal-700 border-t-transparent rounded-full animate-spin"></div></div>}>
+            <CompareView
+              initialScenarioA={scenario}
+              onOpenEvidence={() => setIsEvidenceOpen(true)}
+              onComparisonResult={handleComparisonResult}
+            />
+          </React.Suspense>
         )}
 
         {activeTab === 'job-offers' && (
-          <JobOfferCompareView
-            initialScenario={scenario}
-            onOpenEvidence={() => setIsEvidenceOpen(true)}
-            onComparisonResult={handleComparisonResult}
-          />
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-6 h-6 border-2 border-teal-700 border-t-transparent rounded-full animate-spin"></div></div>}>
+            <JobOfferCompareView
+              initialScenario={scenario}
+              onOpenEvidence={() => setIsEvidenceOpen(true)}
+              onComparisonResult={handleComparisonResult}
+            />
+          </React.Suspense>
         )}
 
         {activeTab === 'nyc-100k-guide' && (

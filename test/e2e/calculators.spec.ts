@@ -201,6 +201,11 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
       await footerMethodologyBtn.click();
       await expect(page.locator('text=LivWorthy Calculation Methodology').first()).toBeVisible({ timeout: 10000 });
       await page.keyboard.press('Escape');
+      const methodologyModal = page.locator('text=LivWorthy Calculation Methodology');
+      if (await methodologyModal.isVisible()) {
+        const closeBtn = page.locator('button[aria-label="Close methodology modal"]');
+        if (await closeBtn.isVisible()) await closeBtn.click();
+      }
       await expect(page.locator('text=LivWorthy Calculation Methodology')).not.toBeVisible();
     }
 
@@ -210,6 +215,11 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
       await footerDiagBtn.click();
       await expect(page.locator('text=LivWorthy System Architecture & Diagnostics').first()).toBeVisible({ timeout: 10000 });
       await page.keyboard.press('Escape');
+      const diagModal = page.locator('text=LivWorthy System Architecture & Diagnostics');
+      if (await diagModal.isVisible()) {
+        const closeBtn = page.locator('button[aria-label="Close diagnostics modal"], button[aria-label="Close"]');
+        if (await closeBtn.first().isVisible()) await closeBtn.first().click();
+      }
       await expect(page.locator('text=LivWorthy System Architecture & Diagnostics')).not.toBeVisible();
     }
 
@@ -219,6 +229,11 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
       await customizerBtn.click();
       await expect(page.locator('text=Household Structure').first()).toBeVisible();
       await page.keyboard.press('Escape');
+      const customDrawer = page.locator('text=Household Structure');
+      if (await customDrawer.isVisible()) {
+        const closeBtn = page.locator('button[aria-label="Close customization drawer"]');
+        if (await closeBtn.isVisible()) await closeBtn.click();
+      }
       await expect(page.locator('text=Household Structure')).not.toBeVisible();
     }
 
@@ -229,6 +244,11 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await evidenceBtn.click();
     await expect(page.locator('text=Data Provenance & Evidence').first()).toBeVisible({ timeout: 10000 });
     await page.keyboard.press('Escape');
+    const evidenceDrawer = page.locator('text=Data Provenance & Evidence');
+    if (await evidenceDrawer.isVisible()) {
+      const closeBtn = page.locator('button[aria-label="Close data provenance drawer"], button[aria-label="Close evidence drawer"]');
+      if (await closeBtn.isVisible()) await closeBtn.click();
+    }
     await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
   });
 

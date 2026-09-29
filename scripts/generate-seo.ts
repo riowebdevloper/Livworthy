@@ -36,6 +36,18 @@ export function runSeoGenerator() {
   }
 
   const baseHtml = fs.readFileSync(templatePath, 'utf-8');
+
+  // Read compiled CSS bundle to inline critical CSS directly into <style id="critical-css">
+  const assetsDir = path.join(distDir, 'assets');
+  let compiledCss = '';
+  if (fs.existsSync(assetsDir)) {
+    const cssFiles = fs.readdirSync(assetsDir).filter((f) => f.startsWith('index-') && f.endsWith('.css'));
+    if (cssFiles.length > 0) {
+      compiledCss = fs.readFileSync(path.join(assetsDir, cssFiles[0]), 'utf-8');
+      console.log(`[SEO Generator] Found critical CSS asset: ${cssFiles[0]} (${compiledCss.length} bytes) to inline.`);
+    }
+  }
+
   const pages: SeoPage[] = [];
 
   // 1. Homepage Prerender Enhancements with Complete Structured Data Graph
@@ -457,7 +469,7 @@ export function runSeoGenerator() {
     </div>
   `;
 
-  // Update dist/index.html with pre-rendered homepage body
+  // Update dist/index.html with pre-rendered homepage body and inlined critical CSS
   const prerenderedHome = renderPageHtml(
     baseHtml,
     {
@@ -468,13 +480,18 @@ export function runSeoGenerator() {
       bodyContent: homeHtmlBody,
       structuredData: homeStructuredData,
     },
-    true
+    true,
+    compiledCss
   );
   fs.writeFileSync(templatePath, prerenderedHome);
 
   // 2. Transparency & E-E-A-T Institutional Pages
   const transparencyPages = createTransparencyPages();
   pages.push(...transparencyPages);
+
+  // 2b. Directory Pages (/countries, /cities, /guides)
+  const directoryPages = createDirectoryPages();
+  pages.push(...directoryPages);
 
   // 3. Country Hub Pages
   for (const country of Object.values(COUNTRIES)) {
@@ -898,7 +915,7 @@ export function runSeoGenerator() {
       fs.mkdirSync(outDirPath, { recursive: true });
     }
 
-    const html = renderPageHtml(baseHtml, page);
+    const html = renderPageHtml(baseHtml, page, false, compiledCss);
     fs.writeFileSync(outFilePath, html);
     generatedCount++;
   }
@@ -912,6 +929,241 @@ export function runSeoGenerator() {
 
   // 9. Content Gap Report
   runContentGapReport();
+}
+
+function createDirectoryPages(): SeoPage[] {
+  const pages: SeoPage[] = [];
+
+  // 1. Countries Directory (/countries)
+  const allCountriesList = Object.values(COUNTRIES).sort((a, b) => a.name.localeCompare(b.name));
+  const countriesStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'Countries Directory', item: `${BASE_URL}/countries` },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        name: 'Countries & Regional Markets Directory | LivWorthy',
+        url: `${BASE_URL}/countries`,
+        description: 'Explore verified statutory income tax systems, cost of living benchmarks, and purchasing power parity across 39 international markets.',
+        publisher: { '@id': `${BASE_URL}/#organization` },
+      },
+    ],
+  };
+
+  const countriesBody = `
+    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
+        <a href="/" class="hover:text-[#167D75]">Home</a> / <span class="text-[#102A2E] font-bold">Countries Directory</span>
+      </nav>
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Global Markets Directory</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">Countries &amp; Regional Markets</h1>
+        <p class="text-base text-[#60706D] mt-3 leading-relaxed">
+          Comprehensive directory of the 39 commercial markets covered by LivWorthy. Explore statutory income tax calculation schedules, metropolitan living cost indexes, and verified economic data sources for each jurisdiction.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        ${allCountriesList.map((country) => {
+          const cap = CapabilityResolver.resolve(country.id);
+          const hasTax = cap.hasDedicatedTaxAdapter;
+          const countryCities = Object.values(CITIES).filter((c) => c.countryId === country.id);
+          return `
+            <a href="/countries/${country.id.toLowerCase()}" class="p-5 bg-white border border-[#DCE3E0] rounded-xl hover:border-[#167D75] hover:shadow-sm transition-all flex flex-col justify-between group">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-extrabold text-base text-[#102A2E] group-hover:text-[#167D75] transition-colors">${escapeHtml(country.name)}</span>
+                  <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-[#F7F8F5] text-[#60706D] border border-[#DCE3E0]">${country.id}</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-[#60706D] mb-3">
+                  <span>Currency: <strong class="text-[#102A2E]">${country.defaultCurrency}</strong></span>
+                  <span>•</span>
+                  <span>${countryCities.length} ${countryCities.length === 1 ? 'City' : 'Cities'}</span>
+                </div>
+              </div>
+              <div class="pt-3 border-t border-[#F7F8F5] flex items-center justify-between">
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full ${hasTax ? 'bg-[#DDF2EC] text-[#0D524D]' : 'bg-slate-100 text-slate-700'}">
+                  ${hasTax ? `Verified Tax (${cap.taxYear || LATEST_STATUTORY_TAX_YEAR})` : 'Cost of Living'}
+                </span>
+                <span class="text-xs font-bold text-[#167D75] group-hover:translate-x-0.5 transition-transform">View →</span>
+              </div>
+            </a>
+          `;
+        }).join('')}
+      </div>
+    </article>
+  `;
+
+  pages.push({
+    relativePath: 'countries/index.html',
+    canonicalUrl: `${BASE_URL}/countries`,
+    title: 'Countries Directory — Global Income, Tax & Cost of Living Intelligence | LivWorthy',
+    description: 'Explore verified statutory income tax systems, cost of living benchmarks, and purchasing power parity across 39 international markets.',
+    robots: 'index, follow',
+    bodyContent: countriesBody,
+    structuredData: countriesStructuredData,
+    changefreq: 'weekly',
+    priority: 0.9,
+  });
+
+  // 2. Cities Directory (/cities)
+  const allCitiesList = Object.values(CITIES).sort((a, b) => a.name.localeCompare(b.name));
+  const citiesStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'Cities Directory', item: `${BASE_URL}/cities` },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        name: 'Cities & Metropolitan Hubs Directory | LivWorthy',
+        url: `${BASE_URL}/cities`,
+        description: 'Comprehensive directory of 39 global cities. Explore cost of living indices, fair-market rents, local statutory tax rates, and salary benchmarks.',
+        publisher: { '@id': `${BASE_URL}/#organization` },
+      },
+    ],
+  };
+
+  const citiesBody = `
+    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
+        <a href="/" class="hover:text-[#167D75]">Home</a> / <span class="text-[#102A2E] font-bold">Cities Directory</span>
+      </nav>
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Metropolitan Hubs Directory</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">Cities &amp; Metropolitan Hubs</h1>
+        <p class="text-base text-[#60706D] mt-3 leading-relaxed">
+          Comprehensive directory of major metropolitan areas benchmarked by LivWorthy. Inspect cost of living indices (indexed to NYC = 100), statutory tax jurisdictions, and fair-market housing benchmarks.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        ${allCitiesList.map((city) => {
+          const country = COUNTRIES[city.countryId];
+          const countryName = country ? country.name : city.countryId;
+          return `
+            <a href="/cities/${city.id}" class="p-5 bg-white border border-[#DCE3E0] rounded-xl hover:border-[#167D75] hover:shadow-sm transition-all flex flex-col justify-between group">
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-extrabold text-base text-[#102A2E] group-hover:text-[#167D75] transition-colors">${escapeHtml(city.name)}</span>
+                  <span class="text-xs font-mono font-semibold px-1.5 py-0.5 rounded bg-[#F7F8F5] text-[#60706D] border border-[#DCE3E0]">${city.currency}</span>
+                </div>
+                <div class="text-xs text-[#60706D] mb-3">
+                  <span>${escapeHtml(countryName)}</span>
+                  ${city.metroAreaName && city.metroAreaName !== city.name ? ` • <span class="italic text-[11px]">${escapeHtml(city.metroAreaName)}</span>` : ''}
+                </div>
+              </div>
+              <div class="pt-3 border-t border-[#F7F8F5] flex items-center justify-between">
+                <span class="text-xs text-[#167D75] font-semibold">
+                  COL Index: <strong>${city.colIndexBase100NYC}</strong> (NYC=100)
+                </span>
+                <span class="text-xs font-bold text-[#167D75] group-hover:translate-x-0.5 transition-transform">Explore →</span>
+              </div>
+            </a>
+          `;
+        }).join('')}
+      </div>
+    </article>
+  `;
+
+  pages.push({
+    relativePath: 'cities/index.html',
+    canonicalUrl: `${BASE_URL}/cities`,
+    title: 'Cities Directory — Global Metropolitan Cost of Living & Salary Benchmarks | LivWorthy',
+    description: 'Comprehensive directory of 39 global cities. Explore cost of living indices, fair-market rents, local statutory tax rates, and salary benchmarks.',
+    robots: 'index, follow',
+    bodyContent: citiesBody,
+    structuredData: citiesStructuredData,
+    changefreq: 'weekly',
+    priority: 0.9,
+  });
+
+  // 3. Guides Directory (/guides)
+  const guidesStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'Guides Directory', item: `${BASE_URL}/guides` },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        name: 'Salary & Relocation Intelligence Guides | LivWorthy',
+        url: `${BASE_URL}/guides`,
+        description: 'Authoritative salary, statutory tax, and cost of living guides for major metropolitan areas worldwide.',
+        publisher: { '@id': `${BASE_URL}/#organization` },
+      },
+    ],
+  };
+
+  const guidesBody = `
+    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
+        <a href="/" class="hover:text-[#167D75]">Home</a> / <span class="text-[#102A2E] font-bold">Salary Guides</span>
+      </nav>
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Editorial Intelligence</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">Salary &amp; Relocation Intelligence Guides</h1>
+        <p class="text-base text-[#60706D] mt-3 leading-relaxed">
+          In-depth financial benchmarks analyzing whether specific salary levels are sufficient to maintain comfortable living standards in premier global cities.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        ${POPULAR_GUIDES_LIST.map((g) => {
+          const city = CITIES[g.cityId];
+          const country = COUNTRIES[g.countryId];
+          return `
+            <a href="/guides/${g.slug}" class="p-6 bg-white border border-[#DCE3E0] rounded-2xl hover:border-[#167D75] hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">${city?.name || g.cityId} • ${country?.name || g.countryId}</span>
+                  <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-[#F7F8F5] text-[#102A2E] border border-[#DCE3E0]">${g.currency} ${g.salaryMajor.toLocaleString()}</span>
+                </div>
+                <h2 class="text-xl font-extrabold text-[#102A2E] group-hover:text-[#167D75] transition-colors mb-2 leading-snug">
+                  ${escapeHtml(g.title)}
+                </h2>
+                <p class="text-xs text-[#60706D] line-clamp-3 leading-relaxed">
+                  ${escapeHtml(g.headlineSummary)}
+                </p>
+              </div>
+              <div class="pt-4 mt-4 border-t border-[#F7F8F5] flex items-center justify-between text-xs">
+                <span class="text-[#60706D] font-medium">Read Full Analysis</span>
+                <span class="font-bold text-[#167D75] group-hover:translate-x-1 transition-transform">Read Guide →</span>
+              </div>
+            </a>
+          `;
+        }).join('')}
+      </div>
+    </article>
+  `;
+
+  pages.push({
+    relativePath: 'guides/index.html',
+    canonicalUrl: `${BASE_URL}/guides`,
+    title: 'Salary & Relocation Guides — City Purchasing Power Benchmarks | LivWorthy',
+    description: 'Authoritative salary, statutory tax, and cost of living guides for major metropolitan areas worldwide. Analyze realistic purchasing power and budgets.',
+    robots: 'index, follow',
+    bodyContent: guidesBody,
+    structuredData: guidesStructuredData,
+    changefreq: 'weekly',
+    priority: 0.9,
+  });
+
+  return pages;
 }
 
 function createTransparencyPages(): SeoPage[] {
@@ -1254,9 +1506,18 @@ function renderPageHtml(
     bodyContent: string;
     structuredData?: any;
   },
-  isHomepage = false
+  isHomepage = false,
+  criticalCss = ''
 ): string {
   let html = template;
+
+  // Replace external render-blocking stylesheet with inlined critical CSS to eliminate render delay
+  if (criticalCss) {
+    html = html.replace(
+      /<link\s+rel="stylesheet"[^>]*href="\/assets\/index-[^"]+\.css"[^>]*\/?>/i,
+      `<style id="critical-css">${criticalCss}</style>`
+    );
+  }
 
   // For static institutional and SEO pages, strip the SPA module script bundle
   // so the React calculator does not load or overwrite the pre-rendered content.
@@ -1316,10 +1577,16 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
   // Only indexable pages passing quality gate
   const indexablePages = pages.filter((p) => p.robots === 'index, follow');
 
-  const countryPages = indexablePages.filter((p) => p.relativePath.startsWith('countries/'));
-  const cityPages = indexablePages.filter((p) => p.relativePath.startsWith('cities/'));
+  const countryPages = indexablePages.filter(
+    (p) => p.relativePath.startsWith('countries/') && p.relativePath !== 'countries/index.html'
+  );
+  const cityPages = indexablePages.filter(
+    (p) => p.relativePath.startsWith('cities/') && p.relativePath !== 'cities/index.html'
+  );
   const comparisonPages = indexablePages.filter((p) => p.relativePath.startsWith('compare/'));
-  const guidePages = indexablePages.filter((p) => p.relativePath.startsWith('guides/'));
+  const guidePages = indexablePages.filter(
+    (p) => p.relativePath.startsWith('guides/') && p.relativePath !== 'guides/index.html'
+  );
 
   const buildUrlSet = (items: { canonicalUrl: string; changefreq: string; priority: number }[]) => {
     return `<?xml version="1.0" encoding="UTF-8"?>
@@ -1338,6 +1605,9 @@ ${items
 
   const mainUrls = [
     { canonicalUrl: `${BASE_URL}/`, changefreq: 'daily', priority: 1.0 },
+    { canonicalUrl: `${BASE_URL}/countries`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/cities`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/guides`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/about`, changefreq: 'monthly', priority: 0.8 },
     { canonicalUrl: `${BASE_URL}/methodology`, changefreq: 'monthly', priority: 0.8 },
     { canonicalUrl: `${BASE_URL}/sources`, changefreq: 'monthly', priority: 0.8 },
@@ -1428,33 +1698,38 @@ Allow: /
 Sitemap: ${BASE_URL}/sitemap.xml
 `;
 
-  const llmsTxt = `# LivWorthy (https://livworthy.com)
+  const llmsTxt = `# LivWorthy
 > ${PLATFORM_IDENTITY.tagline}
 
 ${PLATFORM_IDENTITY.coreDefinition}
 
 ## Core Intelligence Capabilities
-- Salary Worth: Evaluates disposable income and savings capacity after statutory taxes, rent, and household necessities.
-- Salary After Tax: Statutory take-home pay engine accounting for national, regional/state, and local income taxes plus mandatory social contributions.
-- Salary Needed: Deterministic inverse solver computing gross compensation needed to sustain defined living standards and savings goals.
-- Cost of Living: Metro-level benchmarks for housing, food, transit, healthcare, and utilities across 39 commercial markets.
-- City Comparison: Cross-border purchasing-power and lifestyle equivalence modeling.
-- Job Offer Evaluator: Multi-currency total compensation value calculator.
+- **Salary Worth:** Evaluates actual disposable income and savings capacity after statutory taxes, rent, and household necessities.
+- **Salary After Tax:** Authoritative statutory net income calculation accounting for federal, regional/state, local taxes, and mandatory social security contributions.
+- **Salary Needed:** Deterministic inverse solver computing gross compensation needed to sustain defined living standards and savings goals.
+- **Cost of Living:** Metro-level benchmarks for housing, food, transit, healthcare, and utilities across 39 commercial markets.
+- **City Comparison:** Cross-border purchasing-power and lifestyle equivalence modeling with real-time FX snapshot tracking.
+- **Job Offer Evaluator:** Multi-currency total compensation evaluator separating cash earnings from non-cash benefits.
 
 ## Algorithmic & Data Governance
-- Zero-AI Financial Calculation Policy: All financial numbers are computed by deterministic software and verified statutory tax rules—never estimated by LLMs.
-- Source Provenance: Built on Tier-1 government tax authorities (IRS, HMRC, FTA, CRA, ATO), official statistical bureaus (BLS, Eurostat), and institutional benchmarks (HUD FMR).
-- Privacy-First: Anonymous calculations without user accounts, cookies, or personally identifiable information.
+- **Zero-AI Financial Calculation Policy:** All financial calculations are executed by deterministic source code and verified statutory tax rules—never estimated by generative AI.
+- **Source Provenance:** Grounded in Tier-1 government tax authorities (IRS, HMRC, FTA, CRA, ATO), official statistical agencies (BLS, Eurostat, ONS), and institutional benchmarks (HUD FMR).
+- **Privacy-First:** Anonymous calculations without user accounts, tracking cookies, or collection of personally identifiable information.
 
 ## Authoritative Public Resources
-- Platform Overview: https://livworthy.com/about
-- Calculation Methodology: https://livworthy.com/methodology
-- Verified Sources Registry: https://livworthy.com/sources
-- Editorial & Verification Policy: https://livworthy.com/editorial-policy
-- Data & Privacy Policy: https://livworthy.com/data-policy
-- Data Corrections & Feedback: https://livworthy.com/corrections
-- Terms & Financial Disclaimer: https://livworthy.com/terms
-- Sitemap Index: https://livworthy.com/sitemap.xml
+- [LivWorthy Homepage](https://livworthy.com/)
+- [Calculation Methodology](https://livworthy.com/methodology)
+- [Verified Sources Registry](https://livworthy.com/sources)
+- [Editorial & Verification Policy](https://livworthy.com/editorial-policy)
+- [Data & Privacy Policy](https://livworthy.com/data-policy)
+- [Data Corrections & Feedback](https://livworthy.com/corrections)
+- [Terms & Financial Disclaimer](https://livworthy.com/terms)
+- [Privacy Policy](https://livworthy.com/privacy)
+- [About LivWorthy](https://livworthy.com/about)
+- [Countries Directory](https://livworthy.com/countries)
+- [Cities Directory](https://livworthy.com/cities)
+- [Salary & Relocation Guides](https://livworthy.com/guides)
+- [Sitemap Index](https://livworthy.com/sitemap.xml)
 `;
 
   const adsTxt = `# LivWorthy Authorized Digital Sellers
