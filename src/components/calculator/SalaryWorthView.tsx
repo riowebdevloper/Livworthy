@@ -23,10 +23,18 @@ import { createMoney, formatMoney, getDefaultSalaryForCurrency, toMajor } from '
 import { HouseholdProfile } from '../../types/col';
 import { LivWorthCalculationOutcome, LivWorthScenario } from '../../types/scenario';
 import { CurrencyInput } from '../ui/CurrencyInput';
-import { AssumptionPills } from './AssumptionPills';
-import { LivingCostBreakdownCard } from './LivingCostBreakdownCard';
 import { ResultSummaryCard } from './ResultSummaryCard';
-import { TaxBreakdownCard } from './TaxBreakdownCard';
+
+// Defer non-critical cards to reduce initial JavaScript parse and transfer size
+const AssumptionPills = React.lazy(() =>
+  import('./AssumptionPills').then((m) => ({ default: m.AssumptionPills }))
+);
+const LivingCostBreakdownCard = React.lazy(() =>
+  import('./LivingCostBreakdownCard').then((m) => ({ default: m.LivingCostBreakdownCard }))
+);
+const TaxBreakdownCard = React.lazy(() =>
+  import('./TaxBreakdownCard').then((m) => ({ default: m.TaxBreakdownCard }))
+);
 
 interface SalaryWorthViewProps {
   scenario: LivWorthScenario;
@@ -72,6 +80,20 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
     setSalaryInputMajor(toMajor(scenario.compensation.baseSalary));
   }, [scenario.compensation.baseSalary]);
 
+  const isInitialMount = useRef<boolean>(true);
+
+  // Prefetch non-critical cards during browser idle time
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const handle = (window as any).requestIdleCallback(() => {
+        import('./TaxBreakdownCard');
+        import('./LivingCostBreakdownCard');
+        import('./AssumptionPills');
+      });
+      return () => (window as any).cancelIdleCallback?.(handle);
+    }
+  }, []);
+
   // Execute authoritative backend calculation whenever scenario changes
   useEffect(() => {
     // Immediately compute synchronous outcome to eliminate layout jumps
@@ -80,6 +102,13 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
       setOutcome(immediate);
       onCalculationOutcome?.(immediate);
     } catch {}
+
+    // On pristine initial mount, the scenario is already computed synchronously
+    // without needing a duplicate blocking network call.
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
 
     // Cancel any ongoing calculation in flight
     if (abortControllerRef.current) {
@@ -192,14 +221,41 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   }, [actualRentMajor]);
 
   const handleTriggerCalculate = () => {
-    onUpdateScenario({
+    isInitialMount.current = false;
+    const updated: LivWorthScenario = {
       ...scenario,
       location: currentCity,
       compensation: {
         ...scenario.compensation,
         baseSalary: createMoney(salaryInputMajor, currency),
       },
-    });
+    };
+    onUpdateScenario(updated);
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+    setIsCalculating(true);
+    setCalcError(null);
+
+    calculateSalaryWorth(updated, { signal: controller.signal })
+      .then((response) => {
+        if (response.success && response.data) {
+          setOutcome(response.data);
+          onCalculationOutcome?.(response.data);
+        } else {
+          setCalcError('Failed to calculate income worth. Please verify inputs.');
+        }
+      })
+      .catch((err) => {
+        if (err.errorCode === 'REQUEST_CANCELLED') return;
+        setCalcError(err.message || 'Unable to connect to calculation engine.');
+      })
+      .finally(() => {
+        setIsCalculating(false);
+      });
   };
 
   return (
@@ -336,17 +392,19 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
                 <span className="text-xs font-semibold text-[#102A2E] block mb-1.5">
                   Household Size & Presets:
                 </span>
-                <AssumptionPills
-                  household={scenario.household}
-                  actualRentOverridden={actualRentMajor !== undefined}
-                  actualRentFormatted={
-                    actualRentMajor !== undefined && isFinite(actualRentMajor)
-                      ? formatMoney(createMoney(actualRentMajor, currency), { hideDecimals: true })
-                      : undefined
-                  }
-                  onOpenCustomizer={onOpenCustomizer}
-                  onQuickPresetChange={handleQuickPresetChange}
-                />
+                <React.Suspense fallback={<div className="h-9 animate-pulse bg-slate-100 rounded-lg" />}>
+                  <AssumptionPills
+                    household={scenario.household}
+                    actualRentOverridden={actualRentMajor !== undefined}
+                    actualRentFormatted={
+                      actualRentMajor !== undefined && isFinite(actualRentMajor)
+                        ? formatMoney(createMoney(actualRentMajor, currency), { hideDecimals: true })
+                        : undefined
+                    }
+                    onOpenCustomizer={onOpenCustomizer}
+                    onQuickPresetChange={handleQuickPresetChange}
+                  />
+                </React.Suspense>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-[#DCE3E0]/70">
@@ -542,14 +600,20 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
           {/* Detailed Breakdowns when expanded */}
           {(showTaxBreakdown || showColBreakdown) && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {showTaxBreakdown && <TaxBreakdownCard tax={outcome.tax} onOpenEvidence={onOpenEvidence} />}
+              {showTaxBreakdown && (
+                <React.Suspense fallback={<div className="h-64 animate-pulse bg-slate-100 rounded-xl" />}>
+                  <TaxBreakdownCard tax={outcome.tax} onOpenEvidence={onOpenEvidence} />
+                </React.Suspense>
+              )}
               {showColBreakdown && (
-                <LivingCostBreakdownCard
-                  col={outcome.costOfLiving}
-                  actualRentMajor={actualRentMajor}
-                  onOverrideRent={onUpdateRentOverride}
-                  onOpenCustomizer={onOpenCustomizer}
-                />
+                <React.Suspense fallback={<div className="h-64 animate-pulse bg-slate-100 rounded-xl" />}>
+                  <LivingCostBreakdownCard
+                    col={outcome.costOfLiving}
+                    actualRentMajor={actualRentMajor}
+                    onOverrideRent={onUpdateRentOverride}
+                    onOpenCustomizer={onOpenCustomizer}
+                  />
+                </React.Suspense>
               )}
             </div>
           )}

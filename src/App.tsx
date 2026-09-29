@@ -41,7 +41,7 @@ const SeoArticlePage = React.lazy(() =>
 );
 import { CITIES } from './data/locations';
 import { DEFAULT_NYC_100K_SCENARIO } from './data/presets';
-import { SALARY_GUIDES } from './data/salary-guides';
+import { VALID_GUIDE_SLUGS } from './data/salary-guides-links';
 import { createMoney, getDefaultSalaryForCurrency, toMajor } from './lib/money';
 import { HouseholdProfile, CostOfLivingResult } from './types/col';
 import { LivWorthCalculationOutcome, LivWorthScenario } from './types/scenario';
@@ -138,7 +138,7 @@ export default function App() {
       const rentNum = rentParam !== null && rentParam !== '' ? parseFloat(rentParam) : undefined;
       const guideParam = params.get('guide');
 
-      if (guideParam && SALARY_GUIDES[guideParam]) {
+      if (guideParam && VALID_GUIDE_SLUGS.has(guideParam)) {
         setSelectedGuideSlug(guideParam);
       }
 

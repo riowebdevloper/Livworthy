@@ -2,7 +2,7 @@ import React from 'react';
 import { ShieldCheck, Database, FileText, MapPin, Calculator, ChevronRight } from 'lucide-react';
 import { LivWorthLogo } from '../ui/LivWorthBrand';
 import { ActiveTab } from './Header';
-import { POPULAR_GUIDES_LIST } from '../../data/salary-guides';
+import { POPULAR_GUIDE_LINKS, TOTAL_GUIDES_COUNT } from '../../data/salary-guides-links';
 
 interface FooterProps {
   onOpenEvidence: () => void;
@@ -202,7 +202,7 @@ export const Footer: React.FC<FooterProps> = ({
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
             <ul className="space-y-1 text-xs">
-              {POPULAR_GUIDES_LIST.slice(0, 8).map((guide) => (
+              {POPULAR_GUIDE_LINKS.map((guide) => (
                 <li key={guide.slug}>
                   <button
                     type="button"
@@ -230,7 +230,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="text-xs font-bold text-[#167D75] hover:underline cursor-pointer min-h-[24px] py-1 flex items-center"
                 >
-                  <span>Explore All {POPULAR_GUIDES_LIST.length}+ Country & City Guides →</span>
+                  <span>Explore All {TOTAL_GUIDES_COUNT}+ Country & City Guides →</span>
                 </button>
               </li>
             </ul>
