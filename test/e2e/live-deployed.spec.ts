@@ -4,7 +4,8 @@ const LIVE_URL = 'https://livworthy.vercel.app';
 
 test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
   test('1. Live Homepage loads branding, tabs, and default $100K NYC scenario', async ({ page }) => {
-    await page.goto(LIVE_URL, { waitUntil: 'networkidle' });
+    const response = await page.goto(LIVE_URL, { waitUntil: 'networkidle' });
+    expect(response?.status()).toBe(200);
     await expect(page).toHaveTitle(/LivWorthy/);
 
     // Official brand logo
@@ -87,5 +88,164 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
     }
 
     console.log('Modals and Drawers verified live on Vercel.');
+  });
+});
+
+test.describe('LivWorthy Live Institutional Pages Verification (All Eight Routes)', () => {
+  const INSTITUTIONAL_PAGES = [
+    { slug: 'about',            path: '/about',            h1: 'About LivWorthy',                             title: /About/i },
+    { slug: 'methodology',      path: '/methodology',      h1: 'Calculation Methodology & Standards',          title: /Methodology/i },
+    { slug: 'sources',          path: '/sources',          h1: 'Verified Sources & Evidence Registry',         title: /Sources/i },
+    { slug: 'editorial-policy',  path: '/editorial-policy',  h1: 'Editorial & Information Quality Policy',       title: /Editorial/i },
+    { slug: 'data-policy',      path: '/data-policy',      h1: 'Data Policy & Zero PII Architecture',          title: /Data/i },
+    { slug: 'corrections',      path: '/corrections',      h1: 'Corrections Log & Data Feedback',              title: /Corrections/i },
+    { slug: 'terms',            path: '/terms',            h1: 'Terms of Service & Financial Disclaimer',      title: /Terms/i },
+    { slug: 'privacy',          path: '/privacy',          h1: 'Privacy Policy',                              title: /Privacy/i },
+  ] as const;
+
+  for (const item of INSTITUTIONAL_PAGES) {
+    test(`Live ${item.path}: HTTP 200, correct H1, unique title, canonical, refresh, no SPA`, async ({ page }) => {
+      // Direct navigation
+      const response = await page.goto(`${LIVE_URL}${item.path}`, { waitUntil: 'domcontentloaded' });
+      expect(response?.status()).toBe(200);
+
+      // Path assertion
+      const cleanPath = new URL(page.url()).pathname.replace(/\/$/, '') || '/';
+      expect(cleanPath).toBe(item.path);
+
+      // H1 assertion
+      const h1 = page.locator('h1').first();
+      await expect(h1).toBeVisible({ timeout: 10000 });
+      await expect(h1).toHaveText(item.h1);
+
+      // Unique title assertion
+      await expect(page).toHaveTitle(item.title);
+
+      // Exact canonical assertion
+      const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
+      expect(canonical).toBe(`https://livworthy.com${item.path}`);
+
+      // Actual page HTML content (not empty SPA shell)
+      const pageText = await page.locator('#root').textContent();
+      expect(pageText).toContain(item.h1);
+
+      // Homepage calculator is absent
+      await expect(page.locator('#salary-worth-view')).not.toBeVisible();
+      await expect(page.locator('#tab-salary-worth')).not.toBeVisible();
+
+      // Refresh verification
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      const h1AfterReload = page.locator('h1').first();
+      await expect(h1AfterReload).toBeVisible({ timeout: 10000 });
+      await expect(h1AfterReload).toHaveText(item.h1);
+      await expect(page.locator('#salary-worth-view')).not.toBeVisible();
+    });
+
+    test(`Live ${item.path}/: Trailing slash resolves to HTTP 200 and correct H1`, async ({ page }) => {
+      const response = await page.goto(`${LIVE_URL}${item.path}/`, { waitUntil: 'domcontentloaded' });
+      expect(response?.status()).toBe(200);
+      const h1 = page.locator('h1').first();
+      await expect(h1).toBeVisible({ timeout: 10000 });
+      await expect(h1).toHaveText(item.h1);
+      await expect(page.locator('#salary-worth-view')).not.toBeVisible();
+    });
+  }
+
+  test('Live Footer click verification across all eight institutional pages', async ({ page }) => {
+    for (const item of INSTITUTIONAL_PAGES) {
+      // Load homepage and wait for SPA footer hydration
+      await page.goto(LIVE_URL, { waitUntil: 'networkidle' });
+
+      const link = page.locator(`#livworthy-footer a[href="${item.path}"]`).first();
+      await expect(link).toBeVisible({ timeout: 10000 });
+
+      await link.click();
+      await page.waitForURL((url) => url.pathname.replace(/\/$/, '') === item.path, { timeout: 15000 });
+
+      const cleanPath = new URL(page.url()).pathname.replace(/\/$/, '') || '/';
+      expect(cleanPath).toBe(item.path);
+
+      const h1 = page.locator('h1').first();
+      await expect(h1).toBeVisible({ timeout: 10000 });
+      await expect(h1).toHaveText(item.h1);
+      await expect(page.locator('#salary-worth-view')).not.toBeVisible();
+    }
+  });
+
+  test('Live Native Header Logo navigation returns to homepage', async ({ page }) => {
+    // Navigate to a parameterized tab view on homepage
+    await page.goto(`${LIVE_URL}/?tab=cost-of-living`, { waitUntil: 'networkidle' });
+    const logoLink = page.locator('#header-logo-link');
+    await expect(logoLink).toBeVisible();
+    expect(await logoLink.getAttribute('href')).toBe('/');
+
+    await logoLink.click();
+    await page.waitForURL((url) => url.pathname === '/' && (!url.search || url.search === ''), { timeout: 10000 });
+
+    expect(new URL(page.url()).pathname).toBe('/');
+    await expect(page.locator('#tab-salary-worth')).toBeVisible();
+  });
+
+  test('Live Institutional page breadcrumb Home link returns to homepage', async ({ page }) => {
+    await page.goto(`${LIVE_URL}/about`, { waitUntil: 'domcontentloaded' });
+    const homeBreadcrumb = page.locator('nav[aria-label="Breadcrumb"] a[href="/"]');
+    await expect(homeBreadcrumb).toBeVisible();
+
+    await homeBreadcrumb.click();
+    await page.waitForURL((url) => url.pathname === '/', { timeout: 10000 });
+
+    expect(new URL(page.url()).pathname).toBe('/');
+    await expect(page.locator('#tab-salary-worth')).toBeVisible();
+  });
+});
+
+test.describe('LivWorthy Live Representative SEO Pages & Assets', () => {
+  const SEO_PAGES = [
+    { path: '/countries/us',               h1: 'United States Income & Living Intelligence' },
+    { path: '/cities/nyc',                 h1: 'New York City Income, Tax & Cost of Living Intelligence' },
+    { path: '/compare/new-york-vs-london',  h1: 'New York City vs London Salary & Cost of Living Comparison' },
+    { path: '/guides/100k-salary-new-york', h1: 'Is $100K a Good Salary in New York City?' },
+  ] as const;
+
+  for (const sp of SEO_PAGES) {
+    test(`Live SEO Page ${sp.path}: HTTP 200, correct H1, no SPA calculator`, async ({ page }) => {
+      const response = await page.goto(`${LIVE_URL}${sp.path}`, { waitUntil: 'domcontentloaded' });
+      expect(response?.status()).toBe(200);
+
+      const h1 = page.locator('h1').first();
+      await expect(h1).toBeVisible({ timeout: 10000 });
+      await expect(h1).toHaveText(sp.h1);
+
+      await expect(page.locator('#salary-worth-view')).not.toBeVisible();
+      await expect(page.locator('#tab-salary-worth')).not.toBeVisible();
+    });
+  }
+
+  test('Live robots.txt and sitemap.xml exist and return HTTP 200', async ({ page }) => {
+    const robotsResp = await page.goto(`${LIVE_URL}/robots.txt`);
+    expect(robotsResp?.status()).toBe(200);
+    const robotsText = await robotsResp?.text();
+    expect(robotsText).toContain('User-agent: *');
+    expect(robotsText).toContain('Sitemap: https://livworthy.com/sitemap.xml');
+
+    const sitemapResp = await page.goto(`${LIVE_URL}/sitemap.xml`);
+    expect(sitemapResp?.status()).toBe(200);
+    const sitemapText = await sitemapResp?.text();
+    expect(sitemapText).toContain('<sitemapindex');
+  });
+
+  test('Live Unknown routes return real HTTP 404', async ({ page }) => {
+    const unknownPaths = [
+      '/nonexistent-xyz-page',
+      '/unknown-route-abc',
+      '/this-page-does-not-exist',
+    ];
+
+    for (const up of unknownPaths) {
+      const resp = await page.goto(`${LIVE_URL}${up}`);
+      expect(resp?.status()).toBe(404);
+      await expect(page.locator('#salary-worth-view')).not.toBeVisible();
+      await expect(page.locator('#tab-salary-worth')).not.toBeVisible();
+    }
   });
 });
