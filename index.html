@@ -29,8 +29,8 @@
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#102A2E" />
 
-    <!-- Preload Critical Above-The-Fold Assets -->
-    <link rel="preload" as="image" href="/logo-300.webp" type="image/webp" fetchpriority="high" />
+    <!-- Preload Critical Above-The-Fold Assets with responsive srcset -->
+    <link rel="preload" as="image" href="/logo-300.webp" imagesrcset="/logo-300.webp 1x, /logo-600.webp 2x" type="image/webp" fetchpriority="high" />
 
     <!-- Fonts: Preconnect & Asynchronous Non-Render-Blocking Stylesheet -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
