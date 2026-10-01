@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://livworthy.com/sitemap-main.xml</loc>
+    <loc>https://www.livworthy.com/sitemap-main.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://livworthy.com/sitemap-countries.xml</loc>
+    <loc>https://www.livworthy.com/sitemap-countries.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://livworthy.com/sitemap-cities.xml</loc>
+    <loc>https://www.livworthy.com/sitemap-cities.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://livworthy.com/sitemap-comparisons.xml</loc>
+    <loc>https://www.livworthy.com/sitemap-comparisons.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://livworthy.com/sitemap-guides.xml</loc>
+    <loc>https://www.livworthy.com/sitemap-guides.xml</loc>
   </sitemap>
 </sitemapindex>

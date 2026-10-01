@@ -347,7 +347,7 @@ class PostgresDatabaseService implements IDatabaseService {
           authorEmail: 'editorial@livworthy.com',
           reviewerEmail: 'chief.economist@livworthy.com',
           publishedAt: new Date(),
-          canonicalUrl: 'https://livworthy.com/methodology',
+          canonicalUrl: 'https://www.livworthy.com/methodology',
           blocksJson: [
             { type: 'heading', level: 2, content: 'Data Integrity Charter' },
             { type: 'prose', content: 'LivWorthy provides deterministic income and cost intelligence. We never substitute statutory tax schedules with synthetic models or unverified crowdsourced numbers.' },
@@ -369,7 +369,7 @@ class PostgresDatabaseService implements IDatabaseService {
           authorEmail: 'editorial@livworthy.com',
           reviewerEmail: 'chief.economist@livworthy.com',
           publishedAt: new Date(),
-          canonicalUrl: 'https://livworthy.com/sources',
+          canonicalUrl: 'https://www.livworthy.com/sources',
           blocksJson: [
             { type: 'heading', level: 2, content: 'Source Hierarchy & Provenance' },
             { type: 'prose', content: 'We prioritize Tier-1 statutory sources (IRS, HMRC, CRA, ATO, BZSt, DGFiP, AEAT, IRAS, ZATCA, ESTV) over commercial aggregators.' }
@@ -598,7 +598,7 @@ class PostgresDatabaseService implements IDatabaseService {
         authorEmail: page.authorEmail || 'editorial@livworthy.com',
         reviewerEmail: page.reviewerEmail || null,
         publishedAt,
-        canonicalUrl: `https://livworthy.com/${slug}`,
+        canonicalUrl: `https://www.livworthy.com/${slug}`,
         blocksJson: page.blocksJson || [],
         evidenceSourceIds: page.evidenceSourceIds || [],
         createdAt: new Date(),
@@ -794,7 +794,7 @@ class LocalFallbackDatabaseService implements IDatabaseService {
         authorEmail: 'editorial@livworthy.com',
         reviewerEmail: 'chief.economist@livworthy.com',
         publishedAt: new Date().toISOString(),
-        canonicalUrl: 'https://livworthy.com/methodology',
+        canonicalUrl: 'https://www.livworthy.com/methodology',
         blocksJson: [
           { type: 'heading', level: 2, content: 'Data Integrity Charter' },
           { type: 'prose', content: 'LivWorthy provides deterministic income and cost intelligence. We never substitute statutory tax schedules with synthetic models or unverified crowdsourced numbers.' },
@@ -816,7 +816,7 @@ class LocalFallbackDatabaseService implements IDatabaseService {
         authorEmail: 'editorial@livworthy.com',
         reviewerEmail: 'chief.economist@livworthy.com',
         publishedAt: new Date().toISOString(),
-        canonicalUrl: 'https://livworthy.com/sources',
+        canonicalUrl: 'https://www.livworthy.com/sources',
         blocksJson: [
           { type: 'heading', level: 2, content: 'Source Hierarchy & Provenance' },
           { type: 'prose', content: 'We prioritize Tier-1 statutory sources (IRS, HMRC, CRA, ATO, BZSt, DGFiP, AEAT, IRAS, ZATCA, ESTV) over commercial aggregators.' }
@@ -1011,7 +1011,7 @@ class LocalFallbackDatabaseService implements IDatabaseService {
       authorEmail: page.authorEmail || 'editorial@livworthy.com',
       reviewerEmail: page.reviewerEmail,
       publishedAt: page.workflowState === 'INDEX_APPROVED' || page.workflowState === 'PUBLISHED' ? new Date().toISOString() : null,
-      canonicalUrl: `https://livworthy.com/${page.slug}`,
+      canonicalUrl: `https://www.livworthy.com/${page.slug}`,
       blocksJson: page.blocksJson || [],
       evidenceSourceIds: page.evidenceSourceIds || [],
       createdAt: existing?.createdAt || new Date().toISOString(),

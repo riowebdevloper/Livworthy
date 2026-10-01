@@ -83,7 +83,7 @@ Tax Status: Under Verification (statutory tables not yet available)
 Take-Home Pay: Pending statutory verification
 Estimated Living Costs: ${formatMoney(outcome.livingCostsAnnual, { hideDecimals: true })}/year (${formatMoney(outcome.livingCostsMonthly, { hideDecimals: true })}/month)
 Spendable Surplus: Unavailable (requires statutory tax calculation)
-Methodology: Deterministic statutory schedules (https://livworthy.com)`
+Methodology: Deterministic statutory schedules (https://www.livworthy.com)`
       : `--- LivWorthy Financial Assessment ---
 Location: ${outcome.scenario.location.name} (${outcome.scenario.location.countryId})
 Gross Salary: ${formatMoney(outcome.grossAnnual, { hideDecimals: true })}/year
@@ -92,7 +92,7 @@ Annual Take-Home: ${formatMoney(outcome.takeHomeAnnual, { hideDecimals: true })}
 Estimated Living Costs: ${formatMoney(outcome.livingCostsAnnual, { hideDecimals: true })}/year (${formatMoney(outcome.livingCostsMonthly, { hideDecimals: true })}/month)
 Money Remaining: ${formatMoney(outcome.moneyRemainingAnnual, { hideDecimals: true })}/year (${formatMoney(outcome.moneyRemainingMonthly, { hideDecimals: true })}/month)
 Savings Rate: ${outcome.savingsRatePercentage}% of gross
-Methodology: Deterministic statutory schedules (https://livworthy.com)`;
+Methodology: Deterministic statutory schedules (https://www.livworthy.com)`;
 
     navigator.clipboard.writeText(summary);
     setCopied(true);

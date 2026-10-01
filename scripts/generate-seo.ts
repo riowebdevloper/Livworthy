@@ -11,11 +11,11 @@ import {
 import { CapabilityResolver } from '../src/engines/capabilities/capability-resolver';
 import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
 
-const BASE_URL = 'https://livworthy.com';
+const BASE_URL = 'https://www.livworthy.com';
 
 interface SeoPage {
   relativePath: string; // e.g. 'countries/us/index.html'
-  canonicalUrl: string; // e.g. 'https://livworthy.com/countries/us'
+  canonicalUrl: string; // e.g. 'https://www.livworthy.com/countries/us'
   title: string;
   description: string;
   robots: 'index, follow' | 'noindex, follow';
@@ -1542,6 +1542,12 @@ function renderPageHtml(
     `<link rel="canonical" href="${page.canonicalUrl}" />`
   );
 
+  // Replace Open Graph URL
+  html = html.replace(
+    /<meta\s+property="og:url"\s+content=".*?"\s*\/?>/i,
+    `<meta property="og:url" content="${page.canonicalUrl}" />`
+  );
+
   // Ensure Robots meta tag
   const robotsTag = `<meta name="robots" content="${page.robots}" />`;
   if (html.includes('<meta name="robots"')) {
@@ -1719,19 +1725,19 @@ ${PLATFORM_IDENTITY.coreDefinition}
 - **Privacy-First:** Anonymous calculations without user accounts, tracking cookies, or collection of personally identifiable information.
 
 ## Authoritative Public Resources
-- [LivWorthy Homepage](https://livworthy.com/)
-- [Calculation Methodology](https://livworthy.com/methodology)
-- [Verified Sources Registry](https://livworthy.com/sources)
-- [Editorial & Verification Policy](https://livworthy.com/editorial-policy)
-- [Data & Privacy Policy](https://livworthy.com/data-policy)
-- [Data Corrections & Feedback](https://livworthy.com/corrections)
-- [Terms & Financial Disclaimer](https://livworthy.com/terms)
-- [Privacy Policy](https://livworthy.com/privacy)
-- [About LivWorthy](https://livworthy.com/about)
-- [Countries Directory](https://livworthy.com/countries)
-- [Cities Directory](https://livworthy.com/cities)
-- [Salary & Relocation Guides](https://livworthy.com/guides)
-- [Sitemap Index](https://livworthy.com/sitemap.xml)
+- [LivWorthy Homepage](${BASE_URL}/)
+- [Calculation Methodology](${BASE_URL}/methodology)
+- [Verified Sources Registry](${BASE_URL}/sources)
+- [Editorial & Verification Policy](${BASE_URL}/editorial-policy)
+- [Data & Privacy Policy](${BASE_URL}/data-policy)
+- [Data Corrections & Feedback](${BASE_URL}/corrections)
+- [Terms & Financial Disclaimer](${BASE_URL}/terms)
+- [Privacy Policy](${BASE_URL}/privacy)
+- [About LivWorthy](${BASE_URL}/about)
+- [Countries Directory](${BASE_URL}/countries)
+- [Cities Directory](${BASE_URL}/cities)
+- [Salary & Relocation Guides](${BASE_URL}/guides)
+- [Sitemap Index](${BASE_URL}/sitemap.xml)
 `;
 
   const adsTxt = `# LivWorthy Authorized Digital Sellers

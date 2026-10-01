@@ -123,7 +123,7 @@ test.describe('LivWorthy Live Institutional Pages Verification (All Eight Routes
 
       // Exact canonical assertion
       const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
-      expect(canonical).toBe(`https://livworthy.com${item.path}`);
+      expect(canonical).toBe(`https://www.livworthy.com${item.path}`);
 
       // Actual page HTML content (not empty SPA shell)
       const pageText = await page.locator('#root').textContent();
@@ -226,7 +226,7 @@ test.describe('LivWorthy Live Representative SEO Pages & Assets', () => {
     expect(robotsResp?.status()).toBe(200);
     const robotsText = await robotsResp?.text();
     expect(robotsText).toContain('User-agent: *');
-    expect(robotsText).toContain('Sitemap: https://livworthy.com/sitemap.xml');
+    expect(robotsText).toContain('Sitemap: https://www.livworthy.com/sitemap.xml');
 
     const sitemapResp = await page.goto(`${LIVE_URL}/sitemap.xml`);
     expect(sitemapResp?.status()).toBe(200);

@@ -23,8 +23,8 @@ function runAuditTests() {
   const llmsContent = fs.readFileSync(distLlmsPath, 'utf-8');
   assert(llmsContent.includes('LivWorthy'), 'llms.txt includes LivWorthy brand');
   assert(llmsContent.includes('Zero-AI Financial Calculation Policy'), 'llms.txt includes Zero-AI calculation policy');
-  assert(llmsContent.includes('https://livworthy.com/methodology'), 'llms.txt links to methodology');
-  assert(llmsContent.includes('https://livworthy.com/sources'), 'llms.txt links to sources registry');
+  assert(llmsContent.includes('https://www.livworthy.com/methodology'), 'llms.txt links to methodology');
+  assert(llmsContent.includes('https://www.livworthy.com/sources'), 'llms.txt links to sources registry');
   assert(!llmsContent.toLowerCase().includes('rank #1'), 'llms.txt makes no false Google rank claims');
   assert(!llmsContent.toLowerCase().includes('guaranteed ranking'), 'llms.txt makes no ranking guarantees');
 
@@ -38,7 +38,7 @@ function runAuditTests() {
   assert(robotsContent.includes('User-agent: Googlebot'), 'robots.txt configures Googlebot');
   assert(robotsContent.includes('User-agent: GPTBot'), 'robots.txt configures GPTBot');
   assert(robotsContent.includes('User-agent: PerplexityBot'), 'robots.txt configures PerplexityBot');
-  assert(robotsContent.includes('Sitemap: https://livworthy.com/sitemap.xml'), 'robots.txt references sitemap');
+  assert(robotsContent.includes('Sitemap: https://www.livworthy.com/sitemap.xml'), 'robots.txt references sitemap');
 
   // Test 3: Institutional E-E-A-T Transparency pages in dist
   const transparencyPaths = [
@@ -72,14 +72,14 @@ function runAuditTests() {
   assert(fs.existsSync(sitemapMainPath), 'sitemap-main.xml must exist');
 
   const mainContent = fs.readFileSync(sitemapMainPath, 'utf-8');
-  assert(mainContent.includes('https://livworthy.com/about'), 'sitemap-main.xml includes /about');
-  assert(mainContent.includes('https://livworthy.com/methodology'), 'sitemap-main.xml includes /methodology');
-  assert(mainContent.includes('https://livworthy.com/sources'), 'sitemap-main.xml includes /sources');
-  assert(mainContent.includes('https://livworthy.com/editorial-policy'), 'sitemap-main.xml includes /editorial-policy');
-  assert(mainContent.includes('https://livworthy.com/data-policy'), 'sitemap-main.xml includes /data-policy');
-  assert(mainContent.includes('https://livworthy.com/corrections'), 'sitemap-main.xml includes /corrections');
-  assert(mainContent.includes('https://livworthy.com/terms'), 'sitemap-main.xml includes /terms');
-  assert(mainContent.includes('https://livworthy.com/privacy'), 'sitemap-main.xml includes /privacy');
+  assert(mainContent.includes('https://www.livworthy.com/about'), 'sitemap-main.xml includes /about');
+  assert(mainContent.includes('https://www.livworthy.com/methodology'), 'sitemap-main.xml includes /methodology');
+  assert(mainContent.includes('https://www.livworthy.com/sources'), 'sitemap-main.xml includes /sources');
+  assert(mainContent.includes('https://www.livworthy.com/editorial-policy'), 'sitemap-main.xml includes /editorial-policy');
+  assert(mainContent.includes('https://www.livworthy.com/data-policy'), 'sitemap-main.xml includes /data-policy');
+  assert(mainContent.includes('https://www.livworthy.com/corrections'), 'sitemap-main.xml includes /corrections');
+  assert(mainContent.includes('https://www.livworthy.com/terms'), 'sitemap-main.xml includes /terms');
+  assert(mainContent.includes('https://www.livworthy.com/privacy'), 'sitemap-main.xml includes /privacy');
 
   // Test 5: Guide page with AEO block, Fact Table, and Article JSON-LD
   const sampleGuidePath = path.join(distDir, 'guides/nyc-100k/index.html');
@@ -97,8 +97,8 @@ function runAuditTests() {
   assert(fs.existsSync(homePath), 'dist/index.html must exist');
   const homeHtml = fs.readFileSync(homePath, 'utf-8');
   assert(homeHtml.includes('"@type": "Dataset"'), 'Homepage includes Dataset structured data');
-  assert(homeHtml.includes('"publishingPrinciples": "https://livworthy.com/editorial-policy"'), 'Homepage includes publishingPrinciples');
-  assert(homeHtml.includes('"correctionsPolicy": "https://livworthy.com/corrections"'), 'Homepage includes correctionsPolicy');
+  assert(homeHtml.includes('"publishingPrinciples": "https://www.livworthy.com/editorial-policy"'), 'Homepage includes publishingPrinciples');
+  assert(homeHtml.includes('"correctionsPolicy": "https://www.livworthy.com/corrections"'), 'Homepage includes correctionsPolicy');
 
   console.log('\n✅ ALL AEO, GEO, LLMO & E-E-A-T TESTS PASSED PERFECTLY!\n');
 }

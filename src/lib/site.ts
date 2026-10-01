@@ -4,8 +4,8 @@
  */
 export const SITE_CONFIG = {
   name: 'LivWorthy',
-  domain: 'livworthy.com',
-  siteUrl: (process.env.SITE_URL || 'https://livworthy.com').replace(/\/$/, ''),
+  domain: 'www.livworthy.com',
+  siteUrl: (process.env.SITE_URL || 'https://www.livworthy.com').replace(/\/$/, ''),
   tagline: 'Know what your income is really worth.',
   description: 'Know what your income is really worth. Precision global income and living intelligence platform.',
   supportEmail: 'support@livworthy.com',

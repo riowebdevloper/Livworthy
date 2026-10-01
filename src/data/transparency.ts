@@ -31,7 +31,7 @@ export const PLATFORM_IDENTITY = {
   coreDefinition:
     'A global income and living intelligence platform that helps people understand what their income is really worth in a specific location.',
   establishedYear: 2024,
-  primaryDomain: 'https://livworthy.com',
+  primaryDomain: 'https://www.livworthy.com',
   productionApp: 'https://livworthy.vercel.app',
   publisher: 'LivWorthy Financial Research & Intelligence Team',
   mission:

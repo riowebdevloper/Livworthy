@@ -61,6 +61,16 @@ export async function ensureDatabaseReady(): Promise<void> {
 export const app = express();
 
 function configureApp() {
+  // Canonical Host Redirection: permanently redirect non-www livworthy.com to https://www.livworthy.com
+  app.use((req, res, next) => {
+    const rawHost = (req.headers['x-forwarded-host'] as string) || req.headers.host || '';
+    const cleanHost = rawHost.split(':')[0].toLowerCase();
+    if (cleanHost === 'livworthy.com') {
+      const targetUrl = `https://www.livworthy.com${req.originalUrl || req.url}`;
+      return res.redirect(308, targetUrl);
+    }
+    next();
+  });
 
   // Security Headers Middleware
   app.use((req, res, next) => {
@@ -814,7 +824,7 @@ export async function startServer() {
   });
 }
 
-if (!process.env.VERCEL) {
+if (!process.env.VERCEL && !process.env.SKIP_SERVER_START) {
   startServer();
 }
 

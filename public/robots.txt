@@ -32,4 +32,4 @@ Allow: /
 User-agent: Amazonbot
 Allow: /
 
-Sitemap: https://livworthy.com/sitemap.xml
+Sitemap: https://www.livworthy.com/sitemap.xml
