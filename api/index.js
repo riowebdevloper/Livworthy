@@ -79,7 +79,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import fs from "fs";
 import path from "path";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, sql, like } from "drizzle-orm";
 
 // src/db/schema.ts
 var schema_exports = {};
@@ -2785,6 +2785,10 @@ var PostgresDatabaseService = class {
       for (const p of initialPages) {
         await this.db.insert(contentPages).values(p).onConflictDoNothing();
       }
+      await this.db.update(contentPages).set({
+        canonicalUrl: sql`REPLACE(${contentPages.canonicalUrl}, 'https://livworthy.com/', 'https://www.livworthy.com/')`,
+        updatedAt: /* @__PURE__ */ new Date()
+      }).where(like(contentPages.canonicalUrl, "https://livworthy.com/%"));
       const countriesCount = Object.keys(COUNTRIES).length;
       const citiesCount = Object.keys(CITIES).length;
       return { success: true, countriesCount, citiesCount };
@@ -2990,6 +2994,7 @@ var PostgresDatabaseService = class {
         target: contentPages.slug,
         set: {
           title: page.title,
+          canonicalUrl: page.canonicalUrl || `https://www.livworthy.com/${slug}`,
           metaDescription: page.metaDescription || "",
           workflowState: page.workflowState || "DRAFTED",
           isIndexable,
@@ -3197,7 +3202,14 @@ var LocalFallbackDatabaseService = class {
       }
     ];
     for (const p of initialPages) {
-      this.contentPages.set(`${p.slug}:${p.locale}`, p);
+      if (!this.contentPages.has(`${p.slug}:${p.locale}`)) {
+        this.contentPages.set(`${p.slug}:${p.locale}`, p);
+      } else {
+        const existing = this.contentPages.get(`${p.slug}:${p.locale}`);
+        if (existing?.canonicalUrl?.startsWith("https://livworthy.com/")) {
+          existing.canonicalUrl = existing.canonicalUrl.replace("https://livworthy.com/", "https://www.livworthy.com/");
+        }
+      }
     }
     const bootstrapEmail = process.env.BOOTSTRAP_ADMIN_EMAIL?.trim();
     const bootstrapPassword = process.env.BOOTSTRAP_ADMIN_PASSWORD?.trim();
@@ -3358,7 +3370,7 @@ var LocalFallbackDatabaseService = class {
       authorEmail: page.authorEmail || "editorial@livworthy.com",
       reviewerEmail: page.reviewerEmail,
       publishedAt: page.workflowState === "INDEX_APPROVED" || page.workflowState === "PUBLISHED" ? (/* @__PURE__ */ new Date()).toISOString() : null,
-      canonicalUrl: `https://www.livworthy.com/${page.slug}`,
+      canonicalUrl: page.canonicalUrl || `https://www.livworthy.com/${page.slug}`,
       blocksJson: page.blocksJson || [],
       evidenceSourceIds: page.evidenceSourceIds || [],
       createdAt: existing?.createdAt || (/* @__PURE__ */ new Date()).toISOString(),

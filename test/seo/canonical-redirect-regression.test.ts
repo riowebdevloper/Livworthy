@@ -2,7 +2,6 @@ process.env.NODE_ENV = 'test';
 process.env.SKIP_SERVER_START = 'true';
 import fs from 'fs';
 import path from 'path';
-import { app } from '../../server';
 import http from 'http';
 
 function assert(condition: boolean, message: string) {
@@ -148,6 +147,7 @@ async function runRegressionSuite() {
 
   // [5/5] Server Redirection Middleware Verification (Simulated HTTP Requests)
   console.log('\n[5/5] Testing Express Server Redirection Middleware & Loop Prevention...');
+  const { app } = await import('../../server');
   const server = http.createServer(app);
   await new Promise<void>((resolve) => server.listen(0, resolve));
   const port = (server.address() as any).port;
