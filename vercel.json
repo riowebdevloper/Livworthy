@@ -98,25 +98,36 @@
   ],
   "redirects": [
     {
-      "source": "/:path*/",
+      "source": "/",
       "has": [
         {
           "type": "host",
           "value": "livworthy.com"
         }
       ],
-      "destination": "https://www.livworthy.com/:path*",
+      "destination": "https://www.livworthy.com/",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/(.*)/",
       "has": [
         {
           "type": "host",
           "value": "livworthy.com"
         }
       ],
-      "destination": "https://www.livworthy.com/:path*",
+      "destination": "https://www.livworthy.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "livworthy.com"
+        }
+      ],
+      "destination": "https://www.livworthy.com/$1",
       "permanent": true
     }
   ],
