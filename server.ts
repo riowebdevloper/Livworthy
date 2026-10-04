@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import crypto from 'crypto';
+import fs from 'fs';
 import { validateEnv } from './src/lib/env';
 import { dbService } from './src/db/client';
 import { cacheService } from './src/lib/redis';
@@ -61,12 +62,26 @@ export async function ensureDatabaseReady(): Promise<void> {
 export const app = express();
 
 function configureApp() {
-  // Canonical Host Redirection: permanently redirect non-www livworthy.com to https://www.livworthy.com
+  // Canonical Host & Trailing Slash Redirection:
+  // 1. Permanently redirect non-www livworthy.com to https://www.livworthy.com
+  // 2. Permanently redirect trailing-slash requests (e.g. /about/) to non-trailing slash (/about), except root /
+  // 3. Complete both normalizations in a SINGLE 308 redirect hop (no redirect chains)
   app.use((req, res, next) => {
     const rawHost = (req.headers['x-forwarded-host'] as string) || req.headers.host || '';
     const cleanHost = rawHost.split(':')[0].toLowerCase();
-    if (cleanHost === 'livworthy.com') {
-      const targetUrl = `https://www.livworthy.com${req.originalUrl || req.url}`;
+    const isApex = cleanHost === 'livworthy.com';
+
+    const urlString = req.originalUrl || req.url;
+    const qIndex = urlString.indexOf('?');
+    const pathname = qIndex >= 0 ? urlString.slice(0, qIndex) : urlString;
+    const search = qIndex >= 0 ? urlString.slice(qIndex) : '';
+
+    const hasTrailingSlash = pathname.length > 1 && pathname.endsWith('/');
+    const cleanPath = hasTrailingSlash ? pathname.replace(/\/+$/, '') : pathname;
+
+    if (isApex || hasTrailingSlash) {
+      const hostPrefix = isApex ? 'https://www.livworthy.com' : '';
+      const targetUrl = `${hostPrefix}${cleanPath}${search}`;
       return res.redirect(308, targetUrl);
     }
     next();
@@ -756,12 +771,41 @@ function configureApp() {
 
 configureApp();
 
+let staticMounted = false;
+export function mountStaticAndFallback(expressApp: express.Express) {
+  if (staticMounted) return;
+  staticMounted = true;
+  const distPath = path.join(process.cwd(), 'dist');
+  expressApp.use(express.static(distPath, { redirect: false }));
+  expressApp.get('*', (req, res) => {
+    const pathname = req.path.replace(/\/$/, '') || '/';
+    if (pathname === '/') {
+      const homePath = path.join(distPath, 'index.html');
+      if (fs.existsSync(homePath)) {
+        return res.sendFile(homePath);
+      }
+    }
+    const candidatePath = path.join(distPath, pathname, 'index.html');
+    if (fs.existsSync(candidatePath)) {
+      return res.sendFile(candidatePath);
+    }
+    const notFoundPath = path.join(distPath, '404.html');
+    if (fs.existsSync(notFoundPath)) {
+      return res.status(404).type('html').sendFile(notFoundPath);
+    }
+    return res.status(404).type('html').send('<!DOCTYPE html><html><head><title>404 Not Found</title><meta name="robots" content="noindex, nofollow" /></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
+  });
+}
+
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test' || process.env.SERVE_STATIC || process.env.SKIP_SERVER_START) {
+  mountStaticAndFallback(app);
+}
+
 export async function startServer() {
   await ensureDatabaseReady();
 
   // Vite middleware for development vs static build in production (or SERVE_STATIC=1)
-  if (process.env.NODE_ENV !== 'production' && !process.env.SERVE_STATIC) {
-    const fs = await import('fs');
+  if (process.env.NODE_ENV !== 'production' && !process.env.SERVE_STATIC && process.env.NODE_ENV !== 'test') {
     const distPath = path.join(process.cwd(), 'dist');
 
     // In dev mode, serve pre-generated institutional HTML pages from dist/ before
@@ -792,8 +836,11 @@ export async function startServer() {
       if (fs.existsSync(candidatePath)) {
         return res.sendFile(candidatePath);
       }
-      // Unknown HTML paths return 404
-      return res.status(404).send('<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
+      const notFoundPath = path.join(distPath, '404.html');
+      if (fs.existsSync(notFoundPath)) {
+        return res.status(404).type('html').sendFile(notFoundPath);
+      }
+      return res.status(404).type('html').send('<!DOCTYPE html><html><head><title>404 Not Found</title><meta name="robots" content="noindex, nofollow" /></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
     });
 
     const { createServer: createViteServer } = await import('vite');
@@ -803,20 +850,7 @@ export async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const fs = await import('fs');
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      const pathname = req.path.replace(/\/$/, '') || '/';
-      if (pathname === '/') {
-        return res.sendFile(path.join(distPath, 'index.html'));
-      }
-      const candidatePath = path.join(distPath, pathname, 'index.html');
-      if (fs.existsSync(candidatePath)) {
-        return res.sendFile(candidatePath);
-      }
-      res.status(404).send('<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
-    });
+    mountStaticAndFallback(app);
   }
 
   app.listen(PORT, '0.0.0.0', () => {

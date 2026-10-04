@@ -13,6 +13,7 @@ function assert(condition: boolean, message: string) {
 }
 
 function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
+  if (!fs.existsSync(dirPath)) return arrayOfFiles;
   const files = fs.readdirSync(dirPath);
   for (const file of files) {
     const fullPath = path.join(dirPath, file);
@@ -26,15 +27,18 @@ function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
 }
 
 async function runRegressionSuite() {
-  console.log('--- LIVWORTHY CANONICAL & REDIRECT REGRESSION SUITE ---');
+  console.log('--- LIVWORTHY SEO & ROUTING TECHNICAL REGRESSION SUITE (TESTS A-J) ---');
 
   const distDir = path.resolve('dist');
   const publicDir = path.resolve('public');
 
   assert(fs.existsSync(distDir), 'dist directory must exist');
 
-  // [1/5] Audit all generated HTML files in dist/
-  console.log('\n[1/5] Auditing Canonical & OpenGraph tags across all generated HTML files...');
+  // =========================================================================
+  // TEST A: CANONICAL HOST INVARIANT
+  // No indexable generated page can contain canonical apex/non-www or preview domains.
+  // =========================================================================
+  console.log('\n[TEST A] Auditing Canonical Host & Tags across all generated HTML files...');
   const allHtmlFiles = getAllFiles(distDir).filter((f) => f.endsWith('.html'));
   assert(allHtmlFiles.length > 50, `Expected >50 prerendered HTML files, found: ${allHtmlFiles.length}`);
 
@@ -43,20 +47,30 @@ async function runRegressionSuite() {
     const rel = path.relative(distDir, htmlPath);
     const content = fs.readFileSync(htmlPath, 'utf-8');
 
-    // 1. Canonical tag must exist and must use www.livworthy.com
-    const canonicalMatch = content.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i);
-    assert(!!canonicalMatch, `${rel} must contain a canonical link`);
-    const canonicalUrl = canonicalMatch![1];
+    // 404 error page is non-indexable and does not require canonical
+    if (rel === '404.html') {
+      assert(content.includes('noindex'), '404.html must specify noindex');
+      continue;
+    }
+
+    const canonicalMatches = [...content.matchAll(/<link\s+rel="canonical"\s+href="([^"]+)"/gi)];
+    assert(canonicalMatches.length === 1, `${rel} must contain exactly ONE canonical link tag (found ${canonicalMatches.length})`);
+
+    const canonicalUrl = canonicalMatches[0][1];
     assert(
       canonicalUrl.startsWith('https://www.livworthy.com/'),
       `${rel} canonicalUrl must start with https://www.livworthy.com/ (got ${canonicalUrl})`
     );
     assert(
-      !canonicalUrl.includes('https://livworthy.com/') || canonicalUrl.includes('https://www.livworthy.com/'),
-      `${rel} canonical must not point to non-www livworthy.com`
+      !canonicalUrl.startsWith('https://livworthy.com/'),
+      `${rel} canonical must not point to apex non-www (got ${canonicalUrl})`
+    );
+    assert(
+      !canonicalUrl.includes('.vercel.app') && !canonicalUrl.includes('localhost'),
+      `${rel} canonical must not contain preview or localhost host (got ${canonicalUrl})`
     );
 
-    // 2. OpenGraph og:url must match canonical www host
+    // OpenGraph og:url must match canonical www host
     const ogMatch = content.match(/<meta\s+property="og:url"\s+content="([^"]+)"/i);
     if (ogMatch) {
       const ogUrl = ogMatch[1];
@@ -64,9 +78,10 @@ async function runRegressionSuite() {
         ogUrl.startsWith('https://www.livworthy.com/'),
         `${rel} og:url must start with https://www.livworthy.com/ (got ${ogUrl})`
       );
+      assert(!ogUrl.startsWith('https://livworthy.com/'), `${rel} og:url must not use apex host`);
     }
 
-    // 3. No non-www livworthy.com in JSON-LD structured data URLs
+    // JSON-LD structured data URLs must use www.livworthy.com
     const jsonLdMatches = content.match(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gi);
     if (jsonLdMatches) {
       for (const block of jsonLdMatches) {
@@ -74,23 +89,38 @@ async function runRegressionSuite() {
           !block.includes('"https://livworthy.com/'),
           `${rel} structured data must not contain non-www "https://livworthy.com/`
         );
+        assert(
+          !block.includes('livworthy.vercel.app'),
+          `${rel} structured data must not reference livworthy.vercel.app`
+        );
       }
     }
 
     auditedHtmlCount++;
   }
-  console.log(`Verified ${auditedHtmlCount} HTML files. All strictly declare https://www.livworthy.com/.`);
+  console.log(`PASS: Verified ${auditedHtmlCount} HTML files. All strictly declare https://www.livworthy.com/ canonical.`);
 
-  // [2/5] Audit Sitemaps in dist/ and public/
-  console.log('\n[2/5] Auditing Sitemaps in dist/ and public/...');
-  const sitemapFiles = ['sitemap.xml', 'sitemap-main.xml', 'sitemap-countries.xml', 'sitemap-cities.xml', 'sitemap-comparisons.xml', 'sitemap-guides.xml'];
+  // =========================================================================
+  // TEST B: SITEMAP HOST INVARIANT
+  // Every sitemap URL starts with: https://www.livworthy.com/
+  // =========================================================================
+  console.log('\n[TEST B] Auditing Sitemap Host across all sitemap files...');
+  const sitemapFiles = [
+    'sitemap.xml',
+    'sitemap-main.xml',
+    'sitemap-countries.xml',
+    'sitemap-cities.xml',
+    'sitemap-comparisons.xml',
+    'sitemap-guides.xml',
+  ];
+
+  const allContentLocs: string[] = [];
 
   for (const smName of sitemapFiles) {
     const smPath = path.join(distDir, smName);
     assert(fs.existsSync(smPath), `${smName} must exist in dist`);
     const smContent = fs.readFileSync(smPath, 'utf-8');
 
-    // Extract all <loc> elements
     const locMatches = [...smContent.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
     assert(locMatches.length > 0, `${smName} must contain at least one <loc> entry`);
 
@@ -101,59 +131,108 @@ async function runRegressionSuite() {
       );
       assert(
         !loc.startsWith('https://livworthy.com/'),
-        `${smName} location must not be non-www (got ${loc})`
+        `${smName} location must not be apex non-www (got ${loc})`
       );
+      assert(
+        !loc.includes('.vercel.app') && !loc.includes('localhost'),
+        `${smName} location must not contain preview or localhost domains (got ${loc})`
+      );
+      assert(!loc.includes('?'), `${smName} location must not contain query parameters (got ${loc})`);
+    }
+
+    if (smName !== 'sitemap.xml') {
+      allContentLocs.push(...locMatches);
     }
   }
-  console.log('Verified all sitemap index and segmented sitemap files contain 100% www URLs.');
+  console.log('PASS: All sitemaps strictly declare 100% https://www.livworthy.com/ URLs.');
 
-  // [3/5] Audit robots.txt
-  console.log('\n[3/5] Auditing robots.txt Sitemap directive...');
-  const distRobots = fs.readFileSync(path.join(distDir, 'robots.txt'), 'utf-8');
-  const pubRobots = fs.readFileSync(path.join(publicDir, 'robots.txt'), 'utf-8');
-  assert(
-    distRobots.includes('Sitemap: https://www.livworthy.com/sitemap.xml'),
-    'dist/robots.txt must point to https://www.livworthy.com/sitemap.xml'
-  );
-  assert(
-    !distRobots.includes('Sitemap: https://livworthy.com/sitemap.xml'),
-    'dist/robots.txt must not reference non-www sitemap'
-  );
-  assert(
-    pubRobots.includes('Sitemap: https://www.livworthy.com/sitemap.xml'),
-    'public/robots.txt must point to https://www.livworthy.com/sitemap.xml'
-  );
+  // =========================================================================
+  // TEST C: SITEMAP STATUS INVARIANT
+  // Every sitemap URL corresponds to a valid generated page on disk.
+  // =========================================================================
+  console.log('\n[TEST C] Verifying all sitemap URLs correspond to valid generated HTML files in dist/...');
+  for (const loc of allContentLocs) {
+    const parsed = new URL(loc);
+    const subpath = parsed.pathname.replace(/^\//, '').replace(/\/$/, '');
+    const expectedHtmlPath = subpath === ''
+      ? path.join(distDir, 'index.html')
+      : path.join(distDir, subpath, 'index.html');
 
-  // [4/5] Audit Static Redirect Rules (Cloudflare & Vercel)
-  console.log('\n[4/5] Auditing Cloudflare _redirects & Vercel config...');
-  const redirectsPath = path.join(publicDir, '_redirects');
-  assert(fs.existsSync(redirectsPath), 'public/_redirects must exist');
-  const redirectsContent = fs.readFileSync(redirectsPath, 'utf-8');
+    assert(
+      fs.existsSync(expectedHtmlPath),
+      `Sitemap URL ${loc} must correspond to existing file ${path.relative(distDir, expectedHtmlPath)}`
+    );
+  }
+  console.log(`PASS: Verified ${allContentLocs.length} sitemap URLs. 100% correspond to generated HTML files.`);
+
+  // =========================================================================
+  // TEST D: NO NOINDEX SITEMAP ENTRIES
+  // No sitemap URL may have noindex.
+  // =========================================================================
+  console.log('\n[TEST D] Verifying ZERO sitemap URLs contain noindex directives...');
+  for (const loc of allContentLocs) {
+    const parsed = new URL(loc);
+    const subpath = parsed.pathname.replace(/^\//, '').replace(/\/$/, '');
+    const htmlPath = subpath === ''
+      ? path.join(distDir, 'index.html')
+      : path.join(distDir, subpath, 'index.html');
+
+    const htmlContent = fs.readFileSync(htmlPath, 'utf-8');
+    assert(
+      !htmlContent.toLowerCase().includes('content="noindex') &&
+      !htmlContent.toLowerCase().includes('content=\'noindex'),
+      `Sitemap URL ${loc} must not contain noindex (in ${path.relative(distDir, htmlPath)})`
+    );
+  }
+  console.log('PASS: 0 sitemap URLs contain noindex. Capability gate successfully preserved.');
+
+  // =========================================================================
+  // TEST E: CANONICAL SELF-REFERENCE INVARIANT
+  // Each sitemap page canonical equals its sitemap URL.
+  // =========================================================================
+  console.log('\n[TEST E] Verifying canonical self-reference across all sitemap pages...');
+  for (const loc of allContentLocs) {
+    const parsed = new URL(loc);
+    const subpath = parsed.pathname.replace(/^\//, '').replace(/\/$/, '');
+    const htmlPath = subpath === ''
+      ? path.join(distDir, 'index.html')
+      : path.join(distDir, subpath, 'index.html');
+
+    const htmlContent = fs.readFileSync(htmlPath, 'utf-8');
+    const canonicalMatch = htmlContent.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i);
+    assert(!!canonicalMatch, `${loc} must have a canonical tag`);
+    const pageCanonical = canonicalMatch![1];
+
+    assert(
+      pageCanonical === loc,
+      `Page canonical (${pageCanonical}) must exactly equal sitemap URL (${loc})`
+    );
+  }
+  console.log('PASS: 100% of sitemap pages have self-referencing canonicals matching their exact loc.');
+
+  // =========================================================================
+  // TEST F: DUPLICATE SITEMAP URLS INVARIANT
+  // Count = unique count across each sitemap and combined.
+  // =========================================================================
+  console.log('\n[TEST F] Verifying zero duplicate sitemap URLs...');
+  const uniqueContentLocs = new Set(allContentLocs);
   assert(
-    redirectsContent.includes('https://livworthy.com/* https://www.livworthy.com/:splat 301'),
-    '_redirects must have 301 rule for https://livworthy.com/*'
+    allContentLocs.length === uniqueContentLocs.size,
+    `Expected unique count (${uniqueContentLocs.size}) to equal total count (${allContentLocs.length})`
   );
+  console.log(`PASS: All ${allContentLocs.length} URLs across segmented sitemaps are 100% unique.`);
 
-  const vercelPath = path.resolve('vercel.json');
-  assert(fs.existsSync(vercelPath), 'vercel.json must exist');
-  const vercelJson = JSON.parse(fs.readFileSync(vercelPath, 'utf-8'));
-  assert(Array.isArray(vercelJson.redirects), 'vercel.json must contain redirects array');
-  const hostRedirect = vercelJson.redirects.find(
-    (r: any) => r.has && r.has.some((h: any) => h.type === 'host' && h.value === 'livworthy.com')
-  );
-  assert(!!hostRedirect, 'vercel.json must redirect livworthy.com host');
-  assert(hostRedirect.destination === 'https://www.livworthy.com/:path*', 'vercel redirect destination must be https://www.livworthy.com/:path*');
-  assert(hostRedirect.permanent === true, 'vercel redirect must be permanent');
-
-  // [5/5] Server Redirection Middleware Verification (Simulated HTTP Requests)
-  console.log('\n[5/5] Testing Express Server Redirection Middleware & Loop Prevention...');
+  // =========================================================================
+  // TEST G, H, I: SERVER HTTP BEHAVIOR (404s, Trailing Slash, Apex Redirection)
+  // =========================================================================
+  console.log('\n[TESTS G, H, I] Starting Express server to audit HTTP routing invariants...');
   const { app } = await import('../../server');
   const server = http.createServer(app);
   await new Promise<void>((resolve) => server.listen(0, resolve));
   const port = (server.address() as any).port;
 
   async function testRequest(host: string, reqPath: string, extraHeaders: Record<string, string> = {}) {
-    return new Promise<{ statusCode: number; headers: http.IncomingHttpHeaders }>((resolve, reject) => {
+    return new Promise<{ statusCode: number; headers: http.IncomingHttpHeaders; body: string }>((resolve, reject) => {
       const req = http.request(
         {
           hostname: '127.0.0.1',
@@ -166,7 +245,10 @@ async function runRegressionSuite() {
           },
         },
         (res) => {
-          resolve({ statusCode: res.statusCode || 0, headers: res.headers });
+          let body = '';
+          res.setEncoding('utf-8');
+          res.on('data', (chunk) => (body += chunk));
+          res.on('end', () => resolve({ statusCode: res.statusCode || 0, headers: res.headers, body }));
         }
       );
       req.on('error', reject);
@@ -175,44 +257,138 @@ async function runRegressionSuite() {
   }
 
   try {
-    // Test 5a: Apex host -> 308 redirect to https://www.livworthy.com/
-    const r1 = await testRequest('livworthy.com', '/');
-    assert(r1.statusCode === 308, `livworthy.com / must return 308 (got ${r1.statusCode})`);
-    assert(r1.headers.location === 'https://www.livworthy.com/', `livworthy.com / location must be https://www.livworthy.com/ (got ${r1.headers.location})`);
+    // -----------------------------------------------------------------------
+    // TEST G: UNKNOWN ROUTES RETURN 404
+    // -----------------------------------------------------------------------
+    console.log('\n[TEST G] Testing real HTTP 404 responses for unknown routes...');
+    const unknownPaths = [
+      '/this-page-does-not-exist',
+      '/random-seo-page-123',
+      '/countries/not-a-country',
+      '/cities/not-a-city',
+      '/guides/not-a-guide',
+    ];
 
-    // Test 5b: Apex host with subpath -> preserves subpath
-    const r2 = await testRequest('livworthy.com', '/about');
-    assert(r2.statusCode === 308, `livworthy.com /about must return 308 (got ${r2.statusCode})`);
-    assert(r2.headers.location === 'https://www.livworthy.com/about', `livworthy.com /about location must be https://www.livworthy.com/about (got ${r2.headers.location})`);
+    for (const p of unknownPaths) {
+      const res = await testRequest('www.livworthy.com', p);
+      assert(res.statusCode === 404, `${p} must return HTTP 404 (got ${res.statusCode})`);
+      assert(!res.body.includes('Is My Salary Enough? — LivWorthy'), `${p} must not return homepage SPA shell`);
+      assert(res.body.includes('404') || res.body.includes('Page Not Found'), `${p} response body must indicate 404 error`);
+    }
+    console.log('PASS: All unknown paths strictly return HTTP 404 (no soft 404s).');
 
-    // Test 5c: Apex host with query parameters -> preserves query params
-    const r3 = await testRequest('livworthy.com', '/?city=sydney&tab=salary-after-tax');
-    assert(r3.statusCode === 308, `livworthy.com with query must return 308 (got ${r3.statusCode})`);
+    // -----------------------------------------------------------------------
+    // TEST H: STANDARDIZE TRAILING-SLASH POLICY
+    // Trailing slash redirects to non-trailing slash (except homepage /)
+    // -----------------------------------------------------------------------
+    console.log('\n[TEST H] Testing trailing-slash normalization (NO trailing slash except homepage)...');
+    
+    // Valid canonical URLs return 200 directly
+    const rRoot = await testRequest('www.livworthy.com', '/');
+    assert(rRoot.statusCode === 200, `Homepage / must return HTTP 200 directly (got ${rRoot.statusCode})`);
+
+    const rAbout = await testRequest('www.livworthy.com', '/about');
+    assert(rAbout.statusCode === 200, `/about must return HTTP 200 directly (got ${rAbout.statusCode})`);
+
+    const rCountries = await testRequest('www.livworthy.com', '/countries');
+    assert(rCountries.statusCode === 200, `/countries must return HTTP 200 directly (got ${rCountries.statusCode})`);
+
+    const rCompare = await testRequest('www.livworthy.com', '/compare');
+    assert(rCompare.statusCode === 200, `/compare must return HTTP 200 directly (got ${rCompare.statusCode})`);
+
+    // Trailing slash requests return 308 redirect to non-trailing slash URL
+    const trailingCases = [
+      { from: '/about/', to: '/about' },
+      { from: '/countries/us/', to: '/countries/us' },
+      { from: '/cities/nyc/', to: '/cities/nyc' },
+      { from: '/guides/nyc-100k/', to: '/guides/nyc-100k' },
+      { from: '/compare/new-york-vs-london/', to: '/compare/new-york-vs-london' },
+      { from: '/about/?tab=test', to: '/about?tab=test' },
+    ];
+
+    for (const tc of trailingCases) {
+      const res = await testRequest('www.livworthy.com', tc.from);
+      assert(res.statusCode === 308, `${tc.from} must return 308 redirect (got ${res.statusCode})`);
+      assert(res.headers.location === tc.to, `${tc.from} must redirect to ${tc.to} (got ${res.headers.location})`);
+    }
+    console.log('PASS: Trailing-slash policy strictly enforced with 308 redirects.');
+
+    // -----------------------------------------------------------------------
+    // TEST I: APEX -> WWW NORMALIZATION IN SINGLE HOP
+    // -----------------------------------------------------------------------
+    console.log('\n[TEST I] Testing Apex host (livworthy.com) -> www normalization in a single hop...');
+    const rApexRoot = await testRequest('livworthy.com', '/');
+    assert(rApexRoot.statusCode === 308, `livworthy.com / must return 308 (got ${rApexRoot.statusCode})`);
+    assert(rApexRoot.headers.location === 'https://www.livworthy.com/', `livworthy.com / location must be https://www.livworthy.com/ (got ${rApexRoot.headers.location})`);
+
+    const rApexAbout = await testRequest('livworthy.com', '/about');
+    assert(rApexAbout.statusCode === 308, `livworthy.com /about must return 308 (got ${rApexAbout.statusCode})`);
+    assert(rApexAbout.headers.location === 'https://www.livworthy.com/about', `livworthy.com /about location must be https://www.livworthy.com/about (got ${rApexAbout.headers.location})`);
+
+    const rApexQuery = await testRequest('livworthy.com', '/guides/100k-salary-new-york?x=1');
+    assert(rApexQuery.statusCode === 308, `livworthy.com with query must return 308 (got ${rApexQuery.statusCode})`);
     assert(
-      r3.headers.location === 'https://www.livworthy.com/?city=sydney&tab=salary-after-tax',
-      `Query params must be preserved (got ${r3.headers.location})`
+      rApexQuery.headers.location === 'https://www.livworthy.com/guides/100k-salary-new-york?x=1',
+      `Apex query string must be preserved (got ${rApexQuery.headers.location})`
     );
 
-    // Test 5d: X-Forwarded-Host apex -> 308 redirect
-    const r4 = await testRequest('some-proxy.internal', '/countries/us', { 'x-forwarded-host': 'livworthy.com' });
-    assert(r4.statusCode === 308, `x-forwarded-host livworthy.com must return 308 (got ${r4.statusCode})`);
+    // Apex with trailing slash -> directly redirects to www without trailing slash in a SINGLE hop!
+    const rApexTrailing = await testRequest('livworthy.com', '/about/');
+    assert(rApexTrailing.statusCode === 308, `livworthy.com /about/ must return 308 (got ${rApexTrailing.statusCode})`);
     assert(
-      r4.headers.location === 'https://www.livworthy.com/countries/us',
-      `x-forwarded-host must redirect to https://www.livworthy.com/countries/us (got ${r4.headers.location})`
+      rApexTrailing.headers.location === 'https://www.livworthy.com/about',
+      `livworthy.com /about/ must redirect directly to https://www.livworthy.com/about in 1 hop (got ${rApexTrailing.headers.location})`
     );
 
-    // Test 5e: www.livworthy.com host -> does NOT redirect (prevents redirect loop)
-    const r5 = await testRequest('www.livworthy.com', '/api/health');
-    assert(r5.statusCode !== 308 && r5.statusCode !== 301, `www.livworthy.com must NOT redirect (got ${r5.statusCode})`);
-    assert(!r5.headers.location, `www.livworthy.com must not return location header`);
+    // X-Forwarded-Host apex handling
+    const rProxy = await testRequest('some-proxy.internal', '/countries/us', { 'x-forwarded-host': 'livworthy.com' });
+    assert(rProxy.statusCode === 308, `x-forwarded-host livworthy.com must return 308 (got ${rProxy.statusCode})`);
+    assert(
+      rProxy.headers.location === 'https://www.livworthy.com/countries/us',
+      `x-forwarded-host must redirect to https://www.livworthy.com/countries/us (got ${rProxy.headers.location})`
+    );
 
-    console.log('PASS: Canonical redirect middleware successfully validated with path and query preservation and zero loops.');
+    console.log('PASS: Apex to www host normalization passes with path/query preservation in a single hop.');
   } finally {
     server.close();
   }
 
+  // =========================================================================
+  // TEST J: NO PREVIEW DOMAINS & ARCHITECTURE HYGIENE
+  // Verify wrangler.jsonc and public/_redirects are removed.
+  // Verify zero references to preview domains in generated SEO assets.
+  // =========================================================================
+  console.log('\n[TEST J] Auditing deployment architecture hygiene & absence of preview domains...');
+  
+  assert(!fs.existsSync(path.resolve('wrangler.jsonc')), 'wrangler.jsonc must be removed (no Cloudflare Workers SPA fallback conflict)');
+  assert(!fs.existsSync(path.resolve('public/_redirects')), 'public/_redirects must be removed (no unsupported/redundant domain redirects)');
+  assert(!fs.existsSync(path.resolve('.wrangler')), '.wrangler directory must be removed');
+
+  const vercelPath = path.resolve('vercel.json');
+  assert(fs.existsSync(vercelPath), 'vercel.json must exist as deployment authority');
+  const vercelJson = JSON.parse(fs.readFileSync(vercelPath, 'utf-8'));
+  assert(vercelJson.cleanUrls === true, 'vercel.json must specify cleanUrls: true');
+  assert(vercelJson.trailingSlash === false, 'vercel.json must specify trailingSlash: false');
+
+  // Verify robots.txt clean grouping
+  const distRobots = fs.readFileSync(path.join(distDir, 'robots.txt'), 'utf-8');
+  assert(distRobots.includes('User-agent: *'), 'dist/robots.txt must configure User-agent: *');
+  assert(distRobots.includes('Disallow: /api/'), 'dist/robots.txt must disallow /api/');
+  assert(distRobots.includes('Disallow: /admin/'), 'dist/robots.txt must disallow /admin/');
+  assert(distRobots.includes('Disallow: /test/'), 'dist/robots.txt must disallow /test/');
+  assert(distRobots.includes('Sitemap: https://www.livworthy.com/sitemap.xml'), 'dist/robots.txt points to sitemap.xml');
+  assert(!distRobots.includes('User-agent: Googlebot\nAllow: /'), 'dist/robots.txt must not contain a bot-specific group that bypasses disallows');
+
+  // Verify llms.txt uses https://www.livworthy.com
+  const distLlms = fs.readFileSync(path.join(distDir, 'llms.txt'), 'utf-8');
+  assert(!distLlms.includes('https://livworthy.com/'), 'llms.txt must not contain apex URLs');
+  assert(!distLlms.includes('livworthy.vercel.app'), 'llms.txt must not contain vercel.app URLs');
+  assert(distLlms.includes('https://www.livworthy.com/compare'), 'llms.txt includes /compare directory');
+
+  console.log('PASS: Architecture hygiene verified. Vercel authority established. Cloudflare conflicts eliminated.');
+
   console.log('\n======================================================');
-  console.log('ALL CANONICAL & REDIRECT REGRESSION INVARIANTS PASSED!');
+  console.log('ALL SEO & ROUTING TECHNICAL INVARIANTS (A-J) PASSED!');
   console.log('======================================================\n');
 }
 

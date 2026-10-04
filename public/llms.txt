@@ -28,5 +28,6 @@ A global income and living intelligence platform that helps people understand wh
 - [About LivWorthy](https://www.livworthy.com/about)
 - [Countries Directory](https://www.livworthy.com/countries)
 - [Cities Directory](https://www.livworthy.com/cities)
+- [City Comparisons Directory](https://www.livworthy.com/compare)
 - [Salary & Relocation Guides](https://www.livworthy.com/guides)
 - [Sitemap Index](https://www.livworthy.com/sitemap.xml)

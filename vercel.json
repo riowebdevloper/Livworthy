@@ -2,6 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -96,6 +97,17 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/:path*/",
+      "has": [
+        {
+          "type": "host",
+          "value": "livworthy.com"
+        }
+      ],
+      "destination": "https://www.livworthy.com/:path*",
+      "permanent": true
+    },
     {
       "source": "/:path*",
       "has": [

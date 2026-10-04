@@ -173,40 +173,67 @@ export const Footer: React.FC<FooterProps> = ({
                 </button>
               </li>
               <li>
-                <button
-                  type="button"
-                  onClick={() => {
+                <a
+                  href="/guides"
+                  onClick={(e) => {
+                    e.preventDefault();
                     onSelectTab?.('nyc-100k-guide');
                     scrollToTop();
                   }}
-                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left text-[#167D75] font-semibold transition-colors cursor-pointer"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left text-[#167D75] font-semibold transition-colors"
                 >
                   City Salary Intelligence Guides →
-                </button>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/countries"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
+                >
+                  Countries Directory
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/cities"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
+                >
+                  Cities Directory
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/compare"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
+                >
+                  City Comparisons
+                </a>
               </li>
             </ul>
           </div>
 
           {/* Column 3: Featured Global Salary Guides */}
           <div>
-            <button
-              type="button"
-              onClick={() => {
+            <a
+              href="/guides"
+              onClick={(e) => {
+                e.preventDefault();
                 onSelectTab?.('nyc-100k-guide');
                 scrollToTop();
               }}
-              className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group cursor-pointer"
+              className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group"
               title="Click to view all country & city salary guides"
             >
               <span>City Salary Guides</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
-            </button>
+            </a>
             <ul className="space-y-1 text-xs">
               {POPULAR_GUIDE_LINKS.map((guide) => (
                 <li key={guide.slug}>
-                  <button
-                    type="button"
-                    onClick={() => {
+                  <a
+                    href={`/guides/${guide.slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
                       if (onSelectGuide) {
                         onSelectGuide(guide.slug);
                       } else {
@@ -214,24 +241,25 @@ export const Footer: React.FC<FooterProps> = ({
                       }
                       scrollToTop();
                     }}
-                    className="w-full min-h-[24px] py-1 flex items-center hover:text-[#167D75] text-left transition-colors cursor-pointer"
+                    className="w-full min-h-[24px] py-1 flex items-center hover:text-[#167D75] text-left transition-colors"
                     title={guide.title}
                   >
                     <span className="line-clamp-1">{guide.title}</span>
-                  </button>
+                  </a>
                 </li>
               ))}
               <li>
-                <button
-                  type="button"
-                  onClick={() => {
+                <a
+                  href="/guides"
+                  onClick={(e) => {
+                    e.preventDefault();
                     onSelectTab?.('nyc-100k-guide');
                     scrollToTop();
                   }}
-                  className="text-xs font-bold text-[#167D75] hover:underline cursor-pointer min-h-[24px] py-1 flex items-center"
+                  className="text-xs font-bold text-[#167D75] hover:underline min-h-[24px] py-1 flex items-center"
                 >
                   <span>Explore All {TOTAL_GUIDES_COUNT}+ Country & City Guides →</span>
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -350,10 +378,11 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
           <div className="flex flex-wrap gap-2 text-xs">
             {FEATURED_CITIES.map((c) => (
-              <button
+              <a
                 key={c.id}
-                type="button"
-                onClick={() => {
+                href={`/cities/${c.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
                   if (onSelectCity) {
                     onSelectCity(c.id);
                   } else {
@@ -361,11 +390,11 @@ export const Footer: React.FC<FooterProps> = ({
                   }
                   scrollToTop();
                 }}
-                className="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 transition-colors cursor-pointer flex items-center"
-                title={`Switch to ${c.name}, ${c.country}`}
+                className="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 transition-colors flex items-center"
+                title={`Explore ${c.name}, ${c.country}`}
               >
                 {c.name} ({c.country})
-              </button>
+              </a>
             ))}
           </div>
         </div>

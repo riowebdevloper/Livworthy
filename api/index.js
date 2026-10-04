@@ -8,6 +8,7 @@ var __export = (target, all) => {
 import express from "express";
 import path2 from "path";
 import crypto3 from "crypto";
+import fs2 from "fs";
 
 // src/lib/env.ts
 import crypto from "crypto";
@@ -7452,8 +7453,16 @@ function configureApp() {
   app.use((req, res, next) => {
     const rawHost = req.headers["x-forwarded-host"] || req.headers.host || "";
     const cleanHost = rawHost.split(":")[0].toLowerCase();
-    if (cleanHost === "livworthy.com") {
-      const targetUrl = `https://www.livworthy.com${req.originalUrl || req.url}`;
+    const isApex = cleanHost === "livworthy.com";
+    const urlString = req.originalUrl || req.url;
+    const qIndex = urlString.indexOf("?");
+    const pathname = qIndex >= 0 ? urlString.slice(0, qIndex) : urlString;
+    const search = qIndex >= 0 ? urlString.slice(qIndex) : "";
+    const hasTrailingSlash = pathname.length > 1 && pathname.endsWith("/");
+    const cleanPath = hasTrailingSlash ? pathname.replace(/\/+$/, "") : pathname;
+    if (isApex || hasTrailingSlash) {
+      const hostPrefix = isApex ? "https://www.livworthy.com" : "";
+      const targetUrl = `${hostPrefix}${cleanPath}${search}`;
       return res.redirect(308, targetUrl);
     }
     next();
@@ -8035,10 +8044,37 @@ function configureApp() {
   });
 }
 configureApp();
+var staticMounted = false;
+function mountStaticAndFallback(expressApp) {
+  if (staticMounted) return;
+  staticMounted = true;
+  const distPath = path2.join(process.cwd(), "dist");
+  expressApp.use(express.static(distPath, { redirect: false }));
+  expressApp.get("*", (req, res) => {
+    const pathname = req.path.replace(/\/$/, "") || "/";
+    if (pathname === "/") {
+      const homePath = path2.join(distPath, "index.html");
+      if (fs2.existsSync(homePath)) {
+        return res.sendFile(homePath);
+      }
+    }
+    const candidatePath = path2.join(distPath, pathname, "index.html");
+    if (fs2.existsSync(candidatePath)) {
+      return res.sendFile(candidatePath);
+    }
+    const notFoundPath = path2.join(distPath, "404.html");
+    if (fs2.existsSync(notFoundPath)) {
+      return res.status(404).type("html").sendFile(notFoundPath);
+    }
+    return res.status(404).type("html").send('<!DOCTYPE html><html><head><title>404 Not Found</title><meta name="robots" content="noindex, nofollow" /></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
+  });
+}
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test" || process.env.SERVE_STATIC || process.env.SKIP_SERVER_START) {
+  mountStaticAndFallback(app);
+}
 async function startServer() {
   await ensureDatabaseReady();
-  if (process.env.NODE_ENV !== "production" && !process.env.SERVE_STATIC) {
-    const fs2 = await import("fs");
+  if (process.env.NODE_ENV !== "production" && !process.env.SERVE_STATIC && process.env.NODE_ENV !== "test") {
     const distPath = path2.join(process.cwd(), "dist");
     app.use((req, res, next) => {
       if (req.method !== "GET") return next();
@@ -8051,7 +8087,11 @@ async function startServer() {
       if (fs2.existsSync(candidatePath)) {
         return res.sendFile(candidatePath);
       }
-      return res.status(404).send("<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>");
+      const notFoundPath = path2.join(distPath, "404.html");
+      if (fs2.existsSync(notFoundPath)) {
+        return res.status(404).type("html").sendFile(notFoundPath);
+      }
+      return res.status(404).type("html").send('<!DOCTYPE html><html><head><title>404 Not Found</title><meta name="robots" content="noindex, nofollow" /></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
     });
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
@@ -8060,20 +8100,7 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const fs2 = await import("fs");
-    const distPath = path2.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      const pathname = req.path.replace(/\/$/, "") || "/";
-      if (pathname === "/") {
-        return res.sendFile(path2.join(distPath, "index.html"));
-      }
-      const candidatePath = path2.join(distPath, pathname, "index.html");
-      if (fs2.existsSync(candidatePath)) {
-        return res.sendFile(candidatePath);
-      }
-      res.status(404).send("<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>");
-    });
+    mountStaticAndFallback(app);
   }
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`[LivWorthy Server] Enterprise server active on http://0.0.0.0:${PORT}`);
@@ -8087,6 +8114,7 @@ export {
   app,
   server_default as default,
   ensureDatabaseReady,
+  mountStaticAndFallback,
   startServer
 };
 //# sourceMappingURL=index.js.map

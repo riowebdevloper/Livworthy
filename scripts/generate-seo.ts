@@ -25,6 +25,16 @@ interface SeoPage {
   priority: number;
 }
 
+const COMPARISONS = [
+  { slug: 'new-york-vs-london', cityAId: 'nyc', cityBId: 'london' },
+  { slug: 'new-york-vs-dubai', cityAId: 'nyc', cityBId: 'dubai' },
+  { slug: 'london-vs-dubai', cityAId: 'london', cityBId: 'dubai' },
+  { slug: 'toronto-vs-vancouver', cityAId: 'toronto', cityBId: 'vancouver' },
+  { slug: 'sydney-vs-melbourne', cityAId: 'sydney', cityBId: 'melbourne' },
+  { slug: 'berlin-vs-munich', cityAId: 'berlin', cityBId: 'munich' },
+  { slug: 'singapore-vs-dubai', cityAId: 'singapore', cityBId: 'dubai' },
+];
+
 export function runSeoGenerator() {
   const distDir = path.resolve('dist');
   const publicDir = path.resolve('public');
@@ -675,16 +685,6 @@ export function runSeoGenerator() {
   }
 
   // 5. Comparison Landing Pages
-  const COMPARISONS = [
-    { slug: 'new-york-vs-london', cityAId: 'nyc', cityBId: 'london' },
-    { slug: 'new-york-vs-dubai', cityAId: 'nyc', cityBId: 'dubai' },
-    { slug: 'london-vs-dubai', cityAId: 'london', cityBId: 'dubai' },
-    { slug: 'toronto-vs-vancouver', cityAId: 'toronto', cityBId: 'vancouver' },
-    { slug: 'sydney-vs-melbourne', cityAId: 'sydney', cityBId: 'melbourne' },
-    { slug: 'berlin-vs-munich', cityAId: 'berlin', cityBId: 'munich' },
-    { slug: 'singapore-vs-dubai', cityAId: 'singapore', cityBId: 'dubai' },
-  ];
-
   for (const comp of COMPARISONS) {
     const cityA = CITIES[comp.cityAId];
     const cityB = CITIES[comp.cityBId];
@@ -697,7 +697,8 @@ export function runSeoGenerator() {
           '@type': 'BreadcrumbList',
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
-            { '@type': 'ListItem', position: 2, name: `${cityA.name} vs ${cityB.name}`, item: `${BASE_URL}/compare/${comp.slug}` },
+            { '@type': 'ListItem', position: 2, name: 'City Comparisons', item: `${BASE_URL}/compare` },
+            { '@type': 'ListItem', position: 3, name: `${cityA.name} vs ${cityB.name}`, item: `${BASE_URL}/compare/${comp.slug}` },
           ],
         },
       ],
@@ -705,34 +706,43 @@ export function runSeoGenerator() {
 
     const compBody = `
       <article class="max-w-5xl mx-auto px-4 py-8">
-        <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">${cityA.name} vs ${cityB.name}</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">${cityA.name} vs ${cityB.name} Salary & Cost of Living Comparison</h1>
+        <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6 flex items-center gap-1.5 flex-wrap">
+          <a href="/" class="hover:text-teal-700 font-medium">Home</a>
+          <span>/</span>
+          <a href="/compare" class="hover:text-teal-700 font-medium">City Comparisons</a>
+          <span>/</span>
+          <span class="text-slate-800 font-bold">${cityA.name} vs ${cityB.name}</span>
+        </nav>
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">${cityA.name} vs ${cityB.name} Salary &amp; Cost of Living Comparison</h1>
         <p class="mt-2 text-slate-600">Cross-border financial living analysis comparing disposable income, statutory taxes, and purchasing power between ${cityA.name} and ${cityB.name}.</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-          <div class="p-5 bg-white border border-slate-200 rounded-xl">
-            <h2 class="text-lg font-bold text-slate-900">${cityA.name}</h2>
+          <a href="/cities/${cityA.id}" class="p-5 bg-white border border-slate-200 rounded-xl hover:border-teal-600 transition-colors block group">
+            <h2 class="text-lg font-bold text-slate-900 group-hover:text-teal-700 transition-colors">${cityA.name} →</h2>
             <p class="text-xs text-slate-500 mt-0.5">${cityA.metroAreaName}</p>
             <div class="mt-3 text-sm space-y-1">
               <div>Currency: <strong>${cityA.currency}</strong></div>
-              <div>COL Index: <strong>${cityA.colIndexBase100NYC}</strong></div>
+              <div>COL Index: <strong>${cityA.colIndexBase100NYC}</strong> (NYC=100)</div>
               <div>Tax Status: <span class="text-teal-700 font-semibold">${cityA.verificationStatus}</span></div>
             </div>
-          </div>
-          <div class="p-5 bg-white border border-slate-200 rounded-xl">
-            <h2 class="text-lg font-bold text-slate-900">${cityB.name}</h2>
+          </a>
+          <a href="/cities/${cityB.id}" class="p-5 bg-white border border-slate-200 rounded-xl hover:border-teal-600 transition-colors block group">
+            <h2 class="text-lg font-bold text-slate-900 group-hover:text-teal-700 transition-colors">${cityB.name} →</h2>
             <p class="text-xs text-slate-500 mt-0.5">${cityB.metroAreaName}</p>
             <div class="mt-3 text-sm space-y-1">
               <div>Currency: <strong>${cityB.currency}</strong></div>
-              <div>COL Index: <strong>${cityB.colIndexBase100NYC}</strong></div>
+              <div>COL Index: <strong>${cityB.colIndexBase100NYC}</strong> (NYC=100)</div>
               <div>Tax Status: <span class="text-teal-700 font-semibold">${cityB.verificationStatus}</span></div>
             </div>
-          </div>
+          </a>
         </div>
 
-        <div class="mt-8">
+        <div class="mt-8 flex items-center gap-4 flex-wrap">
           <a href="/?city=${cityA.id}&tab=compare" class="px-5 py-2.5 bg-teal-700 text-white font-bold text-sm rounded-xl hover:bg-teal-800 inline-block shadow-sm">
             Launch Live Interactive Comparison
+          </a>
+          <a href="/compare" class="text-sm font-semibold text-teal-700 hover:underline">
+            ← View All City Comparisons
           </a>
         </div>
       </article>
@@ -1165,6 +1175,89 @@ function createDirectoryPages(): SeoPage[] {
     priority: 0.9,
   });
 
+  // 4. Comparisons Directory (/compare)
+  const comparisonsStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'City Comparisons', item: `${BASE_URL}/compare` },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        name: 'City Comparisons & Cross-Border Intelligence | LivWorthy',
+        url: `${BASE_URL}/compare`,
+        description: 'Bilateral metropolitan comparisons evaluating disposable income, statutory taxes, and purchasing power parity across major global cities.',
+        publisher: { '@id': `${BASE_URL}/#organization` },
+      },
+    ],
+  };
+
+  const comparisonsBody = `
+    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
+        <a href="/" class="hover:text-[#167D75]">Home</a> / <span class="text-[#102A2E] font-bold">City Comparisons</span>
+      </nav>
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Cross-Border Intelligence</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">City Living &amp; Salary Comparisons</h1>
+        <p class="text-base text-[#60706D] mt-3 leading-relaxed">
+          Comprehensive bilateral comparisons benchmarked by LivWorthy. Inspect disposable income equivalence, progressive statutory tax differentials, local fair-market housing costs, and purchasing power parity between metropolitan centers.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        ${COMPARISONS.map((comp) => {
+          const cityA = CITIES[comp.cityAId];
+          const cityB = CITIES[comp.cityBId];
+          if (!cityA || !cityB) return '';
+          return `
+            <a href="/compare/${comp.slug}" class="p-6 bg-white border border-[#DCE3E0] rounded-2xl hover:border-[#167D75] hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div class="flex items-center justify-between mb-3 text-xs font-bold uppercase tracking-wider text-[#167D75]">
+                  <span>${escapeHtml(cityA.name)} vs ${escapeHtml(cityB.name)}</span>
+                  <span class="font-mono text-[#60706D]">${cityA.currency} / ${cityB.currency}</span>
+                </div>
+                <h2 class="text-xl font-extrabold text-[#102A2E] group-hover:text-[#167D75] transition-colors mb-3 leading-snug">
+                  ${escapeHtml(cityA.name)} vs ${escapeHtml(cityB.name)}: Salary &amp; Living Costs
+                </h2>
+                <div class="grid grid-cols-2 gap-2 text-xs bg-[#F7F8F5] p-3 rounded-lg border border-[#DCE3E0]">
+                  <div>
+                    <div class="font-bold text-[#102A2E]">${escapeHtml(cityA.name)}</div>
+                    <div class="text-[#60706D]">COL: ${cityA.colIndexBase100NYC} (NYC=100)</div>
+                  </div>
+                  <div>
+                    <div class="font-bold text-[#102A2E]">${escapeHtml(cityB.name)}</div>
+                    <div class="text-[#60706D]">COL: ${cityB.colIndexBase100NYC} (NYC=100)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-4 mt-4 border-t border-[#F7F8F5] flex items-center justify-between text-xs">
+                <span class="text-[#60706D] font-medium">Compare Living Standards</span>
+                <span class="font-bold text-[#167D75] group-hover:translate-x-1 transition-transform">View Comparison →</span>
+              </div>
+            </a>
+          `;
+        }).filter(Boolean).join('')}
+      </div>
+    </article>
+  `;
+
+  pages.push({
+    relativePath: 'compare/index.html',
+    canonicalUrl: `${BASE_URL}/compare`,
+    title: 'City Comparisons Directory — Cross-Border Salary & Living Cost Intelligence | LivWorthy',
+    description: 'Compare statutory income taxes, cost of living, fair-market rents, and purchasing power between major world cities. Deterministic cross-border intelligence.',
+    robots: 'index, follow',
+    bodyContent: comparisonsBody,
+    structuredData: comparisonsStructuredData,
+    changefreq: 'weekly',
+    priority: 0.9,
+  });
+
   return pages;
 }
 
@@ -1591,7 +1684,9 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
   const cityPages = indexablePages.filter(
     (p) => p.relativePath.startsWith('cities/') && p.relativePath !== 'cities/index.html'
   );
-  const comparisonPages = indexablePages.filter((p) => p.relativePath.startsWith('compare/'));
+  const comparisonPages = indexablePages.filter(
+    (p) => p.relativePath.startsWith('compare/') && p.relativePath !== 'compare/index.html'
+  );
   const guidePages = indexablePages.filter(
     (p) => p.relativePath.startsWith('guides/') && p.relativePath !== 'guides/index.html'
   );
@@ -1615,6 +1710,7 @@ ${items
     { canonicalUrl: `${BASE_URL}/`, changefreq: 'daily', priority: 1.0 },
     { canonicalUrl: `${BASE_URL}/countries`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/cities`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/compare`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/guides`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/about`, changefreq: 'monthly', priority: 0.8 },
     { canonicalUrl: `${BASE_URL}/methodology`, changefreq: 'monthly', priority: 0.8 },
@@ -1675,34 +1771,6 @@ Disallow: /api/
 Disallow: /admin/
 Disallow: /test/
 
-# Explicit Search Engine & AI Answer Systems Discovery Directives
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-User-agent: GPTBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-User-agent: Amazonbot
-Allow: /
-
 Sitemap: ${BASE_URL}/sitemap.xml
 `;
 
@@ -1736,6 +1804,7 @@ ${PLATFORM_IDENTITY.coreDefinition}
 - [About LivWorthy](${BASE_URL}/about)
 - [Countries Directory](${BASE_URL}/countries)
 - [Cities Directory](${BASE_URL}/cities)
+- [City Comparisons Directory](${BASE_URL}/compare)
 - [Salary & Relocation Guides](${BASE_URL}/guides)
 - [Sitemap Index](${BASE_URL}/sitemap.xml)
 `;
@@ -1745,10 +1814,14 @@ ${PLATFORM_IDENTITY.coreDefinition}
 google.com, pub-9082698285506451, DIRECT, f08c47fec0942fa0
 `;
 
+  const notFoundPath = path.join(publicDir, '404.html');
+  const notFoundContent = fs.existsSync(notFoundPath) ? fs.readFileSync(notFoundPath, 'utf-8') : '';
+
   const files = [
     { name: 'robots.txt', content: robotsTxt },
     { name: 'llms.txt', content: llmsTxt },
     { name: 'ads.txt', content: adsTxt },
+    ...(notFoundContent ? [{ name: '404.html', content: notFoundContent }] : []),
   ];
 
   for (const f of files) {

@@ -32,12 +32,11 @@ function runAuditTests() {
   const robotsPath = path.join(distDir, 'robots.txt');
   assert(fs.existsSync(robotsPath), 'dist/robots.txt must exist');
   const robotsContent = fs.readFileSync(robotsPath, 'utf-8');
+  assert(robotsContent.includes('User-agent: *'), 'robots.txt has wildcard User-agent: *');
+  assert(robotsContent.includes('Allow: /'), 'robots.txt allows root public content');
   assert(robotsContent.includes('Disallow: /api/'), 'robots.txt disallows /api/');
   assert(robotsContent.includes('Disallow: /admin/'), 'robots.txt disallows /admin/');
   assert(robotsContent.includes('Disallow: /test/'), 'robots.txt disallows /test/');
-  assert(robotsContent.includes('User-agent: Googlebot'), 'robots.txt configures Googlebot');
-  assert(robotsContent.includes('User-agent: GPTBot'), 'robots.txt configures GPTBot');
-  assert(robotsContent.includes('User-agent: PerplexityBot'), 'robots.txt configures PerplexityBot');
   assert(robotsContent.includes('Sitemap: https://www.livworthy.com/sitemap.xml'), 'robots.txt references sitemap');
 
   // Test 3: Institutional E-E-A-T Transparency pages in dist
@@ -80,6 +79,7 @@ function runAuditTests() {
   assert(mainContent.includes('https://www.livworthy.com/corrections'), 'sitemap-main.xml includes /corrections');
   assert(mainContent.includes('https://www.livworthy.com/terms'), 'sitemap-main.xml includes /terms');
   assert(mainContent.includes('https://www.livworthy.com/privacy'), 'sitemap-main.xml includes /privacy');
+  assert(mainContent.includes('https://www.livworthy.com/compare'), 'sitemap-main.xml includes /compare');
 
   // Test 5: Guide page with AEO block, Fact Table, and Article JSON-LD
   const sampleGuidePath = path.join(distDir, 'guides/nyc-100k/index.html');
