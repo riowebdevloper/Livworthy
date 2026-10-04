@@ -79,9 +79,18 @@ function configureApp() {
     const hasTrailingSlash = pathname.length > 1 && pathname.endsWith('/');
     const cleanPath = hasTrailingSlash ? pathname.replace(/\/+$/, '') : pathname;
 
+    // Reject paths with multiple leading slashes (e.g. //attacker.com) before building targetUrl
+    // to prevent res.redirect from emitting a protocol-relative/network-path destination.
+    if (/^\/{2,}/.test(pathname) || /^\/{2,}/.test(cleanPath)) {
+      return res.status(400).type('text/plain').send('Bad Request');
+    }
+
     if (isApex || hasTrailingSlash) {
       const hostPrefix = isApex ? 'https://www.livworthy.com' : '';
       const targetUrl = `${hostPrefix}${cleanPath}${search}`;
+      if (targetUrl.startsWith('//')) {
+        return res.status(400).type('text/plain').send('Bad Request');
+      }
       return res.redirect(308, targetUrl);
     }
     next();

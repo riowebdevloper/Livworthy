@@ -313,6 +313,14 @@ async function runRegressionSuite() {
     }
     console.log('PASS: Trailing-slash policy strictly enforced with 308 redirects.');
 
+    // Reject multiple leading slashes to prevent protocol-relative/network-path redirects
+    const multiSlashCases = ['//attacker.com', '//attacker.com/', '///test', '////about/'];
+    for (const ms of multiSlashCases) {
+      const res = await testRequest('www.livworthy.com', ms);
+      assert(res.statusCode === 400, `${ms} must be rejected with HTTP 400 Bad Request (got ${res.statusCode})`);
+    }
+    console.log('PASS: Paths with multiple leading slashes rejected with HTTP 400 (preventing network-path open redirect).');
+
     // -----------------------------------------------------------------------
     // TEST I: APEX -> WWW NORMALIZATION IN SINGLE HOP
     // -----------------------------------------------------------------------

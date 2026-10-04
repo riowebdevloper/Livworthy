@@ -28,11 +28,13 @@ export function runUnavailableTaxRegressionTests() {
     location: CITIES.mumbai || {
       id: 'mumbai',
       name: 'Mumbai',
+      regionId: 'IN-MH',
       countryId: 'IN',
       currency: 'INR',
-      metroAreaName: 'Mumbai Metropolitan',
-      colIndexBase100NYC: 35,
-      verificationStatus: 'PROVISIONAL',
+      taxJurisdictionId: 'tax-in-federal',
+      metroAreaName: 'Mumbai Metropolitan Region',
+      colIndexBase100NYC: 27.5,
+      verificationStatus: 'UNSUPPORTED',
     },
     compensation: {
       baseSalary: createMoney(2_000_000, 'INR'),
