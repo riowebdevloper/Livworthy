@@ -10,6 +10,8 @@ import {
 } from '../src/data/transparency';
 import { CapabilityResolver } from '../src/engines/capabilities/capability-resolver';
 import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
+import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
+import { SeoPageRenderer } from '../src/lib/seo-renderer';
 
 const BASE_URL = 'https://www.livworthy.com';
 
@@ -34,6 +36,56 @@ const COMPARISONS = [
   { slug: 'berlin-vs-munich', cityAId: 'berlin', cityBId: 'munich' },
   { slug: 'singapore-vs-dubai', cityAId: 'singapore', cityBId: 'dubai' },
 ];
+
+const SEO_COMPARISON_KEYS: Record<string, string> = {
+  'new-york-vs-london': 'compare-nyc-vs-london',
+  'new-york-vs-dubai': 'compare-nyc-vs-dubai',
+  'london-vs-dubai': 'compare-london-vs-dubai',
+};
+
+const CITY_CLUSTER_LINKS: Record<string, { title: string; url: string; badge: string }[]> = {
+  nyc: [
+    { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', badge: 'Salary Guide' },
+    { title: 'Is $150K a Good Salary in NYC?', url: '/guides/nyc-150k', badge: 'Salary Guide' },
+    { title: 'NYC Salary After Tax Calculator', url: '/salary-after-tax/new-york', badge: 'Tax Engine' },
+    { title: 'Salary Needed to Live in NYC', url: '/salary-needed/new-york', badge: 'Inverse Solver' },
+    { title: 'Cost of Living in New York City', url: '/cost-of-living/new-york', badge: 'COL Benchmark' },
+    { title: 'NYC vs London: Salary & Living Costs', url: '/compare/new-york-vs-london', badge: 'Comparison' },
+    { title: 'NYC vs Dubai: Salary & Living Costs', url: '/compare/new-york-vs-dubai', badge: 'Comparison' },
+  ],
+  london: [
+    { title: 'Is £75K a Good Salary in London?', url: '/guides/london-75k', badge: 'Salary Guide' },
+    { title: 'Is £100K a Good Salary in London?', url: '/guides/london-100k', badge: 'Salary Guide' },
+    { title: 'London Salary After Tax Calculator', url: '/salary-after-tax/london', badge: 'Tax Engine' },
+    { title: 'Salary Needed to Live in London', url: '/salary-needed/london', badge: 'Inverse Solver' },
+    { title: 'London vs Dubai: Salary & Living Costs', url: '/compare/london-vs-dubai', badge: 'Comparison' },
+    { title: 'NYC vs London: Salary & Living Costs', url: '/compare/new-york-vs-london', badge: 'Comparison' },
+  ],
+  dubai: [
+    { title: 'Is 300K AED a Good Salary in Dubai?', url: '/guides/dubai-300k', badge: 'Salary Guide' },
+    { title: 'Dubai Salary After Tax Calculator', url: '/salary-after-tax/dubai', badge: 'Tax Engine' },
+    { title: 'NYC vs Dubai: Salary & Living Costs', url: '/compare/new-york-vs-dubai', badge: 'Comparison' },
+    { title: 'London vs Dubai: Salary & Living Costs', url: '/compare/london-vs-dubai', badge: 'Comparison' },
+  ],
+  toronto: [
+    { title: 'Is CA$100K a Good Salary in Toronto?', url: '/guides/toronto-100k', badge: 'Salary Guide' },
+  ],
+  sf: [
+    { title: 'Is $150K a Good Salary in San Francisco?', url: '/guides/sf-150k', badge: 'Salary Guide' },
+  ],
+  austin: [
+    { title: 'Is $100K a Good Salary in Austin?', url: '/guides/austin-100k', badge: 'Salary Guide' },
+  ],
+  sydney: [
+    { title: 'Is A$120K a Good Salary in Sydney?', url: '/guides/sydney-120k', badge: 'Salary Guide' },
+  ],
+  berlin: [
+    { title: 'Is €80K a Good Salary in Berlin?', url: '/guides/berlin-80k', badge: 'Salary Guide' },
+  ],
+  singapore: [
+    { title: 'Is S$120K a Good Salary in Singapore?', url: '/guides/singapore-120k', badge: 'Salary Guide' },
+  ],
+};
 
 export function runSeoGenerator() {
   const distDir = path.resolve('dist');
@@ -664,6 +716,20 @@ export function runSeoGenerator() {
             <a href="/?city=${city.id}&tab=compare" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Compare With Another City</a>
           </div>
         </section>
+
+        ${CITY_CLUSTER_LINKS[city.id] && CITY_CLUSTER_LINKS[city.id].length > 0 ? `
+          <section class="mt-8">
+            <h2 class="text-xl font-bold text-[#102A2E] mb-3">Featured Guides &amp; Intelligence for ${city.name}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              ${CITY_CLUSTER_LINKS[city.id].map(link => `
+                <a href="${link.url}" class="p-4 bg-white border border-[#DCE3E0] rounded-xl hover:border-[#167D75] hover:shadow-xs transition-all block group">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-[#167D75]">${link.badge}</span>
+                  <div class="font-bold text-slate-900 group-hover:text-[#167D75] transition-colors mt-0.5">${escapeHtml(link.title)} →</div>
+                </a>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
       </article>
     `;
 
@@ -689,6 +755,25 @@ export function runSeoGenerator() {
     const cityA = CITIES[comp.cityAId];
     const cityB = CITIES[comp.cityBId];
     if (!cityA || !cityB) continue;
+
+    // Check if this comparison is upgraded via SeoPageRenderer
+    const compSeoKey = SEO_COMPARISON_KEYS[comp.slug];
+    if (compSeoKey && SEO_LANDING_PAGES[compSeoKey]) {
+      const seoPage = SEO_LANDING_PAGES[compSeoKey];
+      const rendered = SeoPageRenderer.render(seoPage);
+      pages.push({
+        relativePath: `compare/${comp.slug}/index.html`,
+        canonicalUrl: rendered.canonicalUrl,
+        title: rendered.title,
+        description: rendered.description,
+        robots: rendered.robots,
+        bodyContent: rendered.bodyContent,
+        structuredData: rendered.structuredData,
+        changefreq: rendered.changefreq,
+        priority: rendered.priority,
+      });
+      continue;
+    }
 
     const compStructuredData = {
       '@context': 'https://schema.org',
@@ -761,8 +846,39 @@ export function runSeoGenerator() {
     });
   }
 
-  // 6. Global City Salary Guides (with AEO Direct Answer, Fact Tables, and Canonical Definitions)
   for (const g of POPULAR_GUIDES_LIST) {
+    if (SEO_LANDING_PAGES[g.slug]) {
+      const seoPage = SEO_LANDING_PAGES[g.slug];
+      const rendered = SeoPageRenderer.render(seoPage);
+      pages.push({
+        relativePath: `guides/${g.slug}/index.html`,
+        canonicalUrl: rendered.canonicalUrl,
+        title: rendered.title,
+        description: rendered.description,
+        robots: rendered.robots,
+        bodyContent: rendered.bodyContent,
+        structuredData: rendered.structuredData,
+        changefreq: rendered.changefreq,
+        priority: rendered.priority,
+      });
+
+      // Support backward-compatible alias
+      if (g.slug === 'nyc-100k') {
+        pages.push({
+          relativePath: `guides/100k-salary-new-york/index.html`,
+          canonicalUrl: `${BASE_URL}/guides/100k-salary-new-york`,
+          title: rendered.title,
+          description: rendered.description,
+          robots: rendered.robots,
+          bodyContent: rendered.bodyContent,
+          structuredData: rendered.structuredData,
+          changefreq: rendered.changefreq,
+          priority: rendered.priority,
+        });
+      }
+      continue;
+    }
+
     const city = CITIES[g.cityId] || CITIES.nyc;
     const country = COUNTRIES[g.countryId] || COUNTRIES.US;
     const region = (g.regionId && REGIONS[g.regionId]) ? REGIONS[g.regionId] : (city.regionId && REGIONS[city.regionId] ? REGIONS[city.regionId] : undefined);
@@ -916,6 +1032,32 @@ export function runSeoGenerator() {
         priority: 0.8,
       });
     }
+  }
+
+  // 6b. Priority Authority Hub Pages (Salary After Tax, Salary Needed, Cost of Living)
+  const PROGRAMMATIC_PAGES = [
+    SEO_LANDING_PAGES['salary-after-tax-nyc'],
+    SEO_LANDING_PAGES['salary-needed-nyc'],
+    SEO_LANDING_PAGES['cost-of-living-nyc'],
+    SEO_LANDING_PAGES['salary-after-tax-london'],
+    SEO_LANDING_PAGES['salary-needed-london'],
+    SEO_LANDING_PAGES['salary-after-tax-dubai'],
+  ];
+
+  for (const progPage of PROGRAMMATIC_PAGES) {
+    if (!progPage) continue;
+    const rendered = SeoPageRenderer.render(progPage);
+    pages.push({
+      relativePath: `${progPage.slug}/index.html`,
+      canonicalUrl: rendered.canonicalUrl,
+      title: rendered.title,
+      description: rendered.description,
+      robots: rendered.robots,
+      bodyContent: rendered.bodyContent,
+      structuredData: rendered.structuredData,
+      changefreq: rendered.changefreq,
+      priority: rendered.priority,
+    });
   }
 
   // Write all static HTML files
@@ -1690,6 +1832,16 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
   const guidePages = indexablePages.filter(
     (p) => p.relativePath.startsWith('guides/') && p.relativePath !== 'guides/index.html'
   );
+  const programmaticHubPages = indexablePages.filter(
+    (p) =>
+      p.relativePath.startsWith('salary-after-tax/') ||
+      p.relativePath.startsWith('salary-needed/') ||
+      p.relativePath.startsWith('cost-of-living/')
+  ).map((p) => ({
+    canonicalUrl: p.canonicalUrl,
+    changefreq: p.changefreq,
+    priority: p.priority,
+  }));
 
   const buildUrlSet = (items: { canonicalUrl: string; changefreq: string; priority: number }[]) => {
     return `<?xml version="1.0" encoding="UTF-8"?>
@@ -1712,6 +1864,7 @@ ${items
     { canonicalUrl: `${BASE_URL}/cities`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/compare`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/guides`, changefreq: 'weekly', priority: 0.9 },
+    ...programmaticHubPages,
     { canonicalUrl: `${BASE_URL}/about`, changefreq: 'monthly', priority: 0.8 },
     { canonicalUrl: `${BASE_URL}/methodology`, changefreq: 'monthly', priority: 0.8 },
     { canonicalUrl: `${BASE_URL}/sources`, changefreq: 'monthly', priority: 0.8 },

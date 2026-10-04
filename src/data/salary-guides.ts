@@ -26,7 +26,7 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 100_000,
     currency: 'USD',
     headlineSummary: 'For a single earner living independently in a typical 1-bedroom apartment, $100,000 is a viable, moderate salary in New York City.',
-    lifestyleContext: 'Yields approximately $5,843/month in net take-home after federal, NYS, and NYC resident income taxes. After median housing, food, and MTA transit, you retain ~$1,521/month in discretionary savings.',
+    lifestyleContext: 'Yields approximately $5,862/month in net take-home pay after federal, NY State, and NYC resident income taxes. After baseline housing (~$2,350/mo), food, and MTA transit, you retain ~$1,540/month in uncommitted discretionary savings.',
     benchmarkContext: 'Exceeds the median individual worker earnings in NYC (~$65,000) while positioning earners comfortably above essential baseline expenses.',
   },
   'nyc-150k': {
@@ -38,8 +38,8 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 150_000,
     currency: 'USD',
     headlineSummary: 'At $150,000, a single professional can live comfortably in prime Manhattan, Brooklyn, or Queens neighborhoods while saving aggressively.',
-    lifestyleContext: 'Delivers ~$8,350/month net take-home pay. After a prime 1-bedroom (~$3,600/month), monthly uncommitted cash flow exceeds $2,800 for investing and leisure.',
-    benchmarkContext: 'Places an earner in the top 20% of individual income earners in the NYC metro area.',
+    lifestyleContext: 'Delivers approximately $8,397/month in net take-home pay. After a prime 1-bedroom (~$3,250/month), monthly uncommitted cash flow exceeds $2,500 for investing and leisure.',
+    benchmarkContext: 'Places an earner in the top 15% of individual income earners in the NYC metro area.',
   },
   'sf-150k': {
     slug: 'sf-150k',
@@ -50,7 +50,7 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 150_000,
     currency: 'USD',
     headlineSummary: 'In the high-cost San Francisco Bay Area, $150,000 provides a comfortable living standard for single professionals.',
-    lifestyleContext: 'Yields roughly $8,600/month after California and federal taxes. After rent in popular neighborhoods (~$2,900) and tech hub living costs, monthly surplus remains strong (~$3,200).',
+    lifestyleContext: 'Yields roughly $8,638/month after California state and federal taxes. After rent in popular neighborhoods (~$2,950/mo) and tech hub living costs, monthly surplus remains strong (~$3,328/mo).',
     benchmarkContext: 'Aligned with mid-level tech compensation while well above the citywide individual median.',
   },
   'sf-200k': {
@@ -74,7 +74,7 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 100_000,
     currency: 'USD',
     headlineSummary: 'Benefiting from 0% Texas state personal income tax, $100,000 goes substantially further in Austin than in coastal metros.',
-    lifestyleContext: 'Delivers ~$6,650/month in net pay. With average 1-bedroom rents around $1,650, single professionals retain over $3,200/month in surplus savings.',
+    lifestyleContext: 'Delivers approximately $6,561/month in net pay. With average 1-bedroom rents around $1,750, single professionals retain over $2,580/month in surplus savings.',
     benchmarkContext: 'Far above the Austin median worker income (~$56,000), offering an enviable balance of tech-hub career growth and affordability.',
   },
   'chicago-100k': {
@@ -150,7 +150,7 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 75_000,
     currency: 'GBP',
     headlineSummary: 'A £75,000 annual salary puts you in the top 10% of individual income earners in London.',
-    lifestyleContext: 'Results in approximately £4,505/month net pay under HMRC PAYE and NI Class 1. After typical Zone 2 rent (£1,950), TfL transit, and council tax, discretionary savings average ~£1,340/month.',
+    lifestyleContext: 'Results in approximately £4,505/month net pay under HMRC PAYE and NI Class 1. After typical Zone 2 rent (£1,950), TfL transit, and council tax, discretionary savings average ~£1,285/month.',
     benchmarkContext: 'More than 70% higher than the London median full-time wage (~£44,000), affording good financial flexibility.',
   },
   'london-100k': {
@@ -162,7 +162,7 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 100_000,
     currency: 'GBP',
     headlineSummary: 'Crossing the six-figure £100,000 milestone places an individual in the top 4% of UK taxpayers.',
-    lifestyleContext: 'Generates ~£5,650/month net take-home (taking into account the personal allowance reduction taper above £100k). Affords prime central housing and over £2,200/mo in savings.',
+    lifestyleContext: 'Generates ~£5,655/month net take-home (taking into account the personal allowance reduction taper above £100k). Affords prime central housing and over £1,430/mo in savings.',
     benchmarkContext: 'Benchmark compensation for senior bankers, corporate solicitors, and lead tech architects.',
   },
   'manchester-50k': {
@@ -213,8 +213,8 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     regionId: 'AE-DXB',
     salaryMajor: 300_000,
     currency: 'AED',
-    headlineSummary: 'With 0% statutory personal income tax, 300,000 AED/year (25,000 AED/month) offers an exceptional quality of life in Dubai.',
-    lifestyleContext: 'Full 25,000 AED remains 100% tax-free. After comfortable modern accommodation (7,500 AED), utilities, car leasing, and lifestyle dining, monthly uncommitted savings exceed 10,000 AED.',
+    headlineSummary: 'With 0% statutory personal income tax on employment income, 300,000 AED/year (25,000 AED/month) offers an exceptional quality of life in Dubai.',
+    lifestyleContext: 'Monthly gross of 25,000 AED is fully received with 0% payroll tax deductions. After modern 1-bedroom rent (~7,200 AED), utilities with 5% housing fee, car lease, and lifestyle dining, monthly uncommitted savings average ~9,200 AED.',
     benchmarkContext: 'Represents a senior managerial or professional tier package in the UAE corporate landscape.',
   },
   'dubai-500k': {
@@ -254,7 +254,7 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 100_000,
     currency: 'CAD',
     headlineSummary: 'CA$100,000 is a solid above-average milestone in the Greater Toronto Area.',
-    lifestyleContext: 'Delivers approximately CA$6,150/month take-home under CRA federal and Ontario tax tables. After 1-bedroom downtown rent (~CA$2,400) and TTC transit, single earners retain ~CA$1,850/month.',
+    lifestyleContext: 'Delivers approximately CA$6,025/month take-home under CRA federal and Ontario tax tables plus CPP/EI. After 1-bedroom downtown rent (~CA$2,450) and TTC transit, single earners retain ~CA$1,829/month.',
     benchmarkContext: 'Sits substantially above Ontario median individual income (~CA$58,000), though homeownership requires dual income.',
   },
   'vancouver-100k': {
@@ -294,8 +294,8 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 120_000,
     currency: 'AUD',
     headlineSummary: 'A$120,000 is an upper-middle income in Australia, offering solid financial comfort in Sydney.',
-    lifestyleContext: 'Generates roughly A$7,340/month net after ATO revised Stage 3 tax and Medicare levy. After typical Eastern Suburbs or Inner West rent (~A$2,800/mo) and Opal transit, monthly surplus is ~A$2,200.',
-    benchmarkContext: 'Significantly higher than national full-time average wage (~A$98,000).',
+    lifestyleContext: 'Generates roughly A$7,425/month net after ATO revised Stage 3 tax and Medicare levy, plus 11.5% mandatory superannuation paid by employers. After typical Inner West or Eastern Suburbs rent (~A$2,950/mo) and Opal transit, monthly surplus is ~A$2,375.',
+    benchmarkContext: 'Significantly higher than national full-time average wage (~A$85,000).',
   },
   'melbourne-100k': {
     slug: 'melbourne-100k',
@@ -322,8 +322,8 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 80_000,
     currency: 'EUR',
     headlineSummary: '€80,000 per year is an excellent upper-tier professional salary in Berlin.',
-    lifestyleContext: 'Produces approximately €4,050/month net under Tax Class 1 after German statutory income tax and full social insurance. With Berlin rent (~€1,400), savings exceed €1,500/month.',
-    benchmarkContext: 'Far above the Berlin median wage (~€48,000), offering high purchasing power and cultural lifestyle flexibility.',
+    lifestyleContext: 'Produces approximately €3,900/month net under Tax Class 1 after German statutory income tax and full four-pillar social insurance. With Berlin rent (~€1,350 Warmmiete) and €49 Deutschlandticket, savings reach ~€1,301/month.',
+    benchmarkContext: 'Far above the Berlin median wage (~€46,000), offering high purchasing power and cultural lifestyle flexibility.',
   },
   'munich-90k': {
     slug: 'munich-90k',
@@ -414,7 +414,7 @@ export const SALARY_GUIDES: Record<string, SalaryGuide> = {
     salaryMajor: 120_000,
     currency: 'SGD',
     headlineSummary: 'Due to Singapore’s ultra-low progressive tax brackets, S$120,000 per year delivers massive take-home pay.',
-    lifestyleContext: 'Effective IRAS tax is only ~6.5%, leaving over S$9,350/month. After condo rental (~S$3,600) and MRT transit, single professionals retain over S$3,500/month in net savings.',
+    lifestyleContext: 'Effective IRAS tax is only ~6.6%, leaving ~S$9,337/month for an EP expat resident (0% CPF). After city-fringe condo rental (~S$3,400) and MRT transit, single professionals retain over S$3,600/month in net savings.',
     benchmarkContext: 'Well above Singapore median resident monthly income (~S$5,200), providing premier expatriate living standards.',
   },
   'singapore-180k': {
