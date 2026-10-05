@@ -1312,7 +1312,7 @@ var EVIDENCE_SOURCES = {
     effectiveDate: "2024-01-01",
     verifiedAt: "2026-01-12",
     verifiedBy: "Senior Financial Systems Engineer",
-    notes: "NYS graduated income tax rates from 4.0% to 10.9%, NYS Standard Deduction $8,000 single / $16,050 married filing jointly."
+    notes: "NYS graduated income tax rates from 4.0% to 10.9% (lower brackets 4.0%, 4.5%, 5.25%, 5.5%, 6.0%; upper brackets 6.85%, 9.65%, 10.3%, 10.9%). NYS Standard Deduction $8,000 single / $16,050 married filing jointly."
   },
   "us-nyc-tax-2024": {
     id: "us-nyc-tax-2024",
@@ -1327,6 +1327,63 @@ var EVIDENCE_SOURCES = {
     verifiedAt: "2026-01-12",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "NYC resident income tax rates graduated from 3.078% to 3.876% applied on NY taxable income."
+  },
+  // --- UNITED STATES 2025 ---
+  "us-irs-tax-2025": {
+    id: "us-irs-tax-2025",
+    organization: "Internal Revenue Service (IRS)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "IRS Rev. Proc. 2024-40 (2025 Inflation-adjusted Tax Brackets & Standard Deductions)",
+    url: "https://www.irs.gov/pub/irs-drop/rp-24-40.pdf",
+    jurisdiction: "United States (Federal)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-11-01",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2026-01-10",
+    verifiedBy: "Senior Financial Systems Engineer",
+    notes: "2025 statutory 7-bracket schedule (10%, 12%, 22%, 24%, 32%, 35%, 37%). Bracket thresholds: single $11,925/$48,475/$103,350/$197,300/$250,525/$626,350. Standard Deduction $15,000 single / $30,000 MFJ / $22,500 HoH."
+  },
+  "us-ssa-fica-2025": {
+    id: "us-ssa-fica-2025",
+    organization: "Social Security Administration (SSA)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Social Security Administration Fact Sheet: 2025 Social Security Changes (OASDI Contribution & Benefit Base)",
+    url: "https://www.ssa.gov/news/press/factsheets/colafacts2025.pdf",
+    jurisdiction: "United States (Federal FICA)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2024-10-15",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2026-01-10",
+    verifiedBy: "Senior Financial Systems Engineer",
+    notes: "OASDI 6.2% on wages up to $176,100 maximum annual wage base for 2025. Medicare 1.45% uncapped + 0.9% Additional Medicare Tax above $200,000 (single) / $250,000 (MFJ)."
+  },
+  "us-nys-tax-2025": {
+    id: "us-nys-tax-2025",
+    organization: "New York State Department of Taxation and Finance",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Form IT-201-I Instructions for Form IT-201 Full-Year Resident Income Tax Return \u2014 2025 edition",
+    url: "https://www.tax.ny.gov/forms/income_cur_forms.htm",
+    jurisdiction: "New York State",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2025-01-15",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2026-01-12",
+    verifiedBy: "Senior Financial Systems Engineer",
+    notes: "NYS 2025 graduated income tax rates from 4.0% to 10.9% (lower brackets 4.0%, 4.5%, 5.25%, 5.5%, 6.0% up to $215,400; upper brackets 6.85%, 9.65%, 10.3%, 10.9%). NYS Standard Deduction $8,000 single / $16,050 MFJ. Pre-2026 rate schedule per NYS Tax Law \xA7 601."
+  },
+  "us-nyc-tax-2025": {
+    id: "us-nyc-tax-2025",
+    organization: "New York City Department of Finance",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "NYC Personal Income Tax Tables for NYC Residents (Admin Code \xA7 11-1701) \u2014 Tax Year 2025",
+    url: "https://www.tax.ny.gov/pit/file/tax_tables/nyc_tables.htm",
+    jurisdiction: "New York City (Local Resident)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2025-01-15",
+    effectiveDate: "2025-01-01",
+    verifiedAt: "2026-01-12",
+    verifiedBy: "Senior Financial Systems Engineer",
+    notes: "NYC resident income tax rates graduated from 3.078% to 3.876% applied on NY taxable income. Rates unchanged from 2024."
   },
   "us-hud-nyc-fmr-2024": {
     id: "us-hud-nyc-fmr-2024",
@@ -2201,15 +2258,15 @@ var EVIDENCE_SOURCES = {
     id: "us-nys-tax-2026",
     organization: "New York State Department of Taxation and Finance",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Form IT-201-I Instructions for Form IT-201 (NYS Tax Law \xA7 601 / \xA7 614)",
+    canonicalReference: "Form IT-201-I Instructions for Form IT-201 (NYS Tax Law \xA7 601 / \xA7 614) \u2014 2026 Rate Schedule with Enacted Lower-Bracket Reductions",
     url: "https://www.tax.ny.gov/forms/income_cur_forms.htm",
     jurisdiction: "New York State",
     reliabilityTier: "Tier 1",
-    retrievedAt: "2024-12-01",
+    retrievedAt: "2025-12-01",
     effectiveDate: "2026-01-01",
     verifiedAt: "2026-01-12",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "NYS graduated income tax rates 4.0% to 10.9%, NYS Standard Deduction $8,000 single / $16,050 MFJ."
+    notes: "NYS 2026 enacted lower-bracket rate reductions: 3.90% (first $8,500), 4.40% ($8,501\u2013$11,700), 5.15% ($11,701\u2013$13,900), 5.40% ($13,901\u2013$80,650), 5.90% ($80,651\u2013$215,400). Upper brackets unchanged: 6.85% (\u2013$1,077,550), 9.65% (\u2013$5M), 10.30% (\u2013$25M), 10.90% (above). NYS Standard Deduction $8,000 single / $16,050 MFJ."
   },
   "us-nyc-tax-2026": {
     id: "us-nyc-tax-2026",
@@ -5408,12 +5465,23 @@ var NYS_STANDARD_DEDUCTION = {
   married_filing_jointly: 1605e3,
   head_of_household: 112e4
 };
-var NYS_BRACKETS_SINGLE = [
+var NYS_BRACKETS_SINGLE_2025 = [
   { upToMinor: 85e4, rate: 0.04 },
   { upToMinor: 117e4, rate: 0.045 },
   { upToMinor: 139e4, rate: 0.0525 },
   { upToMinor: 8065e3, rate: 0.055 },
   { upToMinor: 2154e4, rate: 0.06 },
+  { upToMinor: 107755e3, rate: 0.0685 },
+  { upToMinor: 5e8, rate: 0.0965 },
+  { upToMinor: 25e8, rate: 0.103 },
+  { upToMinor: Infinity, rate: 0.109 }
+];
+var NYS_BRACKETS_SINGLE_2026 = [
+  { upToMinor: 85e4, rate: 0.039 },
+  { upToMinor: 117e4, rate: 0.044 },
+  { upToMinor: 139e4, rate: 0.0515 },
+  { upToMinor: 8065e3, rate: 0.054 },
+  { upToMinor: 2154e4, rate: 0.059 },
   { upToMinor: 107755e3, rate: 0.0685 },
   { upToMinor: 5e8, rate: 0.0965 },
   { upToMinor: 25e8, rate: 0.103 },
@@ -5490,7 +5558,8 @@ var UsTaxAdapter = class {
     if (isNewYorkState) {
       const nysStdDeductionMinor = NYS_STANDARD_DEDUCTION[profile.filingStatus];
       nysTaxableMinor = Math.max(0, adjustedGrossMinor - nysStdDeductionMinor);
-      const stateCalc = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE);
+      const nysBrackets = taxYear === 2026 ? NYS_BRACKETS_SINGLE_2026 : NYS_BRACKETS_SINGLE_2025;
+      const stateCalc = calculateGraduatedTax(nysTaxableMinor, nysBrackets);
       stateTaxMinor = stateCalc.taxMinor;
       stateMarginal = stateCalc.topMarginalRate;
       if (isNycResident) {

@@ -35,9 +35,11 @@ function runTests() {
 
   assert(Math.abs(fedMajor - 13170) <= 1, `2026 Federal tax should be ~$13,170 (actual: $${fedMajor})`);
   assert(Math.abs(ficaMajor - 7650) <= 1, `2026 FICA should be exact $7,650 (actual: $${ficaMajor})`);
-  assert(Math.abs(nysMajor - 4952) <= 2, `2026 NYS tax should be ~$4,952 (actual: $${nysMajor})`);
+  // 2026 NYS enacted lower-bracket rates: 3.90%/4.40%/5.15%/5.40%/5.90% (Rev. NYS Tax Law § 601 2026)
+  // NYS taxable=92000: 3.90%×8500+4.40%×3200+5.15%×2200+5.40%×66750+5.90%×11350 = 4859.75
+  assert(Math.abs(nysMajor - 4860) <= 2, `2026 NYS tax should be ~$4,860 (actual: $${nysMajor})`);
   assert(Math.abs(nycMajor - 3441) <= 2, `2026 NYC resident local tax should be ~$3,441 (actual: $${nycMajor})`);
-  assert(Math.abs(netMajor - 70787) <= 5, `2026 Take home should be ~$70,787 (actual: $${netMajor})`);
+  assert(Math.abs(netMajor - 70879) <= 5, `2026 Take home should be ~$70,879 (actual: $${netMajor})`);
 
   // Test 2b: Historical Isolation - $100,000 in New York City (Single, 2024)
   const nyc2024Outcome = SalaryWorthCalculator.calculate({

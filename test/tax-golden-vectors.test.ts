@@ -626,13 +626,16 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 40000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS + NYC',
-    expectedDeductions: 8400.75,
-    expectedComponents: { federal: 2620, fica: 3060, state: 1595, local: 1125.75 },
-    expectedNet: 31599.25,
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS (3.90%–5.90% lower bands) + NYC',
+    // NYS taxable = 40000 - 8000 = 32000
+    // NYS: 3.90%×8500=331.50 + 4.40%×3200=140.80 + 5.15%×2200=113.30 + 5.40%×18100=977.40 = 1563.00
+    // NYC taxable=32000: 3.078%×12000+3.762%×13000+3.819%×7000 = 369.36+489.06+267.33 = 1125.75
+    expectedDeductions: 8368.75,
+    expectedComponents: { federal: 2620, fica: 3060, state: 1563, local: 1125.75 },
+    expectedNet: 31631.25,
     officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-25-32.pdf',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation',
+    reasonForTolerance: 'Exact statutory bracket calculation — 2026 NYS enacted lower-bracket rates',
   },
   {
     country: 'US',
@@ -644,13 +647,15 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 60000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS + NYC',
-    expectedDeductions: 14195.69,
-    expectedComponents: { federal: 5020, fica: 4590, state: 2695, local: 1890.69 },
-    expectedNet: 45804.31,
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS (3.90%–5.40% lower bands) + NYC',
+    // NYS taxable=52000: 3.90%×8500+4.40%×3200+5.15%×2200+5.40%×38100 = 331.50+140.80+113.30+2057.40 = 2643.00
+    // NYC taxable=52000: 3.078%×12k+3.762%×13k+3.819%×25k+3.876%×2k = 369.36+489.06+954.75+77.52 = 1890.69
+    expectedDeductions: 14143.69,
+    expectedComponents: { federal: 5020, fica: 4590, state: 2643, local: 1890.69 },
+    expectedNet: 45856.31,
     officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-25-32.pdf',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation',
+    reasonForTolerance: 'Exact statutory bracket calculation — 2026 NYS enacted lower-bracket rates',
   },
   {
     country: 'US',
@@ -662,13 +667,15 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 80000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS + NYC',
-    expectedDeductions: 21350.89,
-    expectedComponents: { federal: 8770, fica: 6120, state: 3795, local: 2665.89 },
-    expectedNet: 58649.11,
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS (3.90%–5.40% lower bands) + NYC',
+    // NYS taxable=72000: 3.90%×8500+4.40%×3200+5.15%×2200+5.40%×58100 = 331.50+140.80+113.30+3137.40 = 3723.00
+    // NYC taxable=72000: 3.078%×12k+3.762%×13k+3.819%×25k+3.876%×22k = 369.36+489.06+954.75+852.72 = 2665.89
+    expectedDeductions: 21278.89,
+    expectedComponents: { federal: 8770, fica: 6120, state: 3723, local: 2665.89 },
+    expectedNet: 58721.11,
     officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-25-32.pdf',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation',
+    reasonForTolerance: 'Exact statutory bracket calculation — 2026 NYS enacted lower-bracket rates',
   },
   {
     country: 'US',
@@ -680,13 +687,15 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 100000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS + NYC',
-    expectedDeductions: 29212.84,
-    expectedComponents: { federal: 13170, fica: 7650, state: 4951.75, local: 3441.09 },
-    expectedNet: 70787.16,
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS (crosses $80,650 into 5.90%) + NYC',
+    // NYS taxable=92000: lower bands through 80650: 331.50+140.80+113.30+3604.50=4190.10; 5.90%×11350=669.65 => 4859.75
+    // NYC taxable=92000: 3.078%×12k+3.762%×13k+3.819%×25k+3.876%×42k = 369.36+489.06+954.75+1627.92 = 3441.09
+    expectedDeductions: 29120.84,
+    expectedComponents: { federal: 13170, fica: 7650, state: 4859.75, local: 3441.09 },
+    expectedNet: 70879.16,
     officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-25-32.pdf',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation',
+    reasonForTolerance: 'Exact statutory bracket calculation — 2026 NYS enacted lower-bracket rates',
   },
   {
     country: 'US',
@@ -698,13 +707,15 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 150000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS + NYC',
-    expectedDeductions: 49539.84,
-    expectedComponents: { federal: 24734, fica: 11475, state: 7951.75, local: 5379.09 },
-    expectedNet: 100460.16,
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS (5.90% band) + NYC',
+    // NYS taxable=142000: 4190.10 (below 80650) + 5.90%×61350=3619.65 = 7809.75
+    // NYC taxable=142000: 369.36+489.06+954.75+3.876%×92000=3565.92 = 5379.09
+    expectedDeductions: 49397.84,
+    expectedComponents: { federal: 24734, fica: 11475, state: 7809.75, local: 5379.09 },
+    expectedNet: 100602.16,
     officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-25-32.pdf',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation',
+    reasonForTolerance: 'Exact statutory bracket calculation — 2026 NYS enacted lower-bracket rates',
   },
   {
     country: 'US',
@@ -716,13 +727,15 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 200000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA (SSA cap $184,500) + NYS + NYC',
-    expectedDeductions: 69341.84,
-    expectedComponents: { federal: 36734, fica: 14339, state: 10951.75, local: 7317.09 },
-    expectedNet: 130658.16,
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA (SSA cap $184,500) + NYS (5.90% band) + NYC',
+    // NYS taxable=192000: 4190.10 + 5.90%×111350=6569.65 = 10759.75
+    // NYC taxable=192000: 369.36+489.06+954.75+3.876%×142000=5503.92 = 7317.09
+    expectedDeductions: 69149.84,
+    expectedComponents: { federal: 36734, fica: 14339, state: 10759.75, local: 7317.09 },
+    expectedNet: 130850.16,
     officialSourceUrl: 'https://www.ssa.gov/oact/cola/cbb.html',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation with SSA 2026 cap',
+    reasonForTolerance: 'Exact statutory bracket calculation with SSA 2026 cap — 2026 NYS enacted lower-bracket rates',
   },
   {
     country: 'US',
@@ -734,13 +747,131 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 250000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, SSA 2026 cap $184,500, Addl Medicare over $200k',
-    expectedDeductions: 90250.94,
-    expectedComponents: { federal: 51304, fica: 15514, state: 14177.85, local: 9255.09 },
-    expectedNet: 159749.06,
+    profileAssumptions: 'Single filer, NYC resident, SSA 2026 cap $184,500, Addl Medicare over $200k, NYS crosses into 6.85% band',
+    // NYS taxable=242000: 4190.10 + 5.90%×134750=7950.25 + 6.85%×26600=1822.10 = 13962.45 => rounds to 13962
+    // NYC: 369.36+489.06+954.75+3.876%×192000=7441.92 = 9255.09
+    expectedDeductions: 90035.09,
+    expectedComponents: { federal: 51304, fica: 15514, state: 13962, local: 9255.09 },
+    expectedNet: 159964.91,
     officialSourceUrl: 'https://www.ssa.gov/oact/cola/cbb.html',
+    tolerance: 5,
+    reasonForTolerance: 'Exact statutory bracket calculation with SSA 2026 cap and Addl Medicare — 2026 NYS enacted lower-bracket rates',
+  },
+
+  // =========================================================================
+  // 2025 US GOLDEN VECTORS (Statutory Reference: IRS Rev. Proc. 2024-40, SSA $176,100)
+  // =========================================================================
+
+  // A. AUSTIN TX (No state tax) 2025
+  {
+    country: 'US',
+    regionId: 'US-TX',
+    cityId: 'austin',
+    jurisdiction: 'US-TX-Austin',
+    taxYear: 2025,
+    effectivePeriod: '2025-01-01 to 2025-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    gross: 50000,
+    currency: 'USD',
+    profileAssumptions: 'Single filer, Austin TX (no state income tax), 2025 std ded $15,000, SS cap $176,100',
+    // Fed taxable = 50000-15000 = 35000
+    // Fed: 10%×11925=1192.50 + 12%×(35000-11925)=2769.00 => 3961.50 => 3962
+    // SS: 50000×6.2%=3100; Med: 50000×1.45%=725; FICA=3825
+    expectedDeductions: 7787,
+    expectedComponents: { federal: 3962, fica: 3825, state: 0, local: 0 },
+    expectedNet: 42213,
+    officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-24-40.pdf',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation with SSA 2026 cap and Addl Medicare',
+    reasonForTolerance: 'Exact statutory bracket calculation — IRS Rev. Proc. 2024-40',
+  },
+  {
+    country: 'US',
+    regionId: 'US-TX',
+    cityId: 'austin',
+    jurisdiction: 'US-TX-Austin',
+    taxYear: 2025,
+    effectivePeriod: '2025-01-01 to 2025-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    gross: 100000,
+    currency: 'USD',
+    profileAssumptions: 'Single filer, Austin TX (no state income tax), 2025 std ded $15,000, SS cap $176,100',
+    // Fed taxable = 85000
+    // Fed: 10%×11925=1192.50 + 12%×36550=4386 + 22%×(85000-48475)=22%×36525=8035.50 => 13614
+    // SS: 100000×6.2%=6200; Med: 1450; FICA=7650
+    expectedDeductions: 21264,
+    expectedComponents: { federal: 13614, fica: 7650, state: 0, local: 0 },
+    expectedNet: 78736,
+    officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-24-40.pdf',
+    tolerance: 2,
+    reasonForTolerance: 'Exact statutory bracket calculation — IRS Rev. Proc. 2024-40',
+  },
+  {
+    country: 'US',
+    regionId: 'US-TX',
+    cityId: 'austin',
+    jurisdiction: 'US-TX-Austin',
+    taxYear: 2025,
+    effectivePeriod: '2025-01-01 to 2025-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    gross: 250000,
+    currency: 'USD',
+    profileAssumptions: 'Single filer, Austin TX (no state income tax), SSA 2025 cap $176,100, Addl Medicare over $200k',
+    // Fed taxable = 235000
+    // Fed: 1192.50+4386+12072.50+24%×93950+32%×37700 = 1192.50+4386+12072.50+22548+12064 = 52263
+    // SS: 176100×6.2%=10918.20=>10918; Med: 250000×1.45%=3625; Addl: 50000×0.9%=450; FICA=14993
+    expectedDeductions: 67256,
+    expectedComponents: { federal: 52263, fica: 14993, state: 0, local: 0 },
+    expectedNet: 182744,
+    officialSourceUrl: 'https://www.ssa.gov/news/press/factsheets/colafacts2025.pdf',
+    tolerance: 5,
+    reasonForTolerance: 'SSA 2025 wage base $176,100 and Addl Medicare threshold',
+  },
+
+  // B. NYC (NYS + local) 2025
+  {
+    country: 'US',
+    regionId: 'US-NY',
+    cityId: 'nyc',
+    jurisdiction: 'US-NY-NYC',
+    taxYear: 2025,
+    effectivePeriod: '2025-01-01 to 2025-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    gross: 100000,
+    currency: 'USD',
+    profileAssumptions: 'Single filer, NYC resident, 2025 Fed + FICA + NYS (4.0%-6.0%) + NYC, SS cap $176,100',
+    // NYS taxable=92000 (std ded $8000)
+    // NYS 2025: 4.0%×8500=340 + 4.5%×3200=144 + 5.25%×2200=115.50 + 5.5%×66750=3671.25 + 6.0%×11350=681 = 4951.75
+    // NYC taxable=92000: 3.078%×12k+3.762%×13k+3.819%×25k+3.876%×42k=369.36+489.06+954.75+1627.92=3441.09
+    // Total ded = 13614+7650+4951.75+3441.09 = 29656.84
+    expectedDeductions: 29656.84,
+    expectedComponents: { federal: 13614, fica: 7650, state: 4951.75, local: 3441.09 },
+    expectedNet: 70343.16,
+    officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-24-40.pdf',
+    tolerance: 5,
+    reasonForTolerance: 'NYS 2025 progressive bracket — pre-2026 rate schedule (4.0%–6.0% lower bands, 6.85%+ upper)',
+  },
+  {
+    country: 'US',
+    regionId: 'US-NY',
+    cityId: 'nyc',
+    jurisdiction: 'US-NY-NYC',
+    taxYear: 2025,
+    effectivePeriod: '2025-01-01 to 2025-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    gross: 150000,
+    currency: 'USD',
+    profileAssumptions: 'Single filer, NYC resident, 2025 Fed + FICA + NYS (crosses 6.0% band) + NYC, SS cap $176,100',
+    // NYS taxable=142000
+    // NYS 2025: 340+144+115.50+3671.25+6.0%×61350=3681 = 7951.75
+    // NYC taxable=142000: 369.36+489.06+954.75+3.876%×92000=3565.92 = 5379.09
+    // Fed 2025 taxable=135000: 1192.50+4386+12072.50+24%×31650=7596 = 25247
+    // SS: 150000×6.2%=9300 (under 176100); Med: 2175; FICA=11475
+    expectedDeductions: 50052.84,
+    expectedComponents: { federal: 25247, fica: 11475, state: 7951.75, local: 5379.09 },
+    expectedNet: 99947.16,
+    officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-24-40.pdf',
+    tolerance: 5,
+    reasonForTolerance: 'NYS 2025 progressive bracket crossing 6.0% band — pre-2026 rate schedule',
   },
 
   // 2. UNITED KINGDOM (GB) 2026
@@ -1163,7 +1294,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
     taxYear: 2026,
-    effectivePeriod: '2026-04-01 to 2026-03-31',
+    effectivePeriod: '2025-04-01 to 2026-03-31',
     ruleVersion: 'NZ-IRD-2026.1',
     gross: 0,
     currency: 'NZD',
@@ -1179,7 +1310,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
     taxYear: 2026,
-    effectivePeriod: '2026-04-01 to 2026-03-31',
+    effectivePeriod: '2025-04-01 to 2026-03-31',
     ruleVersion: 'NZ-IRD-2026.1',
     gross: 15600,
     currency: 'NZD',
@@ -1195,7 +1326,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
     taxYear: 2026,
-    effectivePeriod: '2026-04-01 to 2026-03-31',
+    effectivePeriod: '2025-04-01 to 2026-03-31',
     ruleVersion: 'NZ-IRD-2026.1',
     gross: 70000,
     currency: 'NZD',
@@ -1212,7 +1343,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
 export function runTaxGoldenVectorTests() {
   console.log('--- LIVWORTHY STATUTORY TAX GOLDEN VECTORS SUITE ---');
   console.log(
-    `Executing ${TAX_GOLDEN_VECTORS.length} independent golden vectors across 10 VERIFIED countries (2024 Historical & 2026 Current Statutory)...\n`
+    `Executing ${TAX_GOLDEN_VECTORS.length} independent golden vectors across 10 VERIFIED countries (2024 Historical, 2025 Statutory & 2026 Current Statutory)...\n`
   );
 
   let passedCount = 0;

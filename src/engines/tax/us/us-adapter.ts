@@ -150,7 +150,12 @@ const NYS_STANDARD_DEDUCTION: Record<FilingStatus, number> = {
   head_of_household: 11_200_00,
 };
 
-const NYS_BRACKETS_SINGLE: Bracket[] = [
+// ==========================================
+// NYS 2024 / 2025 Rate Schedule (NYS Tax Law § 601 — legacy lower-bracket rates)
+// Official source: NYS Form IT-201-I Instructions for 2024 & 2025
+// Rates: 4.0%, 4.5%, 5.25%, 5.5%, 6.0%, 6.85%, 9.65%, 10.30%, 10.90%
+// ==========================================
+const NYS_BRACKETS_SINGLE_2025: Bracket[] = [
   { upToMinor: 8_500_00, rate: 0.040 },
   { upToMinor: 11_700_00, rate: 0.045 },
   { upToMinor: 13_900_00, rate: 0.0525 },
@@ -162,7 +167,26 @@ const NYS_BRACKETS_SINGLE: Bracket[] = [
   { upToMinor: Infinity, rate: 0.109 },
 ];
 
+// ==========================================
+// NYS 2026 Rate Schedule (NYS Tax Law § 601 — enacted 2026 lower-bracket reductions)
+// Official source: NYS DTF Form IT-201-I Instructions for 2026
+// New lower-bracket rates: 3.90%, 4.40%, 5.15%, 5.40%, 5.90%
+// High-income brackets unchanged: 6.85%, 9.65%, 10.30%, 10.90%
+// ==========================================
+const NYS_BRACKETS_SINGLE_2026: Bracket[] = [
+  { upToMinor: 8_500_00, rate: 0.0390 },
+  { upToMinor: 11_700_00, rate: 0.0440 },
+  { upToMinor: 13_900_00, rate: 0.0515 },
+  { upToMinor: 80_650_00, rate: 0.0540 },
+  { upToMinor: 215_400_00, rate: 0.0590 },
+  { upToMinor: 1_077_550_00, rate: 0.0685 },
+  { upToMinor: 5_000_000_00, rate: 0.0965 },
+  { upToMinor: 25_000_000_00, rate: 0.1030 },
+  { upToMinor: Infinity, rate: 0.1090 },
+];
+
 // NYC Resident Personal Income Tax Brackets (Single)
+// Source: NYC Admin Code § 11-1701 — unchanged for 2025 and 2026
 const NYC_BRACKETS_SINGLE: Bracket[] = [
   { upToMinor: 12_000_00, rate: 0.03078 },
   { upToMinor: 25_000_00, rate: 0.03762 },
@@ -282,12 +306,14 @@ export class UsTaxAdapter implements TaxAdapter {
     if (isNewYorkState) {
       const nysStdDeductionMinor = NYS_STANDARD_DEDUCTION[profile.filingStatus];
       nysTaxableMinor = Math.max(0, adjustedGrossMinor - nysStdDeductionMinor);
-      const stateCalc = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE);
+      // Select the correct NYS rate schedule for the tax year
+      const nysBrackets = taxYear === 2026 ? NYS_BRACKETS_SINGLE_2026 : NYS_BRACKETS_SINGLE_2025;
+      const stateCalc = calculateGraduatedTax(nysTaxableMinor, nysBrackets);
       stateTaxMinor = stateCalc.taxMinor;
       stateMarginal = stateCalc.topMarginalRate;
 
       if (isNycResident) {
-        // NYC Resident tax applies to NY taxable income
+        // NYC Resident tax applies to NY taxable income (same schedule 2024–2026)
         const localCalc = calculateGraduatedTax(nysTaxableMinor, NYC_BRACKETS_SINGLE);
         localTaxMinor = localCalc.taxMinor;
         localMarginal = localCalc.topMarginalRate;
