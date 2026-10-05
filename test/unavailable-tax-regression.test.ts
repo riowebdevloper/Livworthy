@@ -42,7 +42,7 @@ export function runUnavailableTaxRegressionTests() {
     taxProfile: {
       filingStatus: 'single',
       dependentsCount: 0,
-      taxYear: 2025,
+      taxYear: 2026,
     },
     household: {
       adults: 1,
@@ -88,31 +88,31 @@ export function runUnavailableTaxRegressionTests() {
     `evidenceSourceIds must NOT contain tax sources when tax calculation is unavailable`
   );
 
-  // 1B. Supported jurisdiction with future tax year (US / NYC TY 2026)
-  const nyc2026Scenario: LivWorthScenario = {
+  // 1B. Supported jurisdiction with future tax year (US / NYC TY 2027)
+  const nycFutureScenario: LivWorthScenario = {
     ...DEFAULT_NYC_100K_SCENARIO,
     taxProfile: {
       ...DEFAULT_NYC_100K_SCENARIO.taxProfile,
-      taxYear: 2026,
+      taxYear: 2027,
     },
   };
 
-  const nyc2026Outcome = SalaryWorthCalculator.calculate(nyc2026Scenario);
+  const nycFutureOutcome = SalaryWorthCalculator.calculate(nycFutureScenario);
   assert(
-    nyc2026Outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE',
-    `TY 2026 request must return TAX_CALCULATION_UNAVAILABLE (got ${nyc2026Outcome.tax.status})`
+    nycFutureOutcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE',
+    `TY 2027 request must return TAX_CALCULATION_UNAVAILABLE (got ${nycFutureOutcome.tax.status})`
   );
   assert(
-    nyc2026Outcome.takeHomeAnnual.amountMinor === 0,
-    `TY 2026 takeHomeAnnual must be 0 to prevent displaying gross as net (got ${nyc2026Outcome.takeHomeAnnual.amountMinor})`
+    nycFutureOutcome.takeHomeAnnual.amountMinor === 0,
+    `TY 2027 takeHomeAnnual must be 0 to prevent displaying gross as net (got ${nycFutureOutcome.takeHomeAnnual.amountMinor})`
   );
   assert(
-    nyc2026Outcome.savingsCapacityAnnual.amountMinor === 0,
-    `TY 2026 savingsCapacityAnnual must be 0 to prevent deriving savings from unverified forward taxes`
+    nycFutureOutcome.savingsCapacityAnnual.amountMinor === 0,
+    `TY 2027 savingsCapacityAnnual must be 0 to prevent deriving savings from unverified forward taxes`
   );
   assert(
-    nyc2026Outcome.taxRuleVersion === undefined,
-    `TY 2026 outcome must NOT display a verified taxRuleVersion`
+    nycFutureOutcome.taxRuleVersion === undefined,
+    `TY 2027 outcome must NOT display a verified taxRuleVersion`
   );
 
   // =========================================================================
@@ -148,15 +148,15 @@ export function runUnavailableTaxRegressionTests() {
     `Target tier required gross must be 0 when tax is unavailable`
   );
 
-  // 2B. Supported jurisdiction with TY 2026
-  const neededNyc2026 = SalaryNeededCalculator.calculate(nyc2026Scenario, createMoney(1000, 'USD'));
+  // 2B. Supported jurisdiction with TY 2027
+  const neededNycFuture = SalaryNeededCalculator.calculate(nycFutureScenario, createMoney(1000, 'USD'));
   assert(
-    neededNyc2026.status === 'TAX_CALCULATION_UNAVAILABLE',
-    `SalaryNeededCalculator must return status 'TAX_CALCULATION_UNAVAILABLE' for TY 2026 (got ${neededNyc2026.status})`
+    neededNycFuture.status === 'TAX_CALCULATION_UNAVAILABLE',
+    `SalaryNeededCalculator must return status 'TAX_CALCULATION_UNAVAILABLE' for TY 2027 (got ${neededNycFuture.status})`
   );
   assert(
-    neededNyc2026.requiredGrossAnnual.amountMinor === 0,
-    `SalaryNeededCalculator must return 0 required gross for TY 2026`
+    neededNycFuture.requiredGrossAnnual.amountMinor === 0,
+    `SalaryNeededCalculator must return 0 required gross for TY 2027`
   );
 
   // =========================================================================
@@ -164,7 +164,7 @@ export function runUnavailableTaxRegressionTests() {
   // =========================================================================
   console.log('\n[3/5] Testing Comparisons with Unavailable Tax...');
 
-  // 3A. One city unsupported (NYC TY 2025 vs Mumbai TY 2025)
+  // 3A. One city unsupported (NYC TY 2026 vs Mumbai TY 2026)
   const compOneUnsupported = ComparisonEngine.compare(
     DEFAULT_NYC_100K_SCENARIO,
     mumbaiScenario,
@@ -198,9 +198,9 @@ export function runUnavailableTaxRegressionTests() {
     `summaryNarrative must explicitly state that comparative surplus cannot be derived when tax is unavailable`
   );
 
-  // 3B. One city future tax year (NYC TY 2026 vs London TY 2025)
+  // 3B. One city future tax year (NYC TY 2027 vs London TY 2026)
   const compFutureYear = ComparisonEngine.compare(
-    nyc2026Scenario,
+    nycFutureScenario,
     DEFAULT_LONDON_SCENARIO,
     'USD',
     undefined,
@@ -209,19 +209,19 @@ export function runUnavailableTaxRegressionTests() {
 
   assert(
     compFutureYear.status === 'TAX_CALCULATION_UNAVAILABLE',
-    `Comparison with TY 2026 scenario must return status 'TAX_CALCULATION_UNAVAILABLE' (got ${compFutureYear.status})`
+    `Comparison with TY 2027 scenario must return status 'TAX_CALCULATION_UNAVAILABLE' (got ${compFutureYear.status})`
   );
   assert(
     compFutureYear.convertedA.takeHomeAnnual.amountMinor === 0,
-    `Converted takeHomeAnnual for TY 2026 city must be 0`
+    `Converted takeHomeAnnual for TY 2027 city must be 0`
   );
   assert(
     compFutureYear.delta.takeHomeAnnualDiff.amountMinor === 0,
-    `takeHomeAnnualDiff must be 0 when TY 2026 tax is unverified`
+    `takeHomeAnnualDiff must be 0 when TY 2027 tax is unverified`
   );
   assert(
     compFutureYear.delta.disposableIncomeAnnualDiff.amountMinor === 0,
-    `disposableIncomeAnnualDiff must be 0 when TY 2026 tax is unverified`
+    `disposableIncomeAnnualDiff must be 0 when TY 2027 tax is unverified`
   );
 
   // =========================================================================
@@ -261,19 +261,19 @@ export function runUnavailableTaxRegressionTests() {
   console.log('\n[5/5] Testing Statutory Verification Flags & Year-Gates...');
 
   // Future year check across TaxRegistry
-  const taxResult2026 = TaxRegistry.calculate(
+  const taxResult2027 = TaxRegistry.calculate(
     createMoney(100_000, 'USD'),
-    { filingStatus: 'single', dependentsCount: 0, taxYear: 2026 },
+    { filingStatus: 'single', dependentsCount: 0, taxYear: 2027 },
     { countryId: 'US' }
   );
 
   assert(
-    taxResult2026.status === 'TAX_CALCULATION_UNAVAILABLE',
-    `TaxRegistry.calculate for 2026 must return status TAX_CALCULATION_UNAVAILABLE`
+    taxResult2027.status === 'TAX_CALCULATION_UNAVAILABLE',
+    `TaxRegistry.calculate for 2027 must return status TAX_CALCULATION_UNAVAILABLE`
   );
   assert(
-    Boolean(taxResult2026.warnings && taxResult2026.warnings.length > 0),
-    `TaxRegistry.calculate for 2026 must include warning disclaiming extrapolation`
+    Boolean(taxResult2027.warnings && taxResult2027.warnings.length > 0),
+    `TaxRegistry.calculate for 2027 must include warning disclaiming extrapolation`
   );
 
   // Unsupported country check
@@ -310,7 +310,7 @@ export function runUnavailableTaxRegressionTests() {
     };
   };
 
-  const apiResUnsupported = simulateTaxEstimateApi('JP', 7500000, 2025);
+  const apiResUnsupported = simulateTaxEstimateApi('JP', 7500000, 2026);
   assert(
     apiResUnsupported.data.status === 'TAX_CALCULATION_UNAVAILABLE',
     `API response for unsupported country must have data.status 'TAX_CALCULATION_UNAVAILABLE'`
@@ -324,19 +324,19 @@ export function runUnavailableTaxRegressionTests() {
     `API response for unsupported country must have verificationStatus='UNDER_VERIFICATION' (got ${apiResUnsupported.verificationStatus})`
   );
 
-  // 6B. /api/tax/estimate simulation for future tax year (2026)
-  const apiRes2026 = simulateTaxEstimateApi('US', 10000000, 2026);
+  // 6B. /api/tax/estimate simulation for future tax year (2027)
+  const apiRes2027 = simulateTaxEstimateApi('US', 10000000, 2027);
   assert(
-    apiRes2026.data.status === 'TAX_CALCULATION_UNAVAILABLE',
-    `API response for TY 2026 must have data.status 'TAX_CALCULATION_UNAVAILABLE'`
+    apiRes2027.data.status === 'TAX_CALCULATION_UNAVAILABLE',
+    `API response for TY 2027 must have data.status 'TAX_CALCULATION_UNAVAILABLE'`
   );
   assert(
-    apiRes2026.isStatutorilyVerified === false,
-    `API response for TY 2026 must have isStatutorilyVerified=false (never describe 2026 as verified)`
+    apiRes2027.isStatutorilyVerified === false,
+    `API response for TY 2027 must have isStatutorilyVerified=false (never describe 2027 as verified)`
   );
   assert(
-    apiRes2026.verificationStatus === 'UNDER_VERIFICATION',
-    `API response for TY 2026 must have verificationStatus='UNDER_VERIFICATION'`
+    apiRes2027.verificationStatus === 'UNDER_VERIFICATION',
+    `API response for TY 2027 must have verificationStatus='UNDER_VERIFICATION'`
   );
 
   console.log('\n======================================================');

@@ -128,7 +128,7 @@ export class SeoEngineAdapter {
   public static buildSingleScenario(
     cityId: string,
     salaryMajor: number,
-    taxYear = 2025
+    taxYear = 2026
   ): LivWorthScenario {
     const city = CITIES[cityId] || CITIES.nyc;
     return {
@@ -165,7 +165,7 @@ export class SeoEngineAdapter {
   public static computeSalaryGuide(
     cityId: string,
     salaryMajor: number,
-    taxYear = 2025
+    taxYear = 2026
   ): SalaryGuideComputedData {
     const scenario = this.buildSingleScenario(cityId, salaryMajor, taxYear);
     const outcome = SalaryWorthCalculator.calculate(scenario);
@@ -212,7 +212,7 @@ export class SeoEngineAdapter {
   public static computeSalaryAfterTax(
     cityId: string,
     salaryTiersMajor: number[] = [40000, 60000, 80000, 100000, 120000, 150000, 200000, 250000],
-    taxYear = 2025
+    taxYear = 2026
   ): SalaryAfterTaxComputedData {
     const city = CITIES[cityId] || CITIES.nyc;
     const country = COUNTRIES[city.countryId] || COUNTRIES.US;
@@ -269,7 +269,7 @@ export class SeoEngineAdapter {
     const colSummary = CostOfLivingEngine.calculate(city.id, singleHousehold);
 
     const firstTier = tiers[0];
-    const taxRuleVersion = firstTier?.taxResult.taxRuleVersion || 'STATUTORY-2025';
+    const taxRuleVersion = firstTier?.taxResult.taxRuleVersion || 'STATUTORY-2026';
     const evidenceSourceIds = Array.from(
       new Set([...(firstTier?.taxResult.evidenceSourceIds || []), ...colSummary.evidenceSourceIds])
     );
@@ -293,7 +293,7 @@ export class SeoEngineAdapter {
    */
   public static computeSalaryNeeded(
     cityId: string,
-    taxYear = 2025
+    taxYear = 2026
   ): SalaryNeededComputedData {
     const city = CITIES[cityId] || CITIES.nyc;
     const currency = city.currency;
@@ -347,7 +347,7 @@ export class SeoEngineAdapter {
     );
 
     const singleOutcome = singleResult.outcomeWithRequiredSalary;
-    const taxRuleVersion = singleOutcome.taxRuleVersion || singleOutcome.tax.taxRuleVersion || 'STATUTORY-2025';
+    const taxRuleVersion = singleOutcome.taxRuleVersion || singleOutcome.tax.taxRuleVersion || 'STATUTORY-2026';
 
     return {
       cityId: city.id,

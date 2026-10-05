@@ -21,7 +21,7 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
     await expect(page.locator('#tab-compare')).toBeVisible();
     await expect(page.locator('#tab-job-offers')).toBeVisible();
 
-    // Verify take-home calculation for NYC $100K ($70,343 in 2025 or $70,116 in 2024)
+    // Verify take-home calculation for NYC $100K ($70,343 in 2026 or $70,116 in 2024)
     const takeHomeElement = page.getByText(/\$(70,343|70,116)/).first();
     await expect(takeHomeElement).toBeVisible({ timeout: 10000 });
     console.log('Homepage live validation PASSED: NYC $100K take home verified.');

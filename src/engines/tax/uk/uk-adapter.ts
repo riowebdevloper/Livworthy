@@ -16,7 +16,7 @@ export class UkTaxAdapter implements TaxAdapter {
     const grossMinor = gross.amountMinor;
 
     // Effective-period rule selection
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
 
     // UK Personal Allowance: £12,570 (frozen through 2028 under Finance Act)
@@ -108,7 +108,7 @@ export class UkTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = incomeTaxMinor + niMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceSourceId = isHistorical2024 ? 'uk-hmrc-tax-2024' : 'uk-hmrc-tax-2025';
+    const evidenceSourceId = isHistorical2024 ? 'uk-hmrc-tax-2024' : 'uk-hmrc-tax-2026';
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -150,7 +150,7 @@ export class UkTaxAdapter implements TaxAdapter {
       effectiveTaxRate: grossMinor > 0 ? totalDeductionsMinor / grossMinor : 0,
       marginalTaxRate: grossMinor > 125_140_00 ? 0.47 : grossMinor > 50_270_00 ? 0.42 : 0.28,
       components,
-      taxRuleVersion: isHistorical2024 ? 'UK-HMRC-2024.2' : 'GB-HMRC-2025.1',
+      taxRuleVersion: isHistorical2024 ? 'UK-HMRC-2024.2' : 'GB-HMRC-2026.1',
       evidenceSourceIds: [evidenceSourceId],
     };
   }

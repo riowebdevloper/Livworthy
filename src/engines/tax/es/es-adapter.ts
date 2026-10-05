@@ -16,12 +16,12 @@ export class SpainTaxAdapter implements TaxAdapter {
     const grossMajor = toMajor(grossCompensation);
 
     // Effective-period rule selection
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
 
     // 1. Social Security (Seguridad Social)
     const ssBaseLimit = isHistorical2024 ? 56646 : 60000;
-    const ssRate = isHistorical2024 ? 0.0647 : 0.0649; // MEI increases slightly in 2025
+    const ssRate = isHistorical2024 ? 0.0647 : 0.0649; // MEI increases slightly in 2026
     const ssBase = Math.min(grossMajor, ssBaseLimit);
     const ssMinor = Math.round(ssBase * ssRate * 100);
 
@@ -69,7 +69,7 @@ export class SpainTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + ssMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'aeat-tramos-irpf-2024' : 'es-aeat-tax-2025';
+    const evidenceRef = isHistorical2024 ? 'aeat-tramos-irpf-2024' : 'es-aeat-tax-2026';
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -88,11 +88,11 @@ export class SpainTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(ssMinor, 'EUR'),
         effectiveRate: ssMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'tgss-bases-cotizacion-2024' : 'es-aeat-tax-2025',
+        evidenceRefId: isHistorical2024 ? 'tgss-bases-cotizacion-2024' : 'es-aeat-tax-2026',
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'AEAT-2024.1' : 'ES-AEAT-2025.1';
+    const taxRuleVersion = isHistorical2024 ? 'AEAT-2024.1' : 'ES-AEAT-2026.1';
 
     return {
       status: 'CALCULATED',

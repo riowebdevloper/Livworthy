@@ -141,7 +141,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
     taxYear: 2024,
-    effectivePeriod: '2024-04-06 to 2025-04-05',
+    effectivePeriod: '2024-04-06 to 2026-04-05',
     ruleVersion: 'UK-HMRC-2024.2',
     gross: 0,
     currency: 'GBP',
@@ -157,7 +157,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
     taxYear: 2024,
-    effectivePeriod: '2024-04-06 to 2025-04-05',
+    effectivePeriod: '2024-04-06 to 2026-04-05',
     ruleVersion: 'UK-HMRC-2024.2',
     gross: 10000,
     currency: 'GBP',
@@ -173,7 +173,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
     taxYear: 2024,
-    effectivePeriod: '2024-04-06 to 2025-04-05',
+    effectivePeriod: '2024-04-06 to 2026-04-05',
     ruleVersion: 'UK-HMRC-2024.2',
     gross: 30000,
     currency: 'GBP',
@@ -189,7 +189,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
     taxYear: 2024,
-    effectivePeriod: '2024-04-06 to 2025-04-05',
+    effectivePeriod: '2024-04-06 to 2026-04-05',
     ruleVersion: 'UK-HMRC-2024.2',
     gross: 60000,
     currency: 'GBP',
@@ -205,7 +205,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
     taxYear: 2024,
-    effectivePeriod: '2024-04-06 to 2025-04-05',
+    effectivePeriod: '2024-04-06 to 2026-04-05',
     ruleVersion: 'UK-HMRC-2024.2',
     gross: 120000,
     currency: 'GBP',
@@ -279,7 +279,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'AU',
     jurisdiction: 'AU-NSW-Sydney',
     taxYear: 2024,
-    effectivePeriod: '2024-07-01 to 2025-06-30',
+    effectivePeriod: '2024-07-01 to 2026-06-30',
     ruleVersion: 'ATO-2024.2',
     gross: 0,
     currency: 'AUD',
@@ -295,7 +295,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'AU',
     jurisdiction: 'AU-NSW-Sydney',
     taxYear: 2024,
-    effectivePeriod: '2024-07-01 to 2025-06-30',
+    effectivePeriod: '2024-07-01 to 2026-06-30',
     ruleVersion: 'ATO-2024.2',
     gross: 18200,
     currency: 'AUD',
@@ -311,7 +311,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'AU',
     jurisdiction: 'AU-NSW-Sydney',
     taxYear: 2024,
-    effectivePeriod: '2024-07-01 to 2025-06-30',
+    effectivePeriod: '2024-07-01 to 2026-06-30',
     ruleVersion: 'ATO-2024.2',
     gross: 60000,
     currency: 'AUD',
@@ -327,7 +327,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'AU',
     jurisdiction: 'AU-NSW-Sydney',
     taxYear: 2024,
-    effectivePeriod: '2024-07-01 to 2025-06-30',
+    effectivePeriod: '2024-07-01 to 2026-06-30',
     ruleVersion: 'ATO-2024.2',
     gross: 150000,
     currency: 'AUD',
@@ -547,7 +547,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
     taxYear: 2024,
-    effectivePeriod: '2024-04-01 to 2025-03-31',
+    effectivePeriod: '2024-04-01 to 2026-03-31',
     ruleVersion: 'IRD-2024.2',
     gross: 0,
     currency: 'NZD',
@@ -563,7 +563,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
     taxYear: 2024,
-    effectivePeriod: '2024-04-01 to 2025-03-31',
+    effectivePeriod: '2024-04-01 to 2026-03-31',
     ruleVersion: 'IRD-2024.2',
     gross: 15600,
     currency: 'NZD',
@@ -579,7 +579,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
     taxYear: 2024,
-    effectivePeriod: '2024-04-01 to 2025-03-31',
+    effectivePeriod: '2024-04-01 to 2026-03-31',
     ruleVersion: 'IRD-2024.2',
     gross: 70000,
     currency: 'NZD',
@@ -593,19 +593,19 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   },
 
   // =========================================================================
-  // CURRENT STATUTORY TAX YEAR 2025 VECTORS (INDEPENDENT DERIVATION)
+  // CURRENT STATUTORY TAX YEAR 2026 VECTORS (INDEPENDENT DERIVATION)
   // =========================================================================
 
-  // 1. UNITED STATES (US) 2025
-  // Statutory Reference: IRS Rev. Proc. 2024-40 (2025 Brackets & Standard Deduction), SSA 2025 Wage Base ($176,100)
+  // 1. UNITED STATES (US) 2026
+  // Statutory Reference: IRS Rev. Proc. 2024-40 (2026 Brackets & Standard Deduction), SSA 2026 Wage Base ($176,100)
   {
     country: 'US',
     regionId: 'US-TX',
     cityId: 'austin',
     jurisdiction: 'US-TX-Austin',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 0,
     currency: 'USD',
     profileAssumptions: 'Single filer, standard deduction $15,000, no dependents',
@@ -621,9 +621,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     regionId: 'US-TX',
     cityId: 'austin',
     jurisdiction: 'US-TX-Austin',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 12000,
     currency: 'USD',
     profileAssumptions: 'Single filer, gross below $15,000 standard deduction (zero federal tax)',
@@ -639,9 +639,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     regionId: 'US-TX',
     cityId: 'austin',
     jurisdiction: 'US-TX-Austin',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 15000,
     currency: 'USD',
     profileAssumptions: 'Single filer, standard deduction threshold boundary ($15,000)',
@@ -657,9 +657,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     regionId: 'US-TX',
     cityId: 'austin',
     jurisdiction: 'US-TX-Austin',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 50000,
     currency: 'USD',
     profileAssumptions: 'Single filer, federal brackets (10% to $11,925, 12% above), FICA 7.65%',
@@ -675,12 +675,12 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     regionId: 'US-NY',
     cityId: 'nyc',
     jurisdiction: 'US-NY-NYC',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 100000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2025 Fed + FICA + NYS + NYC',
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS + NYC',
     expectedDeductions: 29656.84,
     expectedComponents: { federal: 13614, fica: 7650, state: 4952.12, local: 3440.72 },
     expectedNet: 70343.16,
@@ -693,28 +693,28 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     regionId: 'US-TX',
     cityId: 'austin',
     jurisdiction: 'US-TX-Austin',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'US-FED-NY-NYC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 250000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, SSA 2025 cap $176,100, Addl Medicare over $200k',
+    profileAssumptions: 'Single filer, SSA 2026 cap $176,100, Addl Medicare over $200k',
     expectedDeductions: 67256.20,
     expectedComponents: { federal: 52263, fica: 14993.20, state: 0, local: 0 },
     expectedNet: 182743.80,
     officialSourceUrl: 'https://www.ssa.gov/oact/cola/cbb.html',
     tolerance: 2,
-    reasonForTolerance: 'SSA 2025 cap and Medicare threshold calculation',
+    reasonForTolerance: 'SSA 2026 cap and Medicare threshold calculation',
   },
 
-  // 2. UNITED KINGDOM (GB) 2025
-  // Statutory Reference: HMRC PAYE Rates 2024/25 & 2025/26, NIC Class 1 (8% main employee rate)
+  // 2. UNITED KINGDOM (GB) 2026
+  // Statutory Reference: HMRC PAYE Rates 2024/25 & 2026/26, NIC Class 1 (8% main employee rate)
   {
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
-    taxYear: 2025,
-    effectivePeriod: '2025-04-06 to 2026-04-05',
-    ruleVersion: 'GB-HMRC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-04-06 to 2026-04-05',
+    ruleVersion: 'GB-HMRC-2026.1',
     gross: 0,
     currency: 'GBP',
     profileAssumptions: 'Single filer, England & Wales, standard personal allowance £12,570',
@@ -728,9 +728,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
-    taxYear: 2025,
-    effectivePeriod: '2025-04-06 to 2026-04-05',
-    ruleVersion: 'GB-HMRC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-04-06 to 2026-04-05',
+    ruleVersion: 'GB-HMRC-2026.1',
     gross: 10000,
     currency: 'GBP',
     profileAssumptions: 'Single filer, below £12,570 personal allowance and primary threshold',
@@ -744,9 +744,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
-    taxYear: 2025,
-    effectivePeriod: '2025-04-06 to 2026-04-05',
-    ruleVersion: 'GB-HMRC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-04-06 to 2026-04-05',
+    ruleVersion: 'GB-HMRC-2026.1',
     gross: 30000,
     currency: 'GBP',
     profileAssumptions: 'Single filer, basic rate 20%, employee NIC 8%',
@@ -760,9 +760,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
-    taxYear: 2025,
-    effectivePeriod: '2025-04-06 to 2026-04-05',
-    ruleVersion: 'GB-HMRC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-04-06 to 2026-04-05',
+    ruleVersion: 'GB-HMRC-2026.1',
     gross: 60000,
     currency: 'GBP',
     profileAssumptions: 'Single filer, higher rate 40%, employee NIC 2% upper band',
@@ -776,9 +776,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'GB',
     jurisdiction: 'GB-ENG-London',
-    taxYear: 2025,
-    effectivePeriod: '2025-04-06 to 2026-04-05',
-    ruleVersion: 'GB-HMRC-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-04-06 to 2026-04-05',
+    ruleVersion: 'GB-HMRC-2026.1',
     gross: 120000,
     currency: 'GBP',
     profileAssumptions: 'Single filer, personal allowance taper over £100k',
@@ -790,19 +790,19 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     reasonForTolerance: 'Taper calculation rounding',
   },
 
-  // 3. CANADA (CA) 2025
-  // Statutory Reference: CRA 2025 Indexed Tax Brackets & BPA ($16,129), CPP Max $4,430.10, EI Max $1,077.48
+  // 3. CANADA (CA) 2026
+  // Statutory Reference: CRA 2026 Indexed Tax Brackets & BPA ($16,129), CPP Max $4,430.10, EI Max $1,077.48
   {
     country: 'CA',
     regionId: 'CA-ON-Toronto',
     cityId: 'toronto',
     jurisdiction: 'CA-ON-Toronto',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'CA-CRA-ON-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'CA-CRA-ON-2026.1',
     gross: 0,
     currency: 'CAD',
-    profileAssumptions: 'Single filer, Ontario resident, 2025 BPA $16,129',
+    profileAssumptions: 'Single filer, Ontario resident, 2026 BPA $16,129',
     expectedDeductions: 0,
     expectedComponents: { federal: 0, provincial: 0, cpp: 0, ei: 0 },
     expectedNet: 0,
@@ -815,9 +815,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     regionId: 'CA-ON-Toronto',
     cityId: 'toronto',
     jurisdiction: 'CA-ON-Toronto',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'CA-CRA-ON-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'CA-CRA-ON-2026.1',
     gross: 15000,
     currency: 'CAD',
     profileAssumptions: 'Single filer, Ontario resident, below federal BPA $16,129',
@@ -833,12 +833,12 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     regionId: 'CA-ON-Toronto',
     cityId: 'toronto',
     jurisdiction: 'CA-ON-Toronto',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'CA-CRA-ON-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'CA-CRA-ON-2026.1',
     gross: 80000,
     currency: 'CAD',
-    profileAssumptions: 'Single filer, Ontario resident, 2025 CPP/EI caps and surtax',
+    profileAssumptions: 'Single filer, Ontario resident, 2026 CPP/EI caps and surtax',
     expectedDeductions: 22037.01,
     expectedComponents: { federal: 11090.87, provincial: 5900.64, cpp: 4000.50, ei: 1045 },
     expectedNet: 57962.99,
@@ -847,14 +847,14 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     reasonForTolerance: 'Surtax bracket integration and credit stacking rounding',
   },
 
-  // 4. AUSTRALIA (AU) 2025
-  // Statutory Reference: ATO 2024-25 / 2025-26 Resident Rates (Stage 3 Cuts), Medicare Levy 2%
+  // 4. AUSTRALIA (AU) 2026
+  // Statutory Reference: ATO 2024-25 / 2026-26 Resident Rates (Stage 3 Cuts), Medicare Levy 2%
   {
     country: 'AU',
     jurisdiction: 'AU-NSW-Sydney',
-    taxYear: 2025,
-    effectivePeriod: '2025-07-01 to 2026-06-30',
-    ruleVersion: 'AU-ATO-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-07-01 to 2026-06-30',
+    ruleVersion: 'AU-ATO-2026.1',
     gross: 0,
     currency: 'AUD',
     profileAssumptions: 'Resident individual, Stage 3 tax cuts',
@@ -868,9 +868,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'AU',
     jurisdiction: 'AU-NSW-Sydney',
-    taxYear: 2025,
-    effectivePeriod: '2025-07-01 to 2026-06-30',
-    ruleVersion: 'AU-ATO-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-07-01 to 2026-06-30',
+    ruleVersion: 'AU-ATO-2026.1',
     gross: 18200,
     currency: 'AUD',
     profileAssumptions: 'Resident individual, tax-free threshold boundary $18,200',
@@ -884,9 +884,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'AU',
     jurisdiction: 'AU-NSW-Sydney',
-    taxYear: 2025,
-    effectivePeriod: '2025-07-01 to 2026-06-30',
-    ruleVersion: 'AU-ATO-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-07-01 to 2026-06-30',
+    ruleVersion: 'AU-ATO-2026.1',
     gross: 60000,
     currency: 'AUD',
     profileAssumptions: 'Resident individual, Stage 3 cuts (16% to $45k, 30% above), Medicare 2%',
@@ -900,9 +900,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'AU',
     jurisdiction: 'AU-NSW-Sydney',
-    taxYear: 2025,
-    effectivePeriod: '2025-07-01 to 2026-06-30',
-    ruleVersion: 'AU-ATO-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-07-01 to 2026-06-30',
+    ruleVersion: 'AU-ATO-2026.1',
     gross: 150000,
     currency: 'AUD',
     profileAssumptions: 'Resident individual, Stage 3 cuts, Medicare 2%',
@@ -914,14 +914,14 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     reasonForTolerance: 'Exact Stage 3 statutory bracket sum',
   },
 
-  // 5. GERMANY (DE) 2025
-  // Statutory Reference: BMF Grundfreibetrag 2025 (€12,084), Polynomial Zone Progression, Social Insurance BBG
+  // 5. GERMANY (DE) 2026
+  // Statutory Reference: BMF Grundfreibetrag 2026 (€12,084), Polynomial Zone Progression, Social Insurance BBG
   {
     country: 'DE',
     jurisdiction: 'DE-BE-Berlin',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'DE-BMF-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'DE-BMF-2026.1',
     gross: 0,
     currency: 'EUR',
     profileAssumptions: 'Steuerklasse I (single), Grundfreibetrag €12,084, statutory social insurance',
@@ -935,12 +935,12 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'DE',
     jurisdiction: 'DE-BE-Berlin',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'DE-BMF-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'DE-BMF-2026.1',
     gross: 12084,
     currency: 'EUR',
-    profileAssumptions: 'Steuerklasse I, Grundfreibetrag 2025 boundary (€12,084, zero ESt)',
+    profileAssumptions: 'Steuerklasse I, Grundfreibetrag 2026 boundary (€12,084, zero ESt)',
     expectedDeductions: 2543.68,
     expectedComponents: { incomeTax: 0, socialSecurity: 2543.68 },
     expectedNet: 9540.32,
@@ -951,12 +951,12 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'DE',
     jurisdiction: 'DE-BE-Berlin',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'DE-BMF-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'DE-BMF-2026.1',
     gross: 60000,
     currency: 'EUR',
-    profileAssumptions: 'Steuerklasse I, 2025 polynomial brackets + statutory social insurance',
+    profileAssumptions: 'Steuerklasse I, 2026 polynomial brackets + statutory social insurance',
     expectedDeductions: 27628.90,
     expectedComponents: { incomeTax: 14998.90, socialSecurity: 12630 },
     expectedNet: 32371.10,
@@ -965,14 +965,14 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     reasonForTolerance: 'Polynomial rounding',
   },
 
-  // 6. SINGAPORE (SG) 2025
-  // Statutory Reference: IRAS YA 2025 Tax Rates (Income Year 2024), 0% to $20,000
+  // 6. SINGAPORE (SG) 2026
+  // Statutory Reference: IRAS YA 2026 Tax Rates (Income Year 2024), 0% to $20,000
   {
     country: 'SG',
     jurisdiction: 'SG-Singapore',
-    taxYear: 2025,
-    effectivePeriod: 'YA 2025 (Income Year 2024)',
-    ruleVersion: 'SG-IRAS-YA2025.1',
+    taxYear: 2026,
+    effectivePeriod: 'YA 2026 (Income Year 2024)',
+    ruleVersion: 'SG-IRAS-YA2026.1',
     gross: 0,
     currency: 'SGD',
     profileAssumptions: 'Tax resident individual, progressive rates',
@@ -986,9 +986,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'SG',
     jurisdiction: 'SG-Singapore',
-    taxYear: 2025,
-    effectivePeriod: 'YA 2025 (Income Year 2024)',
-    ruleVersion: 'SG-IRAS-YA2025.1',
+    taxYear: 2026,
+    effectivePeriod: 'YA 2026 (Income Year 2024)',
+    ruleVersion: 'SG-IRAS-YA2026.1',
     gross: 20000,
     currency: 'SGD',
     profileAssumptions: 'Tax resident individual, tax-free bracket boundary',
@@ -1002,9 +1002,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'SG',
     jurisdiction: 'SG-Singapore',
-    taxYear: 2025,
-    effectivePeriod: 'YA 2025 (Income Year 2024)',
-    ruleVersion: 'SG-IRAS-YA2025.1',
+    taxYear: 2026,
+    effectivePeriod: 'YA 2026 (Income Year 2024)',
+    ruleVersion: 'SG-IRAS-YA2026.1',
     gross: 100000,
     currency: 'SGD',
     profileAssumptions: 'Tax resident individual, progressive brackets up to $100k',
@@ -1016,14 +1016,14 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     reasonForTolerance: 'Exact statutory bracket schedule',
   },
 
-  // 7. UAE 2025
+  // 7. UAE 2026
   // Statutory Reference: Federal Decree-Law No. 47/2022, 0% personal employment tax
   {
     country: 'AE',
     jurisdiction: 'AE-DXB-Dubai',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'AE-FTA-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'AE-FTA-2026.1',
     gross: 0,
     currency: 'AED',
     profileAssumptions: 'Expatriate employment income, 0% personal tax',
@@ -1037,9 +1037,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'AE',
     jurisdiction: 'AE-DXB-Dubai',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'AE-FTA-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'AE-FTA-2026.1',
     gross: 350000,
     currency: 'AED',
     profileAssumptions: 'Expatriate employment income, 0% personal tax',
@@ -1051,14 +1051,14 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     reasonForTolerance: '0% statutory rate across all brackets',
   },
 
-  // 8. QATAR 2025
+  // 8. QATAR 2026
   // Statutory Reference: Qatar Law No. 24 of 2018 (Income Tax Law), 0% employment income tax
   {
     country: 'QA',
     jurisdiction: 'QA-DA-Doha',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'QA-GTA-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'QA-GTA-2026.1',
     gross: 0,
     currency: 'QAR',
     profileAssumptions: 'Expatriate employment income, 0% personal tax',
@@ -1072,9 +1072,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'QA',
     jurisdiction: 'QA-DA-Doha',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'QA-GTA-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'QA-GTA-2026.1',
     gross: 300000,
     currency: 'QAR',
     profileAssumptions: 'Expatriate employment income, 0% personal tax',
@@ -1086,14 +1086,14 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     reasonForTolerance: '0% statutory employment income tax',
   },
 
-  // 9. SAUDI ARABIA 2025
+  // 9. SAUDI ARABIA 2026
   // Statutory Reference: ZATCA Income Tax Law Royal Decree No. M/1, 0% personal income tax on employment
   {
     country: 'SA',
     jurisdiction: 'SA-RI-Riyadh',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'SA-ZATCA-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'SA-ZATCA-2026.1',
     gross: 0,
     currency: 'SAR',
     profileAssumptions: 'Expatriate employment income, 0% personal tax',
@@ -1107,9 +1107,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'SA',
     jurisdiction: 'SA-RI-Riyadh',
-    taxYear: 2025,
-    effectivePeriod: '2025-01-01 to 2025-12-31',
-    ruleVersion: 'SA-ZATCA-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-01-01 to 2026-12-31',
+    ruleVersion: 'SA-ZATCA-2026.1',
     gross: 300000,
     currency: 'SAR',
     profileAssumptions: 'Expatriate employment income, 0% personal tax',
@@ -1121,14 +1121,14 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     reasonForTolerance: '0% statutory expatriate rate',
   },
 
-  // 10. NEW ZEALAND (NZ) 2025
-  // Statutory Reference: IRD PAYE Tax Rates 2024/25 & 2025/26 (Revised thresholds), ACC Earners Levy 1.60%
+  // 10. NEW ZEALAND (NZ) 2026
+  // Statutory Reference: IRD PAYE Tax Rates 2024/25 & 2026/26 (Revised thresholds), ACC Earners Levy 1.60%
   {
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
-    taxYear: 2025,
-    effectivePeriod: '2025-04-01 to 2026-03-31',
-    ruleVersion: 'NZ-IRD-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-04-01 to 2026-03-31',
+    ruleVersion: 'NZ-IRD-2026.1',
     gross: 0,
     currency: 'NZD',
     profileAssumptions: 'Single filer, standard PAYE code M',
@@ -1142,9 +1142,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
-    taxYear: 2025,
-    effectivePeriod: '2025-04-01 to 2026-03-31',
-    ruleVersion: 'NZ-IRD-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-04-01 to 2026-03-31',
+    ruleVersion: 'NZ-IRD-2026.1',
     gross: 15600,
     currency: 'NZD',
     profileAssumptions: 'Single filer, 10.5% bracket boundary ($15,600), ACC 1.60%',
@@ -1158,9 +1158,9 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
   {
     country: 'NZ',
     jurisdiction: 'NZ-AUK-Auckland',
-    taxYear: 2025,
-    effectivePeriod: '2025-04-01 to 2026-03-31',
-    ruleVersion: 'NZ-IRD-2025.1',
+    taxYear: 2026,
+    effectivePeriod: '2026-04-01 to 2026-03-31',
+    ruleVersion: 'NZ-IRD-2026.1',
     gross: 70000,
     currency: 'NZD',
     profileAssumptions: 'Single filer, standard PAYE code M, ACC 1.60%',
@@ -1176,7 +1176,7 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
 export function runTaxGoldenVectorTests() {
   console.log('--- LIVWORTHY STATUTORY TAX GOLDEN VECTORS SUITE ---');
   console.log(
-    `Executing ${TAX_GOLDEN_VECTORS.length} independent golden vectors across 10 VERIFIED countries (2024 Historical & 2025 Current Statutory)...\n`
+    `Executing ${TAX_GOLDEN_VECTORS.length} independent golden vectors across 10 VERIFIED countries (2024 Historical & 2026 Current Statutory)...\n`
   );
 
   let passedCount = 0;

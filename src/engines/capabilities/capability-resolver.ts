@@ -70,63 +70,63 @@ export class CapabilityResolver {
 
       switch (countryId) {
         case 'US':
-          taxRuleVersion = isHistorical2024 ? 'US-FED-NY-NYC-2024.1' : 'US-FED-NY-NYC-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'US-FED-NY-NYC-2024.1' : 'US-FED-NY-NYC-2026.1';
           limitations.push('Single filer standard deduction; localized state/local schedules for major commercial metros.');
           break;
         case 'GB':
-          taxRuleVersion = isHistorical2024 ? 'UK-HMRC-2024.2' : 'GB-HMRC-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'UK-HMRC-2024.2' : 'GB-HMRC-2026.1';
           limitations.push('England/Wales standard & Scottish progressive bands; personal allowance reduction over £100k.');
           break;
         case 'AE':
-          taxRuleVersion = isHistorical2024 ? 'UAE-FTA-2024.1' : 'AE-FTA-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'UAE-FTA-2024.1' : 'AE-FTA-2026.1';
           limitations.push('Statutory 0% employment income tax; corporate and excise taxes excluded from payroll.');
           break;
         case 'CA':
-          taxRuleVersion = isHistorical2024 ? 'CRA-2024.1' : 'CA-CRA-ON-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'CRA-2024.1' : 'CA-CRA-ON-2026.1';
           limitations.push('Federal + Ontario provincial schedules, CPP1/CPP2, and Employment Insurance.');
           break;
         case 'AU':
-          taxRuleVersion = isHistorical2024 ? 'ATO-2024.2' : 'AU-ATO-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'ATO-2024.2' : 'AU-ATO-2026.1';
           limitations.push('Revised Stage 3 tax cuts (effective July 2024) and Medicare levy.');
           break;
         case 'DE':
-          taxRuleVersion = isHistorical2024 ? 'BZSt-2024.1' : 'DE-BMF-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'BZSt-2024.1' : 'DE-BMF-2026.1';
           limitations.push('EStG polynomial formula and standard statutory social contributions (KV, RV, AV, PV).');
           break;
         case 'SG':
-          taxRuleVersion = isHistorical2024 ? 'IRAS-YA2024' : 'SG-IRAS-YA2025.1';
+          taxRuleVersion = isHistorical2024 ? 'IRAS-YA2024' : 'SG-IRAS-YA2026.1';
           limitations.push('Resident progressive tax schedule; CPF statutory contributions for citizens/PR.');
           break;
         case 'QA':
-          taxRuleVersion = isHistorical2024 ? 'GTA-2024.1' : 'QA-GTA-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'GTA-2024.1' : 'QA-GTA-2026.1';
           limitations.push('Statutory 0% employment income tax for resident and foreign employees.');
           break;
         case 'SA':
-          taxRuleVersion = isHistorical2024 ? 'GULF-2024.1' : 'SA-ZATCA-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'GULF-2024.1' : 'SA-ZATCA-2026.1';
           limitations.push('0% personal income tax on employee compensation; GOSI contributions for Saudi nationals.');
           break;
         case 'NZ':
-          taxRuleVersion = isHistorical2024 ? 'IRD-2024.2' : 'NZ-IRD-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'IRD-2024.2' : 'NZ-IRD-2026.1';
           limitations.push('Post-July 2024 tax thresholds and ACC earner levy.');
           break;
         case 'FR':
-          taxRuleVersion = isHistorical2024 ? 'DGFiP-2024.1' : 'FR-DGFIP-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'DGFiP-2024.1' : 'FR-DGFIP-2026.1';
           limitations.push('Single employee scale & URSSAF social charges; quotient familial not modeled.');
           break;
         case 'ES':
-          taxRuleVersion = isHistorical2024 ? 'AEAT-2024.1' : 'ES-AEAT-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'AEAT-2024.1' : 'ES-AEAT-2026.1';
           limitations.push('National and standard Madrid/Catalonia scales; specific autonomous regional deductions limited.');
           break;
         case 'NL':
-          taxRuleVersion = isHistorical2024 ? 'Belastingdienst-2024.1' : 'NL-BELASTING-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'Belastingdienst-2024.1' : 'NL-BELASTING-2026.1';
           limitations.push('Box 1 income tax & national insurance; 30% ruling not applied.');
           break;
         case 'IE':
-          taxRuleVersion = isHistorical2024 ? 'Revenue-2024.1' : 'IE-REVENUE-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'Revenue-2024.1' : 'IE-REVENUE-2026.1';
           limitations.push('Single filer standard rate band, personal tax credit, USC, and PRSI Class A.');
           break;
         case 'CH':
-          taxRuleVersion = isHistorical2024 ? 'ESTV-2024.1' : 'CH-ESTV-ZH-2025.1';
+          taxRuleVersion = isHistorical2024 ? 'ESTV-2024.1' : 'CH-ESTV-ZH-2026.1';
           limitations.push('Federal direct tax and standard Zurich cantonal/communal multiplier.');
           break;
       }

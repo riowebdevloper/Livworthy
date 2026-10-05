@@ -38,6 +38,6 @@ export const TEST_FIXTURE_FX_SNAPSHOT: FxRateSnapshot = {
     THB: 34.8,
     VND: 25400.0,
   },
-  timestamp: '2025-01-15T00:00:00Z',
+  timestamp: '2026-01-15T00:00:00Z',
   source: 'Unit Test Deterministic Fixture (Non-authoritative)',
 };

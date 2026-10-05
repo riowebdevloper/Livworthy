@@ -1282,7 +1282,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Statutory 7-bracket system (10%, 12%, 22%, 24%, 32%, 35%, 37%), Standard Deduction $14,600 single / $29,200 married filing jointly."
   },
@@ -1296,9 +1296,9 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-15",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
-    notes: "OASDI tax rate 6.2% on wages up to $168,600 (2024) / $176,100 (2025). Medicare tax rate 1.45% uncapped + 0.9% Additional Medicare Tax on earnings above $200,000."
+    notes: "OASDI tax rate 6.2% on wages up to $168,600 (2024) / $176,100 (2026). Medicare tax rate 1.45% uncapped + 0.9% Additional Medicare Tax on earnings above $200,000."
   },
   "us-nys-tax-2024": {
     id: "us-nys-tax-2024",
@@ -1310,7 +1310,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-12",
+    verifiedAt: "2026-01-12",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "NYS graduated income tax rates from 4.0% to 10.9%, NYS Standard Deduction $8,000 single / $16,050 married filing jointly."
   },
@@ -1324,7 +1324,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-12",
+    verifiedAt: "2026-01-12",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "NYC resident income tax rates graduated from 3.078% to 3.876% applied on NY taxable income."
   },
@@ -1338,7 +1338,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "Median gross rent benchmarks across 1-bed, 2-bed, 3-bed units. Re-benchmarked with NYC Housing and Vacancy Survey (HVS)."
   },
@@ -1352,7 +1352,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "Median rent and housing cost benchmarks for San Francisco county."
   },
@@ -1366,7 +1366,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "Los Angeles metro housing survey benchmarks."
   },
@@ -1380,7 +1380,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "King County housing vacancy survey benchmarks."
   },
@@ -1394,7 +1394,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "Travis & Williamson County rental benchmark data."
   },
@@ -1408,7 +1408,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "Cook County median rent benchmarks."
   },
@@ -1422,7 +1422,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "Miami-Dade County rental benchmarks."
   },
@@ -1436,7 +1436,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "Suffolk and Middlesex county rental benchmarks."
   },
@@ -1450,7 +1450,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "District of Columbia and Northern Virginia rental benchmarks."
   },
@@ -1464,7 +1464,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-15",
     effectiveDate: "2024-11-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Cost of Living Research Group",
     notes: "Metropolitan expenditure weights for groceries, utilities, healthcare, dining out, and consumer goods."
   },
@@ -1478,7 +1478,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-08-20",
     effectiveDate: "2023-08-20",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Standard subway/local bus fare $2.90, 7-day fare cap $34.00, monthly equivalent transit pass ~$132.00."
   },
@@ -1493,7 +1493,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-04-06",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Personal Allowance \xA312,570 (tapered above \xA3100k), 20% Basic rate, 40% Higher rate, 45% Additional rate over \xA3125,140. Class 1 Primary NI 8% (post-Spring budget cut) / 2% above UEL."
   },
@@ -1507,7 +1507,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-15",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-12",
+    verifiedAt: "2026-01-12",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "ONS rental statistics, TfL Zone 1-3 travel card rates, and household expenditure tables for Greater London."
   },
@@ -1521,7 +1521,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-15",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-12",
+    verifiedAt: "2026-01-12",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Regional consumer price weights across UK metropolitan areas."
   },
@@ -1536,7 +1536,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-09-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-05",
+    verifiedAt: "2026-01-05",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "0% statutory personal income tax on salary and wage employment income for expatriates and residents."
   },
@@ -1550,7 +1550,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-01",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "RERA tenancy register median rent benchmarks (Downtown, Marina, JLT) and DSC food/utility price surveys."
   },
@@ -1564,7 +1564,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Abu Dhabi residential tenancy indicators and household cost basket."
   },
@@ -1579,7 +1579,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Federal 5-bracket schedule (15% to 33%), Basic Personal Amount with net income phase-out, Ontario/provincial graduated schedules, surtaxes, and basic tax credits."
   },
@@ -1593,7 +1593,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-15",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Base CPP 5.95% up to YMPE ($68,500) less $3,500 basic exemption, plus CPP2 4.0% between YMPE and YAMPE ($73,200)."
   },
@@ -1607,7 +1607,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-15",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Employee EI premium rate 1.66% up to maximum insurable earnings of $63,200 (maximum annual contribution $1,049.12)."
   },
@@ -1621,7 +1621,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Toronto census metropolitan area median market rents (CMHC) and urban expenditure metrics (TTC pass, food basket, hydro)."
   },
@@ -1635,7 +1635,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Metro Vancouver housing and municipal utility expenditure tables."
   },
@@ -1649,7 +1649,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Calgary metro residential benchmarks and living expenditures."
   },
@@ -1664,7 +1664,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-07-01",
     effectiveDate: "2024-07-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Enacted Stage 3 revised rates: 16% ($18,201\u2013$45k), 30% ($45,001\u2013$135k), 37% ($135,001\u2013$190k), 45% ($190,001+). Low-income thresholds adjusted."
   },
@@ -1678,7 +1678,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-07-01",
     effectiveDate: "2024-07-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Standard 2.0% Medicare levy on taxable income with low-income shade-in thresholds."
   },
@@ -1692,7 +1692,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-01",
     effectiveDate: "2024-09-30",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Sydney metropolitan weekly median rents and transport/utility household indices."
   },
@@ -1706,7 +1706,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-01",
     effectiveDate: "2024-09-30",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Melbourne rental market benchmarks and public transport fare capping (Myki Zone 1+2)."
   },
@@ -1721,7 +1721,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Statutory 5-zone progressive polynomial (\xA7 32a EStG), Grundfreibetrag \u20AC11,784, Solidarity surcharge mitigation threshold, Tax Class I (Steuerklasse 1)."
   },
@@ -1735,7 +1735,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Statutory employee contributions: KV 7.3% + 0.85% Zusatzbeitrag, PV 2.2% (childless), RV 9.3%, AV 1.3%. Applicable contribution ceilings (BBG)."
   },
@@ -1749,7 +1749,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-01",
     effectiveDate: "2024-11-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Berlin qualified rent index benchmarks (Kaltmiete + Nebenkosten), BVG monthly Deutschlandticket (\u20AC49), and municipal cost of living basket."
   },
@@ -1763,7 +1763,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-01",
     effectiveDate: "2024-11-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Munich city metropolitan rental and living cost benchmarks."
   },
@@ -1772,13 +1772,13 @@ var EVIDENCE_SOURCES = {
     id: "iras-tax-rates-2024",
     organization: "Inland Revenue Authority of Singapore (IRAS)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "IRAS Individual Income Tax Rates for Resident Individuals (Year of Assessment 2024/2025)",
+    canonicalReference: "IRAS Individual Income Tax Rates for Resident Individuals (Year of Assessment 2024/2026)",
     url: "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-rates-and-tax-expenses",
     jurisdiction: "Singapore",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-09-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Progressive resident schedule from 0% (first S$20k) to 24% (>S$1M). Expatriate baseline non-CPF structure."
   },
@@ -1792,7 +1792,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-15",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "URA condominium and HDB rental transaction statistics, MRT travel passes, utilities (SP Group), and expat food/lifestyle tables."
   },
@@ -1807,7 +1807,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Standard rate 20% up to \u20AC42,000 (single), Higher rate 40% on balance. Single Person Tax Credit \u20AC1,875, Employee Tax Credit \u20AC1,875."
   },
@@ -1821,7 +1821,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "USC rates: 0.5% (\u20AC0-\u20AC12,012), 2% (\u20AC12,012-\u20AC25,760), 4% (\u20AC25,760-\u20AC70,044), 8% balance."
   },
@@ -1835,7 +1835,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Class A employee PRSI 4.0% with tapered PRSI credit for incomes under \u20AC424/week (increased +0.1% Oct 2024)."
   },
@@ -1849,13 +1849,13 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Dublin tenancy registration benchmark rents and CSO national expenditure figures."
   },
   // --- NEW ZEALAND ---
-  "ird-tax-rates-2024-2025": {
-    id: "ird-tax-rates-2024-2025",
+  "ird-tax-rates-2024-2026": {
+    id: "ird-tax-rates-2024-2026",
     organization: "Inland Revenue Department (IRD)",
     sourceType: "Government / Tax Authority",
     canonicalReference: "Budget 2024 Tax Threshold Changes (Taxation Annual Rates for 2024-25 Act)",
@@ -1864,7 +1864,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-08-01",
     effectiveDate: "2024-07-31",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Post-July 2024 thresholds: 10.5% ($0\u2013$15,600), 17.5% ($15,601\u2013$53,500), 30% ($53,501\u2013$78,100), 33% ($78,101\u2013$180,000), 39% ($180,001+)."
   },
@@ -1872,13 +1872,13 @@ var EVIDENCE_SOURCES = {
     id: "acc-earners-levy-2024",
     organization: "Accident Compensation Corporation (ACC)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "ACC Earner\u2019s Levy Rates and Maximum Threshold 2024/2025",
+    canonicalReference: "ACC Earner\u2019s Levy Rates and Maximum Threshold 2024/2026",
     url: "https://www.acc.co.nz/for-business/levy-rates/",
     jurisdiction: "New Zealand",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-04-01",
     effectiveDate: "2024-04-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "ACC earner levy of 1.60% on earnings up to $142,283 (maximum levy $2,276.52)."
   },
@@ -1892,7 +1892,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-10",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Auckland regional bond data median rents and urban consumer price indicators."
   },
@@ -1907,7 +1907,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Zurich Canton median gross rental data, mandatory KVG health insurance premiums, and ZVV transport pass rates."
   },
@@ -1922,7 +1922,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-09-01",
     effectiveDate: "2019-01-01",
-    verifiedAt: "2025-01-05",
+    verifiedAt: "2026-01-05",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "0% statutory personal income tax on employment wages, allowances, and salaries for residents and expatriates."
   },
@@ -1936,7 +1936,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Doha municipality rental transaction indicators, Doha Metro rates, and Kahramaa water/electricity tables."
   },
@@ -1951,7 +1951,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-09-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-05",
+    verifiedAt: "2026-01-05",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "0% statutory individual income tax on employment salary for resident employees."
   },
@@ -1965,7 +1965,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-15",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Riyadh rental index (Ejar platform integration), utility benchmarks, and cost of living basket."
   },
@@ -1979,7 +1979,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-15",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Jeddah coastal metro housing and living expenditure tables."
   },
@@ -1994,7 +1994,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Box 1 bracket 1 36.97% up to \u20AC75,518, bracket 2 49.50% on excess. General tax credit (algemene heffingskorting) and labor tax credit (arbeidskorting)."
   },
@@ -2008,7 +2008,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "National insurance premiums (AOW, Anw, Wlz) integrated into the first tax bracket."
   },
@@ -2022,7 +2022,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Amsterdam free-market rental index (Pararius/CBS), GVB public transport subscription, and municipal cost weights."
   },
@@ -2036,7 +2036,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Rotterdam rental benchmarks and RET transit subscriptions."
   },
@@ -2051,7 +2051,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Progressive schedule: 0% to \u20AC11,294, 11% to \u20AC28,797, 30% to \u20AC82,341, 41% to \u20AC177,106, 45% above. Quotient familial rules applied."
   },
@@ -2065,7 +2065,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Statutory employee social contributions (CSG 9.2%, CRDS 0.5%, statutory pension and health contributions)."
   },
@@ -2079,7 +2079,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Paris rent control reference medians, Navigo pass rates (\u20AC86.40/mo), and metropolitan living basket."
   },
@@ -2093,7 +2093,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Lyon metropolitan area rental and consumer indicators."
   },
@@ -2108,7 +2108,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Combined state and regional progressive brackets (19% to 47%), M\xEDnimo del contribuyente \u20AC5,550, and reduced bracket deductions."
   },
@@ -2122,7 +2122,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
     effectiveDate: "2024-01-01",
-    verifiedAt: "2025-01-10",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "Employee social security contributions: common contingencies 4.70%, unemployment 1.55%, professional training 0.10%, MEI 0.12%. Base m\xE1xima \u20AC4,720.50/month."
   },
@@ -2136,7 +2136,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Madrid metropolitan rental benchmark index, Metro de Madrid Abono Transporte Zone A, and utility expenditures."
   },
@@ -2150,7 +2150,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Barcelona rental benchmarks and T-Usual transit card rates."
   },
@@ -2164,41 +2164,41 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
     effectiveDate: "2024-10-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Senior Living Cost Analyst",
     notes: "Valencia metropolitan rental and living cost basket."
   },
-  // --- 2025 STATUTORY EVIDENCE SOURCES ---
-  "us-irs-tax-2025": {
-    id: "us-irs-tax-2025",
+  // --- 2026 STATUTORY EVIDENCE SOURCES ---
+  "us-irs-tax-2026": {
+    id: "us-irs-tax-2026",
     organization: "Internal Revenue Service (IRS)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "IRS Rev. Proc. 2024-40 (2025 Inflation-adjusted Tax Brackets & Standard Deductions)",
+    canonicalReference: "IRS Rev. Proc. 2024-40 (2026 Inflation-adjusted Tax Brackets & Standard Deductions)",
     url: "https://www.irs.gov/pub/irs-drop/rp-24-40.pdf",
     jurisdiction: "United States (Federal)",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-01",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-10",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "Official 2025 statutory 7-bracket schedule (10%, 12%, 22%, 24%, 32%, 35%, 37%), Standard Deduction $15,000 single / $30,000 MFJ / $22,500 HoH."
+    notes: "Official 2026 statutory 7-bracket schedule (10%, 12%, 22%, 24%, 32%, 35%, 37%), Standard Deduction $15,000 single / $30,000 MFJ / $22,500 HoH."
   },
-  "us-ssa-fica-2025": {
-    id: "us-ssa-fica-2025",
+  "us-ssa-fica-2026": {
+    id: "us-ssa-fica-2026",
     organization: "Social Security Administration (SSA)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Social Security Administration Press Release: 2025 Social Security Changes (OASDI Wage Base $176,100)",
+    canonicalReference: "Social Security Administration Press Release: 2026 Social Security Changes (OASDI Wage Base $176,100)",
     url: "https://www.ssa.gov/news/press/releases/2024/#10-2024-1",
     jurisdiction: "United States (Federal FICA)",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-15",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-10",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-10",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "OASDI 6.2% on wages up to $176,100 maximum annual wage base; Medicare 1.45% uncapped + 0.9% Additional Medicare Tax above $200k."
   },
-  "us-nys-tax-2025": {
-    id: "us-nys-tax-2025",
+  "us-nys-tax-2026": {
+    id: "us-nys-tax-2026",
     organization: "New York State Department of Taxation and Finance",
     sourceType: "Government / Tax Authority",
     canonicalReference: "Form IT-201-I Instructions for Form IT-201 (NYS Tax Law \xA7 601 / \xA7 614)",
@@ -2206,13 +2206,13 @@ var EVIDENCE_SOURCES = {
     jurisdiction: "New York State",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-01",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-12",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-12",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "NYS graduated income tax rates 4.0% to 10.9%, NYS Standard Deduction $8,000 single / $16,050 MFJ."
   },
-  "us-nyc-tax-2025": {
-    id: "us-nyc-tax-2025",
+  "us-nyc-tax-2026": {
+    id: "us-nyc-tax-2026",
     organization: "New York City Department of Finance",
     sourceType: "Government / Tax Authority",
     canonicalReference: "NYC Personal Income Tax Tables for NYC Residents (NYC Admin Code \xA7 11-1701)",
@@ -2220,27 +2220,27 @@ var EVIDENCE_SOURCES = {
     jurisdiction: "New York City (Local Resident)",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-01",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-12",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-12",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "NYC resident income tax rates 3.078% to 3.876% applied on NY taxable income."
   },
-  "uk-hmrc-tax-2025": {
-    id: "uk-hmrc-tax-2025",
+  "uk-hmrc-tax-2026": {
+    id: "uk-hmrc-tax-2026",
     organization: "HM Revenue & Customs (HMRC)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "HMRC Rates and Allowances: Income Tax and National Insurance Contributions 2024-2025 / 2025-2026",
-    url: "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2024-to-2025",
+    canonicalReference: "HMRC Rates and Allowances: Income Tax and National Insurance Contributions 2024-2026 / 2026-2026",
+    url: "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2024-to-2026",
     jurisdiction: "United Kingdom (HMRC)",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-15",
-    effectiveDate: "2025-04-06",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-04-06",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "Personal Allowance \xA312,570 with \xA31-for-\xA32 taper above \xA3100,000; Basic Rate 20%, Higher Rate 40%, Additional Rate 45%; Class 1 Employee NIC 8% main, 2% upper."
   },
-  "uae-fta-2025": {
-    id: "uae-fta-2025",
+  "uae-fta-2026": {
+    id: "uae-fta-2026",
     organization: "Federal Tax Authority (FTA)",
     sourceType: "Government / Tax Authority",
     canonicalReference: "Federal Decree-Law No. 47 of 2022 on the Taxation of Corporations and Businesses (Individual Salary Exemption)",
@@ -2248,69 +2248,69 @@ var EVIDENCE_SOURCES = {
     jurisdiction: "United Arab Emirates",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "Statutory 0% individual employment personal income tax across all seven emirates."
   },
-  "ca-cra-tax-2025": {
-    id: "ca-cra-tax-2025",
+  "ca-cra-tax-2026": {
+    id: "ca-cra-tax-2026",
     organization: "Canada Revenue Agency (CRA)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "CRA Indexation Adjustments for Personal Income Tax and Benefit Amounts 2025 (2.7% Indexation)",
+    canonicalReference: "CRA Indexation Adjustments for Personal Income Tax and Benefit Amounts 2026 (2.7% Indexation)",
     url: "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html",
     jurisdiction: "Canada (Federal & Ontario)",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-20",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "2025 Federal Brackets ($57,375, $114,750, $177,882, $253,414), BPA $16,129; CPP Max $4,034.10 + CPP2 $396 = $4,430.10; EI Max $1,077.48."
+    notes: "2026 Federal Brackets ($57,375, $114,750, $177,882, $253,414), BPA $16,129; CPP Max $4,034.10 + CPP2 $396 = $4,430.10; EI Max $1,077.48."
   },
-  "au-ato-tax-2025": {
-    id: "au-ato-tax-2025",
+  "au-ato-tax-2026": {
+    id: "au-ato-tax-2026",
     organization: "Australian Taxation Office (ATO)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Treasury Laws Amendment (Cost of Living Tax Cuts) Act 2024 (Resident Tax Rates 2024-25 and 2025-26)",
+    canonicalReference: "Treasury Laws Amendment (Cost of Living Tax Cuts) Act 2024 (Resident Tax Rates 2024-25 and 2026-26)",
     url: "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
     jurisdiction: "Australia (Commonwealth)",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-07-01",
     effectiveDate: "2024-07-01",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "Revised Stage 3 rates: 16% ($18.2k-$45k), 30% ($45k-$135k), 37% ($135k-$190k), 45% (above $190k); Medicare Levy 2.0%."
   },
-  "de-bmf-tax-2025": {
-    id: "de-bmf-tax-2025",
+  "de-bmf-tax-2026": {
+    id: "de-bmf-tax-2026",
     organization: "Bundesministerium der Finanzen (BMF)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Steuerfortentwicklungsgesetz 2024/2025 (EStG \xA7 32a Grundfreibetrag 2025 & Sozialversicherungs-Rechengr\xF6\xDFenverordnung)",
+    canonicalReference: "Steuerfortentwicklungsgesetz 2024/2026 (EStG \xA7 32a Grundfreibetrag 2026 & Sozialversicherungs-Rechengr\xF6\xDFenverordnung)",
     url: "https://www.bundesfinanzministerium.de",
     jurisdiction: "Germany (Federal)",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-25",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "Grundfreibetrag \u20AC12,084; polynomial tariff zones; KV 8.25%, RV 9.3%, AV 1.3%, PV 2.2%; BBG RV \u20AC96,600, KV \u20AC66,150."
   },
-  "sg-iras-tax-2025": {
-    id: "sg-iras-tax-2025",
+  "sg-iras-tax-2026": {
+    id: "sg-iras-tax-2026",
     organization: "Inland Revenue Authority of Singapore (IRAS)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "IRAS Individual Income Tax Rates for Year of Assessment (YA) 2025",
+    canonicalReference: "IRAS Individual Income Tax Rates for Year of Assessment (YA) 2026",
     url: "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-rates-and-tax-expenses/individual-income-tax-rates",
     jurisdiction: "Singapore",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-15",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "Progressive resident rate schedule 0% to 24% for YA 2025."
+    notes: "Progressive resident rate schedule 0% to 24% for YA 2026."
   },
-  "qa-gta-tax-2025": {
-    id: "qa-gta-tax-2025",
+  "qa-gta-tax-2026": {
+    id: "qa-gta-tax-2026",
     organization: "General Tax Authority (GTA)",
     sourceType: "Government / Tax Authority",
     canonicalReference: "State of Qatar Law No. 24 of 2018 Promulgating the Income Tax Law",
@@ -2318,13 +2318,13 @@ var EVIDENCE_SOURCES = {
     jurisdiction: "State of Qatar",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "Statutory 0% tax on employment salaries and compensation of resident and foreign employees."
   },
-  "sa-zatca-tax-2025": {
-    id: "sa-zatca-tax-2025",
+  "sa-zatca-tax-2026": {
+    id: "sa-zatca-tax-2026",
     organization: "Zakat, Tax and Customs Authority (ZATCA)",
     sourceType: "Government / Tax Authority",
     canonicalReference: "Kingdom of Saudi Arabia Income Tax Law issued by Royal Decree No. M/1",
@@ -2332,13 +2332,13 @@ var EVIDENCE_SOURCES = {
     jurisdiction: "Kingdom of Saudi Arabia",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-01",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "0% personal income tax on employee employment income."
   },
-  "nz-ird-tax-2025": {
-    id: "nz-ird-tax-2025",
+  "nz-ird-tax-2026": {
+    id: "nz-ird-tax-2026",
     organization: "Inland Revenue Department (Te Tari Taake)",
     sourceType: "Government / Tax Authority",
     canonicalReference: "Taxation (Annual Rates for 2024-25, Emergency Response, and Remedial Measures) Act 2024",
@@ -2347,79 +2347,79 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-08-01",
     effectiveDate: "2024-07-31",
-    verifiedAt: "2025-01-15",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "Thresholds: 10.5% ($0-$15.6k), 17.5% ($15.6k-$53.5k), 30% ($53.5k-$78.1k), 33% ($78.1k-$180k), 39% (> $180k); ACC Earners Levy 1.60%."
   },
-  "fr-dgfip-tax-2025": {
-    id: "fr-dgfip-tax-2025",
+  "fr-dgfip-tax-2026": {
+    id: "fr-dgfip-tax-2026",
     organization: "Direction G\xE9n\xE9rale des Finances Publiques (DGFiP)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Loi de finances pour 2025 (Bar\xE8me de l'imp\xF4t sur le revenu & PASS 2025)",
+    canonicalReference: "Loi de finances pour 2026 (Bar\xE8me de l'imp\xF4t sur le revenu & PASS 2026)",
     url: "https://www.impots.gouv.fr",
     jurisdiction: "France",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-15",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "Bar\xE8me progressif de l'IR, PASS 2025 \u20AC47,100, CSG/CRDS 9.7% sur 98.25% du brut."
+    notes: "Bar\xE8me progressif de l'IR, PASS 2026 \u20AC47,100, CSG/CRDS 9.7% sur 98.25% du brut."
   },
-  "es-aeat-tax-2025": {
-    id: "es-aeat-tax-2025",
+  "es-aeat-tax-2026": {
+    id: "es-aeat-tax-2026",
     organization: "Agencia Estatal de Administraci\xF3n Tributaria (AEAT)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Ley del IRPF & Orden de cotizaci\xF3n a la Seguridad Social 2025",
+    canonicalReference: "Ley del IRPF & Orden de cotizaci\xF3n a la Seguridad Social 2026",
     url: "https://sede.agenciatributaria.gob.es",
     jurisdiction: "Spain",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-20",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "Escala general IRPF, base m\xE1xima de cotizaci\xF3n 2025, cuota de solidaridad y MEI 0.14%."
+    notes: "Escala general IRPF, base m\xE1xima de cotizaci\xF3n 2026, cuota de solidaridad y MEI 0.14%."
   },
-  "nl-belasting-tax-2025": {
-    id: "nl-belasting-tax-2025",
+  "nl-belasting-tax-2026": {
+    id: "nl-belasting-tax-2026",
     organization: "Belastingdienst",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Belastingplan 2025 (Tarieven inkomstenbelasting Box 1)",
+    canonicalReference: "Belastingplan 2026 (Tarieven inkomstenbelasting Box 1)",
     url: "https://www.belastingdienst.nl",
     jurisdiction: "Netherlands",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-12-01",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "Tarieven box 1 schijven en heffingskortingen 2025."
+    notes: "Tarieven box 1 schijven en heffingskortingen 2026."
   },
-  "ie-revenue-tax-2025": {
-    id: "ie-revenue-tax-2025",
+  "ie-revenue-tax-2026": {
+    id: "ie-revenue-tax-2026",
     organization: "Office of the Revenue Commissioners",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Budget 2025 Tax Changes: Standard Rate Cut-Off Point & Tax Credits",
-    url: "https://www.revenue.ie/en/corporate/press-office/budget-information/2025/index.aspx",
+    canonicalReference: "Budget 2026 Tax Changes: Standard Rate Cut-Off Point & Tax Credits",
+    url: "https://www.revenue.ie/en/corporate/press-office/budget-information/2026/index.aspx",
     jurisdiction: "Ireland",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-10-15",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "Single SRCOP \u20AC44,000, Single Personal Credit \u20AC2,000, Employee PAYE Credit \u20AC2,000; revised USC bands."
   },
-  "ch-estv-tax-2025": {
-    id: "ch-estv-tax-2025",
+  "ch-estv-tax-2026": {
+    id: "ch-estv-tax-2026",
     organization: "Eidgen\xF6ssische Steuerverwaltung (ESTV)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Bundesgesetz \xFCber die direkte Bundessteuer (DBG Tarife 2025)",
+    canonicalReference: "Bundesgesetz \xFCber die direkte Bundessteuer (DBG Tarife 2026)",
     url: "https://www.estv.admin.ch",
     jurisdiction: "Switzerland",
     reliabilityTier: "Tier 1",
     retrievedAt: "2024-11-01",
-    effectiveDate: "2025-01-01",
-    verifiedAt: "2025-01-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "Tarife der direkten Bundessteuer 2025 und kantonale Steuerf\xFCsse."
+    notes: "Tarife der direkten Bundessteuer 2026 und kantonale Steuerf\xFCsse."
   }
 };
 var EVIDENCE_REGISTRY = EVIDENCE_SOURCES;
@@ -3906,7 +3906,7 @@ var AustraliaTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     let incomeTax = 0;
     if (grossMajor <= 18200) {
@@ -3930,7 +3930,7 @@ var AustraliaTaxAdapter = class {
     const medicareMinor = Math.round(medicareLevy * 100);
     const totalTaxMinor = federalTaxMinor + medicareMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
-    const evidenceRef = isHistorical2024 ? "ato-individual-rates-2024" : "au-ato-tax-2025";
+    const evidenceRef = isHistorical2024 ? "ato-individual-rates-2024" : "au-ato-tax-2026";
     const components = [
       {
         id: "au-income-tax",
@@ -3951,7 +3951,7 @@ var AustraliaTaxAdapter = class {
         evidenceRefId: evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "ATO-2024.2" : "AU-ATO-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "ATO-2024.2" : "AU-ATO-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -3970,7 +3970,7 @@ var AustraliaTaxAdapter = class {
       marginalTaxRate: grossMajor > 19e4 ? 0.47 : grossMajor > 135e3 ? 0.39 : 0.32,
       components,
       taxRuleVersion,
-      evidenceSourceIds: isHistorical2024 ? ["ato-individual-rates-2024", "ato-medicare-levy-2024"] : ["au-ato-tax-2025"]
+      evidenceSourceIds: isHistorical2024 ? ["ato-individual-rates-2024", "ato-medicare-levy-2024"] : ["au-ato-tax-2026"]
     };
   }
 };
@@ -3987,7 +3987,7 @@ var CanadaTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     let cppMinor = 0;
     if (isHistorical2024) {
@@ -4110,7 +4110,7 @@ var CanadaTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor + stateTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "cra-income-tax-2024" : "ca-cra-tax-2025";
+    const evidenceRef = isHistorical2024 ? "cra-income-tax-2024" : "ca-cra-tax-2026";
     const components = [
       {
         id: "ca-fed-tax",
@@ -4149,7 +4149,7 @@ var CanadaTaxAdapter = class {
         evidenceRefId: evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "CRA-2024.1" : "CA-CRA-ON-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "CRA-2024.1" : "CA-CRA-ON-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4185,7 +4185,7 @@ var SwitzerlandTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     const ahvMinor = Math.round(grossMajor * 0.053 * 100);
     const alvCap = 148200;
@@ -4239,7 +4239,7 @@ var SwitzerlandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor + stateTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "estv-bundessteuer-tarife-2024" : "ch-estv-tax-2025";
+    const evidenceRef = isHistorical2024 ? "estv-bundessteuer-tarife-2024" : "ch-estv-tax-2026";
     const components = [
       {
         id: "ch-bundessteuer",
@@ -4257,7 +4257,7 @@ var SwitzerlandTaxAdapter = class {
         category: "state",
         amount: fromMinor(stateTaxMinor, "CHF"),
         effectiveRate: stateTaxMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "estv-kantonssteuer-2024" : "ch-estv-tax-2025"
+        evidenceRefId: isHistorical2024 ? "estv-kantonssteuer-2024" : "ch-estv-tax-2026"
       },
       {
         id: "ch-sozialabgaben",
@@ -4266,10 +4266,10 @@ var SwitzerlandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialContributionsMinor, "CHF"),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "bsv-beitragssaetze-2024" : "ch-estv-tax-2025"
+        evidenceRefId: isHistorical2024 ? "bsv-beitragssaetze-2024" : "ch-estv-tax-2026"
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "ESTV-2024.1" : "CH-ESTV-ZH-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "ESTV-2024.1" : "CH-ESTV-ZH-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4305,7 +4305,7 @@ var GermanyTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     const kvCap = isHistorical2024 ? 62100 : 66150;
     const rvCap = isHistorical2024 ? 90600 : 96600;
@@ -4353,7 +4353,7 @@ var GermanyTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor + soliMinor;
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "bzst-lohnsteuer-2024" : "de-bmf-tax-2025";
+    const evidenceRef = isHistorical2024 ? "bzst-lohnsteuer-2024" : "de-bmf-tax-2026";
     const components = [
       {
         id: "de-einkommensteuer",
@@ -4371,10 +4371,10 @@ var GermanyTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialMinor, "EUR"),
         effectiveRate: socialMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "gkv-beitragssaetze-2024" : "de-bmf-tax-2025"
+        evidenceRefId: isHistorical2024 ? "gkv-beitragssaetze-2024" : "de-bmf-tax-2026"
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "BZSt-2024.1" : "DE-BMF-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "BZSt-2024.1" : "DE-BMF-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4410,7 +4410,7 @@ var SpainTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     const ssBaseLimit = isHistorical2024 ? 56646 : 6e4;
     const ssRate = isHistorical2024 ? 0.0647 : 0.0649;
@@ -4436,7 +4436,7 @@ var SpainTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + ssMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "aeat-tramos-irpf-2024" : "es-aeat-tax-2025";
+    const evidenceRef = isHistorical2024 ? "aeat-tramos-irpf-2024" : "es-aeat-tax-2026";
     const components = [
       {
         id: "es-irpf",
@@ -4454,10 +4454,10 @@ var SpainTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(ssMinor, "EUR"),
         effectiveRate: ssMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "tgss-bases-cotizacion-2024" : "es-aeat-tax-2025"
+        evidenceRefId: isHistorical2024 ? "tgss-bases-cotizacion-2024" : "es-aeat-tax-2026"
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "AEAT-2024.1" : "ES-AEAT-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "AEAT-2024.1" : "ES-AEAT-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4493,7 +4493,7 @@ var FranceTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     const PASS = isHistorical2024 ? 46368 : 47100;
     const csgBase = Math.min(grossMajor, 4 * PASS) * 0.9825;
@@ -4544,7 +4544,7 @@ var FranceTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "dgfip-bareme-ir-2024" : "fr-dgfip-tax-2025";
+    const evidenceRef = isHistorical2024 ? "dgfip-bareme-ir-2024" : "fr-dgfip-tax-2026";
     const components = [
       {
         id: "fr-impot-revenu",
@@ -4562,10 +4562,10 @@ var FranceTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialContributionsMinor, "EUR"),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "urssaf-taux-cotisations-2024" : "fr-dgfip-tax-2025"
+        evidenceRefId: isHistorical2024 ? "urssaf-taux-cotisations-2024" : "fr-dgfip-tax-2026"
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "DGFiP-2024.1" : "FR-DGFIP-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "DGFiP-2024.1" : "FR-DGFIP-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4601,7 +4601,7 @@ var IrelandTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     const SRCOP = isHistorical2024 ? 42e3 : 44e3;
     let grossIncomeTax = 0;
@@ -4648,7 +4648,7 @@ var IrelandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "revenue-paye-rates-2024" : "ie-revenue-tax-2025";
+    const evidenceRef = isHistorical2024 ? "revenue-paye-rates-2024" : "ie-revenue-tax-2026";
     const components = [
       {
         id: "ie-paye-tax",
@@ -4666,7 +4666,7 @@ var IrelandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(uscMinor, "EUR"),
         effectiveRate: uscMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "revenue-usc-rates-2024" : "ie-revenue-tax-2025"
+        evidenceRefId: isHistorical2024 ? "revenue-usc-rates-2024" : "ie-revenue-tax-2026"
       },
       {
         id: "ie-prsi",
@@ -4675,10 +4675,10 @@ var IrelandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(prsiMinor, "EUR"),
         effectiveRate: prsiMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "dsp-prsi-rates-2024" : "ie-revenue-tax-2025"
+        evidenceRefId: isHistorical2024 ? "dsp-prsi-rates-2024" : "ie-revenue-tax-2026"
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "Revenue-2024.1" : "IE-REVENUE-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "Revenue-2024.1" : "IE-REVENUE-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4714,7 +4714,7 @@ var NetherlandsTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     const bracket1Cap = isHistorical2024 ? 75518 : 76817;
     const bracket1Rate = isHistorical2024 ? 0.3697 : 0.3582;
@@ -4763,7 +4763,7 @@ var NetherlandsTaxAdapter = class {
     const incomeTaxMinor = Math.round(Math.max(0, netTax - nationalInsuranceMinor / 100) * 100);
     const totalDeductionsMinor = Math.round(netTax * 100);
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "belastingdienst-box1-2024" : "nl-belasting-tax-2025";
+    const evidenceRef = isHistorical2024 ? "belastingdienst-box1-2024" : "nl-belasting-tax-2026";
     const components = [
       {
         id: "nl-inkomstenbelasting",
@@ -4781,10 +4781,10 @@ var NetherlandsTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(nationalInsuranceMinor, "EUR"),
         effectiveRate: nationalInsuranceMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "belastingdienst-premies-2024" : "nl-belasting-tax-2025"
+        evidenceRefId: isHistorical2024 ? "belastingdienst-premies-2024" : "nl-belasting-tax-2026"
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "Belastingdienst-2024.1" : "NL-BELASTING-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "Belastingdienst-2024.1" : "NL-BELASTING-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4820,7 +4820,7 @@ var NewZealandTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     let incomeTax = 0;
     if (grossMajor <= 15600) {
@@ -4841,7 +4841,7 @@ var NewZealandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "ird-tax-rates-2024-2025" : "nz-ird-tax-2025";
+    const evidenceRef = isHistorical2024 ? "ird-tax-rates-2024-2026" : "nz-ird-tax-2026";
     const components = [
       {
         id: "nz-ird-paye",
@@ -4859,10 +4859,10 @@ var NewZealandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(accMinor, "NZD"),
         effectiveRate: accMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "acc-earners-levy-2024" : "nz-ird-tax-2025"
+        evidenceRefId: isHistorical2024 ? "acc-earners-levy-2024" : "nz-ird-tax-2026"
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "IRD-2024.2" : "NZ-IRD-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "IRD-2024.2" : "NZ-IRD-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4897,10 +4897,10 @@ var QatarTaxAdapter = class {
   }
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? "GTA-2024.1" : "QA-GTA-2025.1";
-    const evidenceRef = isHistorical2024 ? "qatar-income-tax-law-2018" : "qa-gta-tax-2025";
+    const taxRuleVersion = isHistorical2024 ? "GTA-2024.1" : "QA-GTA-2026.1";
+    const evidenceRef = isHistorical2024 ? "qatar-income-tax-law-2018" : "qa-gta-tax-2026";
     const components = [
       {
         id: "qa-statutory-tax",
@@ -4947,10 +4947,10 @@ var SaudiTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const currency = grossCompensation.currency;
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? "GULF-2024.1" : "SA-ZATCA-2025.1";
-    const evidenceRef = isHistorical2024 ? "gulf-zero-income-tax-statute" : "sa-zatca-tax-2025";
+    const taxRuleVersion = isHistorical2024 ? "GULF-2024.1" : "SA-ZATCA-2026.1";
+    const evidenceRef = isHistorical2024 ? "gulf-zero-income-tax-statute" : "sa-zatca-tax-2026";
     const components = [
       {
         id: `${context.countryId.toLowerCase()}-zero-tax`,
@@ -4997,7 +4997,7 @@ var SingaporeTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     let tax = 0;
     if (grossMajor <= 2e4) {
@@ -5028,7 +5028,7 @@ var SingaporeTaxAdapter = class {
     const federalTaxMinor = Math.round(tax * 100);
     const totalTaxMinor = federalTaxMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
-    const evidenceRef = isHistorical2024 ? "iras-tax-rates-2024" : "sg-iras-tax-2025";
+    const evidenceRef = isHistorical2024 ? "iras-tax-rates-2024" : "sg-iras-tax-2026";
     const components = [
       {
         id: "sg-iras-income-tax",
@@ -5040,7 +5040,7 @@ var SingaporeTaxAdapter = class {
         evidenceRefId: evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "IRAS-YA2024" : "SG-IRAS-YA2025.1";
+    const taxRuleVersion = isHistorical2024 ? "IRAS-YA2024" : "SG-IRAS-YA2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -5076,10 +5076,10 @@ var UaeTaxAdapter = class {
   calculate(gross, profile, context) {
     const currency = "AED";
     const grossMinor = gross.amountMinor;
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? "UAE-FTA-2024.1" : "AE-FTA-2025.1";
-    const evidenceRef = isHistorical2024 ? "uae-fta-2024" : "uae-fta-2025";
+    const taxRuleVersion = isHistorical2024 ? "UAE-FTA-2024.1" : "AE-FTA-2026.1";
+    const evidenceRef = isHistorical2024 ? "uae-fta-2024" : "uae-fta-2026";
     return {
       status: "CALCULATED",
       grossIncome: gross,
@@ -5126,7 +5126,7 @@ var UkTaxAdapter = class {
   calculate(gross, profile, context) {
     const currency = "GBP";
     const grossMinor = gross.amountMinor;
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
     let personalAllowanceMinor = 1257e3;
     if (grossMinor > 1e7) {
@@ -5191,7 +5191,7 @@ var UkTaxAdapter = class {
     niMinor = Math.round(niMinor);
     const totalDeductionsMinor = incomeTaxMinor + niMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceSourceId = isHistorical2024 ? "uk-hmrc-tax-2024" : "uk-hmrc-tax-2025";
+    const evidenceSourceId = isHistorical2024 ? "uk-hmrc-tax-2024" : "uk-hmrc-tax-2026";
     const components = [
       {
         id: "uk-income-tax",
@@ -5231,7 +5231,7 @@ var UkTaxAdapter = class {
       effectiveTaxRate: grossMinor > 0 ? totalDeductionsMinor / grossMinor : 0,
       marginalTaxRate: grossMinor > 12514e3 ? 0.47 : grossMinor > 5027e3 ? 0.42 : 0.28,
       components,
-      taxRuleVersion: isHistorical2024 ? "UK-HMRC-2024.2" : "GB-HMRC-2025.1",
+      taxRuleVersion: isHistorical2024 ? "UK-HMRC-2024.2" : "GB-HMRC-2026.1",
       evidenceSourceIds: [evidenceSourceId]
     };
   }
@@ -5312,7 +5312,7 @@ var US_FEDERAL_STANDARD_DEDUCTION_2024 = {
   head_of_household: 219e4
 };
 var SOCIAL_SECURITY_CAP_2024_MINOR = 1686e4;
-var US_FEDERAL_BRACKETS_2025 = {
+var US_FEDERAL_BRACKETS_2026 = {
   single: [
     { upToMinor: 1192500, rate: 0.1 },
     { upToMinor: 4847500, rate: 0.12 },
@@ -5341,12 +5341,12 @@ var US_FEDERAL_BRACKETS_2025 = {
     { upToMinor: Infinity, rate: 0.37 }
   ]
 };
-var US_FEDERAL_STANDARD_DEDUCTION_2025 = {
+var US_FEDERAL_STANDARD_DEDUCTION_2026 = {
   single: 15e5,
   married_filing_jointly: 3e6,
   head_of_household: 225e4
 };
-var SOCIAL_SECURITY_CAP_2025_MINOR = 1761e4;
+var SOCIAL_SECURITY_CAP_2026_MINOR = 1761e4;
 var SOCIAL_SECURITY_RATE = 0.062;
 var MEDICARE_RATE = 0.0145;
 var ADDL_MEDICARE_RATE = 9e-3;
@@ -5409,12 +5409,12 @@ var UsTaxAdapter = class {
   calculate(gross, profile, context) {
     const currency = "USD";
     const grossMinor = gross.amountMinor;
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
-    const effectiveYear = isHistorical2024 ? 2024 : 2025;
-    const federalStdDeductions = isHistorical2024 ? US_FEDERAL_STANDARD_DEDUCTION_2024 : US_FEDERAL_STANDARD_DEDUCTION_2025;
-    const federalBracketsMap = isHistorical2024 ? US_FEDERAL_BRACKETS_2024 : US_FEDERAL_BRACKETS_2025;
-    const socialSecurityCapMinor = isHistorical2024 ? SOCIAL_SECURITY_CAP_2024_MINOR : SOCIAL_SECURITY_CAP_2025_MINOR;
+    const effectiveYear = isHistorical2024 ? 2024 : 2026;
+    const federalStdDeductions = isHistorical2024 ? US_FEDERAL_STANDARD_DEDUCTION_2024 : US_FEDERAL_STANDARD_DEDUCTION_2026;
+    const federalBracketsMap = isHistorical2024 ? US_FEDERAL_BRACKETS_2024 : US_FEDERAL_BRACKETS_2026;
+    const socialSecurityCapMinor = isHistorical2024 ? SOCIAL_SECURITY_CAP_2024_MINOR : SOCIAL_SECURITY_CAP_2026_MINOR;
     const preTaxDeductionsMinor = (profile.pensionContributionMinor || 0) + (profile.healthDeductionMinor || 0);
     const adjustedGrossMinor = Math.max(0, grossMinor - preTaxDeductionsMinor);
     const federalStdDeductionMinor = federalStdDeductions[profile.filingStatus];
@@ -5498,7 +5498,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? federalTaxMinor / grossMinor : 0,
         marginalRate: federalMarginal,
         description: `Taxable Income: $${(federalTaxableMinor / 100).toLocaleString()} (Standard deduction $${(federalStdDeductionMinor / 100).toLocaleString()})`,
-        evidenceRefId: isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2025"
+        evidenceRefId: isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2026"
       },
       {
         id: "us-fica-social-security",
@@ -5509,7 +5509,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? socialSecurityTaxMinor / grossMinor : 0,
         marginalRate: grossMinor < socialSecurityCapMinor ? SOCIAL_SECURITY_RATE : 0,
         description: `6.2% on wages up to $${(socialSecurityCapMinor / 100).toLocaleString()} maximum annual wage base`,
-        evidenceRefId: isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2025"
+        evidenceRefId: isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2026"
       },
       {
         id: "us-fica-medicare",
@@ -5520,7 +5520,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? totalMedicareTaxMinor / grossMinor : 0,
         marginalRate: grossMinor > addlMedicareThresholdMinor ? MEDICARE_RATE + ADDL_MEDICARE_RATE : MEDICARE_RATE,
         description: `1.45% uncapped + 0.9% on earnings exceeding $200k`,
-        evidenceRefId: isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2025"
+        evidenceRefId: isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2026"
       }
     ];
     if (stateTaxMinor > 0 || isNewYorkState) {
@@ -5533,7 +5533,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? stateTaxMinor / grossMinor : 0,
         marginalRate: stateMarginal,
         description: isNewYorkState ? `NYS Standard Deduction $${(NYS_STANDARD_DEDUCTION[profile.filingStatus] / 100).toLocaleString()}` : void 0,
-        evidenceRefId: isNewYorkState ? isHistorical2024 ? "us-nys-tax-2024" : "us-nys-tax-2025" : isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2025"
+        evidenceRefId: isNewYorkState ? isHistorical2024 ? "us-nys-tax-2024" : "us-nys-tax-2026" : isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2026"
       });
     }
     if (localTaxMinor > 0 || isNycResident) {
@@ -5546,17 +5546,17 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? localTaxMinor / grossMinor : 0,
         marginalRate: localMarginal,
         description: "NYC Resident Tax Schedule (Admin Code \xA7 11-1701)",
-        evidenceRefId: isHistorical2024 ? "us-nyc-tax-2024" : "us-nyc-tax-2025"
+        evidenceRefId: isHistorical2024 ? "us-nyc-tax-2024" : "us-nyc-tax-2026"
       });
     }
     const effectiveTaxRate = grossMinor > 0 ? totalDeductionsAndTaxesMinor / grossMinor : 0;
     const combinedMarginalRate = federalMarginal + stateMarginal + localMarginal + (grossMinor < socialSecurityCapMinor ? SOCIAL_SECURITY_RATE : 0) + MEDICARE_RATE + (grossMinor > addlMedicareThresholdMinor ? ADDL_MEDICARE_RATE : 0);
-    const taxRuleVersion = isHistorical2024 ? "US-FED-NY-NYC-2024.1" : "US-FED-NY-NYC-2025.1";
+    const taxRuleVersion = isHistorical2024 ? "US-FED-NY-NYC-2024.1" : "US-FED-NY-NYC-2026.1";
     const evidenceSourceIds = [
-      isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2025",
-      isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2025",
-      ...isNewYorkState ? [isHistorical2024 ? "us-nys-tax-2024" : "us-nys-tax-2025"] : [],
-      ...isNycResident ? [isHistorical2024 ? "us-nyc-tax-2024" : "us-nyc-tax-2025"] : []
+      isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2026",
+      isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2026",
+      ...isNewYorkState ? [isHistorical2024 ? "us-nys-tax-2024" : "us-nys-tax-2026"] : [],
+      ...isNycResident ? [isHistorical2024 ? "us-nyc-tax-2024" : "us-nyc-tax-2026"] : []
     ];
     return {
       status: "CALCULATED",
@@ -5582,7 +5582,7 @@ var UsTaxAdapter = class {
 };
 
 // src/engines/tax/tax-registry.ts
-var LATEST_STATUTORY_TAX_YEAR = 2025;
+var LATEST_STATUTORY_TAX_YEAR = 2026;
 var TaxRegistry = class {
   static {
     this.COUNTRY_METADATA = {
@@ -5590,12 +5590,12 @@ var TaxRegistry = class {
       US: {
         name: "United States",
         status: "VERIFIED",
-        notes: "IRS Rev. Proc. 2024-40 (2025) & Rev. Proc. 2023-34 (2024), SSA FICA, and state/local schedules verified with golden vectors."
+        notes: "IRS Rev. Proc. 2024-40 (2026) & Rev. Proc. 2023-34 (2024), SSA FICA, and state/local schedules verified with golden vectors."
       },
       GB: {
         name: "United Kingdom",
         status: "VERIFIED",
-        notes: "HMRC 2024/25 & 2025/26 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors."
+        notes: "HMRC 2024/25 & 2026/26 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors."
       },
       AE: {
         name: "United Arab Emirates",
@@ -5605,7 +5605,7 @@ var TaxRegistry = class {
       CA: {
         name: "Canada",
         status: "VERIFIED",
-        notes: "CRA 2024 & 2025 Federal Brackets, BPA, CPP1/CPP2, EI, and provincial tax verified with golden vectors."
+        notes: "CRA 2024 & 2026 Federal Brackets, BPA, CPP1/CPP2, EI, and provincial tax verified with golden vectors."
       },
       AU: {
         name: "Australia",
@@ -5615,12 +5615,12 @@ var TaxRegistry = class {
       DE: {
         name: "Germany",
         status: "VERIFIED",
-        notes: "EStG \xA7 32a statutory polynomial formula (2024 & 2025) and social insurance contributions (KV/RV/AV/PV) verified with golden vectors."
+        notes: "EStG \xA7 32a statutory polynomial formula (2024 & 2026) and social insurance contributions (KV/RV/AV/PV) verified with golden vectors."
       },
       SG: {
         name: "Singapore",
         status: "VERIFIED",
-        notes: "IRAS YA 2024 & YA 2025 progressive resident tax schedules verified with golden vectors."
+        notes: "IRAS YA 2024 & YA 2026 progressive resident tax schedules verified with golden vectors."
       },
       QA: {
         name: "Qatar",
@@ -5635,7 +5635,7 @@ var TaxRegistry = class {
       NZ: {
         name: "New Zealand",
         status: "VERIFIED",
-        notes: "Inland Revenue (IRD) post-July 2024/2025 thresholds and ACC earner levy verified with golden vectors."
+        notes: "Inland Revenue (IRD) post-July 2024/2026 thresholds and ACC earner levy verified with golden vectors."
       },
       // 5 LIMITED ADAPTERS (Executable dedicated adapters with documented scope limitations)
       FR: {
@@ -5656,7 +5656,7 @@ var TaxRegistry = class {
       IE: {
         name: "Ireland",
         status: "LIMITED",
-        notes: "Revenue standard rate band (2024 \u20AC42k / 2025 \u20AC44k), personal tax credits, USC, and PRSI Class A for single filer."
+        notes: "Revenue standard rate band (2024 \u20AC42k / 2026 \u20AC44k), personal tax credits, USC, and PRSI Class A for single filer."
       },
       ES: {
         name: "Spain",
@@ -7314,63 +7314,63 @@ var CapabilityResolver = class {
       const isHistorical2024 = taxYear <= 2024;
       switch (countryId) {
         case "US":
-          taxRuleVersion = isHistorical2024 ? "US-FED-NY-NYC-2024.1" : "US-FED-NY-NYC-2025.1";
+          taxRuleVersion = isHistorical2024 ? "US-FED-NY-NYC-2024.1" : "US-FED-NY-NYC-2026.1";
           limitations.push("Single filer standard deduction; localized state/local schedules for major commercial metros.");
           break;
         case "GB":
-          taxRuleVersion = isHistorical2024 ? "UK-HMRC-2024.2" : "GB-HMRC-2025.1";
+          taxRuleVersion = isHistorical2024 ? "UK-HMRC-2024.2" : "GB-HMRC-2026.1";
           limitations.push("England/Wales standard & Scottish progressive bands; personal allowance reduction over \xA3100k.");
           break;
         case "AE":
-          taxRuleVersion = isHistorical2024 ? "UAE-FTA-2024.1" : "AE-FTA-2025.1";
+          taxRuleVersion = isHistorical2024 ? "UAE-FTA-2024.1" : "AE-FTA-2026.1";
           limitations.push("Statutory 0% employment income tax; corporate and excise taxes excluded from payroll.");
           break;
         case "CA":
-          taxRuleVersion = isHistorical2024 ? "CRA-2024.1" : "CA-CRA-ON-2025.1";
+          taxRuleVersion = isHistorical2024 ? "CRA-2024.1" : "CA-CRA-ON-2026.1";
           limitations.push("Federal + Ontario provincial schedules, CPP1/CPP2, and Employment Insurance.");
           break;
         case "AU":
-          taxRuleVersion = isHistorical2024 ? "ATO-2024.2" : "AU-ATO-2025.1";
+          taxRuleVersion = isHistorical2024 ? "ATO-2024.2" : "AU-ATO-2026.1";
           limitations.push("Revised Stage 3 tax cuts (effective July 2024) and Medicare levy.");
           break;
         case "DE":
-          taxRuleVersion = isHistorical2024 ? "BZSt-2024.1" : "DE-BMF-2025.1";
+          taxRuleVersion = isHistorical2024 ? "BZSt-2024.1" : "DE-BMF-2026.1";
           limitations.push("EStG polynomial formula and standard statutory social contributions (KV, RV, AV, PV).");
           break;
         case "SG":
-          taxRuleVersion = isHistorical2024 ? "IRAS-YA2024" : "SG-IRAS-YA2025.1";
+          taxRuleVersion = isHistorical2024 ? "IRAS-YA2024" : "SG-IRAS-YA2026.1";
           limitations.push("Resident progressive tax schedule; CPF statutory contributions for citizens/PR.");
           break;
         case "QA":
-          taxRuleVersion = isHistorical2024 ? "GTA-2024.1" : "QA-GTA-2025.1";
+          taxRuleVersion = isHistorical2024 ? "GTA-2024.1" : "QA-GTA-2026.1";
           limitations.push("Statutory 0% employment income tax for resident and foreign employees.");
           break;
         case "SA":
-          taxRuleVersion = isHistorical2024 ? "GULF-2024.1" : "SA-ZATCA-2025.1";
+          taxRuleVersion = isHistorical2024 ? "GULF-2024.1" : "SA-ZATCA-2026.1";
           limitations.push("0% personal income tax on employee compensation; GOSI contributions for Saudi nationals.");
           break;
         case "NZ":
-          taxRuleVersion = isHistorical2024 ? "IRD-2024.2" : "NZ-IRD-2025.1";
+          taxRuleVersion = isHistorical2024 ? "IRD-2024.2" : "NZ-IRD-2026.1";
           limitations.push("Post-July 2024 tax thresholds and ACC earner levy.");
           break;
         case "FR":
-          taxRuleVersion = isHistorical2024 ? "DGFiP-2024.1" : "FR-DGFIP-2025.1";
+          taxRuleVersion = isHistorical2024 ? "DGFiP-2024.1" : "FR-DGFIP-2026.1";
           limitations.push("Single employee scale & URSSAF social charges; quotient familial not modeled.");
           break;
         case "ES":
-          taxRuleVersion = isHistorical2024 ? "AEAT-2024.1" : "ES-AEAT-2025.1";
+          taxRuleVersion = isHistorical2024 ? "AEAT-2024.1" : "ES-AEAT-2026.1";
           limitations.push("National and standard Madrid/Catalonia scales; specific autonomous regional deductions limited.");
           break;
         case "NL":
-          taxRuleVersion = isHistorical2024 ? "Belastingdienst-2024.1" : "NL-BELASTING-2025.1";
+          taxRuleVersion = isHistorical2024 ? "Belastingdienst-2024.1" : "NL-BELASTING-2026.1";
           limitations.push("Box 1 income tax & national insurance; 30% ruling not applied.");
           break;
         case "IE":
-          taxRuleVersion = isHistorical2024 ? "Revenue-2024.1" : "IE-REVENUE-2025.1";
+          taxRuleVersion = isHistorical2024 ? "Revenue-2024.1" : "IE-REVENUE-2026.1";
           limitations.push("Single filer standard rate band, personal tax credit, USC, and PRSI Class A.");
           break;
         case "CH":
-          taxRuleVersion = isHistorical2024 ? "ESTV-2024.1" : "CH-ESTV-ZH-2025.1";
+          taxRuleVersion = isHistorical2024 ? "ESTV-2024.1" : "CH-ESTV-ZH-2026.1";
           limitations.push("Federal direct tax and standard Zurich cantonal/communal multiplier.");
           break;
       }

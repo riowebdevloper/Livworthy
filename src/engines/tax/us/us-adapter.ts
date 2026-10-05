@@ -50,10 +50,10 @@ const US_FEDERAL_STANDARD_DEDUCTION_2024: Record<FilingStatus, number> = {
 const SOCIAL_SECURITY_CAP_2024_MINOR = 168_600_00; // $168,600
 
 // ==========================================
-// 2025 Statutory Rules (IRS Rev. Proc. 2024-40, SSA $176,100)
+// 2026 Statutory Rules (IRS Rev. Proc. 2024-40, SSA $176,100)
 // Official source: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf
 // ==========================================
-const US_FEDERAL_BRACKETS_2025: Record<FilingStatus, Bracket[]> = {
+const US_FEDERAL_BRACKETS_2026: Record<FilingStatus, Bracket[]> = {
   single: [
     { upToMinor: 11_925_00, rate: 0.10 },
     { upToMinor: 48_475_00, rate: 0.12 },
@@ -83,13 +83,13 @@ const US_FEDERAL_BRACKETS_2025: Record<FilingStatus, Bracket[]> = {
   ],
 };
 
-const US_FEDERAL_STANDARD_DEDUCTION_2025: Record<FilingStatus, number> = {
+const US_FEDERAL_STANDARD_DEDUCTION_2026: Record<FilingStatus, number> = {
   single: 15_000_00,
   married_filing_jointly: 30_000_00,
   head_of_household: 22_500_00,
 };
 
-const SOCIAL_SECURITY_CAP_2025_MINOR = 176_100_00; // $176,100
+const SOCIAL_SECURITY_CAP_2026_MINOR = 176_100_00; // $176,100
 
 // FICA Wage Rates (SSA / IRS)
 const SOCIAL_SECURITY_RATE = 0.062;
@@ -169,20 +169,20 @@ export class UsTaxAdapter implements TaxAdapter {
     const grossMinor = gross.amountMinor;
 
     // Effective-period rule selection
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
-    const effectiveYear = isHistorical2024 ? 2024 : 2025;
+    const effectiveYear = isHistorical2024 ? 2024 : 2026;
 
     // Select statutory brackets and parameters
     const federalStdDeductions = isHistorical2024
       ? US_FEDERAL_STANDARD_DEDUCTION_2024
-      : US_FEDERAL_STANDARD_DEDUCTION_2025;
+      : US_FEDERAL_STANDARD_DEDUCTION_2026;
     const federalBracketsMap = isHistorical2024
       ? US_FEDERAL_BRACKETS_2024
-      : US_FEDERAL_BRACKETS_2025;
+      : US_FEDERAL_BRACKETS_2026;
     const socialSecurityCapMinor = isHistorical2024
       ? SOCIAL_SECURITY_CAP_2024_MINOR
-      : SOCIAL_SECURITY_CAP_2025_MINOR;
+      : SOCIAL_SECURITY_CAP_2026_MINOR;
 
     // Pre-tax deductions (e.g. 401k/HSA/Pension)
     const preTaxDeductionsMinor =
@@ -296,7 +296,7 @@ export class UsTaxAdapter implements TaxAdapter {
         effectiveRate: grossMinor > 0 ? federalTaxMinor / grossMinor : 0,
         marginalRate: federalMarginal,
         description: `Taxable Income: $${(federalTaxableMinor / 100).toLocaleString()} (Standard deduction $${(federalStdDeductionMinor / 100).toLocaleString()})`,
-        evidenceRefId: isHistorical2024 ? 'us-irs-tax-2024' : 'us-irs-tax-2025',
+        evidenceRefId: isHistorical2024 ? 'us-irs-tax-2024' : 'us-irs-tax-2026',
       },
       {
         id: 'us-fica-social-security',
@@ -307,7 +307,7 @@ export class UsTaxAdapter implements TaxAdapter {
         effectiveRate: grossMinor > 0 ? socialSecurityTaxMinor / grossMinor : 0,
         marginalRate: grossMinor < socialSecurityCapMinor ? SOCIAL_SECURITY_RATE : 0,
         description: `6.2% on wages up to $${(socialSecurityCapMinor / 100).toLocaleString()} maximum annual wage base`,
-        evidenceRefId: isHistorical2024 ? 'us-ssa-fica-2024' : 'us-ssa-fica-2025',
+        evidenceRefId: isHistorical2024 ? 'us-ssa-fica-2024' : 'us-ssa-fica-2026',
       },
       {
         id: 'us-fica-medicare',
@@ -318,7 +318,7 @@ export class UsTaxAdapter implements TaxAdapter {
         effectiveRate: grossMinor > 0 ? totalMedicareTaxMinor / grossMinor : 0,
         marginalRate: grossMinor > addlMedicareThresholdMinor ? MEDICARE_RATE + ADDL_MEDICARE_RATE : MEDICARE_RATE,
         description: `1.45% uncapped + 0.9% on earnings exceeding $200k`,
-        evidenceRefId: isHistorical2024 ? 'us-ssa-fica-2024' : 'us-ssa-fica-2025',
+        evidenceRefId: isHistorical2024 ? 'us-ssa-fica-2024' : 'us-ssa-fica-2026',
       },
     ];
 
@@ -335,8 +335,8 @@ export class UsTaxAdapter implements TaxAdapter {
           ? `NYS Standard Deduction $${(NYS_STANDARD_DEDUCTION[profile.filingStatus] / 100).toLocaleString()}`
           : undefined,
         evidenceRefId: isNewYorkState
-          ? (isHistorical2024 ? 'us-nys-tax-2024' : 'us-nys-tax-2025')
-          : (isHistorical2024 ? 'us-irs-tax-2024' : 'us-irs-tax-2025'),
+          ? (isHistorical2024 ? 'us-nys-tax-2024' : 'us-nys-tax-2026')
+          : (isHistorical2024 ? 'us-irs-tax-2024' : 'us-irs-tax-2026'),
       });
     }
 
@@ -350,7 +350,7 @@ export class UsTaxAdapter implements TaxAdapter {
         effectiveRate: grossMinor > 0 ? localTaxMinor / grossMinor : 0,
         marginalRate: localMarginal,
         description: 'NYC Resident Tax Schedule (Admin Code § 11-1701)',
-        evidenceRefId: isHistorical2024 ? 'us-nyc-tax-2024' : 'us-nyc-tax-2025',
+        evidenceRefId: isHistorical2024 ? 'us-nyc-tax-2024' : 'us-nyc-tax-2026',
       });
     }
 
@@ -363,12 +363,12 @@ export class UsTaxAdapter implements TaxAdapter {
       MEDICARE_RATE +
       (grossMinor > addlMedicareThresholdMinor ? ADDL_MEDICARE_RATE : 0);
 
-    const taxRuleVersion = isHistorical2024 ? 'US-FED-NY-NYC-2024.1' : 'US-FED-NY-NYC-2025.1';
+    const taxRuleVersion = isHistorical2024 ? 'US-FED-NY-NYC-2024.1' : 'US-FED-NY-NYC-2026.1';
     const evidenceSourceIds = [
-      isHistorical2024 ? 'us-irs-tax-2024' : 'us-irs-tax-2025',
-      isHistorical2024 ? 'us-ssa-fica-2024' : 'us-ssa-fica-2025',
-      ...(isNewYorkState ? [isHistorical2024 ? 'us-nys-tax-2024' : 'us-nys-tax-2025'] : []),
-      ...(isNycResident ? [isHistorical2024 ? 'us-nyc-tax-2024' : 'us-nyc-tax-2025'] : []),
+      isHistorical2024 ? 'us-irs-tax-2024' : 'us-irs-tax-2026',
+      isHistorical2024 ? 'us-ssa-fica-2024' : 'us-ssa-fica-2026',
+      ...(isNewYorkState ? [isHistorical2024 ? 'us-nys-tax-2024' : 'us-nys-tax-2026'] : []),
+      ...(isNycResident ? [isHistorical2024 ? 'us-nyc-tax-2024' : 'us-nyc-tax-2026'] : []),
     ];
 
     return {

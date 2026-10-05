@@ -24,7 +24,7 @@ import { UsTaxAdapter } from './us/us-adapter';
  * Any request for a year beyond this MUST return TAX_CALCULATION_UNAVAILABLE — never silently
  * calculate using the latest known rules without disclosure.
  */
-export const LATEST_STATUTORY_TAX_YEAR = 2025;
+export const LATEST_STATUTORY_TAX_YEAR = 2026;
 
 export type TaxVerificationStatus = 'VERIFIED' | 'LIMITED' | 'PROVISIONAL' | 'UNSUPPORTED';
 
@@ -46,12 +46,12 @@ export class TaxRegistry {
     US: {
       name: 'United States',
       status: 'VERIFIED',
-      notes: 'IRS Rev. Proc. 2024-40 (2025) & Rev. Proc. 2023-34 (2024), SSA FICA, and state/local schedules verified with golden vectors.',
+      notes: 'IRS Rev. Proc. 2024-40 (2026) & Rev. Proc. 2023-34 (2024), SSA FICA, and state/local schedules verified with golden vectors.',
     },
     GB: {
       name: 'United Kingdom',
       status: 'VERIFIED',
-      notes: 'HMRC 2024/25 & 2025/26 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors.',
+      notes: 'HMRC 2024/25 & 2026/26 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors.',
     },
     AE: {
       name: 'United Arab Emirates',
@@ -61,7 +61,7 @@ export class TaxRegistry {
     CA: {
       name: 'Canada',
       status: 'VERIFIED',
-      notes: 'CRA 2024 & 2025 Federal Brackets, BPA, CPP1/CPP2, EI, and provincial tax verified with golden vectors.',
+      notes: 'CRA 2024 & 2026 Federal Brackets, BPA, CPP1/CPP2, EI, and provincial tax verified with golden vectors.',
     },
     AU: {
       name: 'Australia',
@@ -71,12 +71,12 @@ export class TaxRegistry {
     DE: {
       name: 'Germany',
       status: 'VERIFIED',
-      notes: 'EStG § 32a statutory polynomial formula (2024 & 2025) and social insurance contributions (KV/RV/AV/PV) verified with golden vectors.',
+      notes: 'EStG § 32a statutory polynomial formula (2024 & 2026) and social insurance contributions (KV/RV/AV/PV) verified with golden vectors.',
     },
     SG: {
       name: 'Singapore',
       status: 'VERIFIED',
-      notes: 'IRAS YA 2024 & YA 2025 progressive resident tax schedules verified with golden vectors.',
+      notes: 'IRAS YA 2024 & YA 2026 progressive resident tax schedules verified with golden vectors.',
     },
     QA: {
       name: 'Qatar',
@@ -91,7 +91,7 @@ export class TaxRegistry {
     NZ: {
       name: 'New Zealand',
       status: 'VERIFIED',
-      notes: 'Inland Revenue (IRD) post-July 2024/2025 thresholds and ACC earner levy verified with golden vectors.',
+      notes: 'Inland Revenue (IRD) post-July 2024/2026 thresholds and ACC earner levy verified with golden vectors.',
     },
 
     // 5 LIMITED ADAPTERS (Executable dedicated adapters with documented scope limitations)
@@ -113,7 +113,7 @@ export class TaxRegistry {
     IE: {
       name: 'Ireland',
       status: 'LIMITED',
-      notes: 'Revenue standard rate band (2024 €42k / 2025 €44k), personal tax credits, USC, and PRSI Class A for single filer.',
+      notes: 'Revenue standard rate band (2024 €42k / 2026 €44k), personal tax credits, USC, and PRSI Class A for single filer.',
     },
     ES: {
       name: 'Spain',

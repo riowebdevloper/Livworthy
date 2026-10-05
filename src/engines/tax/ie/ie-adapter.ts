@@ -16,11 +16,11 @@ export class IrelandTaxAdapter implements TaxAdapter {
     const grossMajor = toMajor(grossCompensation);
 
     // Effective-period rule selection
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
 
     // 1. PAYE Income Tax
-    // Single Standard Rate Cut-Off Point (SRCOP): 2024 €42,000 / 2025 €44,000
+    // Single Standard Rate Cut-Off Point (SRCOP): 2024 €42,000 / 2026 €44,000
     const SRCOP = isHistorical2024 ? 42000 : 44000;
     let grossIncomeTax = 0;
     if (grossMajor <= SRCOP) {
@@ -76,7 +76,7 @@ export class IrelandTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'revenue-paye-rates-2024' : 'ie-revenue-tax-2025';
+    const evidenceRef = isHistorical2024 ? 'revenue-paye-rates-2024' : 'ie-revenue-tax-2026';
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -95,7 +95,7 @@ export class IrelandTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(uscMinor, 'EUR'),
         effectiveRate: uscMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'revenue-usc-rates-2024' : 'ie-revenue-tax-2025',
+        evidenceRefId: isHistorical2024 ? 'revenue-usc-rates-2024' : 'ie-revenue-tax-2026',
       },
       {
         id: 'ie-prsi',
@@ -104,11 +104,11 @@ export class IrelandTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(prsiMinor, 'EUR'),
         effectiveRate: prsiMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'dsp-prsi-rates-2024' : 'ie-revenue-tax-2025',
+        evidenceRefId: isHistorical2024 ? 'dsp-prsi-rates-2024' : 'ie-revenue-tax-2026',
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'Revenue-2024.1' : 'IE-REVENUE-2025.1';
+    const taxRuleVersion = isHistorical2024 ? 'Revenue-2024.1' : 'IE-REVENUE-2026.1';
 
     return {
       status: 'CALCULATED',

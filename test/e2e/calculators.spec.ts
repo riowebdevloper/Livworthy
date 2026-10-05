@@ -288,7 +288,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     expect(historicalData.data.taxRuleVersion).toBe('US-FED-NY-NYC-2024.1');
     expect(historicalData.data.netIncome.amountMinor).toBe(7011616);
 
-    // Current 2025 NYC
+    // Current 2026 NYC
     const currentRes = await request.post('/api/tax/estimate', {
       data: {
         grossSalaryMinor: 10000000,
@@ -297,13 +297,13 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
         regionId: 'NY',
         cityId: 'nyc',
         taxJurisdictionId: 'US-FED-NY-NYC',
-        taxYear: 2025,
+        taxYear: 2026,
       },
     });
     expect(currentRes.status()).toBe(200);
     const currentData = await currentRes.json();
     expect(currentData.success).toBe(true);
-    expect(currentData.data.taxRuleVersion).toBe('US-FED-NY-NYC-2025.1');
+    expect(currentData.data.taxRuleVersion).toBe('US-FED-NY-NYC-2026.1');
     expect(currentData.data.netIncome.amountMinor).toBe(7034316);
 
     // Unsupported country → TAX_CALCULATION_UNAVAILABLE
@@ -313,7 +313,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
         currency: 'JPY',
         countryId: 'JP',
         cityId: 'tokyo',
-        taxYear: 2025,
+        taxYear: 2026,
       },
     });
     expect(unsupportedRes.status()).toBe(200);

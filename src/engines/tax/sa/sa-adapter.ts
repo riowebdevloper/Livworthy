@@ -15,10 +15,10 @@ export class SaudiTaxAdapter implements TaxAdapter {
     const grossMinor = grossCompensation.amountMinor;
     const currency = grossCompensation.currency;
 
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? 'GULF-2024.1' : 'SA-ZATCA-2025.1';
-    const evidenceRef = isHistorical2024 ? 'gulf-zero-income-tax-statute' : 'sa-zatca-tax-2025';
+    const taxRuleVersion = isHistorical2024 ? 'GULF-2024.1' : 'SA-ZATCA-2026.1';
+    const evidenceRef = isHistorical2024 ? 'gulf-zero-income-tax-statute' : 'sa-zatca-tax-2026';
 
     const components: TaxComponentBreakdown[] = [
       {

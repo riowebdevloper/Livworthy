@@ -255,7 +255,7 @@ export const AUTHORITATIVE_SOURCES: SourceCitation[] = [
     jurisdiction: 'International',
     description: 'Daily reference foreign exchange conversion snapshots for multi-currency benchmarking.',
     officialUrl: 'https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html',
-    retrievedDate: '2025-01-01',
+    retrievedDate: '2026-01-01',
     updateFrequency: 'Daily Business Day',
   },
 ];

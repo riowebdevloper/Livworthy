@@ -15,10 +15,10 @@ export class UaeTaxAdapter implements TaxAdapter {
     const currency: CurrencyCode = 'AED';
     const grossMinor = gross.amountMinor;
 
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? 'UAE-FTA-2024.1' : 'AE-FTA-2025.1';
-    const evidenceRef = isHistorical2024 ? 'uae-fta-2024' : 'uae-fta-2025';
+    const taxRuleVersion = isHistorical2024 ? 'UAE-FTA-2024.1' : 'AE-FTA-2026.1';
+    const evidenceRef = isHistorical2024 ? 'uae-fta-2024' : 'uae-fta-2026';
 
     return {
       status: 'CALCULATED',

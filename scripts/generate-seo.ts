@@ -300,7 +300,7 @@ export function runSeoGenerator() {
                     <h2 class="font-bold text-base text-[#102A2E]">New York City Living Worth Result</h2>
                     <span class="text-xs font-semibold bg-[#DDF2EC] text-[#0D625B] px-2 py-0.5 rounded-full">SINGLE</span>
                   </div>
-                  <p class="text-xs text-[#60706D] mt-0.5">Statutory 2025 schedule (Official table)</p>
+                  <p class="text-xs text-[#60706D] mt-0.5">Statutory 2026 schedule (Official table)</p>
                 </div>
                 <div class="inline-flex rounded-lg border border-[#DCE3E0] p-0.5 bg-[#FFFFFF] shrink-0 self-start sm:self-center">
                   <button id="period-annual-btn" type="button" class="px-3 py-1 text-xs font-semibold rounded-md bg-[#102A2E] text-white">Annual</button>
@@ -1759,7 +1759,7 @@ function renderPageHtml(
   // For static institutional and SEO pages, strip the SPA module script bundle
   // so the React calculator does not load or overwrite the pre-rendered content.
   if (!isHomepage) {
-    html = html.replace(/<script\s+type="module"[^>]*><\/script>\s*/gi, '');
+    html = html.replace(/<script\s+type="module"[^>]*>.*?<\/script>\s*/gi, '');
   }
 
   // Replace Title
@@ -1822,10 +1822,12 @@ function renderPageHtml(
 
   // Inject semantic crawlable HTML into <div id="root">
   if (page.bodyContent) {
-    html = html.replace(
-      '<div id="root"></div>',
-      `<div id="root">${page.bodyContent}</div>`
-    );
+    if (html.includes('<div id="root">')) {
+      html = html.replace(
+        /<div id="root">[\s\S]*?<\/div>/,
+        `<div id="root">${page.bodyContent}</div>`
+      );
+    }
   }
 
   return html;

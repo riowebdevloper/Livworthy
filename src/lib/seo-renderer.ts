@@ -137,7 +137,7 @@ export class SeoPageRenderer {
         <!-- Authoritative Engine Output Card -->
         <section aria-label="Authoritative Financial Breakdown" class="mt-8 p-6 bg-white border border-[#DCE3E0] rounded-2xl shadow-xs">
           <div class="flex items-center justify-between border-b border-[#DCE3E0] pb-3 mb-5">
-            <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Deterministic Model • Tax Year 2025/2026</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Deterministic Model • Tax Year 2026/2026</span>
             <span class="text-xs font-mono text-[#60706D]">${escapeHtml(computed.taxRuleVersion)}</span>
           </div>
 

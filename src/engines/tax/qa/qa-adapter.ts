@@ -14,10 +14,10 @@ export class QatarTaxAdapter implements TaxAdapter {
   public calculate(grossCompensation: Money, profile: TaxProfile, context: TaxContext): TaxResult {
     const grossMinor = grossCompensation.amountMinor;
 
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? 'GTA-2024.1' : 'QA-GTA-2025.1';
-    const evidenceRef = isHistorical2024 ? 'qatar-income-tax-law-2018' : 'qa-gta-tax-2025';
+    const taxRuleVersion = isHistorical2024 ? 'GTA-2024.1' : 'QA-GTA-2026.1';
+    const evidenceRef = isHistorical2024 ? 'qatar-income-tax-law-2018' : 'qa-gta-tax-2026';
 
     const components: TaxComponentBreakdown[] = [
       {

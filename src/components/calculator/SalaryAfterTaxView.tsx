@@ -52,7 +52,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             taxJurisdictionId: city.taxJurisdictionId,
             filingStatus,
             dependentsCount: 0,
-            taxYear: 2025,
+            taxYear: 2026,
           },
           { signal: controller.signal }
         );

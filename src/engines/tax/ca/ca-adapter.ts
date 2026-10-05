@@ -16,7 +16,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
     const grossMajor = toMajor(grossCompensation);
 
     // Effective-period rule selection
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
 
     // 1. CPP (Canada Pension Plan)
@@ -33,12 +33,12 @@ export class CanadaTaxAdapter implements TaxAdapter {
         cppMinor += Math.round(cpp2Eligible * 0.04 * 100);
       }
     } else {
-      // 2025 (CRA Statutory Parameters): Base CPP 5.95% between $3,500 and $71,300 (Max $4,034.10)
+      // 2026 (CRA Statutory Parameters): Base CPP 5.95% between $3,500 and $71,300 (Max $4,034.10)
       if (grossMajor > 3500) {
         const cppEligible = Math.min(grossMajor, 71300) - 3500;
         cppMinor = Math.round(cppEligible * 0.0595 * 100);
       }
-      // 2025 CPP2: 4.0% between $71,300 and $81,200 (Max $396.00)
+      // 2026 CPP2: 4.0% between $71,300 and $81,200 (Max $396.00)
       if (grossMajor > 71300) {
         const cpp2Eligible = Math.min(grossMajor, 81200) - 71300;
         cppMinor += Math.round(cpp2Eligible * 0.04 * 100);
@@ -52,7 +52,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
       const eiEligible = Math.min(grossMajor, 63200);
       eiMinor = Math.round(eiEligible * 0.0166 * 100);
     } else {
-      // 2025: 1.64% on gross up to $65,700 (Max $1,077.48)
+      // 2026: 1.64% on gross up to $65,700 (Max $1,077.48)
       const eiEligible = Math.min(grossMajor, 65700);
       eiMinor = Math.round(eiEligible * 0.0164 * 100);
     }
@@ -92,7 +92,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
           (grossMajor - 246752) * 0.33;
       }
     } else {
-      // 2025 Federal Brackets (2.7% indexation):
+      // 2026 Federal Brackets (2.7% indexation):
       // 15% on first $57,375
       // 20.5% on $57,375 to $114,750
       // 26% on $114,750 to $177,882
@@ -214,7 +214,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'cra-income-tax-2024' : 'ca-cra-tax-2025';
+    const evidenceRef = isHistorical2024 ? 'cra-income-tax-2024' : 'ca-cra-tax-2026';
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -255,7 +255,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'CRA-2024.1' : 'CA-CRA-ON-2025.1';
+    const taxRuleVersion = isHistorical2024 ? 'CRA-2024.1' : 'CA-CRA-ON-2026.1';
 
     return {
       status: 'CALCULATED',

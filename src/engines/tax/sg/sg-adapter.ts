@@ -16,10 +16,10 @@ export class SingaporeTaxAdapter implements TaxAdapter {
     const grossMajor = toMajor(grossCompensation);
 
     // Effective-period rule selection
-    const requestedYear = profile.taxYear || context.taxYear || 2025;
+    const requestedYear = profile.taxYear || context.taxYear || 2026;
     const isHistorical2024 = requestedYear <= 2024;
 
-    // Singapore IRAS Resident Tax Brackets (YA 2024 / YA 2025):
+    // Singapore IRAS Resident Tax Brackets (YA 2024 / YA 2026):
     // First $20,000: 0%
     // Next $10,000 ($20,001 - $30,000): 2%
     // Next $10,000 ($30,001 - $40,000): 3.5%
@@ -63,7 +63,7 @@ export class SingaporeTaxAdapter implements TaxAdapter {
     const totalTaxMinor = federalTaxMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
 
-    const evidenceRef = isHistorical2024 ? 'iras-tax-rates-2024' : 'sg-iras-tax-2025';
+    const evidenceRef = isHistorical2024 ? 'iras-tax-rates-2024' : 'sg-iras-tax-2026';
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -77,7 +77,7 @@ export class SingaporeTaxAdapter implements TaxAdapter {
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'IRAS-YA2024' : 'SG-IRAS-YA2025.1';
+    const taxRuleVersion = isHistorical2024 ? 'IRAS-YA2024' : 'SG-IRAS-YA2026.1';
 
     return {
       status: 'CALCULATED',

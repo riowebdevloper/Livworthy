@@ -22,7 +22,7 @@ function runTests() {
   assert(m1.amountMinor === 10050, 'Money minor units: $100.50 should be 10050 cents');
   assert(m2.amountMinor === 4950, 'Money minor units: $49.50 should be 4950 cents');
 
-  // Test 2: Current Statutory 2025 - $100,000 in New York City (Single, 2025)
+  // Test 2: Current Statutory 2026 - $100,000 in New York City (Single, 2026)
   const nycOutcome = SalaryWorthCalculator.calculate(DEFAULT_NYC_100K_SCENARIO);
   const tax = nycOutcome.tax;
   const fedMajor = toMajor(tax.federalTax);
@@ -31,13 +31,13 @@ function runTests() {
   const nycMajor = toMajor(tax.localTax);
   const netMajor = toMajor(tax.netIncome);
 
-  console.log(`NYC $100K 2025 Results: Federal: $${fedMajor}, FICA: $${ficaMajor}, NYS: $${nysMajor}, NYC Local: $${nycMajor}, Net Take-Home: $${netMajor}`);
+  console.log(`NYC $100K 2026 Results: Federal: $${fedMajor}, FICA: $${ficaMajor}, NYS: $${nysMajor}, NYC Local: $${nycMajor}, Net Take-Home: $${netMajor}`);
 
-  assert(Math.abs(fedMajor - 13614) <= 1, `2025 Federal tax should be ~$13,614 (actual: $${fedMajor})`);
-  assert(Math.abs(ficaMajor - 7650) <= 1, `2025 FICA should be exact $7,650 (actual: $${ficaMajor})`);
-  assert(Math.abs(nysMajor - 4952) <= 2, `2025 NYS tax should be ~$4,952 (actual: $${nysMajor})`);
-  assert(Math.abs(nycMajor - 3441) <= 2, `2025 NYC resident local tax should be ~$3,441 (actual: $${nycMajor})`);
-  assert(Math.abs(netMajor - 70343) <= 5, `2025 Take home should be ~$70,343 (actual: $${netMajor})`);
+  assert(Math.abs(fedMajor - 13614) <= 1, `2026 Federal tax should be ~$13,614 (actual: $${fedMajor})`);
+  assert(Math.abs(ficaMajor - 7650) <= 1, `2026 FICA should be exact $7,650 (actual: $${ficaMajor})`);
+  assert(Math.abs(nysMajor - 4952) <= 2, `2026 NYS tax should be ~$4,952 (actual: $${nysMajor})`);
+  assert(Math.abs(nycMajor - 3441) <= 2, `2026 NYC resident local tax should be ~$3,441 (actual: $${nycMajor})`);
+  assert(Math.abs(netMajor - 70343) <= 5, `2026 Take home should be ~$70,343 (actual: $${netMajor})`);
 
   // Test 2b: Historical Isolation - $100,000 in New York City (Single, 2024)
   const nyc2024Outcome = SalaryWorthCalculator.calculate({
