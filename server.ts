@@ -3,6 +3,7 @@ import path from 'path';
 import crypto from 'crypto';
 import fs from 'fs';
 import { validateEnv } from './src/lib/env';
+import { LATEST_VERIFIED_TAX_YEAR, parseTaxYear, resolveTaxYear } from './src/lib/tax-year-policy';
 import { dbService } from './src/db/client';
 import { cacheService } from './src/lib/redis';
 import { FxEngine } from './src/engines/fx/fx-service';
@@ -17,16 +18,7 @@ import { EVIDENCE_REGISTRY } from './src/data/evidence-registry';
 import { createMoney, fromMinor } from './src/lib/money';
 import { CapabilityResolver } from './src/engines/capabilities/capability-resolver';
 
-let env: any = null;
-try {
-  env = validateEnv();
-} catch (envErr: any) {
-  if (process.env.VERCEL) {
-    console.warn('[Vercel Serverless Notice]:', envErr.message);
-  } else {
-    throw envErr;
-  }
-}
+const env = validateEnv();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const START_TIME = Date.now();
 const CRON_SECRET = env?.CRON_SECRET || process.env.CRON_SECRET;
@@ -46,13 +38,14 @@ export async function ensureDatabaseReady(): Promise<void> {
         console.log(`[Database] Seed verified (${seedRes.countriesCount} countries, ${seedRes.citiesCount} cities)`);
         dbInitialized = true;
       } catch (dbErr: any) {
+        dbInitialized = false;
+        dbInitPromise = null;
         const isProduction = process.env.NODE_ENV === 'production';
-        if (isProduction && !process.env.VERCEL && dbService.mode === 'PRODUCTION_POSTGRES') {
-          console.error('[Database] Fatal startup failure: Database initialization or migration failed.');
-          process.exit(1);
-        } else {
-          console.warn('[Database] Startup initialization notice:', dbErr.message);
+        if (isProduction) {
+          console.error('[Database] Production initialization failed.');
+          throw new Error('Production database initialization failed.');
         }
+        console.warn('[Database] Startup initialization notice:', dbErr.message);
       }
     })();
   }
@@ -134,13 +127,17 @@ function configureApp() {
 
   app.use((req, res, next) => {
     const origin = req.headers.origin;
-    const isSensitivePath = req.path.startsWith('/api/admin') || req.path.startsWith('/api/cms');
+    const isSensitivePath =
+      req.path.startsWith('/api/admin') ||
+      req.path.startsWith('/api/cms') ||
+      req.path.startsWith('/api/content') ||
+      req.path.startsWith('/api/reviews') ||
+      req.path.startsWith('/api/fx/refresh');
 
     if (isSensitivePath) {
       if (
         origin &&
         (trustedOrigins.includes(origin) ||
-          origin.endsWith('.vercel.app') ||
           origin.startsWith('http://localhost:') ||
           origin.startsWith('http://127.0.0.1:'))
       ) {
@@ -206,6 +203,34 @@ function configureApp() {
     return null;
   };
 
+  const validateCurrentSession = async (req: express.Request, res: express.Response) => {
+    const session = extractSession(req);
+    if (!session) return null;
+
+    let currentUser;
+    try {
+      currentUser = await dbService.getUserByEmail(session.email);
+    } catch (err) {
+      console.error('[Auth] Session user lookup failed:', err);
+      res.status(503).json({
+        error: 'AUTH_DATABASE_UNAVAILABLE',
+        message: 'Authentication services are temporarily unavailable.',
+      });
+      return null;
+    }
+
+    if (!currentUser || currentUser.isActive === false || currentUser.id !== session.userId || currentUser.role !== session.role) {
+      return null;
+    }
+    if (
+      !session.credentialFingerprint ||
+      session.credentialFingerprint !== AuthService.credentialFingerprint(currentUser.passwordHash)
+    ) {
+      return null;
+    }
+    return session;
+  };
+
   // 1. HEALTH & DIAGNOSTIC ENDPOINTS
   app.get('/api/health', (req, res) => {
     res.json({
@@ -221,6 +246,22 @@ function configureApp() {
 
   const handleReadinessCheck = async (req: express.Request, res: express.Response) => {
     const isProduction = process.env.NODE_ENV === 'production';
+
+    // On serverless cold starts, readiness must initialize migrations/seeds itself.
+    // Otherwise the first readiness probe can incorrectly report an uninitialized DB.
+    try {
+      await ensureDatabaseReady();
+    } catch {
+      return res.status(503).json({
+        ready: false,
+        database: 'unavailable',
+        cache: cacheService.isRedisConnected ? 'connected' : isProduction ? 'unavailable' : 'degraded',
+        fx: 'unavailable',
+        capabilities: {},
+        message: 'Production data services are not ready.',
+      });
+    }
+
     let dbStatus: 'connected' | 'unavailable' = 'connected';
     let cacheStatus: 'connected' | 'degraded' | 'unavailable' = 'connected';
     let fxStatus: 'available' | 'aging' | 'unavailable' = 'available';
@@ -329,6 +370,27 @@ function configureApp() {
     });
   });
 
+  // SERVERLESS DATABASE INITIALIZATION GATE
+  // Vercel does not call startServer(), so production API requests must explicitly
+  // await migrations/seeding on each cold start. The promise is memoized per instance.
+  app.use('/api', async (req, res, next) => {
+    try {
+      await ensureDatabaseReady();
+      if (process.env.NODE_ENV === 'production' && (!dbInitialized || dbService.mode !== 'PRODUCTION_POSTGRES')) {
+        return res.status(503).json({
+          error: 'DATABASE_NOT_READY',
+          message: 'Production database is not ready.',
+        });
+      }
+      next();
+    } catch {
+      return res.status(503).json({
+        error: 'DATABASE_INITIALIZATION_FAILED',
+        message: 'Production data services are temporarily unavailable.',
+      });
+    }
+  });
+
   // 2. CORE FINANCIAL & TAX ENGINE APIS
   app.post('/api/calculate', rateLimit(60, 60), async (req, res) => {
     try {
@@ -431,22 +493,31 @@ function configureApp() {
         });
       }
 
-      const curr = (currency || COUNTRIES[countryId]?.defaultCurrency || 'USD') as any;
+      const parsedTaxYear = taxYear === undefined ? LATEST_VERIFIED_TAX_YEAR : parseTaxYear(taxYear);
+      if (parsedTaxYear === null) {
+        return res.status(400).json({
+          error: 'INVALID_TAX_YEAR',
+          message: 'taxYear must be a complete four-digit year between 2000 and 2100.',
+        });
+      }
+
+      const normalizedCountryId = String(countryId).toUpperCase();
+      const curr = (currency || COUNTRIES[normalizedCountryId]?.defaultCurrency || 'USD') as any;
       const grossMoney = fromMinor(grossSalaryMinor, curr);
       const profile = {
         filingStatus: filingStatus || 'single',
         dependentsCount: typeof dependentsCount === 'number' ? dependentsCount : 0,
-        taxYear: typeof taxYear === 'number' ? taxYear : 2024,
+        taxYear: parsedTaxYear,
       };
       const location = {
-        countryId,
+        countryId: normalizedCountryId,
         regionId,
         cityId,
         taxJurisdictionId,
       };
 
       const result = TaxRegistry.calculate(grossMoney, profile, location);
-      const support = TaxRegistry.getCountrySupport(countryId);
+      const support = TaxRegistry.getCountrySupport(normalizedCountryId);
       const isUnavailable = result.status === 'TAX_CALCULATION_UNAVAILABLE';
 
       res.json({
@@ -511,23 +582,67 @@ function configureApp() {
   });
 
   app.get('/api/tax/inspect', rateLimit(60, 60), (req, res) => {
-    const countryId = (req.query.countryId as string) || 'US';
+    const countryId = String(req.query.countryId || 'US').toUpperCase();
     const regionId = req.query.regionId as string | undefined;
 
-    const adapter = TaxRegistry.getAdapter({ countryId, regionId, taxYear: 2024 });
-    const sample = adapter.calculate(
+    const taxYear = req.query.taxYear === undefined ? LATEST_VERIFIED_TAX_YEAR : parseTaxYear(req.query.taxYear);
+    if (taxYear === null) {
+      return res.status(400).json({ error: 'INVALID_TAX_YEAR', message: 'taxYear must be a complete four-digit year.' });
+    }
+    const adapter = TaxRegistry.getAdapter({ countryId, regionId, taxYear });
+    const sample = TaxRegistry.calculate(
       createMoney(100000, COUNTRIES[countryId]?.defaultCurrency || 'USD'),
-      { filingStatus: 'single', dependentsCount: 0, taxYear: 2024 },
-      { countryId, regionId, taxYear: 2024 }
+      { filingStatus: 'single', dependentsCount: 0, taxYear },
+      { countryId, regionId, taxYear }
     );
 
     res.json({
       countryId,
       regionId,
+      taxYear,
       adapterName: adapter.name,
+      status: sample.status || 'CALCULATED',
       taxRuleVersion: sample.taxRuleVersion,
       components: sample.components,
+      warnings: sample.warnings || [],
+      unsupportedExplanation: sample.unsupportedExplanation,
       evidenceSources: sample.evidenceSourceIds.map((id) => EVIDENCE_REGISTRY[id]).filter(Boolean),
+    });
+  });
+
+
+  app.get('/api/tax/years', rateLimit(120, 60), (req, res) => {
+    const requestedYear =
+      req.query.taxYear === undefined ? LATEST_VERIFIED_TAX_YEAR : parseTaxYear(req.query.taxYear);
+    if (requestedYear === null) {
+      return res.status(400).json({
+        error: 'INVALID_TAX_YEAR',
+        message: 'taxYear must be a complete four-digit year between 2000 and 2100.',
+      });
+    }
+
+    const countryId = String(req.query.countryId || 'US').toUpperCase();
+    const support = TaxRegistry.getCountrySupport(countryId);
+    const supportedYears = TaxRegistry.getSupportedTaxYears(countryId);
+    const hasCoverage = supportedYears.includes(requestedYear);
+
+    let requestedYearStatus = 'UNAVAILABLE';
+    if (requestedYear > LATEST_VERIFIED_TAX_YEAR) {
+      requestedYearStatus = 'UNDER_VERIFICATION';
+    } else if (hasCoverage && support.verificationStatus === 'VERIFIED') {
+      requestedYearStatus = 'VERIFIED_PERIOD_AVAILABLE';
+    } else if (hasCoverage && support.isSupported) {
+      requestedYearStatus = 'LIMITED_PERIOD_AVAILABLE';
+    }
+
+    res.json({
+      countryId,
+      latestVerifiedTaxYear: LATEST_VERIFIED_TAX_YEAR,
+      supportedYears,
+      requestedYear,
+      requestedYearStatus,
+      futureYearPolicy:
+        'Tax schedules are never inferred. LivWorthy executes only explicitly implemented country/year schedules and returns TAX_CALCULATION_UNAVAILABLE for unsupported historical or future years.',
     });
   });
 
@@ -550,7 +665,8 @@ function configureApp() {
   });
 
   app.post('/api/fx/refresh', rateLimit(10, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'trigger_fx_refresh')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient role permissions to refresh FX rates.' });
     }
@@ -593,12 +709,22 @@ function configureApp() {
 
   // 5. CMS & CONTENT WORKFLOW
   app.get('/api/content', rateLimit(120, 60), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
+    }
     const locale = (req.query.locale as string) || 'en';
     const pages = await dbService.getContentPages({ locale });
     res.json({ pages });
   });
 
   app.get('/api/content/:slug', rateLimit(120, 60), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
+    }
     const slug = req.params.slug;
     const locale = (req.query.locale as string) || 'en';
     const page = await dbService.getContentPageBySlug(slug, locale);
@@ -609,20 +735,40 @@ function configureApp() {
   });
 
   app.post('/api/content', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'edit_content')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Editor permission required.' });
     }
 
     const pageData = req.body;
-    // Check if promoting to INDEX_APPROVED: requires approve_indexing permission
+    if (pageData.workflowState === 'APPROVED' && !AuthService.hasPermission(session.role, 'review_content')) {
+      return res.status(403).json({ error: 'FORBIDDEN', message: 'Reviewer permission required to approve content.' });
+    }
+    if (pageData.workflowState === 'PUBLISHED' && !AuthService.hasPermission(session.role, 'publish_content')) {
+      return res.status(403).json({ error: 'FORBIDDEN', message: 'Publisher permission required to publish content.' });
+    }
     if (pageData.workflowState === 'INDEX_APPROVED' && !AuthService.hasPermission(session.role, 'approve_indexing')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'SEO_REVIEWER or ADMIN permission required to approve indexing.' });
     }
 
+    const locale = typeof pageData.locale === 'string' && pageData.locale ? pageData.locale : 'en';
+    const existingPage =
+      typeof pageData.slug === 'string' && pageData.slug
+        ? await dbService.getContentPageBySlug(pageData.slug, locale)
+        : null;
+    const reviewerEmail =
+      pageData.workflowState === 'APPROVED' ||
+      pageData.workflowState === 'PUBLISHED' ||
+      pageData.workflowState === 'INDEX_APPROVED'
+        ? session.email
+        : existingPage?.reviewerEmail || null;
+
     const saved = await dbService.upsertContentPage({
       ...pageData,
+      locale,
       authorEmail: session.email,
+      reviewerEmail,
     });
 
     await dbService.recordAuditLog({
@@ -636,19 +782,74 @@ function configureApp() {
     res.json({ success: true, page: saved });
   });
 
+
+  app.post('/api/content/:slug/workflow', rateLimit(30, 60), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED' });
+    }
+
+    const workflowState = String(req.body?.workflowState || '');
+    const locale = (req.query.locale as string) || 'en';
+    const allowedStates = new Set(['DRAFTED', 'IN_REVIEW', 'APPROVED', 'PUBLISHED', 'INDEX_APPROVED']);
+    if (!allowedStates.has(workflowState)) {
+      return res.status(400).json({ error: 'INVALID_WORKFLOW_STATE', message: 'Unsupported content workflow state.' });
+    }
+
+    let permitted = false;
+    if (workflowState === 'DRAFTED' || workflowState === 'IN_REVIEW') {
+      permitted = AuthService.hasPermission(session.role, 'edit_content');
+    } else if (workflowState === 'APPROVED') {
+      permitted = AuthService.hasPermission(session.role, 'review_content');
+    } else if (workflowState === 'PUBLISHED') {
+      permitted = AuthService.hasPermission(session.role, 'publish_content');
+    } else if (workflowState === 'INDEX_APPROVED') {
+      permitted = AuthService.hasPermission(session.role, 'approve_indexing');
+    }
+
+    if (!permitted) {
+      return res.status(403).json({ error: 'FORBIDDEN', message: `Role ${session.role} cannot transition content to ${workflowState}.` });
+    }
+
+    const existing = await dbService.getContentPageBySlug(req.params.slug, locale);
+    if (!existing) {
+      return res.status(404).json({ error: 'PAGE_NOT_FOUND' });
+    }
+
+    const reviewerEmail =
+      workflowState === 'APPROVED' || workflowState === 'PUBLISHED' || workflowState === 'INDEX_APPROVED'
+        ? session.email
+        : existing.reviewerEmail;
+    const saved = await dbService.updateContentWorkflow(req.params.slug, locale, workflowState, reviewerEmail);
+    if (!saved) {
+      return res.status(409).json({ error: 'WORKFLOW_UPDATE_FAILED', message: 'Content workflow state was not updated.' });
+    }
+
+    await dbService.recordAuditLog({
+      actorEmail: session.email,
+      action: 'CMS_WORKFLOW_TRANSITION',
+      entityType: 'content_page',
+      entityId: saved.id,
+      metadata: { slug: saved.slug, locale, from: existing.workflowState, to: workflowState },
+    });
+
+    res.json({ success: true, page: saved });
+  });
+
   // 6. ADMIN AUTHENTICATION & RBAC
   app.post('/api/admin/login', rateLimit(5, 60, { isSecuritySensitive: true, failClosed: true }), async (req, res) => {
     const { email, password, totpCode } = req.body;
 
     try {
       const dbUser = await dbService.getUserByEmail(email);
-      if (dbUser && AuthService.verifyPassword(password, dbUser.passwordHash)) {
+      if (dbUser && dbUser.isActive !== false && AuthService.verifyPassword(password, dbUser.passwordHash)) {
         if (dbUser.mfaEnabled && dbUser.mfaSecret) {
           if (!totpCode || !AuthService.verifyTotp(dbUser.mfaSecret, totpCode)) {
             return res.status(401).json({ error: 'MFA_REQUIRED', message: 'Valid 6-digit TOTP code required.' });
           }
         }
-        const user = { id: dbUser.id, email: dbUser.email, role: dbUser.role as any };
+        const user = { id: dbUser.id, email: dbUser.email, role: dbUser.role as any, passwordHash: dbUser.passwordHash };
         const token = AuthService.createSessionToken(user);
 
         await dbService.recordAuditLog({
@@ -666,6 +867,10 @@ function configureApp() {
       }
     } catch (e: any) {
       console.error('[Auth] Login verification exception:', e.message);
+      return res.status(503).json({
+        error: 'AUTH_DATABASE_UNAVAILABLE',
+        message: 'Authentication services are temporarily unavailable.',
+      });
     }
 
     await dbService.recordAuditLog({
@@ -678,16 +883,25 @@ function configureApp() {
     res.status(401).json({ error: 'INVALID_CREDENTIALS', message: 'Invalid admin credentials.' });
   });
 
-  app.get('/api/admin/me', rateLimit(60, 60), (req, res) => {
-    const session = extractSession(req);
+  app.get('/api/admin/me', rateLimit(60, 60), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED' });
     }
-    res.json({ user: session });
+    res.json({
+      user: {
+        userId: session.userId,
+        email: session.email,
+        role: session.role,
+        expiresAt: session.expiresAt,
+      },
+    });
   });
 
   app.get('/api/admin/audit-logs', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'view_audit_logs')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to view audit logs.' });
     }
@@ -697,7 +911,8 @@ function configureApp() {
   });
 
   app.get('/api/admin/users', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'manage_users')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to manage users.' });
     }
@@ -711,13 +926,24 @@ function configureApp() {
   });
 
   app.post('/api/admin/users', rateLimit(20, 60, { isSecuritySensitive: true, failClosed: true }), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'manage_users')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to manage users.' });
     }
     const { email, password, role } = req.body;
     if (!email || !password || !role) {
       return res.status(400).json({ error: 'INVALID_PAYLOAD', message: 'Email, password, and role are required.' });
+    }
+    const allowedRoles = new Set(['ADMIN', 'DATA_EDITOR', 'CONTENT_EDITOR', 'REVIEWER', 'SEO_REVIEWER', 'READ_ONLY']);
+    if (!allowedRoles.has(role)) {
+      return res.status(400).json({ error: 'INVALID_ROLE', message: 'Unsupported user role.' });
+    }
+    if (typeof password !== 'string' || password.length < 12) {
+      return res.status(400).json({ error: 'WEAK_PASSWORD', message: 'Admin passwords must contain at least 12 characters.' });
+    }
+    if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'INVALID_EMAIL', message: 'A valid email address is required.' });
     }
     const passwordHash = AuthService.hashPassword(password);
     const created = await dbService.upsertUser({
@@ -739,13 +965,19 @@ function configureApp() {
   });
 
   app.get('/api/reviews', rateLimit(60, 60), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
+    }
     const contentPageId = req.query.contentPageId as string | undefined;
     const reviews = await dbService.getReviews(contentPageId);
     res.json({ reviews });
   });
 
   app.post('/api/reviews', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'review_content')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Reviewer permission required.' });
     }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Utensils, Zap, Bus, HeartPulse, Baby, Sparkles, Edit2, Check, RotateCcw } from 'lucide-react';
+import { Home, Utensils, Zap, Bus, HeartPulse, Baby, Sparkles, Edit2, Check, RotateCcw, AlertTriangle } from 'lucide-react';
 import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { CostCategorySummary, CostOfLivingResult } from '../../types/col';
 
@@ -100,6 +100,33 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
         </div>
       </div>
 
+      {col.dataFreshness !== 'CURRENT' && (
+        <div className={`mt-4 rounded-xl border p-3 text-xs leading-relaxed ${
+          col.dataFreshness === 'STALE'
+            ? 'border-red-200 bg-red-50 text-red-900'
+            : col.dataFreshness === 'UNKNOWN'
+              ? 'border-slate-200 bg-slate-50 text-slate-900'
+              : 'border-amber-200 bg-amber-50 text-amber-900'
+        }`}>
+          <div className="flex items-start gap-2">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            <div>
+              <div className="font-bold">
+                {col.dataFreshness === 'STALE'
+                  ? 'Older local benchmark'
+                  : col.dataFreshness === 'UNKNOWN'
+                    ? 'Benchmark date could not be verified'
+                    : 'Aging local benchmark'}
+              </div>
+              <div className="mt-0.5">
+                {col.dataFreshness === 'UNKNOWN'
+                  ? `Stored benchmark source date: ${col.benchmarkSourceDate || 'unknown'}. Freshness cannot be verified from this value; treat the estimate cautiously and use an actual-rent override where possible.`
+                  : `Baseline source month: ${col.benchmarkSourceDate}. LivWorthy is showing the latest stored benchmark for this city rather than relabeling older prices as 2026–2027 data. Use an actual-rent override where possible.`}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Actual Rent Override Section */}
       <div className="mt-4 p-4 rounded-xl bg-[#F7F8F5] border border-[#DCE3E0]/80">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -229,7 +256,8 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
       {/* Summary Footer */}
       <div className="mt-5 pt-4 border-t border-[#F7F8F5] flex items-center justify-between text-xs">
         <span className="text-[#60706D]">
-          Coverage: <span className="font-semibold text-[#167D75]">{col.confidenceScore}</span>
+          Benchmark-date-based coverage: <span className="font-semibold text-[#167D75]">{col.confidenceScore}</span>
+          <span className="block mt-0.5">Freshness reflects the benchmark source month, not each category&apos;s observation period.</span>
         </span>
         <button
           onClick={onOpenCustomizer}

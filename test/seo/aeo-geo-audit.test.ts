@@ -35,7 +35,7 @@ function runAuditTests() {
   assert(robotsContent.includes('User-agent: *'), 'robots.txt has wildcard User-agent: *');
   assert(robotsContent.includes('Allow: /'), 'robots.txt allows root public content');
   assert(robotsContent.includes('Disallow: /api/'), 'robots.txt disallows /api/');
-  assert(robotsContent.includes('Disallow: /admin/'), 'robots.txt disallows /admin/');
+  assert(/^Disallow:\s*\/admin\s*$/m.test(robotsContent), 'robots.txt disallows /admin (exact route and descendants)');
   assert(robotsContent.includes('Disallow: /test/'), 'robots.txt disallows /test/');
   assert(robotsContent.includes('Sitemap: https://www.livworthy.com/sitemap.xml'), 'robots.txt references sitemap');
 

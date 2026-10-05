@@ -4,6 +4,7 @@ import {
   CostCategorySummary,
   CostEstimateItem,
   CostOfLivingResult,
+  DataFreshnessStatus,
   HouseholdProfile,
   HousingType,
 } from '../../types/col';
@@ -16,6 +17,26 @@ export interface ColOverrides {
   actualRentMonthlyMinor?: number;
   actualGroceriesMonthlyMinor?: number;
   actualTransitMonthlyMinor?: number;
+}
+
+export function classifyDataFreshness(sourceDate: string, now = new Date()): DataFreshnessStatus {
+  const match = /^(\d{4})-(\d{2})$/.exec(sourceDate || '');
+  if (!match) return 'UNKNOWN';
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) return 'UNKNOWN';
+
+  const sourceMonth = new Date(Date.UTC(year, month - 1, 1));
+  const currentMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+  const ageMonths =
+    (currentMonth.getUTCFullYear() - sourceMonth.getUTCFullYear()) * 12 +
+    (currentMonth.getUTCMonth() - sourceMonth.getUTCMonth());
+
+  if (ageMonths < 0) return 'UNKNOWN';
+  if (ageMonths <= 18) return 'CURRENT';
+  if (ageMonths <= 30) return 'AGING';
+  return 'STALE';
 }
 
 export class CostOfLivingEngine {
@@ -248,6 +269,15 @@ export class CostOfLivingEngine {
       });
     }
 
+    // Freshness/confidence here is scoped to the benchmark's source month.
+    // Individual category observation periods can be older and remain visible per item.
+    const dataFreshness = classifyDataFreshness(benchmark.sourceDate);
+    const confidenceScore =
+      dataFreshness === 'CURRENT'
+        ? 'High-confidence estimate'
+        : dataFreshness === 'AGING'
+          ? 'Moderate data coverage'
+          : 'Limited local data';
     const assumptionsSummary = `${household.adults} adult${household.adults > 1 ? 's' : ''}${
       household.children > 0 ? `, ${household.children} child` : ''
     } · ${household.housingType || '1-bedroom'} · ${household.areaType || 'typical'} area · ${(household.transportMode || 'public_transit').replace(/_/g, ' ')} · ${effectiveLifestyle} lifestyle`;
@@ -261,9 +291,11 @@ export class CostOfLivingEngine {
       housingMonthly: fromMinor(rentMonthlyMinor, currency),
       essentialMonthly: fromMinor(monthlyTotalMinor - lifestyleMinor, currency),
       discretionaryMonthly: fromMinor(lifestyleMinor, currency),
-      confidenceScore: 'High-confidence estimate',
+      confidenceScore,
       evidenceSourceIds: Array.from(new Set(items.map((i) => i.evidenceSourceId))),
       datasetVersion: benchmark.sourceDate,
+      benchmarkSourceDate: benchmark.sourceDate,
+      dataFreshness,
       assumptionsSummary,
     };
   }

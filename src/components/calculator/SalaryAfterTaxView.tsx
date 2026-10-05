@@ -5,6 +5,7 @@ import { calculateSalaryAfterTax } from '../../api/calculators';
 import { createMoney, formatMoney, getDefaultSalaryForCurrency, toMajor } from '../../lib/money';
 import { TaxResult, FilingStatus } from '../../types/tax';
 import { CurrencyInput } from '../ui/CurrencyInput';
+import { LATEST_VERIFIED_TAX_YEAR, TAX_YEAR_OPTIONS, isFutureUnverifiedTaxYear } from '../../lib/tax-year-policy';
 
 interface SalaryAfterTaxViewProps {
   onSwitchToSalaryWorthWithSalary: (salaryMajor: number, cityId?: string) => void;
@@ -20,6 +21,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
   const [grossSalaryMajor, setGrossSalaryMajor] = useState<number>(100000);
   const [selectedCityId, setSelectedCityId] = useState<string>('nyc');
   const [filingStatus, setFilingStatus] = useState<FilingStatus>('single');
+  const [taxYear, setTaxYear] = useState<number>(LATEST_VERIFIED_TAX_YEAR);
   const [payFrequency, setPayFrequency] = useState<'annual' | 'monthly' | 'biweekly'>('annual');
   const [taxResult, setTaxResult] = useState<TaxResult | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<string>('VERIFIED');
@@ -39,6 +41,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
     setIsCalculating(true);
     setCalcError(null);
+    setTaxResult(null);
 
     const timer = setTimeout(async () => {
       try {
@@ -52,7 +55,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             taxJurisdictionId: city.taxJurisdictionId,
             filingStatus,
             dependentsCount: 0,
-            taxYear: 2026,
+            taxYear,
           },
           { signal: controller.signal }
         );
@@ -76,7 +79,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
       clearTimeout(timer);
       controller.abort();
     };
-  }, [grossSalaryMajor, selectedCityId, filingStatus, currency, city, onCalculationResult]);
+  }, [grossSalaryMajor, selectedCityId, filingStatus, taxYear, currency, city, onCalculationResult]);
 
   const getFreqAmount = (annualMinor: number) => {
     if (payFrequency === 'monthly') return Math.round(annualMinor / 12);
@@ -143,7 +146,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
           <div className="sm:col-span-1">
             <CurrencyInput
               id="tax-gross-salary-input"
@@ -175,6 +178,26 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
               {Object.values(CITIES).map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name} ({c.countryId})
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+          <div>
+            <label htmlFor="tax-year-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
+              Tax Year
+            </label>
+            <select
+              id="tax-year-select"
+              aria-label="Tax Year"
+              value={taxYear}
+              onChange={(e) => setTaxYear(Number(e.target.value))}
+              className="block w-full rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] px-3 py-3 text-base font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"
+            >
+              {TAX_YEAR_OPTIONS.map((year) => (
+                <option key={year} value={year}>
+                  {year}{isFutureUnverifiedTaxYear(year) ? ' — verification pending' : ''}
                 </option>
               ))}
             </select>
@@ -242,7 +265,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
             <div className="space-y-3">
               <h3 className="font-bold text-lg text-[#102A2E]">
-                Statutory Tax Schedules Under Verification for {city.name} ({city.countryId})
+                Tax Year {taxYear} Schedules Under Verification for {city.name} ({city.countryId})
               </h3>
               <p className="text-xs sm:text-sm text-[#60706D] leading-relaxed">
                 {taxResult.unsupportedExplanation ||

@@ -301,7 +301,12 @@ export const CompareView: React.FC<CompareViewProps> = ({
           )}
 
           {/* Table Breakdown */}
-          <div className="overflow-x-auto [scrollbar-width:thin]">
+          <div
+            className="overflow-x-auto [scrollbar-width:thin] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded-lg"
+            tabIndex={0}
+            role="region"
+            aria-label="City financial comparison table"
+          >
             <table className="w-full min-w-[480px] sm:min-w-0 text-xs text-left">
               <thead>
                 <tr className="border-b border-[#DCE3E0] text-[#60706D] font-bold">

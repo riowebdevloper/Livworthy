@@ -100,6 +100,20 @@ async function runRegressionSuite() {
   }
   console.log(`PASS: Verified ${auditedHtmlCount} HTML files. All strictly declare https://www.livworthy.com/ canonical.`);
 
+  // Admin must never be indexable, including the exact clean URL and descendants.
+  const robotsPath = path.join(distDir, 'robots.txt');
+  assert(fs.existsSync(robotsPath), 'robots.txt must exist in dist');
+  const robotsContent = fs.readFileSync(robotsPath, 'utf-8');
+  assert(
+    /^Disallow:\s*\/admin\s*$/m.test(robotsContent),
+    'Robots must block exact /admin route and all descendants with Disallow: /admin'
+  );
+  const adminHtmlPath = path.join(distDir, 'admin', 'index.html');
+  assert(fs.existsSync(adminHtmlPath), 'Admin shell must exist at dist/admin/index.html');
+  const adminHtml = fs.readFileSync(adminHtmlPath, 'utf-8').toLowerCase();
+  assert(adminHtml.includes('noindex') && adminHtml.includes('nofollow'), 'Admin shell must be noindex,nofollow');
+  console.log('PASS: Admin route is excluded from crawler indexing at robots and document levels.');
+
   // =========================================================================
   // TEST B: SITEMAP HOST INVARIANT
   // Every sitemap URL starts with: https://www.livworthy.com/
@@ -424,7 +438,7 @@ async function runRegressionSuite() {
   const distRobots = fs.readFileSync(path.join(distDir, 'robots.txt'), 'utf-8');
   assert(distRobots.includes('User-agent: *'), 'dist/robots.txt must configure User-agent: *');
   assert(distRobots.includes('Disallow: /api/'), 'dist/robots.txt must disallow /api/');
-  assert(distRobots.includes('Disallow: /admin/'), 'dist/robots.txt must disallow /admin/');
+  assert(/^Disallow:\s*\/admin\s*$/m.test(distRobots), 'dist/robots.txt must disallow /admin (covering exact route and descendants)');
   assert(distRobots.includes('Disallow: /test/'), 'dist/robots.txt must disallow /test/');
   assert(distRobots.includes('Sitemap: https://www.livworthy.com/sitemap.xml'), 'dist/robots.txt points to sitemap.xml');
   assert(!distRobots.includes('User-agent: Googlebot\nAllow: /'), 'dist/robots.txt must not contain a bot-specific group that bypasses disallows');

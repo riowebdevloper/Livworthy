@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Check, Home, Users, Bus, Sparkles, MapPin, DollarSign } from 'lucide-react';
 import { AreaType, HouseholdProfile, HousingType, LifestyleLevel, TransportMode } from '../../types/col';
 import { FilingStatus, TaxProfile } from '../../types/tax';
+import { TAX_YEAR_OPTIONS, isFutureUnverifiedTaxYear } from '../../lib/tax-year-policy';
 
 interface CustomizationDrawerProps {
   isOpen: boolean;
@@ -291,6 +292,30 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
                 </button>
               ))}
             </div>
+          </div>
+
+
+          <div>
+            <label htmlFor="custom-tax-year" className="block text-xs font-bold uppercase tracking-wider text-[#102A2E] mb-2">
+              Tax Year
+            </label>
+            <select
+              id="custom-tax-year"
+              value={taxProfile.taxYear}
+              onChange={(e) => onUpdateTaxProfile({ ...taxProfile, taxYear: Number(e.target.value) })}
+              className="w-full rounded-lg border border-[#DCE3E0] bg-white px-3 py-2.5 text-xs font-semibold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"
+            >
+              {TAX_YEAR_OPTIONS.map((year) => (
+                <option key={year} value={year}>
+                  {year}{isFutureUnverifiedTaxYear(year) ? ' — verification pending' : ''}
+                </option>
+              ))}
+            </select>
+            {isFutureUnverifiedTaxYear(taxProfile.taxYear) && (
+              <p className="mt-2 text-[11px] leading-relaxed text-amber-800">
+                LivWorthy will not project unverified statutory rules. Results remain unavailable until this tax year is verified from official sources.
+              </p>
+            )}
           </div>
 
           {/* Section 5: Tax Filing Status */}

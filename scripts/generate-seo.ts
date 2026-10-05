@@ -1947,7 +1947,7 @@ function writeStaticFiles(distDir: string, publicDir: string) {
   const robotsTxt = `User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /admin/
+Disallow: /admin
 Disallow: /test/
 
 Sitemap: ${BASE_URL}/sitemap.xml

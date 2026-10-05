@@ -110,3 +110,9 @@
   color: #0D524D;
   text-decoration: underline;
 }
+
+@layer components {
+  .admin-input {
+    @apply w-full rounded-lg border border-[#DCE3E0] bg-white px-3 py-2.5 text-sm font-medium text-[#102A2E] outline-none focus:border-[#167D75];
+  }
+}
