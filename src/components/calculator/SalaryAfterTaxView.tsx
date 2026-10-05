@@ -41,6 +41,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
     setIsCalculating(true);
     setCalcError(null);
+    setTaxResult(null);
 
     const timer = setTimeout(async () => {
       try {

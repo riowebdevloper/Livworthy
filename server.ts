@@ -3,7 +3,7 @@ import path from 'path';
 import crypto from 'crypto';
 import fs from 'fs';
 import { validateEnv } from './src/lib/env';
-import { LATEST_VERIFIED_TAX_YEAR, resolveTaxYear } from './src/lib/tax-year-policy';
+import { LATEST_VERIFIED_TAX_YEAR, parseTaxYear, resolveTaxYear } from './src/lib/tax-year-policy';
 import { dbService } from './src/db/client';
 import { cacheService } from './src/lib/redis';
 import { FxEngine } from './src/engines/fx/fx-service';
@@ -465,12 +465,20 @@ function configureApp() {
         });
       }
 
+      const parsedTaxYear = taxYear === undefined ? LATEST_VERIFIED_TAX_YEAR : parseTaxYear(taxYear);
+      if (parsedTaxYear === null) {
+        return res.status(400).json({
+          error: 'INVALID_TAX_YEAR',
+          message: 'taxYear must be a complete four-digit year between 2000 and 2100.',
+        });
+      }
+
       const curr = (currency || COUNTRIES[countryId]?.defaultCurrency || 'USD') as any;
       const grossMoney = fromMinor(grossSalaryMinor, curr);
       const profile = {
         filingStatus: filingStatus || 'single',
         dependentsCount: typeof dependentsCount === 'number' ? dependentsCount : 0,
-        taxYear: resolveTaxYear(taxYear),
+        taxYear: parsedTaxYear,
       };
       const location = {
         countryId,
@@ -548,7 +556,10 @@ function configureApp() {
     const countryId = (req.query.countryId as string) || 'US';
     const regionId = req.query.regionId as string | undefined;
 
-    const taxYear = resolveTaxYear(req.query.taxYear);
+    const taxYear = req.query.taxYear === undefined ? LATEST_VERIFIED_TAX_YEAR : parseTaxYear(req.query.taxYear);
+    if (taxYear === null) {
+      return res.status(400).json({ error: 'INVALID_TAX_YEAR', message: 'taxYear must be a complete four-digit year.' });
+    }
     const adapter = TaxRegistry.getAdapter({ countryId, regionId, taxYear });
     const sample = TaxRegistry.calculate(
       createMoney(100000, COUNTRIES[countryId]?.defaultCurrency || 'USD'),
@@ -572,14 +583,37 @@ function configureApp() {
 
 
   app.get('/api/tax/years', rateLimit(120, 60), (req, res) => {
-    const requestedYear = resolveTaxYear(req.query.taxYear);
+    const requestedYear =
+      req.query.taxYear === undefined ? LATEST_VERIFIED_TAX_YEAR : parseTaxYear(req.query.taxYear);
+    if (requestedYear === null) {
+      return res.status(400).json({
+        error: 'INVALID_TAX_YEAR',
+        message: 'taxYear must be a complete four-digit year between 2000 and 2100.',
+      });
+    }
+
+    const countryId = String(req.query.countryId || 'US').toUpperCase();
+    const support = TaxRegistry.getCountrySupport(countryId);
+    const supportedYears = TaxRegistry.getSupportedTaxYears(countryId);
+    const hasCoverage = supportedYears.includes(requestedYear);
+
+    let requestedYearStatus = 'UNAVAILABLE';
+    if (requestedYear > LATEST_VERIFIED_TAX_YEAR) {
+      requestedYearStatus = 'UNDER_VERIFICATION';
+    } else if (hasCoverage && support.verificationStatus === 'VERIFIED') {
+      requestedYearStatus = 'VERIFIED_PERIOD_AVAILABLE';
+    } else if (hasCoverage && support.isSupported) {
+      requestedYearStatus = 'LIMITED_PERIOD_AVAILABLE';
+    }
+
     res.json({
+      countryId,
       latestVerifiedTaxYear: LATEST_VERIFIED_TAX_YEAR,
+      supportedYears,
       requestedYear,
-      requestedYearStatus:
-        requestedYear <= LATEST_VERIFIED_TAX_YEAR ? 'VERIFIED_PERIOD_AVAILABLE' : 'UNDER_VERIFICATION',
+      requestedYearStatus,
       futureYearPolicy:
-        'Future statutory schedules are never inferred. Years newer than the latest verified period return TAX_CALCULATION_UNAVAILABLE until official rules are implemented and tested.',
+        'Tax schedules are never inferred. LivWorthy executes only explicitly implemented country/year schedules and returns TAX_CALCULATION_UNAVAILABLE for unsupported historical or future years.',
     });
   });
 

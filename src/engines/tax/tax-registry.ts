@@ -263,6 +263,28 @@ export class TaxRegistry {
     new NewZealandTaxAdapter(),
   ];
 
+  /**
+   * Explicit executable schedule coverage. Adapter implementations intentionally support
+   * only these tax-year inputs; arbitrary older years must never collapse to 2024 rules.
+   */
+  private static readonly TAX_YEAR_COVERAGE: Record<string, readonly number[]> = {
+    US: [2024, 2025, 2026],
+    GB: [2024, 2025, 2026],
+    AE: [2024, 2025, 2026],
+    CA: [2024, 2025, 2026],
+    AU: [2024, 2025, 2026],
+    DE: [2024, 2025, 2026],
+    SG: [2024, 2025, 2026],
+    QA: [2024, 2025, 2026],
+    SA: [2024, 2025, 2026],
+    NZ: [2024, 2025, 2026],
+    FR: [2024, 2025, 2026],
+    NL: [2024, 2025, 2026],
+    CH: [2024, 2025, 2026],
+    IE: [2024, 2025, 2026],
+    ES: [2024, 2025, 2026],
+  };
+
   private static fallbackAdapter = new FallbackUnsupportedTaxAdapter();
 
   public static getSupportedCountryIds(): string[] {
@@ -285,6 +307,15 @@ export class TaxRegistry {
 
   public static supportsTaxCalculation(countryId: string): boolean {
     return this.adapters.some((a) => a.supports({ countryId }));
+  }
+
+  public static getSupportedTaxYears(countryId: string): number[] {
+    if (!this.supportsTaxCalculation(countryId)) return [];
+    return [...(this.TAX_YEAR_COVERAGE[countryId] || [])];
+  }
+
+  public static supportsTaxYear(countryId: string, taxYear: number): boolean {
+    return this.getSupportedTaxYears(countryId).includes(taxYear);
   }
 
   public static isStatutorilyVerified(countryId: string): boolean {
@@ -327,13 +358,21 @@ export class TaxRegistry {
     profile: TaxProfile,
     context: TaxContext
   ): TaxResult {
-    // Year-gate: if the requested year exceeds the latest verified statutory period, refuse to
-    // silently calculate with stale rules. Return TAX_CALCULATION_UNAVAILABLE with an explicit
-    // explanation and the applicable period boundary.
+    // Year-gate: execute only explicitly implemented country/year schedules.
+    // Future years and arbitrary historical years are unavailable rather than coerced.
     const requestedYear = profile.taxYear || context.taxYear || LATEST_STATUTORY_TAX_YEAR;
-    if (requestedYear > LATEST_STATUTORY_TAX_YEAR) {
+    const countryId = context.countryId || 'UNKNOWN';
+    const isFutureYear = requestedYear > LATEST_STATUTORY_TAX_YEAR;
+    const hasExplicitCoverage = this.supportsTaxYear(countryId, requestedYear);
+
+    if (isFutureYear || !hasExplicitCoverage) {
       const currency = grossCompensation.currency;
       const zero = createMoney(0, currency);
+      const supportedYears = this.getSupportedTaxYears(countryId);
+      const reason = isFutureYear
+        ? `Tax Year ${requestedYear} statutory schedules have not yet been officially published or verified.`
+        : `Tax Year ${requestedYear} is not an explicitly implemented statutory schedule for ${countryId}.`;
+
       return {
         status: 'TAX_CALCULATION_UNAVAILABLE',
         grossIncome: grossCompensation,
@@ -351,17 +390,19 @@ export class TaxRegistry {
         effectiveTaxRate: 0,
         marginalTaxRate: 0,
         components: [],
-        taxRuleVersion: `FUTURE-YEAR-UNVERIFIED-${requestedYear}`,
+        taxRuleVersion: isFutureYear
+          ? `FUTURE-YEAR-UNVERIFIED-${requestedYear}`
+          : `TAX-YEAR-UNAVAILABLE-${countryId}-${requestedYear}`,
         evidenceSourceIds: [],
         warnings: [
-          `Tax Year ${requestedYear} statutory schedules have not yet been officially published or verified. ` +
-          `LivWorthy's latest verified statutory period is ${LATEST_STATUTORY_TAX_YEAR}. ` +
-          `In accordance with our data integrity charter, we do not fabricate forward-projected tax rules.`,
+          reason +
+          ` LivWorthy only executes explicitly implemented and versioned schedules; it never substitutes another year's rates.`,
         ],
         unsupportedExplanation:
-          `Statutory tax rules for ${requestedYear} are not yet verified. ` +
-          `The most recent verified period is Tax Year ${LATEST_STATUTORY_TAX_YEAR} (${context.countryId || 'all supported jurisdictions'}). ` +
-          `Please recalculate using Tax Year ${LATEST_STATUTORY_TAX_YEAR} or earlier for an authoritative result.`,
+          reason +
+          (supportedYears.length
+            ? ` Available implemented years for ${countryId}: ${supportedYears.join(', ')}.`
+            : ` No executable statutory tax schedule is currently available for ${countryId}.`),
       };
     }
     const adapter = this.getAdapter(context);
