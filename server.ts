@@ -517,7 +517,7 @@ function configureApp() {
 
     const taxYear = resolveTaxYear(req.query.taxYear);
     const adapter = TaxRegistry.getAdapter({ countryId, regionId, taxYear });
-    const sample = adapter.calculate(
+    const sample = TaxRegistry.calculate(
       createMoney(100000, COUNTRIES[countryId]?.defaultCurrency || 'USD'),
       { filingStatus: 'single', dependentsCount: 0, taxYear },
       { countryId, regionId, taxYear }
@@ -528,8 +528,11 @@ function configureApp() {
       regionId,
       taxYear,
       adapterName: adapter.name,
+      status: sample.status || 'CALCULATED',
       taxRuleVersion: sample.taxRuleVersion,
       components: sample.components,
+      warnings: sample.warnings || [],
+      unsupportedExplanation: sample.unsupportedExplanation,
       evidenceSources: sample.evidenceSourceIds.map((id) => EVIDENCE_REGISTRY[id]).filter(Boolean),
     });
   });
