@@ -69,7 +69,7 @@ export class AuthService {
   }
 
   public static credentialFingerprint(passwordHash: string): string {
-    return crypto.createHash('sha256').update(passwordHash).digest('hex');
+    return crypto.createHmac('sha256', getJwtSecret()).update(passwordHash).digest('base64url');
   }
 
   public static createSessionToken(user: { id: string; email: string; role: UserRole; passwordHash?: string }): string {

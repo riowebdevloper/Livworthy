@@ -853,7 +853,14 @@ function configureApp() {
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED' });
     }
-    res.json({ user: session });
+    res.json({
+      user: {
+        userId: session.userId,
+        email: session.email,
+        role: session.role,
+        expiresAt: session.expiresAt,
+      },
+    });
   });
 
   app.get('/api/admin/audit-logs', rateLimit(30, 60), async (req, res) => {

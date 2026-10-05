@@ -100,7 +100,7 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
         </div>
       </div>
 
-            {col.dataFreshness !== 'CURRENT' && (
+      {col.dataFreshness !== 'CURRENT' && (
         <div className={`mt-4 rounded-xl border p-3 text-xs leading-relaxed ${
           col.dataFreshness === 'STALE'
             ? 'border-red-200 bg-red-50 text-red-900'
@@ -126,7 +126,7 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
             </div>
           </div>
         </div>
-      ))}
+      )}
       {/* Actual Rent Override Section */}
       <div className="mt-4 p-4 rounded-xl bg-[#F7F8F5] border border-[#DCE3E0]/80">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
