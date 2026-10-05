@@ -463,14 +463,14 @@ export function runSeoGenerator() {
             <div>
               <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">City Salary Guides</div>
               <ul class="space-y-1 text-xs">
-                <li><a href="/guides/nyc-100k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $100k Enough to Live in NYC?</a></li>
-                <li><a href="/guides/london-60k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is £60k Enough to Live in London?</a></li>
-                <li><a href="/guides/sf-150k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $150k Enough to Live in San Francisco?</a></li>
-                <li><a href="/guides/toronto-90k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $90k CAD Enough to Live in Toronto?</a></li>
-                <li><a href="/guides/sydney-120k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $120k AUD Enough to Live in Sydney?</a></li>
-                <li><a href="/guides/dubai-30k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is 30k AED/mo Enough to Live in Dubai?</a></li>
-                <li><a href="/guides/singapore-10k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $10k SGD/mo Enough to Live in Singapore?</a></li>
-                <li><a href="/guides/berlin-65k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is €65k Enough to Live in Berlin?</a></li>
+                <li><a href="/guides/nyc-100k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $100k a Good Salary in NYC?</a></li>
+                <li><a href="/guides/london-75k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is £75k a Good Salary in London?</a></li>
+                <li><a href="/guides/sf-150k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $150k a Good Salary in San Francisco?</a></li>
+                <li><a href="/guides/toronto-100k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is CA$100k a Good Salary in Toronto?</a></li>
+                <li><a href="/guides/sydney-120k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is A$120k a Good Salary in Sydney?</a></li>
+                <li><a href="/guides/dubai-300k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is 300k AED a Good Salary in Dubai?</a></li>
+                <li><a href="/guides/singapore-120k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is S$120k a Good Salary in Singapore?</a></li>
+                <li><a href="/guides/berlin-80k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is €80k a Good Salary in Berlin?</a></li>
               </ul>
             </div>
 
@@ -1777,10 +1777,33 @@ function renderPageHtml(
     `<link rel="canonical" href="${page.canonicalUrl}" />`
   );
 
-  // Replace Open Graph URL
+  // Replace Open Graph metadata dynamically
+  html = html.replace(
+    /<meta\s+property="og:title"\s+content=".*?"\s*\/?>/i,
+    `<meta property="og:title" content="${escapeHtml(page.title)}" />`
+  );
+  html = html.replace(
+    /<meta\s+property="og:description"\s+content=".*?"\s*\/?>/i,
+    `<meta property="og:description" content="${escapeHtml(page.description)}" />`
+  );
   html = html.replace(
     /<meta\s+property="og:url"\s+content=".*?"\s*\/?>/i,
     `<meta property="og:url" content="${page.canonicalUrl}" />`
+  );
+  const ogType = page.canonicalUrl.includes('/guides/') ? 'article' : 'website';
+  html = html.replace(
+    /<meta\s+property="og:type"\s+content=".*?"\s*\/?>/i,
+    `<meta property="og:type" content="${ogType}" />`
+  );
+
+  // Replace Twitter card metadata dynamically
+  html = html.replace(
+    /<meta\s+name="twitter:title"\s+content=".*?"\s*\/?>/i,
+    `<meta name="twitter:title" content="${escapeHtml(page.title)}" />`
+  );
+  html = html.replace(
+    /<meta\s+name="twitter:description"\s+content=".*?"\s*\/?>/i,
+    `<meta name="twitter:description" content="${escapeHtml(page.description)}" />`
   );
 
   // Ensure Robots meta tag

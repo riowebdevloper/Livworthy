@@ -85,6 +85,20 @@ function configureApp() {
       return res.status(400).type('text/plain').send('Bad Request');
     }
 
+    const LEGACY_GUIDE_REDIRECTS: Record<string, string> = {
+      '/guides/london-60k': '/guides/london-75k',
+      '/guides/toronto-90k': '/guides/toronto-100k',
+      '/guides/dubai-30k': '/guides/dubai-300k',
+      '/guides/singapore-10k': '/guides/singapore-120k',
+      '/guides/berlin-65k': '/guides/berlin-80k',
+    };
+
+    if (LEGACY_GUIDE_REDIRECTS[cleanPath]) {
+      const destination = LEGACY_GUIDE_REDIRECTS[cleanPath];
+      const hostPrefix = isApex ? 'https://www.livworthy.com' : '';
+      return res.redirect(308, `${hostPrefix}${destination}${search}`);
+    }
+
     if (isApex || hasTrailingSlash) {
       const hostPrefix = isApex ? 'https://www.livworthy.com' : '';
       const targetUrl = `${hostPrefix}${cleanPath}${search}`;

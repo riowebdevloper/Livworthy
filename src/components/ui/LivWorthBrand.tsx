@@ -16,15 +16,19 @@ export const LivWorthyIcon: React.FC<{ className?: string; size?: number; alt?: 
   alt = 'LivWorthy',
 }) => {
   return (
-    <img
-      src="/icon.png"
-      alt={alt}
-      width={size}
-      height={size}
-      className={`rounded-lg object-contain shrink-0 ${className}`}
-      style={{ width: `${size}px`, height: `${size}px`, aspectRatio: '1 / 1' }}
-      loading="eager"
-    />
+    <picture>
+      <source type="image/webp" srcSet="/icon.webp" />
+      <img
+        src="/icon.png"
+        alt={alt}
+        width={size}
+        height={size}
+        className={`rounded-lg object-contain shrink-0 ${className}`}
+        style={{ width: `${size}px`, height: `${size}px`, aspectRatio: '1 / 1' }}
+        loading="eager"
+        decoding="async"
+      />
+    </picture>
   );
 };
 

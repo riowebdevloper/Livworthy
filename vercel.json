@@ -20,6 +20,10 @@
           "value": "strict-origin-when-cross-origin"
         },
         {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=()"
         }
@@ -128,6 +132,31 @@
         }
       ],
       "destination": "https://www.livworthy.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/guides/london-60k",
+      "destination": "/guides/london-75k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/toronto-90k",
+      "destination": "/guides/toronto-100k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/dubai-30k",
+      "destination": "/guides/dubai-300k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/singapore-10k",
+      "destination": "/guides/singapore-120k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/berlin-65k",
+      "destination": "/guides/berlin-80k",
       "permanent": true
     }
   ],
