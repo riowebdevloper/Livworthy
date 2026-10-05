@@ -42,3 +42,9 @@ assert.equal(result2000.taxRuleVersion, 'TAX-YEAR-UNAVAILABLE-US-2000');
 assert.deepEqual(TaxRegistry.getSupportedTaxYears('US'), [2024, 2025, 2026]);
 assert.equal(TaxRegistry.supportsTaxYear('US', 2000), false);
 assert.equal(TaxRegistry.supportsTaxYear('US', 2026), true);
+
+assert.equal(TaxRegistry.supportsTaxYear('US', 2025), true);
+assert.equal(TaxRegistry.supportsTaxYear('GB', 2025), false);
+assert.equal(TaxRegistry.supportsTaxYear('CA', 2025), false);
+assert.equal(TaxRegistry.supportsTaxYear('US', 2026), true);
+assert.equal(TaxRegistry.supportsTaxYear('GB', 2026), true);
