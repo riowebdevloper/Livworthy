@@ -81,7 +81,7 @@ A release is considered production-ready only when:
 1. `npm run lint` passes.
 2. `npm test` passes.
 3. `npm run test:e2e` passes in a production-equivalent environment.
-4. PostgreSQL migrations and seeds succeed.
+4. PostgreSQL migrations and seeds succeed (including serverless cold-start initialization).
 5. Redis is connected.
 6. The FX snapshot is available.
 7. `/api/health/ready` returns ready.
@@ -100,7 +100,7 @@ A release is considered production-ready only when:
 
 ## Deployment
 
-The repository contains Vercel configuration for canonical host redirects, caching and security headers. Configure production environment variables in the hosting platform before deployment. The canonical public host is `https://www.livworthy.com`.
+The repository contains Vercel configuration for canonical host redirects, caching and security headers. Configure production environment variables in the hosting platform before deployment. Production startup is fail-closed: missing required secrets, PostgreSQL, or Redis configuration must not silently fall back to development services. The canonical public host is `https://www.livworthy.com`.
 
 ## Data integrity
 

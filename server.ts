@@ -18,16 +18,7 @@ import { EVIDENCE_REGISTRY } from './src/data/evidence-registry';
 import { createMoney, fromMinor } from './src/lib/money';
 import { CapabilityResolver } from './src/engines/capabilities/capability-resolver';
 
-let env: any = null;
-try {
-  env = validateEnv();
-} catch (envErr: any) {
-  if (process.env.VERCEL) {
-    console.warn('[Vercel Serverless Notice]:', envErr.message);
-  } else {
-    throw envErr;
-  }
-}
+const env = validateEnv();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const START_TIME = Date.now();
 const CRON_SECRET = env?.CRON_SECRET || process.env.CRON_SECRET;
@@ -47,13 +38,14 @@ export async function ensureDatabaseReady(): Promise<void> {
         console.log(`[Database] Seed verified (${seedRes.countriesCount} countries, ${seedRes.citiesCount} cities)`);
         dbInitialized = true;
       } catch (dbErr: any) {
+        dbInitialized = false;
+        dbInitPromise = null;
         const isProduction = process.env.NODE_ENV === 'production';
-        if (isProduction && !process.env.VERCEL && dbService.mode === 'PRODUCTION_POSTGRES') {
-          console.error('[Database] Fatal startup failure: Database initialization or migration failed.');
-          process.exit(1);
-        } else {
-          console.warn('[Database] Startup initialization notice:', dbErr.message);
+        if (isProduction) {
+          console.error('[Database] Production initialization failed.');
+          throw new Error('Production database initialization failed.');
         }
+        console.warn('[Database] Startup initialization notice:', dbErr.message);
       }
     })();
   }
@@ -332,6 +324,27 @@ function configureApp() {
         heapUsedMb: Math.round((memory.heapUsed / 1024 / 1024) * 100) / 100,
       },
     });
+  });
+
+  // SERVERLESS DATABASE INITIALIZATION GATE
+  // Vercel does not call startServer(), so production API requests must explicitly
+  // await migrations/seeding on each cold start. The promise is memoized per instance.
+  app.use('/api', async (req, res, next) => {
+    try {
+      await ensureDatabaseReady();
+      if (process.env.NODE_ENV === 'production' && (!dbInitialized || dbService.mode !== 'PRODUCTION_POSTGRES')) {
+        return res.status(503).json({
+          error: 'DATABASE_NOT_READY',
+          message: 'Production database is not ready.',
+        });
+      }
+      next();
+    } catch {
+      return res.status(503).json({
+        error: 'DATABASE_INITIALIZATION_FAILED',
+        message: 'Production data services are temporarily unavailable.',
+      });
+    }
   });
 
   // 2. CORE FINANCIAL & TAX ENGINE APIS
