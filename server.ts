@@ -634,7 +634,12 @@ function configureApp() {
     }
 
     const pageData = req.body;
-    // Check if promoting to INDEX_APPROVED: requires approve_indexing permission
+    if (pageData.workflowState === 'APPROVED' && !AuthService.hasPermission(session.role, 'review_content')) {
+      return res.status(403).json({ error: 'FORBIDDEN', message: 'Reviewer permission required to approve content.' });
+    }
+    if (pageData.workflowState === 'PUBLISHED' && !AuthService.hasPermission(session.role, 'publish_content')) {
+      return res.status(403).json({ error: 'FORBIDDEN', message: 'Publisher permission required to publish content.' });
+    }
     if (pageData.workflowState === 'INDEX_APPROVED' && !AuthService.hasPermission(session.role, 'approve_indexing')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'SEO_REVIEWER or ADMIN permission required to approve indexing.' });
     }
@@ -655,13 +660,67 @@ function configureApp() {
     res.json({ success: true, page: saved });
   });
 
+
+  app.post('/api/content/:slug/workflow', rateLimit(30, 60), async (req, res) => {
+    const session = extractSession(req);
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED' });
+    }
+
+    const workflowState = String(req.body?.workflowState || '');
+    const locale = (req.query.locale as string) || 'en';
+    const allowedStates = new Set(['DRAFTED', 'IN_REVIEW', 'APPROVED', 'PUBLISHED', 'INDEX_APPROVED']);
+    if (!allowedStates.has(workflowState)) {
+      return res.status(400).json({ error: 'INVALID_WORKFLOW_STATE', message: 'Unsupported content workflow state.' });
+    }
+
+    let permitted = false;
+    if (workflowState === 'DRAFTED' || workflowState === 'IN_REVIEW') {
+      permitted = AuthService.hasPermission(session.role, 'edit_content');
+    } else if (workflowState === 'APPROVED') {
+      permitted = AuthService.hasPermission(session.role, 'review_content');
+    } else if (workflowState === 'PUBLISHED') {
+      permitted = AuthService.hasPermission(session.role, 'publish_content');
+    } else if (workflowState === 'INDEX_APPROVED') {
+      permitted = AuthService.hasPermission(session.role, 'approve_indexing');
+    }
+
+    if (!permitted) {
+      return res.status(403).json({ error: 'FORBIDDEN', message: `Role ${session.role} cannot transition content to ${workflowState}.` });
+    }
+
+    const existing = await dbService.getContentPageBySlug(req.params.slug, locale);
+    if (!existing) {
+      return res.status(404).json({ error: 'PAGE_NOT_FOUND' });
+    }
+
+    const saved = await dbService.upsertContentPage({
+      ...existing,
+      workflowState,
+      reviewerEmail:
+        workflowState === 'APPROVED' || workflowState === 'PUBLISHED' || workflowState === 'INDEX_APPROVED'
+          ? session.email
+          : existing.reviewerEmail,
+    });
+
+    await dbService.recordAuditLog({
+      actorEmail: session.email,
+      action: 'CMS_WORKFLOW_TRANSITION',
+      entityType: 'content_page',
+      entityId: saved.id,
+      metadata: { slug: saved.slug, locale, from: existing.workflowState, to: workflowState },
+    });
+
+    res.json({ success: true, page: saved });
+  });
+
   // 6. ADMIN AUTHENTICATION & RBAC
   app.post('/api/admin/login', rateLimit(5, 60, { isSecuritySensitive: true, failClosed: true }), async (req, res) => {
     const { email, password, totpCode } = req.body;
 
     try {
       const dbUser = await dbService.getUserByEmail(email);
-      if (dbUser && AuthService.verifyPassword(password, dbUser.passwordHash)) {
+      if (dbUser && dbUser.isActive !== false && AuthService.verifyPassword(password, dbUser.passwordHash)) {
         if (dbUser.mfaEnabled && dbUser.mfaSecret) {
           if (!totpCode || !AuthService.verifyTotp(dbUser.mfaSecret, totpCode)) {
             return res.status(401).json({ error: 'MFA_REQUIRED', message: 'Valid 6-digit TOTP code required.' });
@@ -737,6 +796,16 @@ function configureApp() {
     const { email, password, role } = req.body;
     if (!email || !password || !role) {
       return res.status(400).json({ error: 'INVALID_PAYLOAD', message: 'Email, password, and role are required.' });
+    }
+    const allowedRoles = new Set(['ADMIN', 'DATA_EDITOR', 'CONTENT_EDITOR', 'REVIEWER', 'SEO_REVIEWER', 'READ_ONLY']);
+    if (!allowedRoles.has(role)) {
+      return res.status(400).json({ error: 'INVALID_ROLE', message: 'Unsupported user role.' });
+    }
+    if (typeof password !== 'string' || password.length < 12) {
+      return res.status(400).json({ error: 'WEAK_PASSWORD', message: 'Admin passwords must contain at least 12 characters.' });
+    }
+    if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'INVALID_EMAIL', message: 'A valid email address is required.' });
     }
     const passwordHash = AuthService.hashPassword(password);
     const created = await dbService.upsertUser({
