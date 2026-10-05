@@ -679,12 +679,20 @@ function configureApp() {
 
   // 5. CMS & CONTENT WORKFLOW
   app.get('/api/content', rateLimit(120, 60), async (req, res) => {
+    const session = extractSession(req);
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
+    }
     const locale = (req.query.locale as string) || 'en';
     const pages = await dbService.getContentPages({ locale });
     res.json({ pages });
   });
 
   app.get('/api/content/:slug', rateLimit(120, 60), async (req, res) => {
+    const session = extractSession(req);
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
+    }
     const slug = req.params.slug;
     const locale = (req.query.locale as string) || 'en';
     const page = await dbService.getContentPageBySlug(slug, locale);
@@ -894,6 +902,10 @@ function configureApp() {
   });
 
   app.get('/api/reviews', rateLimit(60, 60), async (req, res) => {
+    const session = extractSession(req);
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
+    }
     const contentPageId = req.query.contentPageId as string | undefined;
     const reviews = await dbService.getReviews(contentPageId);
     res.json({ reviews });
