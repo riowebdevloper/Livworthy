@@ -734,7 +734,8 @@ class PostgresDatabaseService implements IDatabaseService {
       const rows = await this.db.select().from(schema.users).where(eq(schema.users.email, email)).limit(1);
       return rows[0] || null;
     } catch (err) {
-      return null;
+      console.error('[PostgresDatabaseService] getUserByEmail error:', err);
+      throw err;
     }
   }
 

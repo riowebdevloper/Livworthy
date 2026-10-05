@@ -203,10 +203,22 @@ function configureApp() {
     return null;
   };
 
-  const validateCurrentSession = async (req: express.Request) => {
+  const validateCurrentSession = async (req: express.Request, res: express.Response) => {
     const session = extractSession(req);
     if (!session) return null;
-    const currentUser = await dbService.getUserByEmail(session.email);
+
+    let currentUser;
+    try {
+      currentUser = await dbService.getUserByEmail(session.email);
+    } catch (err) {
+      console.error('[Auth] Session user lookup failed:', err);
+      res.status(503).json({
+        error: 'AUTH_DATABASE_UNAVAILABLE',
+        message: 'Authentication services are temporarily unavailable.',
+      });
+      return null;
+    }
+
     if (!currentUser || currentUser.isActive === false || currentUser.id !== session.userId || currentUser.role !== session.role) {
       return null;
     }
@@ -653,7 +665,8 @@ function configureApp() {
   });
 
   app.post('/api/fx/refresh', rateLimit(10, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'trigger_fx_refresh')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient role permissions to refresh FX rates.' });
     }
@@ -696,7 +709,8 @@ function configureApp() {
 
   // 5. CMS & CONTENT WORKFLOW
   app.get('/api/content', rateLimit(120, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
     }
@@ -706,7 +720,8 @@ function configureApp() {
   });
 
   app.get('/api/content/:slug', rateLimit(120, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
     }
@@ -720,7 +735,8 @@ function configureApp() {
   });
 
   app.post('/api/content', rateLimit(30, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'edit_content')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Editor permission required.' });
     }
@@ -736,9 +752,23 @@ function configureApp() {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'SEO_REVIEWER or ADMIN permission required to approve indexing.' });
     }
 
+    const locale = typeof pageData.locale === 'string' && pageData.locale ? pageData.locale : 'en';
+    const existingPage =
+      typeof pageData.slug === 'string' && pageData.slug
+        ? await dbService.getContentPageBySlug(pageData.slug, locale)
+        : null;
+    const reviewerEmail =
+      pageData.workflowState === 'APPROVED' ||
+      pageData.workflowState === 'PUBLISHED' ||
+      pageData.workflowState === 'INDEX_APPROVED'
+        ? session.email
+        : existingPage?.reviewerEmail || null;
+
     const saved = await dbService.upsertContentPage({
       ...pageData,
+      locale,
       authorEmail: session.email,
+      reviewerEmail,
     });
 
     await dbService.recordAuditLog({
@@ -754,7 +784,8 @@ function configureApp() {
 
 
   app.post('/api/content/:slug/workflow', rateLimit(30, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED' });
     }
@@ -836,6 +867,10 @@ function configureApp() {
       }
     } catch (e: any) {
       console.error('[Auth] Login verification exception:', e.message);
+      return res.status(503).json({
+        error: 'AUTH_DATABASE_UNAVAILABLE',
+        message: 'Authentication services are temporarily unavailable.',
+      });
     }
 
     await dbService.recordAuditLog({
@@ -849,7 +884,8 @@ function configureApp() {
   });
 
   app.get('/api/admin/me', rateLimit(60, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED' });
     }
@@ -864,7 +900,8 @@ function configureApp() {
   });
 
   app.get('/api/admin/audit-logs', rateLimit(30, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'view_audit_logs')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to view audit logs.' });
     }
@@ -874,7 +911,8 @@ function configureApp() {
   });
 
   app.get('/api/admin/users', rateLimit(30, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'manage_users')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to manage users.' });
     }
@@ -888,7 +926,8 @@ function configureApp() {
   });
 
   app.post('/api/admin/users', rateLimit(20, 60, { isSecuritySensitive: true, failClosed: true }), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'manage_users')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to manage users.' });
     }
@@ -926,7 +965,8 @@ function configureApp() {
   });
 
   app.get('/api/reviews', rateLimit(60, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
     }
@@ -936,7 +976,8 @@ function configureApp() {
   });
 
   app.post('/api/reviews', rateLimit(30, 60), async (req, res) => {
-    const session = await validateCurrentSession(req);
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
     if (!session || !AuthService.hasPermission(session.role, 'review_content')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Reviewer permission required.' });
     }
