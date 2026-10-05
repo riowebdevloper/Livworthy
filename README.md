@@ -16,6 +16,7 @@ LivWorthy is a production-oriented salary, tax and cost-of-living decision platf
 - Redis-backed cache and distributed rate limiting
 - FX snapshots and scheduled refresh
 - CMS/content workflow, reviews, RBAC and audit logs
+- Production admin dashboard at `/admin` (noindex)
 - Real-user web-vitals collection
 - Accessibility, responsive and production E2E coverage
 
@@ -49,6 +50,7 @@ Without `DATABASE_URL` or `REDIS_URL`, local development uses isolated in-memory
 - `REDIS_URL` — Redis connection string
 - `CRON_SECRET` — protects the FX refresh cron endpoint
 - `ADMIN_SESSION_SECRET` — HMAC secret for admin sessions
+- `BOOTSTRAP_ADMIN_EMAIL` / `BOOTSTRAP_ADMIN_PASSWORD` — one-time first-admin provisioning
 - `GEMINI_API_KEY` — optional AI integration key when that integration is enabled
 
 Never commit production secrets.
