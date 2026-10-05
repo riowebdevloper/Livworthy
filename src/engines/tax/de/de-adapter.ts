@@ -17,7 +17,8 @@ export class GermanyTaxAdapter implements TaxAdapter {
 
     // Effective-period rule selection
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
 
     // 1. Social Contributions (Employee Share)
     const kvCap = isHistorical2024 ? 62100 : 66150;
@@ -49,7 +50,7 @@ export class GermanyTaxAdapter implements TaxAdapter {
         incomeTax = 0.45 * grossMajor - 18971.06;
       }
     } else {
-      // EStG 2026 (Steuerfortentwicklungsgesetz)
+      // EStG 2025/2026 (Steuerfortentwicklungsgesetz)
       if (grossMajor <= 12084) {
         incomeTax = 0;
       } else if (grossMajor <= 17443) {
@@ -77,7 +78,7 @@ export class GermanyTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'bzst-lohnsteuer-2024' : 'de-bmf-tax-2026';
+    const evidenceRef = taxYear === 2024 ? 'bzst-lohnsteuer-2024' : `de-bmf-tax-${taxYear}`;
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -96,11 +97,11 @@ export class GermanyTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(socialMinor, 'EUR'),
         effectiveRate: socialMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'gkv-beitragssaetze-2024' : 'de-bmf-tax-2026',
+        evidenceRefId: isHistorical2024 ? 'gkv-beitragssaetze-2024' : evidenceRef,
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'BZSt-2024.1' : 'DE-BMF-2026.1';
+    const taxRuleVersion = isHistorical2024 ? 'BZSt-2024.1' : `DE-BMF-${taxYear}.1`;
 
     return {
       status: 'CALCULATED',

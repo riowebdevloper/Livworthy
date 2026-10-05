@@ -2173,29 +2173,29 @@ var EVIDENCE_SOURCES = {
     id: "us-irs-tax-2026",
     organization: "Internal Revenue Service (IRS)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "IRS Rev. Proc. 2024-40 (2026 Inflation-adjusted Tax Brackets & Standard Deductions)",
-    url: "https://www.irs.gov/pub/irs-drop/rp-24-40.pdf",
+    canonicalReference: "IRS Rev. Proc. 2025-32 (2026 Inflation-adjusted Tax Brackets & Standard Deductions)",
+    url: "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
     jurisdiction: "United States (Federal)",
     reliabilityTier: "Tier 1",
-    retrievedAt: "2024-11-01",
+    retrievedAt: "2025-10-15",
     effectiveDate: "2026-01-01",
     verifiedAt: "2026-01-10",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "Official 2026 statutory 7-bracket schedule (10%, 12%, 22%, 24%, 32%, 35%, 37%), Standard Deduction $15,000 single / $30,000 MFJ / $22,500 HoH."
+    notes: "Official 2026 statutory 7-bracket schedule (10%, 12%, 22%, 24%, 32%, 35%, 37%), Standard Deduction $16,100 single / $32,200 MFJ / $24,150 HoH."
   },
   "us-ssa-fica-2026": {
     id: "us-ssa-fica-2026",
     organization: "Social Security Administration (SSA)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Social Security Administration Press Release: 2026 Social Security Changes (OASDI Wage Base $176,100)",
-    url: "https://www.ssa.gov/news/press/releases/2024/#10-2024-1",
+    canonicalReference: "Social Security Administration Press Release: 2026 Social Security Changes (OASDI Wage Base $184,500)",
+    url: "https://www.ssa.gov/news/press/releases/2025/#10-2025-1",
     jurisdiction: "United States (Federal FICA)",
     reliabilityTier: "Tier 1",
-    retrievedAt: "2024-10-15",
+    retrievedAt: "2025-10-15",
     effectiveDate: "2026-01-01",
     verifiedAt: "2026-01-10",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "OASDI 6.2% on wages up to $176,100 maximum annual wage base; Medicare 1.45% uncapped + 0.9% Additional Medicare Tax above $200k."
+    notes: "OASDI 6.2% on wages up to $184,500 maximum annual wage base; Medicare 1.45% uncapped + 0.9% Additional Medicare Tax above $200k."
   },
   "us-nys-tax-2026": {
     id: "us-nys-tax-2026",
@@ -2229,11 +2229,11 @@ var EVIDENCE_SOURCES = {
     id: "uk-hmrc-tax-2026",
     organization: "HM Revenue & Customs (HMRC)",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "HMRC Rates and Allowances: Income Tax and National Insurance Contributions 2024-2026 / 2026-2026",
-    url: "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2024-to-2026",
+    canonicalReference: "HMRC Rates and Allowances: Income Tax and National Insurance Contributions 2026-2027",
+    url: "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027",
     jurisdiction: "United Kingdom (HMRC)",
     reliabilityTier: "Tier 1",
-    retrievedAt: "2024-11-15",
+    retrievedAt: "2025-11-15",
     effectiveDate: "2026-04-06",
     verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
@@ -3907,7 +3907,7 @@ var AustraliaTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
     let incomeTax = 0;
     if (grossMajor <= 18200) {
       incomeTax = 0;
@@ -3930,7 +3930,8 @@ var AustraliaTaxAdapter = class {
     const medicareMinor = Math.round(medicareLevy * 100);
     const totalTaxMinor = federalTaxMinor + medicareMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
-    const evidenceRef = isHistorical2024 ? "ato-individual-rates-2024" : "au-ato-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "ato-individual-rates-2024" : `au-ato-tax-${taxYear}`;
+    const taxRuleVersion = taxYear === 2024 ? "ATO-2024.2" : `AU-ATO-${taxYear}.1`;
     const components = [
       {
         id: "au-income-tax",
@@ -3951,7 +3952,6 @@ var AustraliaTaxAdapter = class {
         evidenceRefId: evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "ATO-2024.2" : "AU-ATO-2026.1";
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -3970,7 +3970,7 @@ var AustraliaTaxAdapter = class {
       marginalTaxRate: grossMajor > 19e4 ? 0.47 : grossMajor > 135e3 ? 0.39 : 0.32,
       components,
       taxRuleVersion,
-      evidenceSourceIds: isHistorical2024 ? ["ato-individual-rates-2024", "ato-medicare-levy-2024"] : ["au-ato-tax-2026"]
+      evidenceSourceIds: taxYear === 2024 ? ["ato-individual-rates-2024", "ato-medicare-levy-2024"] : [evidenceRef]
     };
   }
 };
@@ -3988,7 +3988,8 @@ var CanadaTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     let cppMinor = 0;
     if (isHistorical2024) {
       if (grossMajor > 3500) {
@@ -4110,7 +4111,7 @@ var CanadaTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor + stateTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "cra-income-tax-2024" : "ca-cra-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "cra-income-tax-2024" : `ca-cra-tax-${taxYear}`;
     const components = [
       {
         id: "ca-fed-tax",
@@ -4149,7 +4150,7 @@ var CanadaTaxAdapter = class {
         evidenceRefId: evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "CRA-2024.1" : "CA-CRA-ON-2026.1";
+    const taxRuleVersion = taxYear === 2024 ? "CRA-2024.1" : `CA-CRA-ON-${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4186,7 +4187,8 @@ var SwitzerlandTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     const ahvMinor = Math.round(grossMajor * 0.053 * 100);
     const alvCap = 148200;
     const alvBase = Math.min(grossMajor, alvCap);
@@ -4239,7 +4241,7 @@ var SwitzerlandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor + stateTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "estv-bundessteuer-tarife-2024" : "ch-estv-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "estv-bundessteuer-tarife-2024" : `ch-estv-tax-${taxYear}`;
     const components = [
       {
         id: "ch-bundessteuer",
@@ -4257,7 +4259,7 @@ var SwitzerlandTaxAdapter = class {
         category: "state",
         amount: fromMinor(stateTaxMinor, "CHF"),
         effectiveRate: stateTaxMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "estv-kantonssteuer-2024" : "ch-estv-tax-2026"
+        evidenceRefId: isHistorical2024 ? "estv-kantonssteuer-2024" : evidenceRef
       },
       {
         id: "ch-sozialabgaben",
@@ -4266,10 +4268,10 @@ var SwitzerlandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialContributionsMinor, "CHF"),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "bsv-beitragssaetze-2024" : "ch-estv-tax-2026"
+        evidenceRefId: isHistorical2024 ? "bsv-beitragssaetze-2024" : evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "ESTV-2024.1" : "CH-ESTV-ZH-2026.1";
+    const taxRuleVersion = isHistorical2024 ? "ESTV-2024.1" : `CH-ESTV-${cantonCode}-${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4306,7 +4308,8 @@ var GermanyTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     const kvCap = isHistorical2024 ? 62100 : 66150;
     const rvCap = isHistorical2024 ? 90600 : 96600;
     const kvRate = isHistorical2024 ? 0.0815 : 0.0825;
@@ -4353,7 +4356,7 @@ var GermanyTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor + soliMinor;
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "bzst-lohnsteuer-2024" : "de-bmf-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "bzst-lohnsteuer-2024" : `de-bmf-tax-${taxYear}`;
     const components = [
       {
         id: "de-einkommensteuer",
@@ -4371,10 +4374,10 @@ var GermanyTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialMinor, "EUR"),
         effectiveRate: socialMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "gkv-beitragssaetze-2024" : "de-bmf-tax-2026"
+        evidenceRefId: isHistorical2024 ? "gkv-beitragssaetze-2024" : evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "BZSt-2024.1" : "DE-BMF-2026.1";
+    const taxRuleVersion = isHistorical2024 ? "BZSt-2024.1" : `DE-BMF-${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4411,7 +4414,8 @@ var SpainTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     const ssBaseLimit = isHistorical2024 ? 56646 : 6e4;
     const ssRate = isHistorical2024 ? 0.0647 : 0.0649;
     const ssBase = Math.min(grossMajor, ssBaseLimit);
@@ -4436,7 +4440,7 @@ var SpainTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + ssMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "aeat-tramos-irpf-2024" : "es-aeat-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "aeat-tramos-irpf-2024" : `es-aeat-tax-${taxYear}`;
     const components = [
       {
         id: "es-irpf",
@@ -4454,10 +4458,10 @@ var SpainTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(ssMinor, "EUR"),
         effectiveRate: ssMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "tgss-bases-cotizacion-2024" : "es-aeat-tax-2026"
+        evidenceRefId: isHistorical2024 ? "tgss-bases-cotizacion-2024" : evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "AEAT-2024.1" : "ES-AEAT-2026.1";
+    const taxRuleVersion = isHistorical2024 ? "AEAT-2024.1" : `ES-AEAT-${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4494,7 +4498,8 @@ var FranceTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     const PASS = isHistorical2024 ? 46368 : 47100;
     const csgBase = Math.min(grossMajor, 4 * PASS) * 0.9825;
     const csgMinor = Math.round(csgBase * 0.097 * 100);
@@ -4544,7 +4549,7 @@ var FranceTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "dgfip-bareme-ir-2024" : "fr-dgfip-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "dgfip-bareme-ir-2024" : `fr-dgfip-tax-${taxYear}`;
     const components = [
       {
         id: "fr-impot-revenu",
@@ -4562,10 +4567,10 @@ var FranceTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(socialContributionsMinor, "EUR"),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "urssaf-taux-cotisations-2024" : "fr-dgfip-tax-2026"
+        evidenceRefId: isHistorical2024 ? "urssaf-taux-cotisations-2024" : evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "DGFiP-2024.1" : "FR-DGFIP-2026.1";
+    const taxRuleVersion = isHistorical2024 ? "DGFiP-2024.1" : `FR-DGFIP-${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4602,7 +4607,8 @@ var IrelandTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     const SRCOP = isHistorical2024 ? 42e3 : 44e3;
     let grossIncomeTax = 0;
     if (grossMajor <= SRCOP) {
@@ -4648,7 +4654,7 @@ var IrelandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "revenue-paye-rates-2024" : "ie-revenue-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "revenue-paye-rates-2024" : `ie-revenue-tax-${taxYear}`;
     const components = [
       {
         id: "ie-paye-tax",
@@ -4666,7 +4672,7 @@ var IrelandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(uscMinor, "EUR"),
         effectiveRate: uscMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "revenue-usc-rates-2024" : "ie-revenue-tax-2026"
+        evidenceRefId: isHistorical2024 ? "revenue-usc-rates-2024" : evidenceRef
       },
       {
         id: "ie-prsi",
@@ -4675,10 +4681,10 @@ var IrelandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(prsiMinor, "EUR"),
         effectiveRate: prsiMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "dsp-prsi-rates-2024" : "ie-revenue-tax-2026"
+        evidenceRefId: isHistorical2024 ? "dsp-prsi-rates-2024" : evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "Revenue-2024.1" : "IE-REVENUE-2026.1";
+    const taxRuleVersion = isHistorical2024 ? "Revenue-2024.1" : `IE-REVENUE-${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4715,7 +4721,8 @@ var NetherlandsTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     const bracket1Cap = isHistorical2024 ? 75518 : 76817;
     const bracket1Rate = isHistorical2024 ? 0.3697 : 0.3582;
     const bracket2Rate = 0.495;
@@ -4763,7 +4770,7 @@ var NetherlandsTaxAdapter = class {
     const incomeTaxMinor = Math.round(Math.max(0, netTax - nationalInsuranceMinor / 100) * 100);
     const totalDeductionsMinor = Math.round(netTax * 100);
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "belastingdienst-box1-2024" : "nl-belasting-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "belastingdienst-box1-2024" : `nl-belasting-tax-${taxYear}`;
     const components = [
       {
         id: "nl-inkomstenbelasting",
@@ -4781,10 +4788,10 @@ var NetherlandsTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(nationalInsuranceMinor, "EUR"),
         effectiveRate: nationalInsuranceMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "belastingdienst-premies-2024" : "nl-belasting-tax-2026"
+        evidenceRefId: isHistorical2024 ? "belastingdienst-premies-2024" : evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "Belastingdienst-2024.1" : "NL-BELASTING-2026.1";
+    const taxRuleVersion = isHistorical2024 ? "Belastingdienst-2024.1" : `NL-BELASTING-${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4821,7 +4828,8 @@ var NewZealandTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     let incomeTax = 0;
     if (grossMajor <= 15600) {
       incomeTax = grossMajor * 0.105;
@@ -4841,7 +4849,7 @@ var NewZealandTaxAdapter = class {
     const totalTaxMinor = federalTaxMinor;
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceRef = isHistorical2024 ? "ird-tax-rates-2024-2026" : "nz-ird-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "ird-tax-rates-2024-2026" : `nz-ird-tax-${taxYear}`;
     const components = [
       {
         id: "nz-ird-paye",
@@ -4859,10 +4867,10 @@ var NewZealandTaxAdapter = class {
         category: "social_contribution",
         amount: fromMinor(accMinor, "NZD"),
         effectiveRate: accMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? "acc-earners-levy-2024" : "nz-ird-tax-2026"
+        evidenceRefId: isHistorical2024 ? "acc-earners-levy-2024" : evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "IRD-2024.2" : "NZ-IRD-2026.1";
+    const taxRuleVersion = isHistorical2024 ? "IRD-2024.2" : `NZ-IRD-${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -4898,9 +4906,10 @@ var QatarTaxAdapter = class {
   calculate(grossCompensation, profile, context) {
     const grossMinor = grossCompensation.amountMinor;
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? "GTA-2024.1" : "QA-GTA-2026.1";
-    const evidenceRef = isHistorical2024 ? "qatar-income-tax-law-2018" : "qa-gta-tax-2026";
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
+    const taxRuleVersion = isHistorical2024 ? "GTA-2024.1" : `QA-GTA-${taxYear}.1`;
+    const evidenceRef = isHistorical2024 ? "qatar-income-tax-law-2018" : `qa-gta-tax-${taxYear}`;
     const components = [
       {
         id: "qa-statutory-tax",
@@ -4948,9 +4957,10 @@ var SaudiTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const currency = grossCompensation.currency;
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? "GULF-2024.1" : "SA-ZATCA-2026.1";
-    const evidenceRef = isHistorical2024 ? "gulf-zero-income-tax-statute" : "sa-zatca-tax-2026";
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
+    const taxRuleVersion = isHistorical2024 ? "GULF-2024.1" : `SA-ZATCA-${taxYear}.1`;
+    const evidenceRef = isHistorical2024 ? "gulf-zero-income-tax-statute" : `sa-zatca-tax-${taxYear}`;
     const components = [
       {
         id: `${context.countryId.toLowerCase()}-zero-tax`,
@@ -4998,7 +5008,8 @@ var SingaporeTaxAdapter = class {
     const grossMinor = grossCompensation.amountMinor;
     const grossMajor = toMajor(grossCompensation);
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
     let tax = 0;
     if (grossMajor <= 2e4) {
       tax = 0;
@@ -5028,7 +5039,7 @@ var SingaporeTaxAdapter = class {
     const federalTaxMinor = Math.round(tax * 100);
     const totalTaxMinor = federalTaxMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
-    const evidenceRef = isHistorical2024 ? "iras-tax-rates-2024" : "sg-iras-tax-2026";
+    const evidenceRef = taxYear === 2024 ? "iras-tax-rates-2024" : `sg-iras-tax-${taxYear}`;
     const components = [
       {
         id: "sg-iras-income-tax",
@@ -5040,7 +5051,7 @@ var SingaporeTaxAdapter = class {
         evidenceRefId: evidenceRef
       }
     ];
-    const taxRuleVersion = isHistorical2024 ? "IRAS-YA2024" : "SG-IRAS-YA2026.1";
+    const taxRuleVersion = isHistorical2024 ? "IRAS-YA2024" : `SG-IRAS-YA${taxYear}.1`;
     return {
       status: "CALCULATED",
       grossIncome: grossCompensation,
@@ -5077,9 +5088,10 @@ var UaeTaxAdapter = class {
     const currency = "AED";
     const grossMinor = gross.amountMinor;
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? "UAE-FTA-2024.1" : "AE-FTA-2026.1";
-    const evidenceRef = isHistorical2024 ? "uae-fta-2024" : "uae-fta-2026";
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
+    const taxRuleVersion = isHistorical2024 ? "UAE-FTA-2024.1" : `AE-FTA-${taxYear}.1`;
+    const evidenceRef = isHistorical2024 ? "uae-fta-2024" : `uae-fta-${taxYear}`;
     return {
       status: "CALCULATED",
       grossIncome: gross,
@@ -5127,7 +5139,7 @@ var UkTaxAdapter = class {
     const currency = "GBP";
     const grossMinor = gross.amountMinor;
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
     let personalAllowanceMinor = 1257e3;
     if (grossMinor > 1e7) {
       const reduction = Math.floor((grossMinor - 1e7) / 2);
@@ -5191,7 +5203,8 @@ var UkTaxAdapter = class {
     niMinor = Math.round(niMinor);
     const totalDeductionsMinor = incomeTaxMinor + niMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
-    const evidenceSourceId = isHistorical2024 ? "uk-hmrc-tax-2024" : "uk-hmrc-tax-2026";
+    const evidenceSourceId = `uk-hmrc-tax-${taxYear}`;
+    const taxRuleVersion = taxYear === 2024 ? "UK-HMRC-2024.2" : `GB-HMRC-${taxYear}.1`;
     const components = [
       {
         id: "uk-income-tax",
@@ -5231,7 +5244,7 @@ var UkTaxAdapter = class {
       effectiveTaxRate: grossMinor > 0 ? totalDeductionsMinor / grossMinor : 0,
       marginalTaxRate: grossMinor > 12514e3 ? 0.47 : grossMinor > 5027e3 ? 0.42 : 0.28,
       components,
-      taxRuleVersion: isHistorical2024 ? "UK-HMRC-2024.2" : "GB-HMRC-2026.1",
+      taxRuleVersion,
       evidenceSourceIds: [evidenceSourceId]
     };
   }
@@ -5312,7 +5325,7 @@ var US_FEDERAL_STANDARD_DEDUCTION_2024 = {
   head_of_household: 219e4
 };
 var SOCIAL_SECURITY_CAP_2024_MINOR = 1686e4;
-var US_FEDERAL_BRACKETS_2026 = {
+var US_FEDERAL_BRACKETS_2025 = {
   single: [
     { upToMinor: 1192500, rate: 0.1 },
     { upToMinor: 4847500, rate: 0.12 },
@@ -5341,12 +5354,47 @@ var US_FEDERAL_BRACKETS_2026 = {
     { upToMinor: Infinity, rate: 0.37 }
   ]
 };
-var US_FEDERAL_STANDARD_DEDUCTION_2026 = {
+var US_FEDERAL_STANDARD_DEDUCTION_2025 = {
   single: 15e5,
   married_filing_jointly: 3e6,
   head_of_household: 225e4
 };
-var SOCIAL_SECURITY_CAP_2026_MINOR = 1761e4;
+var SOCIAL_SECURITY_CAP_2025_MINOR = 1761e4;
+var US_FEDERAL_BRACKETS_2026 = {
+  single: [
+    { upToMinor: 124e4, rate: 0.1 },
+    { upToMinor: 504e4, rate: 0.12 },
+    { upToMinor: 1057e4, rate: 0.22 },
+    { upToMinor: 20177500, rate: 0.24 },
+    { upToMinor: 25622500, rate: 0.32 },
+    { upToMinor: 6406e4, rate: 0.35 },
+    { upToMinor: Infinity, rate: 0.37 }
+  ],
+  married_filing_jointly: [
+    { upToMinor: 248e4, rate: 0.1 },
+    { upToMinor: 1008e4, rate: 0.12 },
+    { upToMinor: 2114e4, rate: 0.22 },
+    { upToMinor: 40355e3, rate: 0.24 },
+    { upToMinor: 51245e3, rate: 0.32 },
+    { upToMinor: 7687e4, rate: 0.35 },
+    { upToMinor: Infinity, rate: 0.37 }
+  ],
+  head_of_household: [
+    { upToMinor: 177e4, rate: 0.1 },
+    { upToMinor: 6745e3, rate: 0.12 },
+    { upToMinor: 1057e4, rate: 0.22 },
+    { upToMinor: 20175e3, rate: 0.24 },
+    { upToMinor: 2562e4, rate: 0.32 },
+    { upToMinor: 6406e4, rate: 0.35 },
+    { upToMinor: Infinity, rate: 0.37 }
+  ]
+};
+var US_FEDERAL_STANDARD_DEDUCTION_2026 = {
+  single: 161e4,
+  married_filing_jointly: 322e4,
+  head_of_household: 2415e3
+};
+var SOCIAL_SECURITY_CAP_2026_MINOR = 1845e4;
 var SOCIAL_SECURITY_RATE = 0.062;
 var MEDICARE_RATE = 0.0145;
 var ADDL_MEDICARE_RATE = 9e-3;
@@ -5410,11 +5458,10 @@ var UsTaxAdapter = class {
     const currency = "USD";
     const grossMinor = gross.amountMinor;
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
-    const effectiveYear = isHistorical2024 ? 2024 : 2026;
-    const federalStdDeductions = isHistorical2024 ? US_FEDERAL_STANDARD_DEDUCTION_2024 : US_FEDERAL_STANDARD_DEDUCTION_2026;
-    const federalBracketsMap = isHistorical2024 ? US_FEDERAL_BRACKETS_2024 : US_FEDERAL_BRACKETS_2026;
-    const socialSecurityCapMinor = isHistorical2024 ? SOCIAL_SECURITY_CAP_2024_MINOR : SOCIAL_SECURITY_CAP_2026_MINOR;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const federalStdDeductions = taxYear === 2024 ? US_FEDERAL_STANDARD_DEDUCTION_2024 : taxYear === 2025 ? US_FEDERAL_STANDARD_DEDUCTION_2025 : US_FEDERAL_STANDARD_DEDUCTION_2026;
+    const federalBracketsMap = taxYear === 2024 ? US_FEDERAL_BRACKETS_2024 : taxYear === 2025 ? US_FEDERAL_BRACKETS_2025 : US_FEDERAL_BRACKETS_2026;
+    const socialSecurityCapMinor = taxYear === 2024 ? SOCIAL_SECURITY_CAP_2024_MINOR : taxYear === 2025 ? SOCIAL_SECURITY_CAP_2025_MINOR : SOCIAL_SECURITY_CAP_2026_MINOR;
     const preTaxDeductionsMinor = (profile.pensionContributionMinor || 0) + (profile.healthDeductionMinor || 0);
     const adjustedGrossMinor = Math.max(0, grossMinor - preTaxDeductionsMinor);
     const federalStdDeductionMinor = federalStdDeductions[profile.filingStatus];
@@ -5488,6 +5535,10 @@ var UsTaxAdapter = class {
     const totalIncomeTaxMinor = federalTaxMinor + stateTaxMinor + localTaxMinor;
     const totalDeductionsAndTaxesMinor = totalIncomeTaxMinor + totalFicaMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsAndTaxesMinor);
+    const fedEvidenceId = `us-irs-tax-${taxYear}`;
+    const ficaEvidenceId = `us-ssa-fica-${taxYear}`;
+    const nysEvidenceId = `us-nys-tax-${taxYear}`;
+    const nycEvidenceId = `us-nyc-tax-${taxYear}`;
     const components = [
       {
         id: "us-fed-income-tax",
@@ -5498,7 +5549,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? federalTaxMinor / grossMinor : 0,
         marginalRate: federalMarginal,
         description: `Taxable Income: $${(federalTaxableMinor / 100).toLocaleString()} (Standard deduction $${(federalStdDeductionMinor / 100).toLocaleString()})`,
-        evidenceRefId: isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2026"
+        evidenceRefId: fedEvidenceId
       },
       {
         id: "us-fica-social-security",
@@ -5509,7 +5560,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? socialSecurityTaxMinor / grossMinor : 0,
         marginalRate: grossMinor < socialSecurityCapMinor ? SOCIAL_SECURITY_RATE : 0,
         description: `6.2% on wages up to $${(socialSecurityCapMinor / 100).toLocaleString()} maximum annual wage base`,
-        evidenceRefId: isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2026"
+        evidenceRefId: ficaEvidenceId
       },
       {
         id: "us-fica-medicare",
@@ -5520,7 +5571,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? totalMedicareTaxMinor / grossMinor : 0,
         marginalRate: grossMinor > addlMedicareThresholdMinor ? MEDICARE_RATE + ADDL_MEDICARE_RATE : MEDICARE_RATE,
         description: `1.45% uncapped + 0.9% on earnings exceeding $200k`,
-        evidenceRefId: isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2026"
+        evidenceRefId: ficaEvidenceId
       }
     ];
     if (stateTaxMinor > 0 || isNewYorkState) {
@@ -5533,7 +5584,7 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? stateTaxMinor / grossMinor : 0,
         marginalRate: stateMarginal,
         description: isNewYorkState ? `NYS Standard Deduction $${(NYS_STANDARD_DEDUCTION[profile.filingStatus] / 100).toLocaleString()}` : void 0,
-        evidenceRefId: isNewYorkState ? isHistorical2024 ? "us-nys-tax-2024" : "us-nys-tax-2026" : isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2026"
+        evidenceRefId: isNewYorkState ? nysEvidenceId : fedEvidenceId
       });
     }
     if (localTaxMinor > 0 || isNycResident) {
@@ -5546,17 +5597,17 @@ var UsTaxAdapter = class {
         effectiveRate: grossMinor > 0 ? localTaxMinor / grossMinor : 0,
         marginalRate: localMarginal,
         description: "NYC Resident Tax Schedule (Admin Code \xA7 11-1701)",
-        evidenceRefId: isHistorical2024 ? "us-nyc-tax-2024" : "us-nyc-tax-2026"
+        evidenceRefId: nycEvidenceId
       });
     }
     const effectiveTaxRate = grossMinor > 0 ? totalDeductionsAndTaxesMinor / grossMinor : 0;
     const combinedMarginalRate = federalMarginal + stateMarginal + localMarginal + (grossMinor < socialSecurityCapMinor ? SOCIAL_SECURITY_RATE : 0) + MEDICARE_RATE + (grossMinor > addlMedicareThresholdMinor ? ADDL_MEDICARE_RATE : 0);
-    const taxRuleVersion = isHistorical2024 ? "US-FED-NY-NYC-2024.1" : "US-FED-NY-NYC-2026.1";
+    const taxRuleVersion = `US-FED-NY-NYC-${taxYear}.1`;
     const evidenceSourceIds = [
-      isHistorical2024 ? "us-irs-tax-2024" : "us-irs-tax-2026",
-      isHistorical2024 ? "us-ssa-fica-2024" : "us-ssa-fica-2026",
-      ...isNewYorkState ? [isHistorical2024 ? "us-nys-tax-2024" : "us-nys-tax-2026"] : [],
-      ...isNycResident ? [isHistorical2024 ? "us-nyc-tax-2024" : "us-nyc-tax-2026"] : []
+      fedEvidenceId,
+      ficaEvidenceId,
+      ...isNewYorkState ? [nysEvidenceId] : [],
+      ...isNycResident ? [nycEvidenceId] : []
     ];
     return {
       status: "CALCULATED",
@@ -5590,12 +5641,12 @@ var TaxRegistry = class {
       US: {
         name: "United States",
         status: "VERIFIED",
-        notes: "IRS Rev. Proc. 2024-40 (2026) & Rev. Proc. 2023-34 (2024), SSA FICA, and state/local schedules verified with golden vectors."
+        notes: "IRS Rev. Proc. 2025-32 (2026) & Rev. Proc. 2023-34 (2024), SSA FICA ($184,500 base), and state/local schedules verified with golden vectors."
       },
       GB: {
         name: "United Kingdom",
         status: "VERIFIED",
-        notes: "HMRC 2024/25 & 2026/26 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors."
+        notes: "HMRC 2024/25 & 2026/27 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors."
       },
       AE: {
         name: "United Arab Emirates",

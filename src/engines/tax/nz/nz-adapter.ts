@@ -17,7 +17,8 @@ export class NewZealandTaxAdapter implements TaxAdapter {
 
     // Effective-period rule selection
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
 
     // 1. IRD PAYE Personal Income Tax Brackets (Revised Thresholds)
     // 0 to $15,600: 10.5%
@@ -57,7 +58,7 @@ export class NewZealandTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'ird-tax-rates-2024-2026' : 'nz-ird-tax-2026';
+    const evidenceRef = taxYear === 2024 ? 'ird-tax-rates-2024-2026' : `nz-ird-tax-${taxYear}`;
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -76,11 +77,11 @@ export class NewZealandTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(accMinor, 'NZD'),
         effectiveRate: accMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'acc-earners-levy-2024' : 'nz-ird-tax-2026',
+        evidenceRefId: isHistorical2024 ? 'acc-earners-levy-2024' : evidenceRef,
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'IRD-2024.2' : 'NZ-IRD-2026.1';
+    const taxRuleVersion = isHistorical2024 ? 'IRD-2024.2' : `NZ-IRD-${taxYear}.1`;
 
     return {
       status: 'CALCULATED',

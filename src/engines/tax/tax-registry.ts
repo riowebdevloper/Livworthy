@@ -46,12 +46,12 @@ export class TaxRegistry {
     US: {
       name: 'United States',
       status: 'VERIFIED',
-      notes: 'IRS Rev. Proc. 2024-40 (2026) & Rev. Proc. 2023-34 (2024), SSA FICA, and state/local schedules verified with golden vectors.',
+      notes: 'IRS Rev. Proc. 2025-32 (2026) & Rev. Proc. 2023-34 (2024), SSA FICA ($184,500 base), and state/local schedules verified with golden vectors.',
     },
     GB: {
       name: 'United Kingdom',
       status: 'VERIFIED',
-      notes: 'HMRC 2024/25 & 2026/26 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors.',
+      notes: 'HMRC 2024/25 & 2026/27 PAYE, personal allowance taper, Scottish rates, and NI Class 1 verified with golden vectors.',
     },
     AE: {
       name: 'United Arab Emirates',

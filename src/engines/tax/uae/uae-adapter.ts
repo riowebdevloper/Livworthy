@@ -16,9 +16,10 @@ export class UaeTaxAdapter implements TaxAdapter {
     const grossMinor = gross.amountMinor;
 
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
-    const taxRuleVersion = isHistorical2024 ? 'UAE-FTA-2024.1' : 'AE-FTA-2026.1';
-    const evidenceRef = isHistorical2024 ? 'uae-fta-2024' : 'uae-fta-2026';
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
+    const taxRuleVersion = isHistorical2024 ? 'UAE-FTA-2024.1' : `AE-FTA-${taxYear}.1`;
+    const evidenceRef = isHistorical2024 ? 'uae-fta-2024' : `uae-fta-${taxYear}`;
 
     return {
       status: 'CALCULATED',

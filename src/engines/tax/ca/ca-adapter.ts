@@ -17,7 +17,8 @@ export class CanadaTaxAdapter implements TaxAdapter {
 
     // Effective-period rule selection
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
 
     // 1. CPP (Canada Pension Plan)
     let cppMinor = 0;
@@ -214,7 +215,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'cra-income-tax-2024' : 'ca-cra-tax-2026';
+    const evidenceRef = taxYear === 2024 ? 'cra-income-tax-2024' : `ca-cra-tax-${taxYear}`;
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -255,7 +256,7 @@ export class CanadaTaxAdapter implements TaxAdapter {
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'CRA-2024.1' : 'CA-CRA-ON-2026.1';
+    const taxRuleVersion = taxYear === 2024 ? 'CRA-2024.1' : `CA-CRA-ON-${taxYear}.1`;
 
     return {
       status: 'CALCULATED',

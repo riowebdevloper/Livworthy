@@ -17,7 +17,8 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
 
     // Effective-period rule selection
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
 
     // 1. Social Security (1st Pillar: AHV/IV/EO + ALV)
     const ahvMinor = Math.round(grossMajor * 0.053 * 100);
@@ -83,7 +84,7 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'estv-bundessteuer-tarife-2024' : 'ch-estv-tax-2026';
+    const evidenceRef = taxYear === 2024 ? 'estv-bundessteuer-tarife-2024' : `ch-estv-tax-${taxYear}`;
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -102,7 +103,7 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
         category: 'state',
         amount: fromMinor(stateTaxMinor, 'CHF'),
         effectiveRate: stateTaxMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'estv-kantonssteuer-2024' : 'ch-estv-tax-2026',
+        evidenceRefId: isHistorical2024 ? 'estv-kantonssteuer-2024' : evidenceRef,
       },
       {
         id: 'ch-sozialabgaben',
@@ -111,11 +112,11 @@ export class SwitzerlandTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(socialContributionsMinor, 'CHF'),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'bsv-beitragssaetze-2024' : 'ch-estv-tax-2026',
+        evidenceRefId: isHistorical2024 ? 'bsv-beitragssaetze-2024' : evidenceRef,
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'ESTV-2024.1' : 'CH-ESTV-ZH-2026.1';
+    const taxRuleVersion = isHistorical2024 ? 'ESTV-2024.1' : `CH-ESTV-${cantonCode}-${taxYear}.1`;
 
     return {
       status: 'CALCULATED',

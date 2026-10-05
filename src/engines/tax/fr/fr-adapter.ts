@@ -17,7 +17,8 @@ export class FranceTaxAdapter implements TaxAdapter {
 
     // Effective-period rule selection
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
 
     // 1. Social Contributions (URSSAF / Arrco-Agirc)
     const PASS = isHistorical2024 ? 46368 : 47100;
@@ -68,7 +69,7 @@ export class FranceTaxAdapter implements TaxAdapter {
           (taxableIncomeMajor - 177106) * 0.45;
       }
     } else {
-      // 2026 projected inflation adjustment
+      // 2025/2026 inflation adjustment
       if (taxableIncomeMajor <= 11520) {
         incomeTax = 0;
       } else if (taxableIncomeMajor <= 29373) {
@@ -99,7 +100,7 @@ export class FranceTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'dgfip-bareme-ir-2024' : 'fr-dgfip-tax-2026';
+    const evidenceRef = taxYear === 2024 ? 'dgfip-bareme-ir-2024' : `fr-dgfip-tax-${taxYear}`;
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -118,11 +119,11 @@ export class FranceTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(socialContributionsMinor, 'EUR'),
         effectiveRate: socialContributionsMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'urssaf-taux-cotisations-2024' : 'fr-dgfip-tax-2026',
+        evidenceRefId: isHistorical2024 ? 'urssaf-taux-cotisations-2024' : evidenceRef,
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'DGFiP-2024.1' : 'FR-DGFIP-2026.1';
+    const taxRuleVersion = isHistorical2024 ? 'DGFiP-2024.1' : `FR-DGFIP-${taxYear}.1`;
 
     return {
       status: 'CALCULATED',

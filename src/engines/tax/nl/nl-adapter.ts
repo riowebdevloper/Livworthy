@@ -17,7 +17,8 @@ export class NetherlandsTaxAdapter implements TaxAdapter {
 
     // Effective-period rule selection
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
 
     // 1. Box 1 Income Tax & National Insurance
     const bracket1Cap = isHistorical2024 ? 75518 : 76817;
@@ -77,7 +78,7 @@ export class NetherlandsTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = Math.round(netTax * 100);
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'belastingdienst-box1-2024' : 'nl-belasting-tax-2026';
+    const evidenceRef = taxYear === 2024 ? 'belastingdienst-box1-2024' : `nl-belasting-tax-${taxYear}`;
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -96,11 +97,11 @@ export class NetherlandsTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(nationalInsuranceMinor, 'EUR'),
         effectiveRate: nationalInsuranceMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'belastingdienst-premies-2024' : 'nl-belasting-tax-2026',
+        evidenceRefId: isHistorical2024 ? 'belastingdienst-premies-2024' : evidenceRef,
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'Belastingdienst-2024.1' : 'NL-BELASTING-2026.1';
+    const taxRuleVersion = isHistorical2024 ? 'Belastingdienst-2024.1' : `NL-BELASTING-${taxYear}.1`;
 
     return {
       status: 'CALCULATED',

@@ -17,7 +17,8 @@ export class IrelandTaxAdapter implements TaxAdapter {
 
     // Effective-period rule selection
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
+    const isHistorical2024 = taxYear === 2024;
 
     // 1. PAYE Income Tax
     // Single Standard Rate Cut-Off Point (SRCOP): 2024 €42,000 / 2026 €44,000
@@ -76,7 +77,7 @@ export class IrelandTaxAdapter implements TaxAdapter {
     const totalDeductionsMinor = totalTaxMinor + socialContributionsMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalDeductionsMinor);
 
-    const evidenceRef = isHistorical2024 ? 'revenue-paye-rates-2024' : 'ie-revenue-tax-2026';
+    const evidenceRef = taxYear === 2024 ? 'revenue-paye-rates-2024' : `ie-revenue-tax-${taxYear}`;
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -95,7 +96,7 @@ export class IrelandTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(uscMinor, 'EUR'),
         effectiveRate: uscMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'revenue-usc-rates-2024' : 'ie-revenue-tax-2026',
+        evidenceRefId: isHistorical2024 ? 'revenue-usc-rates-2024' : evidenceRef,
       },
       {
         id: 'ie-prsi',
@@ -104,11 +105,11 @@ export class IrelandTaxAdapter implements TaxAdapter {
         category: 'social_contribution',
         amount: fromMinor(prsiMinor, 'EUR'),
         effectiveRate: prsiMinor / (grossMinor || 1),
-        evidenceRefId: isHistorical2024 ? 'dsp-prsi-rates-2024' : 'ie-revenue-tax-2026',
+        evidenceRefId: isHistorical2024 ? 'dsp-prsi-rates-2024' : evidenceRef,
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'Revenue-2024.1' : 'IE-REVENUE-2026.1';
+    const taxRuleVersion = isHistorical2024 ? 'Revenue-2024.1' : `IE-REVENUE-${taxYear}.1`;
 
     return {
       status: 'CALCULATED',

@@ -17,7 +17,7 @@ export class AustraliaTaxAdapter implements TaxAdapter {
 
     // Effective-period rule selection
     const requestedYear = profile.taxYear || context.taxYear || 2026;
-    const isHistorical2024 = requestedYear <= 2024;
+    const taxYear = requestedYear <= 2024 ? 2024 : requestedYear === 2025 ? 2025 : 2026;
 
     // Australia Resident Tax Rates (Revised Stage 3 Cuts, Treasury Laws Amendment Act 2024):
     // 0 to $18,200: Nil
@@ -51,7 +51,8 @@ export class AustraliaTaxAdapter implements TaxAdapter {
     const totalTaxMinor = federalTaxMinor + medicareMinor;
     const netIncomeMinor = Math.max(0, grossMinor - totalTaxMinor);
 
-    const evidenceRef = isHistorical2024 ? 'ato-individual-rates-2024' : 'au-ato-tax-2026';
+    const evidenceRef = taxYear === 2024 ? 'ato-individual-rates-2024' : `au-ato-tax-${taxYear}`;
+    const taxRuleVersion = taxYear === 2024 ? 'ATO-2024.2' : `AU-ATO-${taxYear}.1`;
 
     const components: TaxComponentBreakdown[] = [
       {
@@ -74,8 +75,6 @@ export class AustraliaTaxAdapter implements TaxAdapter {
       },
     ];
 
-    const taxRuleVersion = isHistorical2024 ? 'ATO-2024.2' : 'AU-ATO-2026.1';
-
     return {
       status: 'CALCULATED',
       grossIncome: grossCompensation,
@@ -94,9 +93,9 @@ export class AustraliaTaxAdapter implements TaxAdapter {
       marginalTaxRate: grossMajor > 190000 ? 0.47 : grossMajor > 135000 ? 0.39 : 0.32,
       components,
       taxRuleVersion,
-      evidenceSourceIds: isHistorical2024
+      evidenceSourceIds: taxYear === 2024
         ? ['ato-individual-rates-2024', 'ato-medicare-levy-2024']
-        : ['au-ato-tax-2026'],
+        : [evidenceRef],
     };
   }
 }
