@@ -135,13 +135,17 @@ function configureApp() {
 
   app.use((req, res, next) => {
     const origin = req.headers.origin;
-    const isSensitivePath = req.path.startsWith('/api/admin') || req.path.startsWith('/api/cms');
+    const isSensitivePath =
+      req.path.startsWith('/api/admin') ||
+      req.path.startsWith('/api/cms') ||
+      req.path.startsWith('/api/content') ||
+      req.path.startsWith('/api/reviews') ||
+      req.path.startsWith('/api/fx/refresh');
 
     if (isSensitivePath) {
       if (
         origin &&
         (trustedOrigins.includes(origin) ||
-          origin.endsWith('.vercel.app') ||
           origin.startsWith('http://localhost:') ||
           origin.startsWith('http://127.0.0.1:'))
       ) {

@@ -100,6 +100,20 @@ async function runRegressionSuite() {
   }
   console.log(`PASS: Verified ${auditedHtmlCount} HTML files. All strictly declare https://www.livworthy.com/ canonical.`);
 
+  // Admin must never be indexable, including the exact clean URL and descendants.
+  const robotsPath = path.join(distDir, 'robots.txt');
+  assert(fs.existsSync(robotsPath), 'robots.txt must exist in dist');
+  const robotsContent = fs.readFileSync(robotsPath, 'utf-8');
+  assert(
+    /^Disallow:\s*\/admin\s*$/m.test(robotsContent),
+    'Robots must block exact /admin route and all descendants with Disallow: /admin'
+  );
+  const adminHtmlPath = path.join(distDir, 'admin', 'index.html');
+  assert(fs.existsSync(adminHtmlPath), 'Admin shell must exist at dist/admin/index.html');
+  const adminHtml = fs.readFileSync(adminHtmlPath, 'utf-8').toLowerCase();
+  assert(adminHtml.includes('noindex') && adminHtml.includes('nofollow'), 'Admin shell must be noindex,nofollow');
+  console.log('PASS: Admin route is excluded from crawler indexing at robots and document levels.');
+
   // =========================================================================
   // TEST B: SITEMAP HOST INVARIANT
   // Every sitemap URL starts with: https://www.livworthy.com/
