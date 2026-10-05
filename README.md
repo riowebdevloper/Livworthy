@@ -100,6 +100,9 @@ A release is considered production-ready only when:
 
 ## Deployment
 
+- Daily FX refresh is registered through Vercel Cron at `04:00 UTC` (`/api/cron/fx`).
+- The serverless function explicitly bundles `src/db/migrations/**` so cold-start migration checks can run reliably.
+
 The repository contains Vercel configuration for canonical host redirects, caching and security headers. Configure production environment variables in the hosting platform before deployment. Production startup is fail-closed: missing required secrets, PostgreSQL, or Redis configuration must not silently fall back to development services. The canonical public host is `https://www.livworthy.com`.
 
 ## Data integrity
