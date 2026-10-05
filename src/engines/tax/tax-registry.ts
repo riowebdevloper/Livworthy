@@ -396,7 +396,7 @@ export class TaxRegistry {
         evidenceSourceIds: [],
         warnings: [
           reason +
-          ` LivWorthy only executes explicitly implemented and versioned schedules; it never substitutes another year's rates.`,
+          ` The latest verified statutory year is ${LATEST_STATUTORY_TAX_YEAR}. LivWorthy only executes explicitly implemented and versioned schedules; it never substitutes another year's rates.`,
         ],
         unsupportedExplanation:
           reason +
