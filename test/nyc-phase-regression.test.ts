@@ -4,6 +4,7 @@ import { TaxRegistry } from '../src/engines/tax/tax-registry';
 import { createMoney, toMajor } from '../src/lib/money';
 import { CITY_COL_BENCHMARKS } from '../src/data/city-benchmarks';
 import { EVIDENCE_SOURCES } from '../src/data/evidence-registry';
+import { CostOfLivingEngine } from '../src/engines/col/col-engine';
 
 function assert(condition: boolean, message: string) {
   if (!condition) {
@@ -35,6 +36,7 @@ export function runNycPhaseRegressionTests() {
   const colHtml = fs.readFileSync(colPagePath, 'utf-8');
   const guideHtml = fs.readFileSync(guidePagePath, 'utf-8');
   const compareHtml = fs.readFileSync(comparePagePath, 'utf-8');
+  const allTargetHtml = [salaryHtml, colHtml, guideHtml, compareHtml];
 
   // 1. /salary-after-tax/new-york contains a calculator UI
   assert(
@@ -44,6 +46,18 @@ export function runNycPhaseRegressionTests() {
   assert(
     salaryHtml.includes('Annual Gross Salary (USD)'),
     '1b. /salary-after-tax/new-york contains accessible salary input label'
+  );
+  assert(
+    !salaryHtml.includes('pensionContribution') &&
+      !salaryHtml.includes('healthDeduction') &&
+      !salaryHtml.includes('Pre-tax 401(k)'),
+    '1c. NYC calculator does NOT expose pension/401k or health-deduction controls'
+  );
+  assert(
+    !salaryHtml.includes('married_filing_jointly') &&
+      !salaryHtml.includes('head_of_household') &&
+      !salaryHtml.includes('name="filingStatus"'),
+    '1d. No married_filing_jointly or head_of_household selector is exposed on the NYC calculator'
   );
 
   // 2. core calculation does NOT require redirecting to homepage
@@ -123,7 +137,6 @@ export function runNycPhaseRegressionTests() {
   );
 
   // 7. no AEO Direct Answer visible label
-  const allTargetHtml = [salaryHtml, colHtml, guideHtml, compareHtml];
   for (const h of allTargetHtml) {
     assert(
       !h.includes('AEO Direct Answer &amp; Verdict') && !h.includes('AEO Direct Answer & Verdict'),
@@ -147,7 +160,7 @@ export function runNycPhaseRegressionTests() {
     );
   }
 
-  // 10. NYC COL source dates are available
+  // 10. NYC COL source dates are available and distinct
   const nycBmk = CITY_COL_BENCHMARKS.nyc;
   assert(!!nycBmk.metadata, '10. NYC benchmark carries metadata breakdown');
   assert(
@@ -158,10 +171,27 @@ export function runNycPhaseRegressionTests() {
     nycBmk.metadata?.transit?.observationPeriod === 'Effective 2026-01-04',
     '10c. Transit metadata carries MTA 2026 effective period'
   );
+  assert(
+    nycBmk.metadata?.food?.observationPeriod === '2023–24 (published 2026-01-06)',
+    '10d. Food metadata carries BLS 2023–24 release'
+  );
+  assert(
+    nycBmk.metadata?.childcare?.observationPeriod === '2024–2026 planning benchmark',
+    '10e. Childcare metadata carries planning benchmark observation period'
+  );
+  const housingObs = nycBmk.metadata?.housing?.observationPeriod;
+  const transitObs = nycBmk.metadata?.transit?.observationPeriod;
+  const foodObs = nycBmk.metadata?.food?.observationPeriod;
+  const childcareObs = nycBmk.metadata?.childcare?.observationPeriod;
+  assert(
+    housingObs !== transitObs && housingObs !== foodObs && transitObs !== foodObs && foodObs !== childcareObs,
+    '10f. NYC category observation periods remain distinct across categories'
+  );
 
   // 11. 2024 data is not silently labeled as observed in 2026
+  const foodPeriod = nycBmk.metadata?.food?.observationPeriod || '';
   assert(
-    nycBmk.metadata?.food?.observationPeriod.includes('2023-2024 CEX'),
+    foodPeriod.includes('2023–24') || foodPeriod.includes('2023-2024'),
     '11. Food observation period transparently specifies CEX base period'
   );
 
@@ -195,8 +225,11 @@ export function runNycPhaseRegressionTests() {
     );
   }
 
-  // 15. unknown URLs remain real 404 (tested in canonical-redirect-regression.test.ts)
-  assert(true, '15. Unknown URLs remain 404 (verified via regression test suite)');
+  // 15. verify standalone 404 page exists and invalid route returns non-existent path
+  const notFoundPagePath = path.join(distDir, '404.html');
+  assert(fs.existsSync(notFoundPagePath), '15. Standalone 404.html page must exist in build distribution');
+  const nonExistentPath = path.join(distDir, 'non-existent-sample-page/index.html');
+  assert(!fs.existsSync(nonExistentPath), '15b. Non-existent path does not generate a false static page');
 
   // 16. calculator works without breaking prerendered content
   assert(
@@ -251,8 +284,66 @@ export function runNycPhaseRegressionTests() {
     '20b. Scope note identifies statutory IT-2105-I worksheet verification'
   );
 
+  // 21. Childcare does not use HUD evidence
+  const colWithChild = CostOfLivingEngine.calculate('nyc', {
+    adults: 2,
+    children: 1,
+    housingType: '2-bedroom',
+    areaType: 'typical',
+    transportMode: 'public_transit',
+    carsCount: 0,
+    lifestyleLevel: 'moderate',
+    preset: 'family',
+  });
+  const childcareItem = colWithChild.categories
+    .flatMap((c) => c.items)
+    .find((i) => i.id === 'childcare-education');
+  assert(!!childcareItem, '21. Childcare item exists for family household');
+  assert(
+    childcareItem!.evidenceSourceId === 'us-nyc-childcare-benchmark',
+    `21b. Childcare uses us-nyc-childcare-benchmark (got ${childcareItem?.evidenceSourceId})`
+  );
+  assert(
+    !childcareItem!.evidenceSourceId.includes('hud'),
+    '21c. Childcare does NOT use HUD evidence'
+  );
+
+  // 22. $151.67 is labeled modeled, not official monthly MTA pass
+  for (const h of allTargetHtml) {
+    assert(
+      !h.includes('official MTA monthly pass') && !h.includes('official monthly pass'),
+      '22. No page claims $151.67 is an official MTA monthly pass'
+    );
+  }
+  assert(
+    EVIDENCE_SOURCES['us-mta-nyc-transit-2026'].notes.includes('modeled monthly equivalent'),
+    '22b. MTA evidence source notes describe $151.67 as modeled monthly equivalent'
+  );
+
+  // 23. No "legally qualify" or "strictly enforce" 40x wording
+  for (const h of allTargetHtml) {
+    assert(
+      !h.includes('legally qualify'),
+      '23. No "legally qualify" wording on target pages'
+    );
+    assert(
+      !h.includes('strictly enforce'),
+      '23b. No "strictly enforce" wording on target pages'
+    );
+  }
+
+  // 24. No fake Automated Statutory Verification Engine reviewer in new NYC evidence
+  assert(
+    !EVIDENCE_SOURCES['us-hud-nyc-fmr-2026'].verifiedBy,
+    '24. No fake reviewer on us-hud-nyc-fmr-2026'
+  );
+  assert(
+    !EVIDENCE_SOURCES['us-mta-nyc-transit-2026'].verifiedBy,
+    '24b. No fake reviewer on us-mta-nyc-transit-2026'
+  );
+
   console.log('\n======================================================');
-  console.log('✅ ALL 20 PHASE REGRESSION TESTS PASSED (100%)!');
+  console.log('✅ ALL NYC PHASE REGRESSION TESTS PASSED (100%)!');
   console.log('======================================================\n');
 }
 

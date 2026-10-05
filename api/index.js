@@ -1395,9 +1395,7 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2026-10-05",
     effectiveDate: "2025-10-01",
-    verifiedAt: "2026-10-05",
     lastReviewedAt: "2026-10-05",
-    verifiedBy: "Automated Statutory Verification Engine",
     notes: "Official FY 2026 40th percentile Fair Market Rents: Studio $2,529, 1-Bed $2,655, 2-Bed $2,910, 3-Bed $3,644, 4-Bed $3,959."
   },
   "us-hud-nyc-fmr-2024": {
@@ -1526,19 +1524,31 @@ var EVIDENCE_SOURCES = {
     verifiedBy: "Principal Real Estate Data Analyst",
     notes: "District of Columbia and Northern Virginia rental benchmarks."
   },
+  "us-bls-cex-nyc-2026": {
+    id: "us-bls-cex-nyc-2026",
+    organization: "U.S. Bureau of Labor Statistics (BLS)",
+    sourceType: "Official Statistics Bureau",
+    canonicalReference: "Consumer Expenditures in the New York Metropolitan Area \u2014 2023\u201324 (News Release USDL-26-0003, Published January 6, 2026)",
+    url: "https://www.bls.gov/regions/new-york-new-jersey/news-release/consumerexpenditures_newyork.htm",
+    jurisdiction: "New York-Newark-Jersey City Metro Area",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2026-10-05",
+    effectiveDate: "2026-01-06",
+    lastReviewedAt: "2026-10-05",
+    notes: "Official BLS Consumer Expenditure release reporting average annual household expenditures in the NY-NJ-PA metropolitan area. Used to derive LivWorthy per-adult modeled monthly planning benchmarks ($440 groceries, $260 dining, $320 utilities/connectivity, $160 healthcare). LivWorthy values are internally modeled planning estimates, not raw BLS line items."
+  },
   "us-bls-cpi-nyc-2024": {
     id: "us-bls-cpi-nyc-2024",
     organization: "U.S. Bureau of Labor Statistics (BLS)",
     sourceType: "Official Statistics Bureau",
-    canonicalReference: "Consumer Expenditure Survey (CEX) & Consumer Price Index for New York-Newark-Jersey City, NY-NJ-PA",
+    canonicalReference: "Consumer Expenditures in the New York Metropolitan Area \u2014 2023\u201324 (News Release USDL-26-0003, Published January 6, 2026)",
     url: "https://www.bls.gov/regions/new-york-new-jersey/news-release/consumerexpenditures_newyork.htm",
-    jurisdiction: "New York-Newark-Jersey City Metro",
+    jurisdiction: "New York-Newark-Jersey City Metro Area",
     reliabilityTier: "Tier 1",
-    retrievedAt: "2024-12-15",
-    effectiveDate: "2024-11-01",
-    verifiedAt: "2026-01-15",
-    verifiedBy: "Cost of Living Research Group",
-    notes: "Metropolitan expenditure weights for groceries, utilities, healthcare, dining out, and consumer goods."
+    retrievedAt: "2026-10-05",
+    effectiveDate: "2026-01-06",
+    lastReviewedAt: "2026-10-05",
+    notes: "Official BLS Consumer Expenditure release reporting average annual household expenditures in the NY-NJ-PA metropolitan area. Used to derive LivWorthy per-adult modeled monthly planning benchmarks ($440 groceries, $260 dining, $320 utilities/connectivity, $160 healthcare). LivWorthy values are internally modeled planning estimates, not raw BLS line items."
   },
   "us-mta-nyc-transit-2026": {
     id: "us-mta-nyc-transit-2026",
@@ -1550,10 +1560,21 @@ var EVIDENCE_SOURCES = {
     reliabilityTier: "Tier 1",
     retrievedAt: "2026-10-05",
     effectiveDate: "2026-01-04",
-    verifiedAt: "2026-10-05",
     lastReviewedAt: "2026-10-05",
-    verifiedBy: "Automated Statutory Verification Engine",
-    notes: "Base subway/local bus fare $3.00, OMNY 7-day rolling fare cap $35.00 (free rides after 12 paid taps in 7-day period). Traditional MetroCard retired end of 2025. Monthly benchmark modeled as $35.00 \xD7 52 / 12 = $151.67."
+    notes: "Base subway/local bus fare $3.00, OMNY 7-day rolling fare cap $35.00 (free rides after 12 paid taps in 7-day period). MetroCard sales/refills ended as the system transitioned to OMNY; legacy unlimited MetroCard products were discontinued. Monthly benchmark of $151.67 is a modeled monthly equivalent ($35.00 \xD7 52 / 12), not an official MTA monthly pass."
+  },
+  "us-nyc-childcare-benchmark": {
+    id: "us-nyc-childcare-benchmark",
+    organization: "LivWorthy Planning Benchmarks & NYS OCFS Market Survey",
+    sourceType: "Modeled Planning Benchmark",
+    canonicalReference: "New York State Office of Children and Family Services (OCFS) Child Care Market Rate Survey & Local Provider Benchmark",
+    url: "https://ocfs.ny.gov/programs/childcare/plans/market-rates.php",
+    jurisdiction: "New York City",
+    reliabilityTier: "Tier 2",
+    retrievedAt: "2026-10-05",
+    effectiveDate: "2025-06-01",
+    lastReviewedAt: "2026-10-05",
+    notes: "Modeled monthly planning benchmark ($1,450/month per child) for licensed toddler and preschool day care in NYC. Modeled estimate distinct from HUD housing data."
   },
   "us-mta-nyc-transit-2024": {
     id: "us-mta-nyc-transit-2024",
@@ -6135,34 +6156,50 @@ var CITY_COL_BENCHMARKS = {
         sourceId: "us-mta-nyc-transit-2026",
         observationPeriod: "Effective 2026-01-04",
         lastVerifiedDate: "2026-10-05",
-        methodologyNote: "MTA OMNY rolling 7-day fare cap of $35.00 ($3.00 base fare, free rides after 12 taps in 7 days). Monthly benchmark modeled as $35.00 \xD7 52 / 12 = $151.67.",
-        unit: "monthly_modeled_pass",
+        methodologyNote: "MTA OMNY rolling 7-day fare cap of $35.00 ($3.00 base fare, free rides after 12 taps in 7 days). MetroCard sales/refills ended as the system transitioned to OMNY; legacy unlimited MetroCard products were discontinued. Modeled monthly equivalent: $35.00 \xD7 52 / 12 = $151.67 (not an official monthly pass).",
+        unit: "monthly_modeled_equivalent",
         baseFare: 3,
         weeklyCap: 35
       },
       food: {
         statisticType: "modeled_estimate",
-        sourceId: "us-bls-cpi-nyc-2024",
-        observationPeriod: "2023-2024 CEX / 2025-2026 CPI",
+        sourceId: "us-bls-cex-nyc-2026",
+        observationPeriod: "2023\u201324 (published 2026-01-06)",
         lastVerifiedDate: "2026-10-05",
-        methodologyNote: "BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights updated for regional CPI.",
+        methodologyNote: "Modeled planning estimate derived from BLS Consumer Expenditures in the New York Metropolitan Area (2023\u201324, published Jan 6, 2026) for food-at-home ($440) and dining out ($260).",
         unit: "monthly_per_adult"
       },
       utilities: {
-        statisticType: "benchmark",
-        sourceId: "us-bls-cpi-nyc-2024",
-        observationPeriod: "2024-2026",
+        statisticType: "modeled_estimate",
+        sourceId: "us-bls-cex-nyc-2026",
+        observationPeriod: "2023\u201324 (published 2026-01-06)",
         lastVerifiedDate: "2026-10-05",
-        methodologyNote: "Seasonal energy, municipal water, high-speed fiber broadband ($75), and cellular ($65).",
+        methodologyNote: "Modeled planning benchmark for residential electricity, heating gas, municipal water, high-speed fiber broadband ($75), and cellular service ($65).",
         unit: "monthly"
       },
       healthcare: {
-        statisticType: "benchmark",
-        sourceId: "us-bls-cpi-nyc-2024",
-        observationPeriod: "2024-2026",
+        statisticType: "modeled_estimate",
+        sourceId: "us-bls-cex-nyc-2026",
+        observationPeriod: "2023\u201324 (published 2026-01-06)",
         lastVerifiedDate: "2026-10-05",
-        methodologyNote: "Employee payroll premium contribution and outpatient copayments.",
+        methodologyNote: "Modeled planning benchmark for employee payroll health insurance contributions and routine out-of-pocket medical copayments.",
         unit: "monthly"
+      },
+      childcare: {
+        statisticType: "modeled_estimate",
+        sourceId: "us-nyc-childcare-benchmark",
+        observationPeriod: "2024\u20132026 planning benchmark",
+        lastVerifiedDate: "2026-10-05",
+        methodologyNote: "LivWorthy modeled planning estimate for licensed group child day care / preschool in NYC metro area. Not derived from HUD housing data.",
+        unit: "monthly_per_child"
+      },
+      lifestyle: {
+        statisticType: "modeled_estimate",
+        sourceId: "us-bls-cex-nyc-2026",
+        observationPeriod: "2023\u201324 (published 2026-01-06)",
+        lastVerifiedDate: "2026-10-05",
+        methodologyNote: "Modeled planning benchmark for apparel, personal care, fitness, and entertainment subscriptions based on BLS metropolitan consumer patterns.",
+        unit: "monthly_per_adult"
       }
     }
   },
@@ -6993,9 +7030,10 @@ var CostOfLivingEngine = class {
       annualEstimate: fromMinor(rentMonthlyMinor * 12, currency),
       isOverridden: rentIsOverridden,
       confidence: rentIsOverridden ? "High" : "High",
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: benchmark.evidenceSourceId,
-      notes: rentIsOverridden ? "Direct user override applied." : "HUD Fair Market Rents (FY 2026) for New York, NY HUD Metro FMR Area."
+      sourceDate: benchmark.metadata?.housing?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.housing?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.housing?.sourceId || benchmark.evidenceSourceId,
+      notes: rentIsOverridden ? "Direct user override applied." : benchmark.metadata?.housing?.methodologyNote || "HUD Fair Market Rents (FY 2026) for New York, NY HUD Metro FMR Area."
     };
     let foodMonthlyMajor = household.adults * benchmark.groceriesPerAdult + household.children * benchmark.groceriesPerChild;
     const diningMultiplier = household.lifestyleLevel === "essential" ? 0.4 : household.lifestyleLevel === "comfortable" ? 1.6 : 1;
@@ -7013,9 +7051,10 @@ var CostOfLivingEngine = class {
       monthlyHigh: fromMinor(Math.round(foodMonthlyMinor * 1.2), currency),
       annualEstimate: fromMinor(foodMonthlyMinor * 12, currency),
       confidence: "High",
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === "nyc" ? "us-bls-cpi-nyc-2024" : benchmark.evidenceSourceId,
-      notes: cityId === "nyc" ? "Based on BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights." : "Official statistics consumer price index regional food-at-home and dining expenditure weights."
+      sourceDate: benchmark.metadata?.food?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.food?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.food?.sourceId || (cityId === "nyc" ? "us-bls-cex-nyc-2026" : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.food?.methodologyNote || (cityId === "nyc" ? "Based on BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights." : "Official statistics consumer price index regional food-at-home and dining expenditure weights.")
     };
     const extraPersons = Math.max(0, household.adults + household.children - 1);
     const utilitiesMajor = benchmark.baseUtilities + extraPersons * benchmark.utilitiesPerExtraPerson + benchmark.internetMonthly + household.adults * benchmark.mobilePerAdult;
@@ -7029,9 +7068,10 @@ var CostOfLivingEngine = class {
       monthlyHigh: fromMinor(Math.round(utilitiesMinor * 1.25), currency),
       annualEstimate: fromMinor(utilitiesMinor * 12, currency),
       confidence: "High",
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === "nyc" ? "us-bls-cpi-nyc-2024" : benchmark.evidenceSourceId,
-      notes: "Includes seasonal weighted energy, municipal water, high-speed broadband, and cellular plans."
+      sourceDate: benchmark.metadata?.utilities?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.utilities?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.utilities?.sourceId || (cityId === "nyc" ? "us-bls-cex-nyc-2026" : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.utilities?.methodologyNote || "Includes seasonal weighted energy, municipal water, high-speed broadband, and cellular plans."
     };
     let transportMajor = 0;
     if (household.transportMode === "public_transit") {
@@ -7056,9 +7096,10 @@ var CostOfLivingEngine = class {
       monthlyHigh: fromMinor(Math.round(transportMinor * 1.15), currency),
       annualEstimate: fromMinor(transportMinor * 12, currency),
       confidence: "High",
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === "nyc" ? "us-mta-nyc-transit-2026" : benchmark.evidenceSourceId,
-      notes: cityId === "nyc" ? "MTA OMNY weekly fare cap ($35/week) modeled at $151.67/month or vehicle operating costs." : "Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance."
+      sourceDate: benchmark.metadata?.transit?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.transit?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.transit?.sourceId || (cityId === "nyc" ? "us-mta-nyc-transit-2026" : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.transit?.methodologyNote || (cityId === "nyc" ? "MTA OMNY weekly fare cap ($35/week) modeled at $151.67/month or vehicle operating costs." : "Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance.")
     };
     const isFamily = household.children > 0 || household.adults > 1;
     const healthcareMajor = isFamily ? benchmark.healthcareFamily : benchmark.healthcareSingle;
@@ -7072,9 +7113,10 @@ var CostOfLivingEngine = class {
       monthlyHigh: fromMinor(Math.round(healthcareMinor * 1.3), currency),
       annualEstimate: fromMinor(healthcareMinor * 12, currency),
       confidence: "High",
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === "nyc" ? "us-bls-cpi-nyc-2024" : benchmark.evidenceSourceId,
-      notes: "Typical employer plan payroll deduction plus standard prescription and office copays."
+      sourceDate: benchmark.metadata?.healthcare?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.healthcare?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.healthcare?.sourceId || (cityId === "nyc" ? "us-bls-cex-nyc-2026" : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.healthcare?.methodologyNote || "Typical employer plan payroll deduction plus standard prescription and office copays."
     };
     let childcareMinor = 0;
     const items = [housingItem, foodItem, utilitiesItem, transportItem, healthcareItem];
@@ -7090,9 +7132,10 @@ var CostOfLivingEngine = class {
         monthlyHigh: fromMinor(Math.round(childcareMinor * 1.25), currency),
         annualEstimate: fromMinor(childcareMinor * 12, currency),
         confidence: "Moderate",
-        sourceDate: benchmark.sourceDate,
-        evidenceSourceId: benchmark.evidenceSourceId,
-        notes: "Licensed day care / preschool or activity fees for school-age dependents."
+        sourceDate: benchmark.metadata?.childcare?.observationPeriod || benchmark.sourceDate,
+        observationPeriod: benchmark.metadata?.childcare?.observationPeriod || benchmark.sourceDate,
+        evidenceSourceId: benchmark.metadata?.childcare?.sourceId || (cityId === "nyc" ? "us-nyc-childcare-benchmark" : benchmark.evidenceSourceId),
+        notes: benchmark.metadata?.childcare?.methodologyNote || "Licensed day care / preschool or activity fees for school-age dependents."
       };
       items.push(childcareItem);
     }
@@ -7109,9 +7152,10 @@ var CostOfLivingEngine = class {
       monthlyHigh: fromMinor(Math.round(lifestyleMinor * 1.3), currency),
       annualEstimate: fromMinor(lifestyleMinor * 12, currency),
       confidence: "Moderate",
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === "nyc" ? "us-bls-cpi-nyc-2024" : benchmark.evidenceSourceId,
-      notes: "Clothing, recreation, fitness, personal grooming, entertainment subscriptions."
+      sourceDate: benchmark.metadata?.lifestyle?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.lifestyle?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.lifestyle?.sourceId || (cityId === "nyc" ? "us-bls-cex-nyc-2026" : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.lifestyle?.methodologyNote || "Clothing, recreation, fitness, personal grooming, entertainment subscriptions."
     };
     items.push(lifestyleItem);
     const categoryMap = /* @__PURE__ */ new Map();

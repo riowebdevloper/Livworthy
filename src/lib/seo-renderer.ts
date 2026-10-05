@@ -59,7 +59,7 @@ function renderEvidenceSection(sourceIds: string[]): string {
               </p>
               <div class="mt-2 text-[10px] text-[#60706D] space-y-0.5">
                 <div>Effective / Period: <strong>${escapeHtml(s.effectiveDate)}</strong></div>
-                <div>Last reviewed: <strong>${escapeHtml(s.lastReviewedAt || s.verifiedAt)}</strong></div>
+                <div>Last reviewed: <strong>${escapeHtml(s.lastReviewedAt || s.verifiedAt || '')}</strong></div>
               </div>
             </div>
             ${

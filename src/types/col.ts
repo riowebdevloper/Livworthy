@@ -27,6 +27,7 @@ export interface CostEstimateItem {
   isOverridden?: boolean;
   confidence: 'High' | 'Moderate' | 'Low';
   sourceDate: string;
+  observationPeriod?: string;
   evidenceSourceId: string;
   notes?: string;
 }

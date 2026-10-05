@@ -3,15 +3,21 @@ export type ReliabilityTier = 'Tier 1' | 'Tier 2' | 'Tier 3' | 'Tier 4' | 'Tier 
 export interface EvidenceSource {
   id: string;
   organization: string;
-  sourceType: 'Government / Tax Authority' | 'Official Statistics Bureau' | 'Central Bank' | 'Housing Market Registry' | 'Public Utility Commission';
+  sourceType:
+    | 'Government / Tax Authority'
+    | 'Official Statistics Bureau'
+    | 'Central Bank'
+    | 'Housing Market Registry'
+    | 'Public Utility Commission'
+    | 'Modeled Planning Benchmark';
   canonicalReference: string;
   url?: string;
   jurisdiction: string;
   reliabilityTier: ReliabilityTier;
   retrievedAt: string;
   effectiveDate: string;
-  verifiedAt: string;
-  verifiedBy: string;
+  verifiedAt?: string;
+  verifiedBy?: string;
   lastReviewedAt?: string;
   notes: string;
 }

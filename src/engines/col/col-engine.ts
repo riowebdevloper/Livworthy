@@ -54,11 +54,12 @@ export class CostOfLivingEngine {
       annualEstimate: fromMinor(rentMonthlyMinor * 12, currency),
       isOverridden: rentIsOverridden,
       confidence: rentIsOverridden ? 'High' : 'High',
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: benchmark.evidenceSourceId,
+      sourceDate: benchmark.metadata?.housing?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.housing?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.housing?.sourceId || benchmark.evidenceSourceId,
       notes: rentIsOverridden
         ? 'Direct user override applied.'
-        : 'HUD Fair Market Rents (FY 2026) for New York, NY HUD Metro FMR Area.',
+        : benchmark.metadata?.housing?.methodologyNote || 'HUD Fair Market Rents (FY 2026) for New York, NY HUD Metro FMR Area.',
     };
 
     // 2. Food & Groceries
@@ -89,9 +90,10 @@ export class CostOfLivingEngine {
       monthlyHigh: fromMinor(Math.round(foodMonthlyMinor * 1.2), currency),
       annualEstimate: fromMinor(foodMonthlyMinor * 12, currency),
       confidence: 'High',
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === 'nyc' ? 'us-bls-cpi-nyc-2024' : benchmark.evidenceSourceId,
-      notes: cityId === 'nyc' ? 'Based on BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights.' : 'Official statistics consumer price index regional food-at-home and dining expenditure weights.',
+      sourceDate: benchmark.metadata?.food?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.food?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.food?.sourceId || (cityId === 'nyc' ? 'us-bls-cex-nyc-2026' : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.food?.methodologyNote || (cityId === 'nyc' ? 'Based on BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights.' : 'Official statistics consumer price index regional food-at-home and dining expenditure weights.'),
     };
 
     // 3. Utilities & Connectivity
@@ -112,9 +114,10 @@ export class CostOfLivingEngine {
       monthlyHigh: fromMinor(Math.round(utilitiesMinor * 1.25), currency),
       annualEstimate: fromMinor(utilitiesMinor * 12, currency),
       confidence: 'High',
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === 'nyc' ? 'us-bls-cpi-nyc-2024' : benchmark.evidenceSourceId,
-      notes: 'Includes seasonal weighted energy, municipal water, high-speed broadband, and cellular plans.',
+      sourceDate: benchmark.metadata?.utilities?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.utilities?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.utilities?.sourceId || (cityId === 'nyc' ? 'us-bls-cex-nyc-2026' : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.utilities?.methodologyNote || 'Includes seasonal weighted energy, municipal water, high-speed broadband, and cellular plans.',
     };
 
     // 4. Transportation
@@ -146,9 +149,10 @@ export class CostOfLivingEngine {
       monthlyHigh: fromMinor(Math.round(transportMinor * 1.15), currency),
       annualEstimate: fromMinor(transportMinor * 12, currency),
       confidence: 'High',
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === 'nyc' ? 'us-mta-nyc-transit-2026' : benchmark.evidenceSourceId,
-      notes: cityId === 'nyc' ? 'MTA OMNY weekly fare cap ($35/week) modeled at $151.67/month or vehicle operating costs.' : 'Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance.',
+      sourceDate: benchmark.metadata?.transit?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.transit?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.transit?.sourceId || (cityId === 'nyc' ? 'us-mta-nyc-transit-2026' : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.transit?.methodologyNote || (cityId === 'nyc' ? 'MTA OMNY weekly fare cap ($35/week) modeled at $151.67/month or vehicle operating costs.' : 'Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance.'),
     };
 
     // 5. Healthcare
@@ -165,9 +169,10 @@ export class CostOfLivingEngine {
       monthlyHigh: fromMinor(Math.round(healthcareMinor * 1.3), currency),
       annualEstimate: fromMinor(healthcareMinor * 12, currency),
       confidence: 'High',
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === 'nyc' ? 'us-bls-cpi-nyc-2024' : benchmark.evidenceSourceId,
-      notes: 'Typical employer plan payroll deduction plus standard prescription and office copays.',
+      sourceDate: benchmark.metadata?.healthcare?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.healthcare?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.healthcare?.sourceId || (cityId === 'nyc' ? 'us-bls-cex-nyc-2026' : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.healthcare?.methodologyNote || 'Typical employer plan payroll deduction plus standard prescription and office copays.',
     };
 
     // 6. Childcare & Family (if children > 0)
@@ -186,9 +191,10 @@ export class CostOfLivingEngine {
         monthlyHigh: fromMinor(Math.round(childcareMinor * 1.25), currency),
         annualEstimate: fromMinor(childcareMinor * 12, currency),
         confidence: 'Moderate',
-        sourceDate: benchmark.sourceDate,
-        evidenceSourceId: benchmark.evidenceSourceId,
-        notes: 'Licensed day care / preschool or activity fees for school-age dependents.',
+        sourceDate: benchmark.metadata?.childcare?.observationPeriod || benchmark.sourceDate,
+        observationPeriod: benchmark.metadata?.childcare?.observationPeriod || benchmark.sourceDate,
+        evidenceSourceId: benchmark.metadata?.childcare?.sourceId || (cityId === 'nyc' ? 'us-nyc-childcare-benchmark' : benchmark.evidenceSourceId),
+        notes: benchmark.metadata?.childcare?.methodologyNote || 'Licensed day care / preschool or activity fees for school-age dependents.',
       };
       items.push(childcareItem);
     }
@@ -208,9 +214,10 @@ export class CostOfLivingEngine {
       monthlyHigh: fromMinor(Math.round(lifestyleMinor * 1.3), currency),
       annualEstimate: fromMinor(lifestyleMinor * 12, currency),
       confidence: 'Moderate',
-      sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === 'nyc' ? 'us-bls-cpi-nyc-2024' : benchmark.evidenceSourceId,
-      notes: 'Clothing, recreation, fitness, personal grooming, entertainment subscriptions.',
+      sourceDate: benchmark.metadata?.lifestyle?.observationPeriod || benchmark.sourceDate,
+      observationPeriod: benchmark.metadata?.lifestyle?.observationPeriod || benchmark.sourceDate,
+      evidenceSourceId: benchmark.metadata?.lifestyle?.sourceId || (cityId === 'nyc' ? 'us-bls-cex-nyc-2026' : benchmark.evidenceSourceId),
+      notes: benchmark.metadata?.lifestyle?.methodologyNote || 'Clothing, recreation, fitness, personal grooming, entertainment subscriptions.',
     };
     items.push(lifestyleItem);
 

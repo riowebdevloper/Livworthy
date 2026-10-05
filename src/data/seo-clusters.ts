@@ -57,7 +57,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'rent-context',
         h2: 'Typical rent on a $100K salary',
         paragraphs: [
-          'NYC landlords strictly enforce the traditional "40x rent rule," meaning your annual gross salary must be at least 40 times the monthly rent. At $100,000, the maximum rent you can legally qualify for without a guarantor is $2,500 per month ($100,000 / 40).',
+          'Many NYC landlords use a 40× annual-income screening guideline. On a $100,000 salary, that commonly corresponds to about $2,500/month in rent, although requirements vary by landlord, building, credit profile, and guarantor policy.',
           'While median 1-bedroom rents in Manhattan often exceed $4,000/month, neighborhood selection is key. At $2,200 to $2,500/month, you can find quality studios and 1-bedrooms in Astoria, Sunnyside, Crown Heights, Flatbush, Washington Heights, or Jersey City.',
         ],
       },
@@ -93,7 +93,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'manhattan-affordability',
         h2: 'Can you afford Manhattan on $100K?',
         paragraphs: [
-          'Renting alone in prime Manhattan neighborhoods (SoHo, West Village, Chelsea, Tribeca) is generally out of reach on $100K without roommates, as 1-bedrooms in these areas typically exceed $4,200/month. However, neighborhoods like Upper East Side (east of 2nd Ave), Washington Heights, Inwood, and Harlem offer studios within the 40x rule qualification corridor.',
+          'Renting alone in prime Manhattan neighborhoods (SoHo, West Village, Chelsea, Tribeca) is generally out of reach on $100K without roommates, as 1-bedrooms in these areas typically exceed $4,200/month. However, neighborhoods like Upper East Side (east of 2nd Ave), Washington Heights, Inwood, and Harlem offer studios commonly screened around the 40× income guideline.',
         ],
       },
       {
@@ -132,12 +132,12 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       {
         question: 'Can you live alone in NYC on $100K?',
         answer:
-          'Yes. You can qualify for an apartment costing up to $2,500/month under the NYC 40x rent rule. This budget affords 1-bedroom apartments in Brooklyn, Queens, uptown Manhattan, or modern studios.',
+          'Yes. Many NYC landlords look for an annual income of 40× monthly rent, which commonly corresponds to up to $2,500/month on a $100,000 salary. This budget can cover 1-bedroom apartments in parts of Brooklyn, Queens, uptown Manhattan, or modern studios.',
       },
       {
         question: 'How much rent can you afford on $100K in NYC?',
         answer:
-          'Under standard NYC landlord guidelines (the 40x income rule), a $100,000 salary qualifies for up to $2,500 per month in rent. Financial advisors recommend keeping rent closer to $2,000–$2,200 to maximize savings.',
+          'Under common NYC landlord screening guidelines (the 40× income benchmark), a $100,000 salary typically maps to around $2,500 per month in rent, though individual landlord criteria, guarantor acceptance, and credit requirements vary. Financial planners often recommend budgeting closer to $2,000–$2,200 to maximize savings.',
       },
       {
         question: 'Is $100K enough to live in Manhattan?',
@@ -345,7 +345,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'take-home-vs-col',
         h2: 'Take-home pay vs living costs in NYC',
         paragraphs: [
-          'Knowing your net take-home pay is only half the financial equation. With baseline single-person living costs in NYC averaging approximately $4,247 per month (including 1-bedroom HUD Fair Market Rent of $2,655), a gross salary below $75,000 leaves narrow room for savings unless housing is shared.',
+          'Knowing your net take-home pay is only half the financial equation. With baseline single-person living costs in NYC modeled at approximately $4,247 per month (including 1-bedroom HUD Fair Market Rent of $2,655), a gross salary below $75,000 leaves narrow room for savings unless housing is shared.',
         ],
       },
       {
@@ -500,8 +500,8 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         subsections: [
           { h3: 'Food & Groceries', content: 'A single adult spends roughly $700/month on groceries ($440) and dining out ($260) based on BLS metropolitan expenditure benchmarks.' },
           { h3: 'Public Transportation', content: 'The MTA subway and bus network utilizes the OMNY contactless system with a $3.00 base fare and a rolling 7-day fare cap of $35.00 (rides 13+ are free within a 7-day period). The modeled monthly transit benchmark is $151.67/month ($35 × 52 / 12), providing unlimited travel across the 5 boroughs without automobile expenses.' },
-          { h3: 'Utilities & Internet', content: 'Electricity, heating, cooking gas, high-speed fiber internet ($75), and mobile service ($65) average $320/month for an individual in a 1-bedroom apartment.' },
-          { h3: 'Healthcare & Wellness', content: 'Baseline employee health insurance payroll contributions and routine care average $160/month for an individual ($480/month for a family).' },
+          { h3: 'Utilities & Internet', content: 'Electricity, heating, cooking gas, high-speed fiber internet ($75), and mobile service ($65) total a modeled benchmark of $320/month for an individual in a 1-bedroom apartment.' },
+          { h3: 'Healthcare & Wellness', content: 'Baseline employee health insurance payroll contributions and routine care represent a modeled planning estimate of $160/month for an individual ($480/month for a family).' },
         ],
       },
       {
@@ -535,7 +535,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       },
     ],
     faq: [
-      { question: 'What is the average monthly cost of living in NYC for one person?', answer: 'The monthly living cost benchmark for a single adult living independently in NYC is approximately $4,247 including 1-bedroom HUD Fair Market Rent ($2,655), utilities ($320), food ($700), MTA transit ($151.67), healthcare ($160), and personal essentials.' },
+      { question: 'What is the typical monthly cost of living benchmark in NYC for one person?', answer: 'The modeled monthly living cost benchmark for a single adult living independently in NYC is approximately $4,247 including 1-bedroom HUD Fair Market Rent ($2,655), utilities ($320), food ($700), MTA transit ($151.67 modeled equivalent), healthcare ($160), and personal essentials.' },
       { question: 'Is New York City more expensive than London?', answer: 'Yes. Overall cost of living in NYC is approximately 20% to 25% higher than in London, particularly for rent, healthcare, and dining out.' },
       { question: 'How much do groceries cost per month in NYC?', answer: 'A single adult typically spends between $440 (groceries at home) and $700 (including dining out) per month in New York City based on BLS consumer benchmarks.' },
       { question: 'Do you need a car in New York City?', answer: 'No. The majority of NYC residents in Manhattan, Brooklyn, and Queens rely entirely on the 24/7 MTA subway and bus network. Owning a car in NYC adds $500–$1,000/month in parking and insurance costs.' },

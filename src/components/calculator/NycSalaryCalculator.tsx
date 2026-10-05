@@ -4,37 +4,23 @@ import { createMoney, formatMoney, toMajor } from '../../lib/money';
 
 export interface NycSalaryCalculatorProps {
   initialSalary?: number;
-  initialPension?: number;
-  initialHealth?: number;
 }
 
 export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
   initialSalary = 100000,
-  initialPension = 0,
-  initialHealth = 0,
 }) => {
   const salaryInputId = useId();
-  const pensionInputId = useId();
-  const healthInputId = useId();
-
   const [salary, setSalary] = useState<number>(initialSalary);
-  const [pension, setPension] = useState<number>(initialPension);
-  const [health, setHealth] = useState<number>(initialHealth);
-  const [showOptionalDeductions, setShowOptionalDeductions] = useState<boolean>(false);
 
   // Execute statutory calculation via verified TaxRegistry engine
   const result = useMemo(() => {
     const grossNum = Math.max(0, isNaN(salary) ? 0 : salary);
-    const pensionNum = Math.max(0, isNaN(pension) ? 0 : pension);
-    const healthNum = Math.max(0, isNaN(health) ? 0 : health);
 
     const grossMoney = createMoney(grossNum, 'USD');
     const taxProfile = {
       filingStatus: 'single' as const,
       dependentsCount: 0,
       taxYear: 2026,
-      pensionContributionMinor: Math.round(pensionNum * 100),
-      healthDeductionMinor: Math.round(healthNum * 100),
     };
     const taxContext = {
       countryId: 'US',
@@ -79,7 +65,7 @@ export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
       taxRuleVersion: taxResult.taxRuleVersion,
       evidenceSourceIds: taxResult.evidenceSourceIds,
     };
-  }, [salary, pension, health]);
+  }, [salary]);
 
   const PRESETS = [60000, 80000, 100000, 120000, 150000, 200000, 250000];
 
@@ -146,71 +132,6 @@ export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
             </button>
           ))}
         </div>
-
-        {/* Pre-tax Deductions Toggle */}
-        <div className="pt-2">
-          <button
-            type="button"
-            onClick={() => setShowOptionalDeductions(!showOptionalDeductions)}
-            className="text-xs font-semibold text-[#167D75] hover:underline flex items-center gap-1 focus:outline-none"
-          >
-            <span>{showOptionalDeductions ? '− Hide' : '+ Add'} pre-tax deductions (401k, health)</span>
-          </button>
-        </div>
-
-        {showOptionalDeductions && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0] animate-fadeIn">
-            <div>
-              <label
-                htmlFor={pensionInputId}
-                className="block text-xs font-semibold text-[#102A2E] mb-1"
-              >
-                Pre-tax 401(k) / Pension ($/yr)
-              </label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-xs text-[#60706D]">
-                  $
-                </span>
-                <input
-                  id={pensionInputId}
-                  name="pensionContribution"
-                  type="number"
-                  min="0"
-                  step="500"
-                  value={pension === 0 ? '' : pension}
-                  onChange={(e) => setPension(Math.max(0, parseFloat(e.target.value) || 0))}
-                  placeholder="0"
-                  className="w-full pl-6 pr-3 py-1.5 text-xs font-semibold text-[#102A2E] bg-white border border-[#DCE3E0] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#167D75]"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor={healthInputId}
-                className="block text-xs font-semibold text-[#102A2E] mb-1"
-              >
-                Pre-tax Health Insurance ($/yr)
-              </label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-xs text-[#60706D]">
-                  $
-                </span>
-                <input
-                  id={healthInputId}
-                  name="healthDeduction"
-                  type="number"
-                  min="0"
-                  step="100"
-                  value={health === 0 ? '' : health}
-                  onChange={(e) => setHealth(Math.max(0, parseFloat(e.target.value) || 0))}
-                  placeholder="0"
-                  className="w-full pl-6 pr-3 py-1.5 text-xs font-semibold text-[#102A2E] bg-white border border-[#DCE3E0] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#167D75]"
-                />
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Top Results Metric Cards */}

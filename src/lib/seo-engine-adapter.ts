@@ -418,7 +418,9 @@ export class SeoEngineAdapter {
       countryName: country.name,
       currency: city.currency,
       datasetVersion: single.datasetVersion,
-      evidenceSourceIds: single.evidenceSourceIds,
+      evidenceSourceIds: Array.from(
+        new Set([...single.evidenceSourceIds, ...couple.evidenceSourceIds, ...family.evidenceSourceIds])
+      ),
       single,
       couple,
       family,
