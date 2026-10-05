@@ -1,6 +1,7 @@
 import { LATEST_STATUTORY_TAX_YEAR, TaxRegistry } from '../src/engines/tax/tax-registry';
 import { createMoney, toMajor, CurrencyCode } from '../src/lib/money';
 import { TaxProfile } from '../src/types/tax';
+import { calculateNysTax2026Single } from '../src/engines/tax/us/us-adapter';
 
 export interface TaxGoldenVector {
   country: string;
@@ -1506,4 +1507,173 @@ export function runFutureYearGateTests() {
 }
 
 runFutureYearGateTests();
+
+// =========================================================================
+// 2026 NYS FORM IT-2105-I HIGH-INCOME WORKSHEET BOUNDARY REGRESSION TESTS
+// Verifies exact statutory boundaries for NYAGI and Taxable Income:
+// - NYAGI $107,649, $107,650, $107,651 (Graduated vs Worksheet 7)
+// - NYAGI $157,649, $157,650, $157,651 (Worksheet 7 Phase-In vs Flat 5.90%)
+// - NYAGI $215,399, $215,400, $215,401 (Worksheet 7 vs Worksheet 8 phase-in)
+// - NYAGI $25,000,000, $25,000,001 (Worksheet 10 vs Worksheet 11 flat 10.90%)
+// - Taxable Income $215,400, $215,401 (Worksheet 7 vs 8)
+// - Taxable Income $1,077,550, $1,077,551 (Worksheet 8 vs 9)
+// - Taxable Income $5,000,000, $5,000,001 (Worksheet 9 vs 10)
+// =========================================================================
+
+export function runNysWorksheetBoundaryTests() {
+  console.log('--- 2026 NYS FORM IT-2105-I BOUNDARY REGRESSION TESTS ---');
+
+  function assert(condition: boolean, message: string) {
+    if (!condition) {
+      console.error(`FAIL: ${message}`);
+      throw new Error(`Assertion failed: ${message}`);
+    }
+    console.log(`  PASS: ${message}`);
+  }
+
+  // 1. NYAGI $107,650 boundary: $107,649, $107,650, $107,651 (Single std ded $8,000)
+  // At or below $107,650: Normal graduated tax schedule applies (no worksheet)
+  // Above $107,650: Worksheet 7 applies
+  const r107649 = calculateNysTax2026Single(107_649_00, 99_649_00);
+  assert(r107649.worksheetApplied === undefined, 'NYAGI $107,649: Normal graduated schedule, no worksheet');
+  assert(r107649.taxMinor === 5311_04, `NYAGI $107,649 tax: expected 531104, got ${r107649.taxMinor}`);
+
+  const r107650 = calculateNysTax2026Single(107_650_00, 99_650_00);
+  assert(r107650.worksheetApplied === undefined, 'NYAGI $107,650: Normal graduated schedule at boundary (no worksheet)');
+  assert(r107650.taxMinor === 5311_10, `NYAGI $107,650 tax: expected 531110, got ${r107650.taxMinor}`);
+
+  const r107651 = calculateNysTax2026Single(107_651_00, 99_651_00);
+  assert(r107651.worksheetApplied === 'Worksheet 7', 'NYAGI $107,651: Worksheet 7 applied when NYAGI > $107,650');
+  assert(r107651.taxMinor === 5311_16, `NYAGI $107,651 tax: expected 531116, got ${r107651.taxMinor}`);
+
+  // 2. NYAGI $157,650 boundary: $157,649, $157,650, $157,651 (Worksheet 7 phase-in vs flat 5.90%)
+  // Under $157,650: partial recapture phase-in
+  // At or above $157,650: full recapture -> flat 5.90% on entire taxable income
+  const r157649 = calculateNysTax2026Single(157_649_00, 149_649_00);
+  assert(r157649.worksheetApplied === 'Worksheet 7', 'NYAGI $157,649: Worksheet 7 partial phase-in');
+  assert(r157649.taxMinor === 8829_29, `NYAGI $157,649 tax: expected 882929, got ${r157649.taxMinor}`);
+
+  const r157650 = calculateNysTax2026Single(157_650_00, 149_650_00);
+  assert(r157650.worksheetApplied === 'Worksheet 7', 'NYAGI $157,650: Worksheet 7 flat 5.90%');
+  assert(r157650.taxMinor === 8829_35, `NYAGI $157,650 tax: exact flat 5.90% (882935), got ${r157650.taxMinor}`);
+  assert(r157650.taxMinor === Math.round(149_650_00 * 0.0590), 'NYAGI $157,650: exactly equals taxable * 5.90%');
+
+  const r157651 = calculateNysTax2026Single(157_651_00, 149_651_00);
+  assert(r157651.worksheetApplied === 'Worksheet 7', 'NYAGI $157,651: Worksheet 7 flat 5.90%');
+  assert(r157651.taxMinor === 8829_41, `NYAGI $157,651 tax: exact flat 5.90% (882941), got ${r157651.taxMinor}`);
+  assert(r157651.taxMinor === Math.round(149_651_00 * 0.0590), 'NYAGI $157,651: exactly equals taxable * 5.90%');
+
+  // 3. NYAGI $215,400 boundary: $215,399, $215,400, $215,401
+  // When taxable income <= $215,400 (e.g. standard deduction $8,000):
+  const r215399_w7 = calculateNysTax2026Single(215_399_00, 207_399_00);
+  assert(r215399_w7.worksheetApplied === 'Worksheet 7', 'NYAGI $215,399 (taxable <= $215,400): Worksheet 7');
+  assert(r215399_w7.taxMinor === 12236_54, `NYAGI $215,399 tax: expected 1223654, got ${r215399_w7.taxMinor}`);
+
+  const r215400_w7 = calculateNysTax2026Single(215_400_00, 207_400_00);
+  assert(r215400_w7.worksheetApplied === 'Worksheet 7', 'NYAGI $215,400 (taxable <= $215,400): Worksheet 7');
+  assert(r215400_w7.taxMinor === 12236_60, `NYAGI $215,400 tax: expected 1223660, got ${r215400_w7.taxMinor}`);
+
+  const r215401_w7 = calculateNysTax2026Single(215_401_00, 207_401_00);
+  assert(r215401_w7.worksheetApplied === 'Worksheet 7', 'NYAGI $215,401 (taxable <= $215,400): Worksheet 7');
+  assert(r215401_w7.taxMinor === 12236_66, `NYAGI $215,401 tax: expected 1223666, got ${r215401_w7.taxMinor}`);
+
+  // In Worksheet 8 (taxable income > $215,400, e.g. $220,000):
+  // NYAGI $215,399 and $215,400 have $0 incremental recapture (Base $567 only)
+  // NYAGI $215,401 begins incremental recapture phase-in
+  const r215399_w8 = calculateNysTax2026Single(215_399_00, 220_000_00);
+  assert(r215399_w8.worksheetApplied === 'Worksheet 8', 'Worksheet 8 with NYAGI $215,399');
+  const r215400_w8 = calculateNysTax2026Single(215_400_00, 220_000_00);
+  assert(r215400_w8.worksheetApplied === 'Worksheet 8', 'Worksheet 8 with NYAGI $215,400');
+  const r215401_w8 = calculateNysTax2026Single(215_401_00, 220_000_00);
+  assert(r215401_w8.worksheetApplied === 'Worksheet 8', 'Worksheet 8 with NYAGI $215,401');
+  assert(r215400_w8.taxMinor === r215399_w8.taxMinor, 'NYAGI <= $215,400: no incremental recapture');
+
+  // 4. Taxable Income boundaries:
+  // Boundary at $215,400 (NYAGI = $250,000):
+  // Taxable <= $215,400 -> Worksheet 7 (flat 5.90%)
+  // Taxable > $215,400 -> Worksheet 8 (recapture to 6.85%)
+  const rTax215399 = calculateNysTax2026Single(250_000_00, 215_399_00);
+  assert(rTax215399.worksheetApplied === 'Worksheet 7', 'Taxable $215,399: Worksheet 7');
+  assert(rTax215399.topMarginalRate === 0.0590, 'Taxable $215,399 marginal rate is 5.90%');
+
+  const rTax215400 = calculateNysTax2026Single(250_000_00, 215_400_00);
+  assert(rTax215400.worksheetApplied === 'Worksheet 7', 'Taxable $215,400: Worksheet 7 at exact boundary');
+  assert(rTax215400.topMarginalRate === 0.0590, 'Taxable $215,400 marginal rate is 5.90%');
+
+  const rTax215401 = calculateNysTax2026Single(250_000_00, 215_401_00);
+  assert(rTax215401.worksheetApplied === 'Worksheet 8', 'Taxable $215,401: Worksheet 8 past boundary');
+  assert(rTax215401.topMarginalRate === 0.0685, 'Taxable $215,401 marginal rate is 6.85%');
+
+  // Boundary at $1,077,550 (NYAGI = $1,500,000):
+  // Taxable <= $1,077,550 -> Worksheet 8
+  // Taxable > $1,077,550 -> Worksheet 9
+  const rTax1077550 = calculateNysTax2026Single(1_500_000_00, 1_077_550_00);
+  assert(rTax1077550.worksheetApplied === 'Worksheet 8', 'Taxable $1,077,550: Worksheet 8');
+  assert(rTax1077550.topMarginalRate === 0.0685, 'Taxable $1,077,550 marginal rate is 6.85%');
+
+  const rTax1077551 = calculateNysTax2026Single(1_500_000_00, 1_077_551_00);
+  assert(rTax1077551.worksheetApplied === 'Worksheet 9', 'Taxable $1,077,551: Worksheet 9');
+  assert(rTax1077551.topMarginalRate === 0.0965, 'Taxable $1,077,551 marginal rate is 9.65%');
+
+  // Boundary at $5,000,000 (NYAGI = $10,000,000):
+  // Taxable <= $5,000,000 -> Worksheet 9
+  // Taxable > $5,000,000 -> Worksheet 10
+  const rTax5M = calculateNysTax2026Single(10_000_000_00, 5_000_000_00);
+  assert(rTax5M.worksheetApplied === 'Worksheet 9', 'Taxable $5,000,000: Worksheet 9');
+  assert(rTax5M.topMarginalRate === 0.0965, 'Taxable $5,000,000 marginal rate is 9.65%');
+
+  const rTax5M_plus = calculateNysTax2026Single(10_000_000_00, 5_000_001_00);
+  assert(rTax5M_plus.worksheetApplied === 'Worksheet 10', 'Taxable $5,000,001: Worksheet 10');
+  assert(rTax5M_plus.topMarginalRate === 0.1030, 'Taxable $5,000,001 marginal rate is 10.30%');
+
+  // 5. NYAGI $25,000,000 boundary: $25,000,000 vs $25,000,001
+  // Official 2026 Form IT-2105-I: If NYAGI > $25,000,000: tax = taxable income × 10.9%
+  // At exactly NYAGI $25,000,000: MUST NOT use Worksheet 11! (Uses Worksheet 10)
+  // At NYAGI $25,000,001: Uses Worksheet 11 (flat 10.90% on entire taxable income)
+  const r25M = calculateNysTax2026Single(25_000_000_00, 24_992_000_00);
+  assert(r25M.worksheetApplied === 'Worksheet 10', 'NYAGI exactly $25,000,000: Uses Worksheet 10, NOT Worksheet 11');
+  assert(r25M.topMarginalRate === 0.1030, 'NYAGI exactly $25,000,000: marginal rate 10.30%');
+  assert(r25M.taxMinor === 2574176_05, `NYAGI $25,000,000 tax: expected 257417605, got ${r25M.taxMinor}`);
+
+  const r25M_plus = calculateNysTax2026Single(25_000_001_00, 24_992_001_00);
+  assert(r25M_plus.worksheetApplied === 'Worksheet 11', 'NYAGI $25,000,001: Uses Worksheet 11 (NYAGI > $25,000,000)');
+  assert(r25M_plus.topMarginalRate === 0.1090, 'NYAGI $25,000,001: marginal rate is 10.90%');
+  const expectedWs11 = Math.round(24_992_001_00 * 0.1090);
+  assert(r25M_plus.taxMinor === expectedWs11, `NYAGI $25,000,001 tax: exact flat 10.90% (${expectedWs11}), got ${r25M_plus.taxMinor}`);
+
+  // 6. TaxRegistry integration check for NYAGI boundaries
+  const reg25M = TaxRegistry.calculate(
+    createMoney(25_000_000, 'USD'),
+    { filingStatus: 'single', dependentsCount: 0, taxYear: 2026 },
+    { countryId: 'US', regionId: 'US-NY', cityId: 'nyc', taxYear: 2026 }
+  );
+  assert(toMajor(reg25M.stateTax) === 2574176.05, 'TaxRegistry NYAGI $25M: state tax $2,574,176.05');
+
+  const reg25M_plus = TaxRegistry.calculate(
+    createMoney(25_000_001, 'USD'),
+    { filingStatus: 'single', dependentsCount: 0, taxYear: 2026 },
+    { countryId: 'US', regionId: 'US-NY', cityId: 'nyc', taxYear: 2026 }
+  );
+  assert(toMajor(reg25M_plus.stateTax) === 2724128.11, 'TaxRegistry NYAGI $25M+1: state tax $2,724,128.11');
+
+  // 7. Filing Status type-safety check (married_filing_jointly, head_of_household)
+  const mfjResult = TaxRegistry.calculate(
+    createMoney(150_000, 'USD'),
+    { filingStatus: 'married_filing_jointly', dependentsCount: 0, taxYear: 2026 },
+    { countryId: 'US', regionId: 'US-NY', cityId: 'nyc', taxYear: 2026 }
+  );
+  assert(toMajor(mfjResult.stateTax) > 0, 'Married filing jointly calculates successfully without type or runtime errors');
+
+  const hohResult = TaxRegistry.calculate(
+    createMoney(150_000, 'USD'),
+    { filingStatus: 'head_of_household', dependentsCount: 0, taxYear: 2026 },
+    { countryId: 'US', regionId: 'US-NY', cityId: 'nyc', taxYear: 2026 }
+  );
+  assert(toMajor(hohResult.stateTax) > 0, 'Head of household calculates successfully without type or runtime errors');
+
+  console.log('ALL 2026 NYS FORM IT-2105-I BOUNDARY REGRESSION TESTS PASSED (100%).\n');
+}
+
+runNysWorksheetBoundaryTests();
+
 

@@ -5522,54 +5522,54 @@ function calculateNysTax2026Single(nyagiMinor, nysTaxableMinor) {
     const base = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026);
     return { taxMinor: base.taxMinor, topMarginalRate: base.topMarginalRate };
   }
+  if (nyagiMinor > 25e8) {
+    const line2 = Math.round(nysTaxableMinor * 0.109);
+    return { taxMinor: line2, topMarginalRate: 0.109, worksheetApplied: "Worksheet 11" };
+  }
   if (nysTaxableMinor <= 2154e4) {
-    const line3 = Math.round(nysTaxableMinor * 0.059);
+    const line32 = Math.round(nysTaxableMinor * 0.059);
     if (nyagiMinor >= 15765e3) {
-      return { taxMinor: line3, topMarginalRate: 0.059, worksheetApplied: "Worksheet 7" };
+      return { taxMinor: line32, topMarginalRate: 0.059, worksheetApplied: "Worksheet 7" };
     }
-    const line4 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
-    const line5 = line3 - line4;
-    const line6 = nyagiMinor - 10765e3;
-    const line7 = Math.round(line6 / 5e6 * 1e4) / 1e4;
-    const line8 = Math.round(line5 * line7);
-    const line9 = line4 + line8;
-    return { taxMinor: line9, topMarginalRate: 0.059, worksheetApplied: "Worksheet 7" };
+    const line42 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line52 = line32 - line42;
+    const line62 = nyagiMinor - 10765e3;
+    const line72 = Math.round(line62 / 5e6 * 1e4) / 1e4;
+    const line82 = Math.round(line52 * line72);
+    const line92 = line42 + line82;
+    return { taxMinor: line92, topMarginalRate: 0.059, worksheetApplied: "Worksheet 7" };
   }
   if (nysTaxableMinor <= 107755e3) {
-    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
-    const line4 = 56700;
-    const line5 = 204700;
-    const line6 = Math.max(0, nyagiMinor - 2154e4);
-    const line7 = Math.min(line6, 5e6);
-    const line8 = Math.round(line7 / 5e6 * 1e4) / 1e4;
-    const line9 = Math.round(line5 * line8);
-    const line10 = line3 + line4 + line9;
-    return { taxMinor: line10, topMarginalRate: 0.0685, worksheetApplied: "Worksheet 8" };
+    const line32 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line42 = 56700;
+    const line52 = 204700;
+    const line62 = Math.max(0, nyagiMinor - 2154e4);
+    const line72 = Math.min(line62, 5e6);
+    const line82 = Math.round(line72 / 5e6 * 1e4) / 1e4;
+    const line92 = Math.round(line52 * line82);
+    const line102 = line32 + line42 + line92;
+    return { taxMinor: line102, topMarginalRate: 0.0685, worksheetApplied: "Worksheet 8" };
   }
   if (nysTaxableMinor <= 5e8) {
-    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
-    const line4 = 261400;
-    const line5 = 3017200;
-    const line6 = Math.max(0, nyagiMinor - 107755e3);
-    const line7 = Math.min(line6, 5e6);
-    const line8 = Math.round(line7 / 5e6 * 1e4) / 1e4;
-    const line9 = Math.round(line5 * line8);
-    const line10 = line3 + line4 + line9;
-    return { taxMinor: line10, topMarginalRate: 0.0965, worksheetApplied: "Worksheet 9" };
+    const line32 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line42 = 261400;
+    const line52 = 3017200;
+    const line62 = Math.max(0, nyagiMinor - 107755e3);
+    const line72 = Math.min(line62, 5e6);
+    const line82 = Math.round(line72 / 5e6 * 1e4) / 1e4;
+    const line92 = Math.round(line52 * line82);
+    const line102 = line32 + line42 + line92;
+    return { taxMinor: line102, topMarginalRate: 0.0965, worksheetApplied: "Worksheet 9" };
   }
-  if (nysTaxableMinor <= 25e8) {
-    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
-    const line4 = 3278600;
-    const line5 = 325e4;
-    const line6 = Math.max(0, nyagiMinor - 5e8);
-    const line7 = Math.min(line6, 5e6);
-    const line8 = Math.round(line7 / 5e6 * 1e4) / 1e4;
-    const line9 = Math.round(line5 * line8);
-    const line10 = line3 + line4 + line9;
-    return { taxMinor: line10, topMarginalRate: 0.103, worksheetApplied: "Worksheet 10" };
-  }
-  const line2 = Math.round(nysTaxableMinor * 0.109);
-  return { taxMinor: line2, topMarginalRate: 0.109, worksheetApplied: "Worksheet 11" };
+  const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+  const line4 = 3278600;
+  const line5 = 325e4;
+  const line6 = Math.max(0, nyagiMinor - 5e8);
+  const line7 = Math.min(line6, 5e6);
+  const line8 = Math.round(line7 / 5e6 * 1e4) / 1e4;
+  const line9 = Math.round(line5 * line8);
+  const line10 = line3 + line4 + line9;
+  return { taxMinor: line10, topMarginalRate: 0.103, worksheetApplied: "Worksheet 10" };
 }
 var UsTaxAdapter = class {
   constructor() {
@@ -5615,7 +5615,7 @@ var UsTaxAdapter = class {
     if (isNewYorkState) {
       const nysStdDeductionMinor = NYS_STANDARD_DEDUCTION[profile.filingStatus];
       nysTaxableMinor = Math.max(0, adjustedGrossMinor - nysStdDeductionMinor);
-      if (taxYear === 2026 && (profile.filingStatus === "single" || profile.filingStatus === "married_separate")) {
+      if (taxYear === 2026 && profile.filingStatus === "single") {
         const stateCalc = calculateNysTax2026Single(adjustedGrossMinor, nysTaxableMinor);
         stateTaxMinor = stateCalc.taxMinor;
         stateMarginal = stateCalc.topMarginalRate;

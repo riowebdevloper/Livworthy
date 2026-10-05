@@ -242,7 +242,7 @@ function calculateGraduatedTax(
  *   - Worksheet 11: NYAGI > $25,000,000.
  *     Flat 10.90% on all taxable income.
  */
-function calculateNysTax2026Single(
+export function calculateNysTax2026Single(
   nyagiMinor: number,
   nysTaxableMinor: number
 ): { taxMinor: number; topMarginalRate: number; worksheetApplied?: string } {
@@ -254,6 +254,14 @@ function calculateNysTax2026Single(
   if (nyagiMinor <= 107_650_00) {
     const base = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026);
     return { taxMinor: base.taxMinor, topMarginalRate: base.topMarginalRate };
+  }
+
+  // Worksheet 11: NYAGI > $25,000,000 (flat 10.90% on all taxable income)
+  // Official 2026 Form IT-2105-I: If NYAGI > $25,000,000, tax = taxable income × 10.9%.
+  // Checked BEFORE Worksheet 7/8/9/10 selection. At exactly $25,000,000 NYAGI, do NOT use Worksheet 11.
+  if (nyagiMinor > 25_000_000_00) {
+    const line2 = Math.round(nysTaxableMinor * 0.1090);
+    return { taxMinor: line2, topMarginalRate: 0.1090, worksheetApplied: 'Worksheet 11' };
   }
 
   // Taxable income <= $215,400 (Worksheet 7)
@@ -298,22 +306,16 @@ function calculateNysTax2026Single(
     return { taxMinor: line10, topMarginalRate: 0.0965, worksheetApplied: 'Worksheet 9' };
   }
 
-  // Taxable income > $5,000,000 and <= $25,000,000 (Worksheet 10)
-  if (nysTaxableMinor <= 25_000_000_00) {
-    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
-    const line4 = 32786_00;
-    const line5 = 32500_00;
-    const line6 = Math.max(0, nyagiMinor - 5_000_000_00);
-    const line7 = Math.min(line6, 50_000_00);
-    const line8 = Math.round((line7 / 50_000_00) * 10000) / 10000;
-    const line9 = Math.round(line5 * line8);
-    const line10 = line3 + line4 + line9;
-    return { taxMinor: line10, topMarginalRate: 0.1030, worksheetApplied: 'Worksheet 10' };
-  }
-
-  // Taxable income > $25,000,000 (Worksheet 11)
-  const line2 = Math.round(nysTaxableMinor * 0.1090);
-  return { taxMinor: line2, topMarginalRate: 0.1090, worksheetApplied: 'Worksheet 11' };
+  // Taxable income > $5,000,000 and NYAGI <= $25,000,000 (Worksheet 10)
+  const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+  const line4 = 32786_00;
+  const line5 = 32500_00;
+  const line6 = Math.max(0, nyagiMinor - 5_000_000_00);
+  const line7 = Math.min(line6, 50_000_00);
+  const line8 = Math.round((line7 / 50_000_00) * 10000) / 10000;
+  const line9 = Math.round(line5 * line8);
+  const line10 = line3 + line4 + line9;
+  return { taxMinor: line10, topMarginalRate: 0.1030, worksheetApplied: 'Worksheet 10' };
 }
 
 export class UsTaxAdapter implements TaxAdapter {
@@ -401,7 +403,7 @@ export class UsTaxAdapter implements TaxAdapter {
       const nysStdDeductionMinor = NYS_STANDARD_DEDUCTION[profile.filingStatus];
       nysTaxableMinor = Math.max(0, adjustedGrossMinor - nysStdDeductionMinor);
 
-      if (taxYear === 2026 && (profile.filingStatus === 'single' || profile.filingStatus === 'married_separate')) {
+      if (taxYear === 2026 && profile.filingStatus === 'single') {
         // Official 2026 NYS Tax Computation Worksheets (Form IT-2105-I / NYS Tax Law § 601(d))
         const stateCalc = calculateNysTax2026Single(adjustedGrossMinor, nysTaxableMinor);
         stateTaxMinor = stateCalc.taxMinor;
