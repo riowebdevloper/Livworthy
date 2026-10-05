@@ -218,6 +218,22 @@ function configureApp() {
 
   const handleReadinessCheck = async (req: express.Request, res: express.Response) => {
     const isProduction = process.env.NODE_ENV === 'production';
+
+    // On serverless cold starts, readiness must initialize migrations/seeds itself.
+    // Otherwise the first readiness probe can incorrectly report an uninitialized DB.
+    try {
+      await ensureDatabaseReady();
+    } catch {
+      return res.status(503).json({
+        ready: false,
+        database: 'unavailable',
+        cache: cacheService.isRedisConnected ? 'connected' : isProduction ? 'unavailable' : 'degraded',
+        fx: 'unavailable',
+        capabilities: {},
+        message: 'Production data services are not ready.',
+      });
+    }
+
     let dbStatus: 'connected' | 'unavailable' = 'connected';
     let cacheStatus: 'connected' | 'degraded' | 'unavailable' = 'connected';
     let fxStatus: 'available' | 'aging' | 'unavailable' = 'available';
