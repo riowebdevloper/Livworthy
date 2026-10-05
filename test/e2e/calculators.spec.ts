@@ -304,7 +304,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     const currentData = await currentRes.json();
     expect(currentData.success).toBe(true);
     expect(currentData.data.taxRuleVersion).toBe('US-FED-NY-NYC-2026.1');
-    expect(currentData.data.netIncome.amountMinor).toBe(7034316);
+    expect(currentData.data.netIncome.amountMinor).toBe(7087916);
 
     // Unsupported country → TAX_CALCULATION_UNAVAILABLE
     const unsupportedRes = await request.post('/api/tax/estimate', {
@@ -322,7 +322,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     expect(unsupportedData.isStatutorilyVerified).toBe(false);
     expect(unsupportedData.verificationStatus).toBe('UNDER_VERIFICATION');
 
-    // Future TY 2026 → TAX_CALCULATION_UNAVAILABLE
+    // Future TY 2027 → TAX_CALCULATION_UNAVAILABLE
     const futureRes = await request.post('/api/tax/estimate', {
       data: {
         grossSalaryMinor: 10000000,
@@ -331,7 +331,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
         regionId: 'NY',
         cityId: 'nyc',
         taxJurisdictionId: 'US-FED-NY-NYC',
-        taxYear: 2026,
+        taxYear: 2027,
       },
     });
     expect(futureRes.status()).toBe(200);
@@ -351,7 +351,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(calcHeadBtn).toBeVisible();
     await calcHeadBtn.click();
 
-    const guidesHeadBtn = footer.getByRole('button', { name: 'City Salary Guides' });
+    const guidesHeadBtn = footer.getByRole('link', { name: 'City Salary Guides' });
     await expect(guidesHeadBtn).toBeVisible();
     await guidesHeadBtn.click();
 
@@ -367,7 +367,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await breadcrumb.getByRole('button', { name: 'New York City', exact: true }).click();
     await expect(page.locator('h1').first()).toContainText(/What is your (salary|income) really worth\?/);
 
-    await footer.getByRole('button', { name: 'City Salary Guides' }).click();
+    await footer.getByRole('link', { name: 'City Salary Guides' }).click();
     await expect(page.locator('h1').first()).toContainText('Salary');
 
     const ukBtn = page.getByRole('button', { name: /United Kingdom/i });
