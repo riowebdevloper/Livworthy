@@ -99,7 +99,7 @@ export const CITY_COL_BENCHMARKS: Record<string, CityColBenchmark> = {
         sourceId: 'us-bls-cex-nyc-2026',
         observationPeriod: '2023–24 (published 2026-01-06)',
         lastVerifiedDate: '2026-10-05',
-        methodologyNote: 'Modeled planning estimate derived from BLS Consumer Expenditures in the New York Metropolitan Area (2023–24, published Jan 6, 2026) for food-at-home ($440) and dining out ($260).',
+        methodologyNote: 'Modeled planning estimate informed by the BLS 2023–24 New York metropolitan Consumer Expenditure Survey. LivWorthy converts source data into per-adult monthly planning benchmarks; the displayed values are not raw BLS published line items.',
         unit: 'monthly_per_adult',
       },
       utilities: {

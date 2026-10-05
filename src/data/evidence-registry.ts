@@ -265,7 +265,7 @@ export const EVIDENCE_SOURCES: Record<string, EvidenceSource> = {
     retrievedAt: '2026-10-05',
     effectiveDate: '2026-01-06',
     lastReviewedAt: '2026-10-05',
-    notes: 'Official BLS Consumer Expenditure Survey release reporting average annual household expenditures for the NY-NJ-PA metropolitan area (2023–24 survey period). LivWorthy modeled planning estimates ($440 groceries, $260 dining, $320 utilities/connectivity, $160 healthcare) are informed by this BLS 2023–24 New York metropolitan Consumer Expenditure Survey but are internally derived per-adult monthly benchmarks, not raw BLS published line items.',
+    notes: 'Official BLS Consumer Expenditure Survey release reporting average annual household expenditures for the NY-NJ-PA metropolitan area (2023–24 survey period). LivWorthy modeled planning estimates ($440 groceries, $260 dining, $320 utilities/connectivity, $160 healthcare) are informed by this BLS 2023–24 New York metropolitan Consumer Expenditure Survey. LivWorthy converts source data into per-adult monthly planning benchmarks; the displayed values are not raw BLS published line items.',
   },
   'us-bls-cpi-nyc-2024': {
     id: 'us-bls-cpi-nyc-2024',
@@ -302,7 +302,6 @@ export const EVIDENCE_SOURCES: Record<string, EvidenceSource> = {
     jurisdiction: 'New York City',
     reliabilityTier: 'Tier 2',
     retrievedAt: '2026-10-05',
-    effectiveDate: '2026-10-05',
     lastReviewedAt: '2026-10-05',
     notes: 'LivWorthy modeled monthly planning benchmark ($1,450/month per child) for licensed toddler and preschool group day care in NYC, informed by NYS OCFS Child Care Market Rate Survey benchmarks for the NYC region. Observation period reflects the most recently available OCFS survey cycle at time of review. Modeled estimate distinct from HUD housing data.',
   },

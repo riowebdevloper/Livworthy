@@ -121,12 +121,16 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
 
                     <div className="pt-2 border-t border-[#F7F8F5] flex flex-wrap items-center justify-between text-[10px] text-[#60706D] gap-2">
                       <div className="flex items-center space-x-2">
-                        <span className="flex items-center">
-                          <Calendar className="w-3 h-3 mr-1" /> Effective: {src.effectiveDate}
-                        </span>
-                        <span>·</span>
+                        {src.effectiveDate && (
+                          <>
+                            <span className="flex items-center">
+                              <Calendar className="w-3 h-3 mr-1" /> Effective: {src.effectiveDate}
+                            </span>
+                            <span>·</span>
+                          </>
+                        )}
                         <span className="flex items-center text-[#167D75]">
-                          <CheckCircle2 className="w-3 h-3 mr-1" /> Verified: {src.verifiedAt}
+                          <CheckCircle2 className="w-3 h-3 mr-1" /> {src.verifiedAt ? `Verified: ${src.verifiedAt}` : `Reviewed: ${src.lastReviewedAt || ''}`}
                         </span>
                       </div>
 

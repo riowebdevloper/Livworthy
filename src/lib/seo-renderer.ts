@@ -5,7 +5,8 @@ import { EVIDENCE_SOURCES } from '../data/evidence-registry';
 import { TaxRegistry } from '../engines/tax/tax-registry';
 import { createMoney, toMajor } from './money';
 
-function escapeHtml(str: string): string {
+function escapeHtml(str?: string): string {
+  if (!str) return '';
   return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -58,7 +59,7 @@ function renderEvidenceSection(sourceIds: string[]): string {
                 ${escapeHtml(s.canonicalReference)}
               </p>
               <div class="mt-2 text-[10px] text-[#60706D] space-y-0.5">
-                <div>Effective / Period: <strong>${escapeHtml(s.effectiveDate)}</strong></div>
+                ${s.effectiveDate ? `<div>Effective / Period: <strong>${escapeHtml(s.effectiveDate)}</strong></div>` : ''}
                 <div>Last reviewed: <strong>${escapeHtml(s.lastReviewedAt || s.verifiedAt || '')}</strong></div>
               </div>
             </div>

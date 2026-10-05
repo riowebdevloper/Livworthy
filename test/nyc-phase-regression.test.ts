@@ -364,13 +364,36 @@ export function runNycPhaseRegressionTests() {
     '25d. us-bls-cpi-nyc-2024 canonical reference must be distinct from 2026 CEX metadata'
   );
   assert(
+    EVIDENCE_SOURCES['us-nyc-childcare-benchmark'].effectiveDate === undefined,
+    '25e. us-nyc-childcare-benchmark omits effectiveDate (truthful representation for modeled survey cycle)'
+  );
+  assert(
+    EVIDENCE_SOURCES['us-nyc-childcare-benchmark'].effectiveDate !==
+      EVIDENCE_SOURCES['us-nyc-childcare-benchmark'].lastReviewedAt,
+    '25e2. Review date (2026-10-05) is NOT reused as the childcare effectiveDate'
+  );
+  assert(
+    EVIDENCE_SOURCES['us-nyc-childcare-benchmark'].effectiveDate !== '2026-10-05',
+    '25e3. Childcare effectiveDate must not be the review date 2026-10-05'
+  );
+  assert(
     EVIDENCE_SOURCES['us-nyc-childcare-benchmark'].effectiveDate !== '2025-06-01',
-    '25e. Childcare effective date must not be the unsupported 2025-06-01 date'
+    '25e4. Childcare effective date must not be the unsupported 2025-06-01 date'
+  );
+  assert(
+    EVIDENCE_SOURCES['us-nyc-childcare-benchmark'].lastReviewedAt === '2026-10-05',
+    '25e5. Childcare benchmark retains lastReviewedAt 2026-10-05'
   );
   assert(
     EVIDENCE_SOURCES['us-bls-cex-nyc-2026'].notes.includes('LivWorthy modeled planning estimates') &&
-      EVIDENCE_SOURCES['us-bls-cex-nyc-2026'].notes.includes('informed by this BLS 2023\u201324 New York metropolitan Consumer Expenditure Survey'),
+      EVIDENCE_SOURCES['us-bls-cex-nyc-2026'].notes.includes('informed by this BLS 2023\u201324 New York metropolitan Consumer Expenditure Survey') &&
+      EVIDENCE_SOURCES['us-bls-cex-nyc-2026'].notes.includes('displayed values are not raw BLS published line items'),
     '25f. BLS CEX notes use correct derivation language (informed by BLS, not raw line items)'
+  );
+  assert(
+    nycBmk.metadata?.food?.methodologyNote ===
+      'Modeled planning estimate informed by the BLS 2023–24 New York metropolitan Consumer Expenditure Survey. LivWorthy converts source data into per-adult monthly planning benchmarks; the displayed values are not raw BLS published line items.',
+    '25g. NYC food methodologyNote states values are informed planning estimates, not raw BLS published line items'
   );
 
   console.log('\n======================================================');

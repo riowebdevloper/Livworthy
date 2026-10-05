@@ -15,7 +15,7 @@ export interface EvidenceSource {
   jurisdiction: string;
   reliabilityTier: ReliabilityTier;
   retrievedAt: string;
-  effectiveDate: string;
+  effectiveDate?: string;
   verifiedAt?: string;
   verifiedBy?: string;
   lastReviewedAt?: string;
