@@ -4,6 +4,7 @@ import {
   CostCategorySummary,
   CostEstimateItem,
   CostOfLivingResult,
+  DataFreshnessStatus,
   HouseholdProfile,
   HousingType,
 } from '../../types/col';
