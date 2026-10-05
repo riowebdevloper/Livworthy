@@ -357,6 +357,48 @@ async function runRegressionSuite() {
     );
 
     console.log('PASS: Apex to www host normalization passes with path/query preservation in a single hop.');
+
+    // -----------------------------------------------------------------------
+    // TEST I.2: LEGACY GUIDE REDIRECTS (1-HOP FROM BOTH WWW AND APEX)
+    // -----------------------------------------------------------------------
+    console.log('\n[TEST I.2] Testing Legacy Guide single-hop redirects from www and apex...');
+    const legacyRedirectCases = [
+      { from: '/guides/london-60k', to: 'https://www.livworthy.com/guides/london-75k' },
+      { from: '/guides/toronto-90k', to: 'https://www.livworthy.com/guides/toronto-100k' },
+      { from: '/guides/dubai-30k', to: 'https://www.livworthy.com/guides/dubai-300k' },
+      { from: '/guides/singapore-10k', to: 'https://www.livworthy.com/guides/singapore-120k' },
+      { from: '/guides/berlin-65k', to: 'https://www.livworthy.com/guides/berlin-80k' },
+      { from: '/guides/london-60k/', to: 'https://www.livworthy.com/guides/london-75k' },
+      { from: '/guides/london-60k?ref=salary', to: 'https://www.livworthy.com/guides/london-75k?ref=salary' },
+    ];
+
+    for (const lrc of legacyRedirectCases) {
+      // From www
+      const resWww = await testRequest('www.livworthy.com', lrc.from);
+      assert(resWww.statusCode === 308, `www ${lrc.from} must return 308 (got ${resWww.statusCode})`);
+      assert(resWww.headers.location === lrc.to, `www ${lrc.from} must redirect to ${lrc.to} in 1 hop (got ${resWww.headers.location})`);
+
+      // From apex
+      const resApex = await testRequest('livworthy.com', lrc.from);
+      assert(resApex.statusCode === 308, `apex ${lrc.from} must return 308 (got ${resApex.statusCode})`);
+      assert(resApex.headers.location === lrc.to, `apex ${lrc.from} must redirect directly to ${lrc.to} in 1 hop (got ${resApex.headers.location})`);
+    }
+    console.log('PASS: Legacy guide redirects resolve in exactly ONE hop from both www and apex hosts.');
+
+    // -----------------------------------------------------------------------
+    // TEST I.3: GOOGLEBOT REQUEST SIMULATION
+    // -----------------------------------------------------------------------
+    console.log('\n[TEST I.3] Testing Googlebot User-Agent requests...');
+    const botPaths = ['/', '/about', '/countries/us', '/cities/nyc', '/guides/nyc-100k'];
+    for (const bp of botPaths) {
+      const resBot = await testRequest('www.livworthy.com', bp, {
+        'user-agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+      });
+      assert(resBot.statusCode === 200, `Googlebot requesting ${bp} must receive HTTP 200 (got ${resBot.statusCode})`);
+      assert(!resBot.headers['x-robots-tag']?.includes('noindex'), `Googlebot ${bp} must not have X-Robots-Tag: noindex`);
+      assert(!resBot.headers.location, `Googlebot ${bp} must not trigger bot-specific redirect`);
+    }
+    console.log('PASS: Googlebot receives identical clean 200 responses without bot-specific challenges or redirects.');
   } finally {
     server.close();
   }

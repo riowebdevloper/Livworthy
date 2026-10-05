@@ -102,6 +102,56 @@
   ],
   "redirects": [
     {
+      "source": "/guides/london-60k",
+      "destination": "https://www.livworthy.com/guides/london-75k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/london-60k/",
+      "destination": "https://www.livworthy.com/guides/london-75k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/toronto-90k",
+      "destination": "https://www.livworthy.com/guides/toronto-100k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/toronto-90k/",
+      "destination": "https://www.livworthy.com/guides/toronto-100k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/dubai-30k",
+      "destination": "https://www.livworthy.com/guides/dubai-300k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/dubai-30k/",
+      "destination": "https://www.livworthy.com/guides/dubai-300k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/singapore-10k",
+      "destination": "https://www.livworthy.com/guides/singapore-120k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/singapore-10k/",
+      "destination": "https://www.livworthy.com/guides/singapore-120k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/berlin-65k",
+      "destination": "https://www.livworthy.com/guides/berlin-80k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/berlin-65k/",
+      "destination": "https://www.livworthy.com/guides/berlin-80k",
+      "permanent": true
+    },
+    {
       "source": "/",
       "has": [
         {
@@ -132,31 +182,6 @@
         }
       ],
       "destination": "https://www.livworthy.com/$1",
-      "permanent": true
-    },
-    {
-      "source": "/guides/london-60k",
-      "destination": "/guides/london-75k",
-      "permanent": true
-    },
-    {
-      "source": "/guides/toronto-90k",
-      "destination": "/guides/toronto-100k",
-      "permanent": true
-    },
-    {
-      "source": "/guides/dubai-30k",
-      "destination": "/guides/dubai-300k",
-      "permanent": true
-    },
-    {
-      "source": "/guides/singapore-10k",
-      "destination": "/guides/singapore-120k",
-      "permanent": true
-    },
-    {
-      "source": "/guides/berlin-65k",
-      "destination": "/guides/berlin-80k",
       "permanent": true
     }
   ],

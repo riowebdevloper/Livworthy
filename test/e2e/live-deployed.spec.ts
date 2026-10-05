@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const LIVE_URL = 'https://livworthy.vercel.app';
+const LIVE_URL = process.env.LIVE_URL || 'https://www.livworthy.com';
+const PREVIEW_URL = 'https://livworthy.vercel.app';
 
 test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
   test('1. Live Homepage loads branding, tabs, and default $100K NYC scenario', async ({ page }) => {

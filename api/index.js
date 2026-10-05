@@ -7472,8 +7472,7 @@ function configureApp() {
     };
     if (LEGACY_GUIDE_REDIRECTS[cleanPath]) {
       const destination = LEGACY_GUIDE_REDIRECTS[cleanPath];
-      const hostPrefix = isApex ? "https://www.livworthy.com" : "";
-      return res.redirect(308, `${hostPrefix}${destination}${search}`);
+      return res.redirect(308, `https://www.livworthy.com${destination}${search}`);
     }
     if (isApex || hasTrailingSlash) {
       const hostPrefix = isApex ? "https://www.livworthy.com" : "";
