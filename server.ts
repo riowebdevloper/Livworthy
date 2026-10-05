@@ -203,6 +203,22 @@ function configureApp() {
     return null;
   };
 
+  const validateCurrentSession = async (req: express.Request) => {
+    const session = extractSession(req);
+    if (!session) return null;
+    const currentUser = await dbService.getUserByEmail(session.email);
+    if (!currentUser || currentUser.isActive === false || currentUser.id !== session.userId || currentUser.role !== session.role) {
+      return null;
+    }
+    if (
+      !session.credentialFingerprint ||
+      session.credentialFingerprint !== AuthService.credentialFingerprint(currentUser.passwordHash)
+    ) {
+      return null;
+    }
+    return session;
+  };
+
   // 1. HEALTH & DIAGNOSTIC ENDPOINTS
   app.get('/api/health', (req, res) => {
     res.json({
@@ -473,7 +489,8 @@ function configureApp() {
         });
       }
 
-      const curr = (currency || COUNTRIES[countryId]?.defaultCurrency || 'USD') as any;
+      const normalizedCountryId = String(countryId).toUpperCase();
+      const curr = (currency || COUNTRIES[normalizedCountryId]?.defaultCurrency || 'USD') as any;
       const grossMoney = fromMinor(grossSalaryMinor, curr);
       const profile = {
         filingStatus: filingStatus || 'single',
@@ -481,14 +498,14 @@ function configureApp() {
         taxYear: parsedTaxYear,
       };
       const location = {
-        countryId,
+        countryId: normalizedCountryId,
         regionId,
         cityId,
         taxJurisdictionId,
       };
 
       const result = TaxRegistry.calculate(grossMoney, profile, location);
-      const support = TaxRegistry.getCountrySupport(countryId);
+      const support = TaxRegistry.getCountrySupport(normalizedCountryId);
       const isUnavailable = result.status === 'TAX_CALCULATION_UNAVAILABLE';
 
       res.json({
@@ -553,7 +570,7 @@ function configureApp() {
   });
 
   app.get('/api/tax/inspect', rateLimit(60, 60), (req, res) => {
-    const countryId = (req.query.countryId as string) || 'US';
+    const countryId = String(req.query.countryId || 'US').toUpperCase();
     const regionId = req.query.regionId as string | undefined;
 
     const taxYear = req.query.taxYear === undefined ? LATEST_VERIFIED_TAX_YEAR : parseTaxYear(req.query.taxYear);
@@ -636,7 +653,7 @@ function configureApp() {
   });
 
   app.post('/api/fx/refresh', rateLimit(10, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session || !AuthService.hasPermission(session.role, 'trigger_fx_refresh')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient role permissions to refresh FX rates.' });
     }
@@ -679,7 +696,7 @@ function configureApp() {
 
   // 5. CMS & CONTENT WORKFLOW
   app.get('/api/content', rateLimit(120, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
     }
@@ -689,7 +706,7 @@ function configureApp() {
   });
 
   app.get('/api/content/:slug', rateLimit(120, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
     }
@@ -703,7 +720,7 @@ function configureApp() {
   });
 
   app.post('/api/content', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session || !AuthService.hasPermission(session.role, 'edit_content')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Editor permission required.' });
     }
@@ -737,7 +754,7 @@ function configureApp() {
 
 
   app.post('/api/content/:slug/workflow', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED' });
     }
@@ -769,14 +786,14 @@ function configureApp() {
       return res.status(404).json({ error: 'PAGE_NOT_FOUND' });
     }
 
-    const saved = await dbService.upsertContentPage({
-      ...existing,
-      workflowState,
-      reviewerEmail:
-        workflowState === 'APPROVED' || workflowState === 'PUBLISHED' || workflowState === 'INDEX_APPROVED'
-          ? session.email
-          : existing.reviewerEmail,
-    });
+    const reviewerEmail =
+      workflowState === 'APPROVED' || workflowState === 'PUBLISHED' || workflowState === 'INDEX_APPROVED'
+        ? session.email
+        : existing.reviewerEmail;
+    const saved = await dbService.updateContentWorkflow(req.params.slug, locale, workflowState, reviewerEmail);
+    if (!saved) {
+      return res.status(409).json({ error: 'WORKFLOW_UPDATE_FAILED', message: 'Content workflow state was not updated.' });
+    }
 
     await dbService.recordAuditLog({
       actorEmail: session.email,
@@ -801,7 +818,7 @@ function configureApp() {
             return res.status(401).json({ error: 'MFA_REQUIRED', message: 'Valid 6-digit TOTP code required.' });
           }
         }
-        const user = { id: dbUser.id, email: dbUser.email, role: dbUser.role as any };
+        const user = { id: dbUser.id, email: dbUser.email, role: dbUser.role as any, passwordHash: dbUser.passwordHash };
         const token = AuthService.createSessionToken(user);
 
         await dbService.recordAuditLog({
@@ -831,8 +848,8 @@ function configureApp() {
     res.status(401).json({ error: 'INVALID_CREDENTIALS', message: 'Invalid admin credentials.' });
   });
 
-  app.get('/api/admin/me', rateLimit(60, 60), (req, res) => {
-    const session = extractSession(req);
+  app.get('/api/admin/me', rateLimit(60, 60), async (req, res) => {
+    const session = await validateCurrentSession(req);
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED' });
     }
@@ -840,7 +857,7 @@ function configureApp() {
   });
 
   app.get('/api/admin/audit-logs', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session || !AuthService.hasPermission(session.role, 'view_audit_logs')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to view audit logs.' });
     }
@@ -850,7 +867,7 @@ function configureApp() {
   });
 
   app.get('/api/admin/users', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session || !AuthService.hasPermission(session.role, 'manage_users')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to manage users.' });
     }
@@ -864,7 +881,7 @@ function configureApp() {
   });
 
   app.post('/api/admin/users', rateLimit(20, 60, { isSecuritySensitive: true, failClosed: true }), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session || !AuthService.hasPermission(session.role, 'manage_users')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Insufficient permissions to manage users.' });
     }
@@ -902,7 +919,7 @@ function configureApp() {
   });
 
   app.get('/api/reviews', rateLimit(60, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin session required.' });
     }
@@ -912,7 +929,7 @@ function configureApp() {
   });
 
   app.post('/api/reviews', rateLimit(30, 60), async (req, res) => {
-    const session = extractSession(req);
+    const session = await validateCurrentSession(req);
     if (!session || !AuthService.hasPermission(session.role, 'review_content')) {
       return res.status(403).json({ error: 'FORBIDDEN', message: 'Reviewer permission required.' });
     }

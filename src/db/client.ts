@@ -40,6 +40,7 @@ export interface IDatabaseService {
   getContentPages(filter?: { locale?: string; workflowState?: string }): Promise<any[]>;
   getContentPageBySlug(slug: string, locale?: string): Promise<any | null>;
   upsertContentPage(page: any): Promise<any>;
+  updateContentWorkflow(slug: string, locale: string, workflowState: string, reviewerEmail?: string | null): Promise<any | null>;
   recordAuditLog(entry: {
     actorEmail: string;
     action: string;
@@ -634,6 +635,28 @@ class PostgresDatabaseService implements IDatabaseService {
     }
   }
 
+  async updateContentWorkflow(slug: string, locale: string, workflowState: string, reviewerEmail?: string | null) {
+    const isIndexable = workflowState === 'INDEX_APPROVED';
+    const publishedAt = workflowState === 'INDEX_APPROVED' || workflowState === 'PUBLISHED' ? new Date() : null;
+    try {
+      const rows = await this.db
+        .update(schema.contentPages)
+        .set({
+          workflowState,
+          isIndexable,
+          reviewerEmail: reviewerEmail ?? null,
+          publishedAt,
+          updatedAt: new Date(),
+        })
+        .where(and(eq(schema.contentPages.slug, slug), eq(schema.contentPages.locale, locale)))
+        .returning();
+      return rows[0] || null;
+    } catch (err) {
+      console.error('[PostgresDatabaseService] updateContentWorkflow error:', err);
+      throw err;
+    }
+  }
+
   async recordAuditLog(entry: any) {
     try {
       await this.db.insert(schema.auditLogs).values({
@@ -1035,6 +1058,22 @@ class LocalFallbackDatabaseService implements IDatabaseService {
       updatedAt: new Date().toISOString(),
     };
     this.contentPages.set(`${updated.slug}:${updated.locale}`, updated);
+    return updated;
+  }
+
+  async updateContentWorkflow(slug: string, locale: string, workflowState: string, reviewerEmail?: string | null) {
+    const key = `${slug}:${locale}`;
+    const existing = this.contentPages.get(key);
+    if (!existing) return null;
+    const updated = {
+      ...existing,
+      workflowState,
+      isIndexable: workflowState === 'INDEX_APPROVED',
+      reviewerEmail: reviewerEmail ?? null,
+      publishedAt: workflowState === 'INDEX_APPROVED' || workflowState === 'PUBLISHED' ? new Date().toISOString() : null,
+      updatedAt: new Date().toISOString(),
+    };
+    this.contentPages.set(key, updated);
     return updated;
   }
 

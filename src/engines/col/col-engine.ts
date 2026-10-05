@@ -20,7 +20,7 @@ export interface ColOverrides {
 }
 
 export function classifyDataFreshness(sourceDate: string, now = new Date()): DataFreshnessStatus {
-  const match = /^(\d{4})-(\d{2})/.exec(sourceDate || '');
+  const match = /^(\d{4})-(\d{2})$/.exec(sourceDate || '');
   if (!match) return 'UNKNOWN';
 
   const year = Number(match[1]);
@@ -269,6 +269,8 @@ export class CostOfLivingEngine {
       });
     }
 
+    // Freshness/confidence here is scoped to the benchmark's source month.
+    // Individual category observation periods can be older and remain visible per item.
     const dataFreshness = classifyDataFreshness(benchmark.sourceDate);
     const confidenceScore =
       dataFreshness === 'CURRENT'

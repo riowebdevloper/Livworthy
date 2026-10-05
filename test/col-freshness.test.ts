@@ -7,6 +7,7 @@ assert.equal(classifyDataFreshness('2026-01', now), 'CURRENT');
 assert.equal(classifyDataFreshness('2025-03', now), 'AGING');
 assert.equal(classifyDataFreshness('2024-03', now), 'STALE');
 assert.equal(classifyDataFreshness('unknown', now), 'UNKNOWN');
+assert.equal(classifyDataFreshness('2026-10invalid', now), 'UNKNOWN');
 assert.equal(classifyDataFreshness('2027-01', now), 'UNKNOWN');
 
 console.log('col-freshness.test.ts: PASS');

@@ -44,6 +44,7 @@ export interface AuthSession {
   email: string;
   role: UserRole;
   expiresAt: number;
+  credentialFingerprint?: string;
 }
 
 function getJwtSecret(): string {
@@ -67,12 +68,17 @@ export class AuthService {
     }
   }
 
-  public static createSessionToken(user: { id: string; email: string; role: UserRole }): string {
+  public static credentialFingerprint(passwordHash: string): string {
+    return crypto.createHash('sha256').update(passwordHash).digest('hex');
+  }
+
+  public static createSessionToken(user: { id: string; email: string; role: UserRole; passwordHash?: string }): string {
     const payload = {
       userId: user.id,
       email: user.email,
       role: user.role,
       expiresAt: Date.now() + 24 * 3600 * 1000, // 24 hours
+      credentialFingerprint: user.passwordHash ? this.credentialFingerprint(user.passwordHash) : undefined,
     };
     const serialized = Buffer.from(JSON.stringify(payload)).toString('base64url');
     const signature = crypto.createHmac('sha256', getJwtSecret()).update(serialized).digest('base64url');

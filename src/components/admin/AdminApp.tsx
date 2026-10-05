@@ -235,7 +235,8 @@ export const AdminApp: React.FC = () => {
     setError('');
     setNotice('');
     setLoading(true);
-    const form = new FormData(event.currentTarget);
+    const formEl = event.currentTarget;
+    const form = new FormData(formEl);
     try {
       await requestJson('/api/reviews', token, {
         method: 'POST',
@@ -247,7 +248,7 @@ export const AdminApp: React.FC = () => {
         }),
       });
       setNotice('Editorial review recorded.');
-      event.currentTarget.reset();
+      formEl.reset();
       await refreshReviews();
     } catch (e: any) {
       setError(e.message || 'Unable to record review.');
@@ -281,7 +282,8 @@ export const AdminApp: React.FC = () => {
     setError('');
     setNotice('');
     setLoading(true);
-    const form = new FormData(event.currentTarget);
+    const formEl = event.currentTarget;
+    const form = new FormData(formEl);
     try {
       await requestJson('/api/admin/users', token, {
         method: 'POST',
@@ -292,7 +294,7 @@ export const AdminApp: React.FC = () => {
         }),
       });
       setNotice('User saved.');
-      event.currentTarget.reset();
+      formEl.reset();
       await refreshUsers();
     } catch (e: any) {
       setError(e.message || 'Unable to save user.');
