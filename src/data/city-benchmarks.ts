@@ -121,7 +121,7 @@ export const CITY_COL_BENCHMARKS: Record<string, CityColBenchmark> = {
       childcare: {
         statisticType: 'modeled_estimate',
         sourceId: 'us-nyc-childcare-benchmark',
-        observationPeriod: '2024–2026 planning benchmark',
+        observationPeriod: 'Most recently available OCFS market rate survey cycle (reviewed 2026-10-05)',
         lastVerifiedDate: '2026-10-05',
         methodologyNote: 'LivWorthy modeled planning estimate for licensed group child day care / preschool in NYC metro area. Not derived from HUD housing data.',
         unit: 'monthly_per_child',

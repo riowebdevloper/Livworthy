@@ -176,8 +176,9 @@ export function runNycPhaseRegressionTests() {
     '10d. Food metadata carries BLS 2023–24 release'
   );
   assert(
-    nycBmk.metadata?.childcare?.observationPeriod === '2024–2026 planning benchmark',
-    '10e. Childcare metadata carries planning benchmark observation period'
+    !!(nycBmk.metadata?.childcare?.observationPeriod?.includes('OCFS') ||
+      nycBmk.metadata?.childcare?.observationPeriod?.includes('reviewed 2026-10-05')),
+    '10e. Childcare metadata carries an OCFS-referenced or review-dated observation period (not an invented date range)'
   );
   const housingObs = nycBmk.metadata?.housing?.observationPeriod;
   const transitObs = nycBmk.metadata?.transit?.observationPeriod;
@@ -340,6 +341,36 @@ export function runNycPhaseRegressionTests() {
   assert(
     !EVIDENCE_SOURCES['us-mta-nyc-transit-2026'].verifiedBy,
     '24b. No fake reviewer on us-mta-nyc-transit-2026'
+  );
+
+  // 25. BLS release number and legacy CPI ID integrity
+  assert(
+    EVIDENCE_SOURCES['us-bls-cex-nyc-2026'].canonicalReference.includes('26-12-BOS'),
+    '25. us-bls-cex-nyc-2026 canonical reference must include correct BLS release number 26-12-BOS'
+  );
+  assert(
+    !EVIDENCE_SOURCES['us-bls-cex-nyc-2026'].canonicalReference.includes('USDL-26-0003'),
+    '25b. us-bls-cex-nyc-2026 must NOT contain the incorrect USDL-26-0003 release number'
+  );
+  assert(
+    EVIDENCE_SOURCES['us-bls-cpi-nyc-2024'].canonicalReference.toLowerCase().includes('consumer price index') ||
+      (EVIDENCE_SOURCES['us-bls-cpi-nyc-2024'].url ?? '').includes('consumerpriceindex'),
+    '25c. us-bls-cpi-nyc-2024 must reference the CPI product (not copied 2026 CEX metadata)'
+  );
+  assert(
+    !EVIDENCE_SOURCES['us-bls-cpi-nyc-2024'].canonicalReference.includes('26-12-BOS') &&
+      !EVIDENCE_SOURCES['us-bls-cpi-nyc-2024'].canonicalReference.includes('USDL-26-0003') &&
+      !EVIDENCE_SOURCES['us-bls-cpi-nyc-2024'].canonicalReference.includes('2023\u201324'),
+    '25d. us-bls-cpi-nyc-2024 canonical reference must be distinct from 2026 CEX metadata'
+  );
+  assert(
+    EVIDENCE_SOURCES['us-nyc-childcare-benchmark'].effectiveDate !== '2025-06-01',
+    '25e. Childcare effective date must not be the unsupported 2025-06-01 date'
+  );
+  assert(
+    EVIDENCE_SOURCES['us-bls-cex-nyc-2026'].notes.includes('LivWorthy modeled planning estimates') &&
+      EVIDENCE_SOURCES['us-bls-cex-nyc-2026'].notes.includes('informed by this BLS 2023\u201324 New York metropolitan Consumer Expenditure Survey'),
+    '25f. BLS CEX notes use correct derivation language (informed by BLS, not raw line items)'
   );
 
   console.log('\n======================================================');

@@ -1528,27 +1528,27 @@ var EVIDENCE_SOURCES = {
     id: "us-bls-cex-nyc-2026",
     organization: "U.S. Bureau of Labor Statistics (BLS)",
     sourceType: "Official Statistics Bureau",
-    canonicalReference: "Consumer Expenditures in the New York Metropolitan Area \u2014 2023\u201324 (News Release USDL-26-0003, Published January 6, 2026)",
+    canonicalReference: "Consumer Expenditures in the New York Metropolitan Area \u2014 2023\u201324 (BLS News Release 26-12-BOS, Published January 6, 2026)",
     url: "https://www.bls.gov/regions/new-york-new-jersey/news-release/consumerexpenditures_newyork.htm",
     jurisdiction: "New York-Newark-Jersey City Metro Area",
     reliabilityTier: "Tier 1",
     retrievedAt: "2026-10-05",
     effectiveDate: "2026-01-06",
     lastReviewedAt: "2026-10-05",
-    notes: "Official BLS Consumer Expenditure release reporting average annual household expenditures in the NY-NJ-PA metropolitan area. Used to derive LivWorthy per-adult modeled monthly planning benchmarks ($440 groceries, $260 dining, $320 utilities/connectivity, $160 healthcare). LivWorthy values are internally modeled planning estimates, not raw BLS line items."
+    notes: "Official BLS Consumer Expenditure Survey release reporting average annual household expenditures for the NY-NJ-PA metropolitan area (2023\u201324 survey period). LivWorthy modeled planning estimates ($440 groceries, $260 dining, $320 utilities/connectivity, $160 healthcare) are informed by this BLS 2023\u201324 New York metropolitan Consumer Expenditure Survey but are internally derived per-adult monthly benchmarks, not raw BLS published line items."
   },
   "us-bls-cpi-nyc-2024": {
     id: "us-bls-cpi-nyc-2024",
     organization: "U.S. Bureau of Labor Statistics (BLS)",
     sourceType: "Official Statistics Bureau",
-    canonicalReference: "Consumer Expenditures in the New York Metropolitan Area \u2014 2023\u201324 (News Release USDL-26-0003, Published January 6, 2026)",
-    url: "https://www.bls.gov/regions/new-york-new-jersey/news-release/consumerexpenditures_newyork.htm",
+    canonicalReference: "Consumer Price Index for All Urban Consumers (CPI-U): New York-Newark-Jersey City, NY-NJ-PA",
+    url: "https://www.bls.gov/regions/new-york-new-jersey/news-release/consumerpriceindex_newyork.htm",
     jurisdiction: "New York-Newark-Jersey City Metro Area",
     reliabilityTier: "Tier 1",
-    retrievedAt: "2026-10-05",
-    effectiveDate: "2026-01-06",
+    retrievedAt: "2024-12-01",
+    effectiveDate: "2024-11-01",
     lastReviewedAt: "2026-10-05",
-    notes: "Official BLS Consumer Expenditure release reporting average annual household expenditures in the NY-NJ-PA metropolitan area. Used to derive LivWorthy per-adult modeled monthly planning benchmarks ($440 groceries, $260 dining, $320 utilities/connectivity, $160 healthcare). LivWorthy values are internally modeled planning estimates, not raw BLS line items."
+    notes: "BLS monthly Consumer Price Index (CPI-U) for the New York-Newark-Jersey City metro area. Provides regional inflation and expenditure-weight context. Superseded for NYC cost modelling by the annual Consumer Expenditure Survey release (see us-bls-cex-nyc-2026)."
   },
   "us-mta-nyc-transit-2026": {
     id: "us-mta-nyc-transit-2026",
@@ -1565,16 +1565,16 @@ var EVIDENCE_SOURCES = {
   },
   "us-nyc-childcare-benchmark": {
     id: "us-nyc-childcare-benchmark",
-    organization: "LivWorthy Planning Benchmarks & NYS OCFS Market Survey",
+    organization: "LivWorthy Planning Benchmarks informed by NYS OCFS Market Rate Survey",
     sourceType: "Modeled Planning Benchmark",
-    canonicalReference: "New York State Office of Children and Family Services (OCFS) Child Care Market Rate Survey & Local Provider Benchmark",
+    canonicalReference: "New York State Office of Children and Family Services (OCFS) Child Care Market Rate Survey \u2014 NYC Region (survey period varies by OCFS publication cycle)",
     url: "https://ocfs.ny.gov/programs/childcare/plans/market-rates.php",
     jurisdiction: "New York City",
     reliabilityTier: "Tier 2",
     retrievedAt: "2026-10-05",
-    effectiveDate: "2025-06-01",
+    effectiveDate: "2026-10-05",
     lastReviewedAt: "2026-10-05",
-    notes: "Modeled monthly planning benchmark ($1,450/month per child) for licensed toddler and preschool day care in NYC. Modeled estimate distinct from HUD housing data."
+    notes: "LivWorthy modeled monthly planning benchmark ($1,450/month per child) for licensed toddler and preschool group day care in NYC, informed by NYS OCFS Child Care Market Rate Survey benchmarks for the NYC region. Observation period reflects the most recently available OCFS survey cycle at time of review. Modeled estimate distinct from HUD housing data."
   },
   "us-mta-nyc-transit-2024": {
     id: "us-mta-nyc-transit-2024",
@@ -6188,7 +6188,7 @@ var CITY_COL_BENCHMARKS = {
       childcare: {
         statisticType: "modeled_estimate",
         sourceId: "us-nyc-childcare-benchmark",
-        observationPeriod: "2024\u20132026 planning benchmark",
+        observationPeriod: "Most recently available OCFS market rate survey cycle (reviewed 2026-10-05)",
         lastVerifiedDate: "2026-10-05",
         methodologyNote: "LivWorthy modeled planning estimate for licensed group child day care / preschool in NYC metro area. Not derived from HUD housing data.",
         unit: "monthly_per_child"
