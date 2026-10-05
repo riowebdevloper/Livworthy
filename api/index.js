@@ -1385,6 +1385,21 @@ var EVIDENCE_SOURCES = {
     verifiedBy: "Senior Financial Systems Engineer",
     notes: "NYC resident income tax rates graduated from 3.078% to 3.876% applied on NY taxable income. Rates unchanged from 2024."
   },
+  "us-hud-nyc-fmr-2026": {
+    id: "us-hud-nyc-fmr-2026",
+    organization: "U.S. Department of Housing and Urban Development (HUD)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "HUD Office of Policy Development and Research (PD&R) FY 2026 Fair Market Rents for New York, NY HUD Metro FMR Area",
+    url: "https://www.huduser.gov/portal/datasets/fmr.html",
+    jurisdiction: "New York City Metro Area",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2026-10-05",
+    effectiveDate: "2025-10-01",
+    verifiedAt: "2026-10-05",
+    lastReviewedAt: "2026-10-05",
+    verifiedBy: "Automated Statutory Verification Engine",
+    notes: "Official FY 2026 40th percentile Fair Market Rents: Studio $2,529, 1-Bed $2,655, 2-Bed $2,910, 3-Bed $3,644, 4-Bed $3,959."
+  },
   "us-hud-nyc-fmr-2024": {
     id: "us-hud-nyc-fmr-2024",
     organization: "U.S. Department of Housing and Urban Development (HUD)",
@@ -1524,6 +1539,21 @@ var EVIDENCE_SOURCES = {
     verifiedAt: "2026-01-15",
     verifiedBy: "Cost of Living Research Group",
     notes: "Metropolitan expenditure weights for groceries, utilities, healthcare, dining out, and consumer goods."
+  },
+  "us-mta-nyc-transit-2026": {
+    id: "us-mta-nyc-transit-2026",
+    organization: "Metropolitan Transportation Authority (MTA)",
+    sourceType: "Public Utility Commission",
+    canonicalReference: "MTA Subway and Bus Fare Structure & OMNY 7-Day Rolling Fare Cap (Effective January 4, 2026)",
+    url: "https://new.mta.info/fares",
+    jurisdiction: "New York City",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2026-10-05",
+    effectiveDate: "2026-01-04",
+    verifiedAt: "2026-10-05",
+    lastReviewedAt: "2026-10-05",
+    verifiedBy: "Automated Statutory Verification Engine",
+    notes: "Base subway/local bus fare $3.00, OMNY 7-day rolling fare cap $35.00 (free rides after 12 paid taps in 7-day period). Traditional MetroCard retired end of 2025. Monthly benchmark modeled as $35.00 \xD7 52 / 12 = $151.67."
   },
   "us-mta-nyc-transit-2024": {
     id: "us-mta-nyc-transit-2024",
@@ -6074,7 +6104,7 @@ var CITY_COL_BENCHMARKS = {
   // --- UNITED STATES ---
   nyc: {
     currency: "USD",
-    rentBase: { studio: 2350, "1-bedroom": 2750, "2-bedroom": 3650, "3-bedroom": 4750 },
+    rentBase: { studio: 2529, "1-bedroom": 2655, "2-bedroom": 2910, "3-bedroom": 3644 },
     groceriesPerAdult: 440,
     groceriesPerChild: 280,
     diningPerAdult: 260,
@@ -6082,15 +6112,59 @@ var CITY_COL_BENCHMARKS = {
     utilitiesPerExtraPerson: 45,
     internetMonthly: 75,
     mobilePerAdult: 65,
-    publicTransitPerAdult: 132,
+    publicTransitPerAdult: 151.67,
     carMonthlyPerVehicle: 750,
     rideshareMonthly: 120,
     healthcareSingle: 160,
     healthcareFamily: 480,
     lifestyleBasePerAdult: { essential: 110, moderate: 260, comfortable: 480 },
     childcarePerChild: 1450,
-    sourceDate: "2024-12",
-    evidenceSourceId: "us-hud-nyc-fmr-2024"
+    sourceDate: "2026-01",
+    evidenceSourceId: "us-hud-nyc-fmr-2026",
+    metadata: {
+      housing: {
+        statisticType: "fair_market_rent",
+        sourceId: "us-hud-nyc-fmr-2026",
+        observationPeriod: "FY 2026 (eff. 2025-10-01)",
+        lastVerifiedDate: "2026-10-05",
+        methodologyNote: "HUD 40th percentile Fair Market Rent for New York, NY HUD Metro FMR Area.",
+        unit: "monthly_gross_rent"
+      },
+      transit: {
+        statisticType: "official_fare",
+        sourceId: "us-mta-nyc-transit-2026",
+        observationPeriod: "Effective 2026-01-04",
+        lastVerifiedDate: "2026-10-05",
+        methodologyNote: "MTA OMNY rolling 7-day fare cap of $35.00 ($3.00 base fare, free rides after 12 taps in 7 days). Monthly benchmark modeled as $35.00 \xD7 52 / 12 = $151.67.",
+        unit: "monthly_modeled_pass",
+        baseFare: 3,
+        weeklyCap: 35
+      },
+      food: {
+        statisticType: "modeled_estimate",
+        sourceId: "us-bls-cpi-nyc-2024",
+        observationPeriod: "2023-2024 CEX / 2025-2026 CPI",
+        lastVerifiedDate: "2026-10-05",
+        methodologyNote: "BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights updated for regional CPI.",
+        unit: "monthly_per_adult"
+      },
+      utilities: {
+        statisticType: "benchmark",
+        sourceId: "us-bls-cpi-nyc-2024",
+        observationPeriod: "2024-2026",
+        lastVerifiedDate: "2026-10-05",
+        methodologyNote: "Seasonal energy, municipal water, high-speed fiber broadband ($75), and cellular ($65).",
+        unit: "monthly"
+      },
+      healthcare: {
+        statisticType: "benchmark",
+        sourceId: "us-bls-cpi-nyc-2024",
+        observationPeriod: "2024-2026",
+        lastVerifiedDate: "2026-10-05",
+        methodologyNote: "Employee payroll premium contribution and outpatient copayments.",
+        unit: "monthly"
+      }
+    }
   },
   sf: {
     currency: "USD",
@@ -6921,7 +6995,7 @@ var CostOfLivingEngine = class {
       confidence: rentIsOverridden ? "High" : "High",
       sourceDate: benchmark.sourceDate,
       evidenceSourceId: benchmark.evidenceSourceId,
-      notes: rentIsOverridden ? "Direct user override applied." : "HUD 50th Percentile Fair Market Rents and Local Vacancy Survey median."
+      notes: rentIsOverridden ? "Direct user override applied." : "HUD Fair Market Rents (FY 2026) for New York, NY HUD Metro FMR Area."
     };
     let foodMonthlyMajor = household.adults * benchmark.groceriesPerAdult + household.children * benchmark.groceriesPerChild;
     const diningMultiplier = household.lifestyleLevel === "essential" ? 0.4 : household.lifestyleLevel === "comfortable" ? 1.6 : 1;
@@ -6983,8 +7057,8 @@ var CostOfLivingEngine = class {
       annualEstimate: fromMinor(transportMinor * 12, currency),
       confidence: "High",
       sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === "nyc" ? "us-mta-nyc-transit-2024" : benchmark.evidenceSourceId,
-      notes: cityId === "nyc" ? "MTA 30-day passes or vehicle amortization, gas, insurance, and routine maintenance." : "Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance."
+      evidenceSourceId: cityId === "nyc" ? "us-mta-nyc-transit-2026" : benchmark.evidenceSourceId,
+      notes: cityId === "nyc" ? "MTA OMNY weekly fare cap ($35/week) modeled at $151.67/month or vehicle operating costs." : "Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance."
     };
     const isFamily = household.children > 0 || household.adults > 1;
     const healthcareMajor = isFamily ? benchmark.healthcareFamily : benchmark.healthcareSingle;

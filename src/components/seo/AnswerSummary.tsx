@@ -84,7 +84,7 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
         <div className="flex items-center space-x-2">
           <span className="px-2 py-0.5 bg-[#DDF2EC] text-[#0D524D] text-[11px] font-bold uppercase tracking-wider rounded">
-            AEO Direct Answer
+            Quick answer
           </span>
           <span className="text-xs text-slate-500 font-medium">Question:</span>
         </div>

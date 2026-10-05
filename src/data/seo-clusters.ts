@@ -27,7 +27,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     metaDescription:
       'See what a $100,000 salary is worth in New York City after federal, New York State and NYC taxes, rent, living costs and monthly savings.',
     directAnswer:
-      'Yes, $100,000 is a viable, respectable salary for a single professional in New York City, placing you above the citywide individual median worker income (~$65,000). However, because New York City levies three layers of statutory personal income tax (Federal, New York State, and NYC Resident Tax) plus FICA payroll taxes, net take-home pay is roughly $5,862 per month. If living alone in a median 1-bedroom apartment, housing and living expenses consume most of your paycheck, leaving moderate discretionary savings.',
+      'Yes, $100,000 is a viable, respectable salary for a single professional in New York City, placing you above the citywide individual median worker income (~$65,000). However, because New York City residents pay four distinct statutory withholdings (Federal income tax, New York State income tax, NYC Resident Tax, and FICA payroll taxes), net take-home pay is $5,907 per month ($70,879 annually). Renting independently at the HUD Fair Market Rent benchmark ($2,655) leaves $1,660 monthly for uncommitted savings, emergency funds, and discretionary spending.',
     sections: [
       {
         id: 'verdict',
@@ -42,14 +42,14 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         h2: 'How much is $100K after tax in NYC?',
         paragraphs: [
           'New York City residents face one of the highest cumulative statutory tax burdens in the United States. Unlike most US cities, NYC levies its own municipal resident personal income tax in addition to New York State income tax and Federal taxes.',
-          'Under current statutory brackets, a single filer claiming the standard deduction pays approximately 29.7% in total statutory deductions, comprising Federal Income Tax (~13.6%), FICA Social Security & Medicare (7.65%), New York State Tax (~4.95%), and NYC Local Resident Tax (~3.44%).',
+          'Under 2026 statutory brackets, a single filer claiming the standard deduction ($16,100) pays approximately 29.1% in total statutory deductions, comprising Federal Income Tax (~12.8%), FICA Social Security & Medicare (7.65%), New York State Tax (~5.0%), and NYC Local Resident Tax (~3.7%).',
         ],
       },
       {
         id: 'monthly-take-home',
         h2: 'What is $100K per month after tax?',
         paragraphs: [
-          'Divided across 12 calendar months, a $100,000 gross salary yields approximately $5,862 in monthly net take-home pay (or roughly $2,705 bi-weekly).',
+          'Divided across 12 calendar months, a $100,000 gross salary yields approximately $5,907 in monthly net take-home pay (or roughly $2,726 bi-weekly across 26 annual pay periods).',
           'This monthly net figure serves as the deterministic ceiling for your housing, MTA transit pass, groceries, utilities, healthcare, student loans, and retirement savings contributions.',
         ],
       },
@@ -65,19 +65,19 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'monthly-budget',
         h2: 'Example monthly budget on $100K in NYC',
         paragraphs: [
-          'Here is a realistic expenditure model for a single professional renting an independent 1-bedroom apartment in a typical NYC neighborhood:',
+          'Here is the verified expenditure model for a single professional renting an independent 1-bedroom apartment in New York City under latest verified 2026 benchmarks:',
         ],
         table: {
           headers: ['Budget Category', 'Monthly Amount', '% of Net Take-Home'],
           rows: [
-            ['Net Take-Home Pay', '$5,862', '100.0%'],
-            ['Rent (1-Bed / Studio Outer Borough)', '$2,350', '40.1%'],
-            ['Utilities, Internet & Mobile', '$240', '4.1%'],
-            ['Groceries & Household Essentials', '$550', '9.4%'],
-            ['MTA 30-Day Unlimited Transit', '$132', '2.3%'],
-            ['Dining Out, Social & Entertainment', '$650', '11.1%'],
-            ['Healthcare, Gym & Personal Care', '$250', '4.3%'],
-            ['Discretionary Savings / Investments / Buffer', '$1,690', '28.8%'],
+            ['Net Take-Home Pay', '$5,907', '100.0%'],
+            ['Rent (HUD 1-Bed FMR Benchmark)', '$2,655', '45.0%'],
+            ['Utilities, Internet & Mobile', '$320', '5.4%'],
+            ['Groceries & Household Essentials', '$440', '7.4%'],
+            ['Dining Out, Social & Entertainment', '$260', '4.4%'],
+            ['MTA OMNY Fare-Capped Transit ($35/wk cap)', '$152', '2.6%'],
+            ['Healthcare & Personal Care', '$160', '2.7%'],
+            ['Discretionary Savings / Investments / Buffer', '$1,660', '28.1%'],
           ],
         },
       },
@@ -100,7 +100,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'savings-potential',
         h2: 'How much can you save on $100K in NYC?',
         paragraphs: [
-          'A disciplined saver sharing an apartment ($1,400 rent share) can comfortably save $2,200 to $2,600 monthly (over $25,000 annually). Living alone in a $2,350 apartment leaves approximately $1,500 to $1,700 per month for 401(k), IRA, and emergency fund contributions.',
+          'A disciplined saver sharing an apartment ($1,400 rent share) can save over $2,400 monthly (nearly $30,000 annually). Living alone in a $2,655 Fair Market Rent apartment leaves approximately $1,660 per month for 401(k), IRA, and emergency fund contributions.',
         ],
       },
       {
@@ -127,7 +127,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       {
         question: 'What is the monthly take-home on $100K in NYC?',
         answer:
-          'Under current statutory tax rates (Federal, New York State, and NYC Resident Income Tax plus FICA), a single person earning $100,000 takes home approximately $5,862 per month ($70,343 annually).',
+          'Under 2026 statutory tax schedules (Federal, New York State, and NYC Resident Income Tax plus FICA), a single person earning $100,000 takes home approximately $5,907 per month ($70,879 annually), representing an effective tax rate of 29.1%.',
       },
       {
         question: 'Can you live alone in NYC on $100K?',
@@ -301,11 +301,11 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       'NYC salary after tax 2026',
     ],
     seoTitle: 'NYC Salary After Tax Calculator 2026 | LivWorthy',
-    h1: 'New York City Salary After Tax',
+    h1: 'NYC Salary After Tax Calculator 2026',
     metaDescription:
       'Calculate your NYC take-home pay after federal tax, New York State tax, NYC resident tax and payroll taxes, with current rule-version evidence.',
     directAnswer:
-      'Living in New York City entails three distinct layers of statutory personal income taxation: Federal income tax, New York State income tax, and the NYC resident municipal income tax, plus mandatory FICA contributions (Social Security and Medicare). For example, a $100,000 gross salary results in approximately $70,343 in annual net take-home pay ($5,862/month), reflecting a combined effective tax rate of 29.7%.',
+      'For a single filer earning a $100,000 gross salary in 2026, estimated annual net take-home pay is $70,879 ($5,907/month, $2,726 biweekly), with a combined effective tax rate of 29.1% across federal income tax, New York State tax, NYC resident tax, and mandatory FICA payroll contributions (Social Security and Medicare).',
     sections: [
       {
         id: 'calculate',
@@ -321,10 +321,10 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
           'An employee residing in the five boroughs of New York City (Manhattan, Brooklyn, Queens, Bronx, Staten Island) is subject to four separate statutory withholdings:',
         ],
         subsections: [
-          { h3: '1. Federal Income Tax', content: 'Progressive federal brackets ranging from 10% to 37% after standard deductions ($15,000 for single filers).' },
-          { h3: '2. New York State Income Tax', content: 'Progressive state rates ranging from 4.0% to 10.9% administered by the NYS Department of Taxation and Finance.' },
-          { h3: '3. NYC Resident Income Tax', content: 'A dedicated municipal tax levied exclusively on NYC residents ranging from 3.078% to 3.876%.' },
-          { h3: '4. FICA Payroll Taxes', content: 'Mandatory federal social insurance: 6.2% Social Security (capped at statutory wage base) + 1.45% Medicare.' },
+          { h3: '1. Federal Income Tax', content: 'Progressive federal brackets ranging from 10% to 37% after standard deductions ($16,100 for single filers in 2026 under IRS Rev. Proc. 2025-32).' },
+          { h3: '2. New York State Income Tax', content: 'Progressive state rates ranging from 3.90% to 10.90% administered by the NYS Department of Taxation and Finance, including high-income recapture worksheets.' },
+          { h3: '3. NYC Resident Income Tax', content: 'A dedicated municipal tax levied exclusively on NYC residents ranging from 3.078% to 3.876% (NYC Admin Code § 11-1701).' },
+          { h3: '4. FICA Payroll Taxes', content: 'Mandatory federal social insurance: 6.2% Social Security (capped at the $184,500 wage base for 2026) + 1.45% Medicare (plus 0.9% Additional Medicare above $200k).' },
         ],
       },
       {
@@ -345,7 +345,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'take-home-vs-col',
         h2: 'Take-home pay vs living costs in NYC',
         paragraphs: [
-          'Knowing your net take-home pay is only half the financial equation. With baseline single-person living costs in NYC averaging $4,100 to $4,500 per month (including rent), a gross salary below $75,000 leaves narrow room for savings unless housing is shared.',
+          'Knowing your net take-home pay is only half the financial equation. With baseline single-person living costs in NYC averaging approximately $4,247 per month (including 1-bedroom HUD Fair Market Rent of $2,655), a gross salary below $75,000 leaves narrow room for savings unless housing is shared.',
         ],
       },
       {
@@ -359,7 +359,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     faq: [
       { question: 'What is the NYC local resident tax rate?', answer: 'The New York City resident income tax rate ranges progressively from 3.078% to 3.876% depending on taxable income.' },
       { question: 'Do I pay NYC tax if I work in NYC but live in New Jersey?', answer: 'No. The NYC personal income tax applies only to residents of the five boroughs. Non-residents working in NYC are not subject to the NYC resident income tax, though they pay NY State non-resident tax.' },
-      { question: 'What is take-home pay on $75,000 in NYC?', answer: 'On $75,000, a single filer takes home approximately $54,300 annually or about $4,525 per month after federal, NY state, NYC local, and FICA taxes.' },
+      { question: 'What is take-home pay on $75,000 in NYC?', answer: 'On $75,000 gross salary in 2026, a single NYC resident takes home approximately $55,439 annually or $4,620 per month after federal, NY state, NYC local, and FICA taxes (effective tax rate of 26.1%).' },
       { question: 'How much is taken out of a paycheck in NYC?', answer: 'Depending on income bracket, between 25% and 38% of your gross paycheck is withheld for federal, state, city, and FICA taxes.' },
       { question: 'Does NYC have a commuter tax?', answer: 'No. The NYC commuter tax on non-residents was repealed in 1999 and has not been reinstated.' },
     ],
@@ -367,8 +367,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', description: 'Analyze lifestyle and purchasing power on $100K.', category: 'guide' },
       { title: 'Is $150K a Good Salary in NYC?', url: '/guides/nyc-150k', description: 'Analyze purchasing power on $150K.', category: 'guide' },
       { title: 'Salary Needed to Live in NYC', url: '/salary-needed/new-york', description: 'Calculate gross compensation required for your target savings.', category: 'tool' },
-      { title: 'Cost of Living in New York City', url: '/cost-of-living/new-york', description: 'Explore rent, food, transit, and household expenditure.', category: 'city' },
-      { title: 'NYC vs London Cost of Living', url: '/compare/new-york-vs-london', description: 'Compare NYC taxes with UK PAYE and NI.', category: 'comparison' },
+      { title: 'NYC Cost of Living', url: '/cost-of-living/new-york', description: 'Explore rent, food, transit, and household expenditure.', category: 'city' },
+      { title: 'NYC vs London Salary Comparison', url: '/compare/new-york-vs-london', description: 'Compare NYC taxes with UK PAYE and NI.', category: 'comparison' },
+      { title: 'NYC vs Dubai Salary Comparison', url: '/compare/new-york-vs-dubai', description: 'Compare NYC with zero-tax Dubai compensation.', category: 'comparison' },
     ],
     capabilityRequirements: { tax: true, col: true },
   },
@@ -473,7 +474,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     metaDescription:
       'Explore NYC living costs for rent, food, transportation, utilities, healthcare and household expenses, with salary and savings context.',
     directAnswer:
-      'The estimated monthly cost of living for a single adult in New York City is approximately $4,322 per month ($51,864 annually) including a typical 1-bedroom apartment, utilities, groceries, MTA transit pass, and moderate personal spending. For a family of four, monthly living costs average roughly $8,650 per month ($103,800 annually). Housing represents 55% to 65% of total baseline living expenses.',
+      'The estimated monthly cost of living for a single adult in New York City is approximately $4,247 per month ($50,960 annually), including HUD FY 2026 Fair Market Rent ($2,655 for a 1-bedroom), utilities ($320), food and groceries ($700), MTA OMNY fare-capped transit ($151.67 modeled benchmark), healthcare ($160), and baseline personal expenses. For a couple sharing a 1-bedroom, modeled expenses total approximately $5,788 per month ($69,456 annually). For a family of four in a 2-bedroom ($2,910 FMR), modeled costs total roughly $9,593 per month ($115,120 annually). Housing represents 50% to 62% of baseline expenses.',
     sections: [
       {
         id: 'overview',
@@ -486,7 +487,8 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'housing-rent',
         h2: 'Housing and rent in New York City',
         paragraphs: [
-          'Rent is overwhelmingly the primary cost driver in NYC. Median rents vary drastically across boroughs and neighborhoods: Manhattan median 1-bedroom: ~$4,200; Brooklyn: ~$3,200; Queens: ~$2,400; Bronx: ~$1,950; Staten Island: ~$1,800.',
+          'Rent is overwhelmingly the primary cost driver in NYC. Under HUD\'s FY 2026 Fair Market Rents for the New York, NY HUD Metro FMR Area (effective Oct 1, 2025), official 40th percentile benchmarks are: Studio: $2,529; 1-Bedroom: $2,655; 2-Bedroom: $2,910; 3-Bedroom: $3,644.',
+          'Rents vary significantly across the five boroughs: prime Manhattan neighborhoods command higher premiums, while Brooklyn, Queens, and the Bronx offer options closer to the regional baseline.',
         ],
       },
       {
@@ -496,10 +498,10 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
           'Beyond housing, NYC baseline living costs include:',
         ],
         subsections: [
-          { h3: 'Food & Groceries', content: 'A single adult spends roughly $550–$750/month on groceries and dining. NYC supermarket prices average 25% above the national median.' },
-          { h3: 'Public Transportation', content: 'The MTA 30-Day Unlimited Ride MetroCard / OMNY fare is $132/month, providing unlimited subway and local bus travel without car maintenance or parking costs.' },
-          { h3: 'Utilities & Internet', content: 'Electricity (ConEdison), heating, cooking gas, and high-speed internet average $220–$280/month for a 1-bedroom apartment.' },
-          { h3: 'Healthcare & Wellness', content: 'Health insurance premiums and routine care average $200–$350/month for an individual with employer-sponsored coverage.' },
+          { h3: 'Food & Groceries', content: 'A single adult spends roughly $700/month on groceries ($440) and dining out ($260) based on BLS metropolitan expenditure benchmarks.' },
+          { h3: 'Public Transportation', content: 'The MTA subway and bus network utilizes the OMNY contactless system with a $3.00 base fare and a rolling 7-day fare cap of $35.00 (rides 13+ are free within a 7-day period). The modeled monthly transit benchmark is $151.67/month ($35 × 52 / 12), providing unlimited travel across the 5 boroughs without automobile expenses.' },
+          { h3: 'Utilities & Internet', content: 'Electricity, heating, cooking gas, high-speed fiber internet ($75), and mobile service ($65) average $320/month for an individual in a 1-bedroom apartment.' },
+          { h3: 'Healthcare & Wellness', content: 'Baseline employee health insurance payroll contributions and routine care average $160/month for an individual ($480/month for a family).' },
         ],
       },
       {
@@ -511,9 +513,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         table: {
           headers: ['Household Profile', 'Monthly Rent', 'Other Expenses', 'Total Monthly Cost', 'Gross Salary Needed'],
           rows: [
-            ['Single Adult (1-Bed)', '$2,350', '$1,972', '$4,322', '~$89,300'],
-            ['Couple (1-Bed Shared)', '$2,650', '$2,980', '$5,630', '~$118,000'],
-            ['Family of 4 (2-Bed)', '$3,850', '$4,800', '$8,650', '~$195,000'],
+            ['Single Adult (1-Bed)', '$2,655', '$1,592', '$4,247', '~$88,500'],
+            ['Couple (1-Bed Shared)', '$2,655', '$3,133', '$5,788', '~$122,000'],
+            ['Family of 4 (2-Bed)', '$2,910', '$6,683', '$9,593', '~$210,000'],
           ],
         },
       },
@@ -528,14 +530,14 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and sources',
         paragraphs: [
-          'Living cost benchmarks are modeled from official municipal rent surveys, BLS Consumer Expenditure Surveys, and verified consumer price tracking datasets.',
+          'Living cost benchmarks are modeled from official municipal rent surveys (HUD FY 2026 Fair Market Rents), MTA 2026 fare schedules, and BLS Consumer Expenditure Surveys updated for regional CPI.',
         ],
       },
     ],
     faq: [
-      { question: 'What is the average monthly cost of living in NYC for one person?', answer: 'The average monthly living cost for a single adult living independently in NYC is approximately $4,322 including rent, utilities, food, transit, and healthcare.' },
+      { question: 'What is the average monthly cost of living in NYC for one person?', answer: 'The monthly living cost benchmark for a single adult living independently in NYC is approximately $4,247 including 1-bedroom HUD Fair Market Rent ($2,655), utilities ($320), food ($700), MTA transit ($151.67), healthcare ($160), and personal essentials.' },
       { question: 'Is New York City more expensive than London?', answer: 'Yes. Overall cost of living in NYC is approximately 20% to 25% higher than in London, particularly for rent, healthcare, and dining out.' },
-      { question: 'How much do groceries cost per month in NYC?', answer: 'A single adult typically spends between $500 and $700 per month on groceries in New York City.' },
+      { question: 'How much do groceries cost per month in NYC?', answer: 'A single adult typically spends between $440 (groceries at home) and $700 (including dining out) per month in New York City based on BLS consumer benchmarks.' },
       { question: 'Do you need a car in New York City?', answer: 'No. The majority of NYC residents in Manhattan, Brooklyn, and Queens rely entirely on the 24/7 MTA subway and bus network. Owning a car in NYC adds $500–$1,000/month in parking and insurance costs.' },
       { question: 'What is the cheapest borough to live in NYC?', answer: 'The Bronx and Staten Island offer the lowest median rents, followed by eastern Queens and outer Brooklyn neighborhoods.' },
     ],
@@ -595,7 +597,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'transportation-healthcare',
         h2: 'Transportation and healthcare',
         paragraphs: [
-          'Transit: NYC\'s MTA subway offers flat-fare 24/7 transit for $132/month. London\'s TfL underground is zoned, with a Zone 1–2 monthly travelcard costing approximately £160–£180 ($200–$230).',
+          'Transit: NYC\'s MTA subway offers flat-fare 24/7 transit with an OMNY 7-day rolling cap of $35.00 ($151.67/month modeled benchmark at $3.00/ride). London\'s TfL underground is zoned, with a Zone 1–2 monthly travelcard costing approximately £160–£185 ($200–$235).',
           'Healthcare: In London, the National Health Service (NHS) provides comprehensive care free at the point of delivery, with nominal prescription charges. In NYC, employees rely on employer-sponsored health insurance with monthly premiums, copays, deductibles, and out-of-pocket maximums.',
         ],
       },
@@ -610,7 +612,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and sources',
         paragraphs: [
-          'Calculations compare deterministic statutory tax models in both jurisdictions using live exchange rate snapshots. Housing and expenditure figures reflect verified 2026 data.',
+          'Calculations compare deterministic statutory tax models in both jurisdictions using a deterministic benchmark exchange rate snapshot (dated 2026-01-01). Housing and expenditure figures reflect verified authoritative benchmarks per category, including HUD FY 2026 Fair Market Rents and MTA 2026 fare schedules.',
         ],
       },
     ],
@@ -622,11 +624,12 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       { question: 'Is healthcare free in London for expats?', answer: 'UK residents and visa holders who pay the Immigration Health Surcharge (IHS) have full access to NHS hospital and GP care without insurance deductibles.' },
     ],
     relatedLinks: [
+      { title: 'NYC Salary After Tax Calculator', url: '/salary-after-tax/new-york', description: 'Interactive take-home pay calculator across all NYC income tiers.', category: 'tool' },
       { title: 'NYC Cost of Living Guide', url: '/cost-of-living/new-york', description: 'Detailed breakdown of New York City living costs.', category: 'city' },
       { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', description: 'Analyze the $100,000 benchmark in New York City.', category: 'guide' },
       { title: 'Is £75K a Good Salary in London?', url: '/guides/london-75k', description: 'Analyze the £75,000 benchmark in London.', category: 'guide' },
       { title: 'London Salary After Tax Calculator', url: '/salary-after-tax/london', description: 'Calculate take-home pay under UK PAYE.', category: 'tool' },
-      { title: 'NYC vs Dubai Salary Comparison', url: '/compare/new-york-vs-dubai', description: 'Compare NYC with zero-tax Dubai.', category: 'comparison' },
+      { title: 'NYC vs Dubai Salary Comparison', url: '/compare/new-york-vs-dubai', description: 'Compare NYC with zero-tax Dubai compensation.', category: 'comparison' },
     ],
     capabilityRequirements: { tax: true, col: true, comparison: true },
   },

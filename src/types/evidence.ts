@@ -12,6 +12,7 @@ export interface EvidenceSource {
   effectiveDate: string;
   verifiedAt: string;
   verifiedBy: string;
+  lastReviewedAt?: string;
   notes: string;
 }
 

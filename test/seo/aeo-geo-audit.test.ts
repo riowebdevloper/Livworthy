@@ -85,7 +85,9 @@ function runAuditTests() {
   const sampleGuidePath = path.join(distDir, 'guides/nyc-100k/index.html');
   assert(fs.existsSync(sampleGuidePath), 'Sample guide nyc-100k must exist');
   const guideHtml = fs.readFileSync(sampleGuidePath, 'utf-8');
-  assert(guideHtml.includes('AEO Direct Answer & Verdict'), 'Guide includes AEO Direct Answer header');
+  assert(guideHtml.includes('Quick answer'), 'Guide includes Quick answer direct answer header');
+  assert(!guideHtml.includes('AEO Direct Answer & Verdict'), 'Guide has no visible AEO Direct Answer label');
+  assert(!guideHtml.includes('Passage Optimized'), 'Guide has no visible Passage Optimized label');
   assert(guideHtml.includes('<table'), 'Guide includes semantic fact table');
   assert(guideHtml.includes('Gross Annual Salary'), 'Guide fact table includes Gross Annual Salary');
   assert(guideHtml.includes('application/ld+json'), 'Guide includes JSON-LD');

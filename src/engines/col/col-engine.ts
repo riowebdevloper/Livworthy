@@ -58,7 +58,7 @@ export class CostOfLivingEngine {
       evidenceSourceId: benchmark.evidenceSourceId,
       notes: rentIsOverridden
         ? 'Direct user override applied.'
-        : 'HUD 50th Percentile Fair Market Rents and Local Vacancy Survey median.',
+        : 'HUD Fair Market Rents (FY 2026) for New York, NY HUD Metro FMR Area.',
     };
 
     // 2. Food & Groceries
@@ -147,8 +147,8 @@ export class CostOfLivingEngine {
       annualEstimate: fromMinor(transportMinor * 12, currency),
       confidence: 'High',
       sourceDate: benchmark.sourceDate,
-      evidenceSourceId: cityId === 'nyc' ? 'us-mta-nyc-transit-2024' : benchmark.evidenceSourceId,
-      notes: cityId === 'nyc' ? 'MTA 30-day passes or vehicle amortization, gas, insurance, and routine maintenance.' : 'Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance.',
+      evidenceSourceId: cityId === 'nyc' ? 'us-mta-nyc-transit-2026' : benchmark.evidenceSourceId,
+      notes: cityId === 'nyc' ? 'MTA OMNY weekly fare cap ($35/week) modeled at $151.67/month or vehicle operating costs.' : 'Metropolitan transit agency passes, vehicle operating costs, fuel, and routine maintenance.',
     };
 
     // 5. Healthcare

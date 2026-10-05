@@ -940,7 +940,7 @@ export function runSeoGenerator() {
         <!-- AEO Direct Answer Block -->
         <section aria-label="Direct Financial Answer & Verdict" class="mt-6 p-6 sm:p-7 bg-white border-l-4 border-l-teal-600 border border-slate-200 rounded-2xl shadow-xs space-y-4">
           <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-teal-700">AEO Direct Answer & Verdict</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Quick answer</span>
             <span class="text-xs text-slate-500">${cap.hasDedicatedTaxAdapter ? `Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR} / Deterministic Statutory Model` : 'Cost of Living Benchmark / Statutory Tax Schedules Under Verification'}</span>
           </div>
           <p class="text-base text-slate-900 leading-relaxed font-semibold">
@@ -1757,8 +1757,9 @@ function renderPageHtml(
   }
 
   // For static institutional and SEO pages, strip the SPA module script bundle
-  // so the React calculator does not load or overwrite the pre-rendered content.
-  if (!isHomepage) {
+  // unless the page contains an interactive island (e.g. /salary-after-tax/new-york).
+  const isInteractivePage = isHomepage || page.canonicalUrl.endsWith('/salary-after-tax/new-york');
+  if (!isInteractivePage) {
     html = html.replace(/<script\s+type="module"[^>]*>.*?<\/script>\s*/gi, '');
   }
 

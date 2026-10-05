@@ -1,6 +1,25 @@
 import { CurrencyCode } from '../types/money';
 import { HousingType } from '../types/col';
 
+export type ColStatisticType =
+  | 'median'
+  | 'fair_market_rent'
+  | 'modeled_estimate'
+  | 'official_fare'
+  | 'benchmark'
+  | 'household_estimate';
+
+export interface ColCategoryMetadata {
+  statisticType: ColStatisticType;
+  sourceId: string;
+  observationPeriod: string;
+  lastVerifiedDate: string;
+  methodologyNote: string;
+  unit: string;
+  baseFare?: number;
+  weeklyCap?: number;
+}
+
 export interface CityColBenchmark {
   currency: CurrencyCode;
   rentBase: Record<HousingType, number>; // monthly in major currency
@@ -24,13 +43,22 @@ export interface CityColBenchmark {
   childcarePerChild: number;
   sourceDate: string;
   evidenceSourceId: string;
+  metadata?: {
+    housing?: ColCategoryMetadata;
+    transit?: ColCategoryMetadata;
+    food?: ColCategoryMetadata;
+    utilities?: ColCategoryMetadata;
+    healthcare?: ColCategoryMetadata;
+    childcare?: ColCategoryMetadata;
+    lifestyle?: ColCategoryMetadata;
+  };
 }
 
 export const CITY_COL_BENCHMARKS: Record<string, CityColBenchmark> = {
   // --- UNITED STATES ---
   nyc: {
     currency: 'USD',
-    rentBase: { studio: 2350, '1-bedroom': 2750, '2-bedroom': 3650, '3-bedroom': 4750 },
+    rentBase: { studio: 2529, '1-bedroom': 2655, '2-bedroom': 2910, '3-bedroom': 3644 },
     groceriesPerAdult: 440,
     groceriesPerChild: 280,
     diningPerAdult: 260,
@@ -38,15 +66,59 @@ export const CITY_COL_BENCHMARKS: Record<string, CityColBenchmark> = {
     utilitiesPerExtraPerson: 45,
     internetMonthly: 75,
     mobilePerAdult: 65,
-    publicTransitPerAdult: 132,
+    publicTransitPerAdult: 151.67,
     carMonthlyPerVehicle: 750,
     rideshareMonthly: 120,
     healthcareSingle: 160,
     healthcareFamily: 480,
     lifestyleBasePerAdult: { essential: 110, moderate: 260, comfortable: 480 },
     childcarePerChild: 1450,
-    sourceDate: '2024-12',
-    evidenceSourceId: 'us-hud-nyc-fmr-2024',
+    sourceDate: '2026-01',
+    evidenceSourceId: 'us-hud-nyc-fmr-2026',
+    metadata: {
+      housing: {
+        statisticType: 'fair_market_rent',
+        sourceId: 'us-hud-nyc-fmr-2026',
+        observationPeriod: 'FY 2026 (eff. 2025-10-01)',
+        lastVerifiedDate: '2026-10-05',
+        methodologyNote: 'HUD 40th percentile Fair Market Rent for New York, NY HUD Metro FMR Area.',
+        unit: 'monthly_gross_rent',
+      },
+      transit: {
+        statisticType: 'official_fare',
+        sourceId: 'us-mta-nyc-transit-2026',
+        observationPeriod: 'Effective 2026-01-04',
+        lastVerifiedDate: '2026-10-05',
+        methodologyNote: 'MTA OMNY rolling 7-day fare cap of $35.00 ($3.00 base fare, free rides after 12 taps in 7 days). Monthly benchmark modeled as $35.00 × 52 / 12 = $151.67.',
+        unit: 'monthly_modeled_pass',
+        baseFare: 3.00,
+        weeklyCap: 35.00,
+      },
+      food: {
+        statisticType: 'modeled_estimate',
+        sourceId: 'us-bls-cpi-nyc-2024',
+        observationPeriod: '2023-2024 CEX / 2025-2026 CPI',
+        lastVerifiedDate: '2026-10-05',
+        methodologyNote: 'BLS Consumer Expenditure Survey metropolitan food-at-home and food-away weights updated for regional CPI.',
+        unit: 'monthly_per_adult',
+      },
+      utilities: {
+        statisticType: 'benchmark',
+        sourceId: 'us-bls-cpi-nyc-2024',
+        observationPeriod: '2024-2026',
+        lastVerifiedDate: '2026-10-05',
+        methodologyNote: 'Seasonal energy, municipal water, high-speed fiber broadband ($75), and cellular ($65).',
+        unit: 'monthly',
+      },
+      healthcare: {
+        statisticType: 'benchmark',
+        sourceId: 'us-bls-cpi-nyc-2024',
+        observationPeriod: '2024-2026',
+        lastVerifiedDate: '2026-10-05',
+        methodologyNote: 'Employee payroll premium contribution and outpatient copayments.',
+        unit: 'monthly',
+      },
+    },
   },
   sf: {
     currency: 'USD',

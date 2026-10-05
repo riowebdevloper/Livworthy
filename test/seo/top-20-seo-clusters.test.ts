@@ -132,7 +132,10 @@ export function runTop20SeoTests() {
     assert(html.includes('/corrections'), `[Corrections Policy Link] ${slug} links to corrections policy`);
 
     // Related internal linking grid
-    assert(html.includes('Related Intelligence in This Cluster'), `[Cluster Grid] ${slug} contains related links grid`);
+    assert(
+      html.includes('Related Financial Guides &amp; Calculators') || html.includes('Related Financial Guides & Calculators') || html.includes('Related Intelligence in This Cluster'),
+      `[Cluster Grid] ${slug} contains related links grid`
+    );
 
     // FAQ schema alignment: if FAQ schema is present, questions must be visibly in HTML
     if (html.includes('"@type": "FAQPage"')) {

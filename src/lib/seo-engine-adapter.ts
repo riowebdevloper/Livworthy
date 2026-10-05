@@ -104,6 +104,7 @@ export interface ComparisonComputedData {
   result: ComparisonResult;
   fxRateUsed: number;
   fxDate: string;
+  evidenceSourceIds: string[];
 }
 
 // Validated benchmark exchange rate snapshot for deterministic SSR prerendering
@@ -118,7 +119,8 @@ const BENCHMARK_FX_SNAPSHOT = {
     SGD: 1.34,
   },
   providerTimestamp: '2026-01-01T00:00:00Z',
-  status: 'CURRENT',
+  status: 'BENCHMARK_SNAPSHOT',
+  label: 'Benchmark exchange rate snapshot (as of 2026-01-01)',
 };
 
 export class SeoEngineAdapter {
@@ -452,6 +454,15 @@ export class SeoEngineAdapter {
     const ratesMap = BENCHMARK_FX_SNAPSHOT.rates as Record<string, number>;
     const fxRateUsed = ratesMap[cityB.currency] || 1.0;
 
+    const evidenceSourceIds = Array.from(
+      new Set([
+        ...(result.outcomeA.evidenceSourceIds || []),
+        ...(result.outcomeA.costOfLiving?.evidenceSourceIds || []),
+        ...(result.outcomeB.evidenceSourceIds || []),
+        ...(result.outcomeB.costOfLiving?.evidenceSourceIds || []),
+      ])
+    );
+
     return {
       slug,
       cityAId: cityA.id,
@@ -464,6 +475,7 @@ export class SeoEngineAdapter {
       result,
       fxRateUsed,
       fxDate: BENCHMARK_FX_SNAPSHOT.providerTimestamp,
+      evidenceSourceIds,
     };
   }
 }
