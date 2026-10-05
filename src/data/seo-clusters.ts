@@ -813,7 +813,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and sources',
         paragraphs: [
-          'Calculated deterministically using HMRC PAYE tax bands and National Insurance tables for the 2026/2026 tax year. Cost of living data benchmarked from Greater London Authority and verified rental indices.',
+          'Calculated deterministically using HMRC PAYE tax bands and National Insurance tables for the 2026 tax year. Cost of living data benchmarked from Greater London Authority and verified rental indices.',
         ],
       },
     ],
@@ -921,7 +921,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and sources',
         paragraphs: [
-          'Calculated using authoritative HMRC statutory tax tables for the 2026/2026 tax year with single filer status.',
+          'Calculated using authoritative HMRC statutory tax tables for the 2026 tax year with single filer status.',
         ],
       },
     ],
@@ -986,7 +986,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'salary-table',
         h2: 'Example salary scenarios after tax in London',
         paragraphs: [
-          'Here is the verified take-home pay across standard UK compensation tiers for the 2026/2026 tax year:',
+          'Here is the verified take-home pay across standard UK compensation tiers for the 2026 tax year:',
         ],
       },
       {
@@ -1477,7 +1477,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and sources',
         paragraphs: [
-          'Calculated using Canada Revenue Agency (CRA) 2026/2026 payroll deduction formulas, Ontario provincial tax brackets, and verified CMHC rental market surveys.',
+          'Calculated using Canada Revenue Agency (CRA) 2026 payroll deduction formulas, Ontario provincial tax brackets, and verified CMHC rental market surveys.',
         ],
       },
     ],
@@ -1486,7 +1486,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       { question: 'Is CA$100K enough to buy a house in Toronto?', answer: 'On a single CA$100K income, buying a detached house in Toronto is out of reach (average price over CA$1.3M). However, buying a 1-bedroom condo ($500k–$600k) is feasible with a substantial deposit.' },
       { question: 'How much rent can you afford on CA$100K in Toronto?', answer: 'Under the standard 30% to 40% housing guideline, you can comfortably spend up to CA$2,400–CA$2,500 per month on rent.' },
       { question: 'What is the median individual income in Toronto?', answer: 'The median individual full-time employment income in the Toronto census metropolitan area is approximately CA$58,000.' },
-      { question: 'What are CPP and EI deductions in Ontario?', answer: 'In 2026/2026, employees contribute 5.95% to the Canada Pension Plan (up to the YMPE cap) plus CPP2 enhancement, and 1.63% to Employment Insurance (up to the annual cap).' },
+      { question: 'What are CPP and EI deductions in Ontario?', answer: 'In 2026, employees contribute 5.95% to the Canada Pension Plan (up to the YMPE cap) plus CPP2 enhancement, and 1.63% to Employment Insurance (up to the annual cap).' },
     ],
     relatedLinks: [
       { title: 'Toronto City Intelligence Hub', url: '/cities/toronto', description: 'Explore Toronto taxes, COL, and living benchmarks.', category: 'city' },
@@ -1883,7 +1883,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and sources',
         paragraphs: [
-          'Calculated using German Federal Ministry of Finance (BMF) statutory tax algorithms and statutory social insurance contribution ceilings for 2026/2026.',
+          'Calculated using German Federal Ministry of Finance (BMF) statutory tax algorithms and statutory social insurance contribution ceilings for 2026.',
         ],
       },
     ],

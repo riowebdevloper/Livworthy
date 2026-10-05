@@ -46,6 +46,8 @@ export interface ColOverrides {
   actualTransportMonthlyMinor?: number;
 }
 
+export type DataFreshnessStatus = 'CURRENT' | 'AGING' | 'STALE' | 'UNKNOWN';
+
 export interface CostOfLivingResult {
   monthlyTotal: Money;
   annualTotal: Money;
@@ -58,5 +60,7 @@ export interface CostOfLivingResult {
   confidenceScore: 'High-confidence estimate' | 'Moderate data coverage' | 'Limited local data';
   evidenceSourceIds: string[];
   datasetVersion: string;
+  benchmarkSourceDate: string;
+  dataFreshness: DataFreshnessStatus;
   assumptionsSummary: string;
 }
