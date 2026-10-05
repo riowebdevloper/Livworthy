@@ -438,7 +438,7 @@ async function runRegressionSuite() {
   const distRobots = fs.readFileSync(path.join(distDir, 'robots.txt'), 'utf-8');
   assert(distRobots.includes('User-agent: *'), 'dist/robots.txt must configure User-agent: *');
   assert(distRobots.includes('Disallow: /api/'), 'dist/robots.txt must disallow /api/');
-  assert(distRobots.includes('Disallow: /admin/'), 'dist/robots.txt must disallow /admin/');
+  assert(/^Disallow:\\s*\\/admin\\s*$/m.test(distRobots), 'dist/robots.txt must disallow /admin (covering exact route and descendants)');
   assert(distRobots.includes('Disallow: /test/'), 'dist/robots.txt must disallow /test/');
   assert(distRobots.includes('Sitemap: https://www.livworthy.com/sitemap.xml'), 'dist/robots.txt points to sitemap.xml');
   assert(!distRobots.includes('User-agent: Googlebot\nAllow: /'), 'dist/robots.txt must not contain a bot-specific group that bypasses disallows');
