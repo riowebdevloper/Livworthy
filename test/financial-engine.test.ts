@@ -51,6 +51,28 @@ function runTests() {
   assert(Math.abs(toMajor(tax2024.federalTax) - 13841) <= 1, `2024 Federal tax should be ~$13,841 (actual: $${toMajor(tax2024.federalTax)})`);
   assert(Math.abs(toMajor(tax2024.netIncome) - 70116) <= 5, `2024 Take home should be ~$70,116 (actual: $${toMajor(tax2024.netIncome)})`);
 
+  // Test 2c: 2026 NYS High-Income Tax Computation Worksheets (Form IT-2105-I / NYS Tax Law § 601(d))
+  // Scenarios: $100,000 | $150,000 | $200,000 | $250,000
+  const highIncomeCases = [
+    { gross: 100_000, expectedNys: 4860, desc: '$100K (NYAGI <= $107,650: Normal Rate Schedule)' },
+    { gross: 150_000, expectedNys: 8291, desc: '$150K (NYAGI $107,650-$157,650: IT-2105-I Worksheet 7 phase-in)' },
+    { gross: 200_000, expectedNys: 11328, desc: '$200K (NYAGI >= $157,650: IT-2105-I Worksheet 7 flat 5.90%)' },
+    { gross: 250_000, expectedNys: 15946, desc: '$250K (NYAGI > $215,400: IT-2105-I Worksheet 8 recapture to 6.85%)' },
+  ];
+
+  for (const hic of highIncomeCases) {
+    const outcome = SalaryWorthCalculator.calculate({
+      ...DEFAULT_NYC_100K_SCENARIO,
+      compensation: { baseSalary: createMoney(hic.gross, 'USD') },
+    });
+    const actualNys = toMajor(outcome.tax.stateTax);
+    console.log(`NYS 2026 ${hic.desc}: Actual State Tax = $${actualNys}`);
+    assert(
+      Math.abs(actualNys - hic.expectedNys) <= 2,
+      `NYS 2026 high-income worksheet for ${hic.desc}: expected ~$${hic.expectedNys}, got $${actualNys}`
+    );
+  }
+
   // Test 3: NYC Living costs and money remaining
   const monthlyLiving = toMajor(nycOutcome.livingCostsMonthly);
   const monthlyRemaining = toMajor(nycOutcome.moneyRemainingMonthly);

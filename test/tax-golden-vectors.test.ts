@@ -707,15 +707,17 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 150000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS (5.90% band) + NYC',
-    // NYS taxable=142000: 4190.10 (below 80650) + 5.90%×61350=3619.65 = 7809.75
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA + NYS (IT-2105-I Worksheet 7 recapture over $107,650) + NYC',
+    // NYS taxable=142000 (std ded $8000), NYAGI=$150,000
+    // Worksheet 7: base graduated=7809.75, recapture=(8378 - 7809.75) × 42350/50000 = 568.25 × 0.8470 = 481.31
+    // Total NYS state tax = 7809.75 + 481.31 = 8291.06
     // NYC taxable=142000: 369.36+489.06+954.75+3.876%×92000=3565.92 = 5379.09
-    expectedDeductions: 49397.84,
-    expectedComponents: { federal: 24734, fica: 11475, state: 7809.75, local: 5379.09 },
-    expectedNet: 100602.16,
-    officialSourceUrl: 'https://www.irs.gov/pub/irs-drop/rp-25-32.pdf',
+    expectedDeductions: 49879.15,
+    expectedComponents: { federal: 24734, fica: 11475, state: 8291.06, local: 5379.09 },
+    expectedNet: 100120.85,
+    officialSourceUrl: 'https://www.tax.ny.gov/pdf/current_forms/it/it2105i.pdf',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation — 2026 NYS enacted lower-bracket rates',
+    reasonForTolerance: 'Exact statutory calculation — 2026 NYS Form IT-2105-I Tax Computation Worksheet 7 (recapture over $107,650)',
   },
   {
     country: 'US',
@@ -727,15 +729,16 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 200000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA (SSA cap $184,500) + NYS (5.90% band) + NYC',
-    // NYS taxable=192000: 4190.10 + 5.90%×111350=6569.65 = 10759.75
+    profileAssumptions: 'Single filer, NYC resident, 2026 Fed + FICA (SSA cap $184,500) + NYS (IT-2105-I Worksheet 7 flat 5.90% over $157,650) + NYC',
+    // NYS taxable=192000, NYAGI=$200,000 >= $157,650
+    // Worksheet 7: full recapture of lower brackets -> flat 5.90% × 192000 = 11328.00
     // NYC taxable=192000: 369.36+489.06+954.75+3.876%×142000=5503.92 = 7317.09
-    expectedDeductions: 69149.84,
-    expectedComponents: { federal: 36734, fica: 14339, state: 10759.75, local: 7317.09 },
-    expectedNet: 130850.16,
-    officialSourceUrl: 'https://www.ssa.gov/oact/cola/cbb.html',
+    expectedDeductions: 69718.09,
+    expectedComponents: { federal: 36734, fica: 14339, state: 11328, local: 7317.09 },
+    expectedNet: 130281.91,
+    officialSourceUrl: 'https://www.tax.ny.gov/pdf/current_forms/it/it2105i.pdf',
     tolerance: 2,
-    reasonForTolerance: 'Exact statutory bracket calculation with SSA 2026 cap — 2026 NYS enacted lower-bracket rates',
+    reasonForTolerance: 'Exact statutory calculation with SSA 2026 cap — 2026 NYS Form IT-2105-I Worksheet 7 flat rate',
   },
   {
     country: 'US',
@@ -747,15 +750,16 @@ export const TAX_GOLDEN_VECTORS: TaxGoldenVector[] = [
     ruleVersion: 'US-FED-NY-NYC-2026.1',
     gross: 250000,
     currency: 'USD',
-    profileAssumptions: 'Single filer, NYC resident, SSA 2026 cap $184,500, Addl Medicare over $200k, NYS crosses into 6.85% band',
-    // NYS taxable=242000: 4190.10 + 5.90%×134750=7950.25 + 6.85%×26600=1822.10 = 13962.45 => rounds to 13962
+    profileAssumptions: 'Single filer, NYC resident, SSA 2026 cap $184,500, Addl Medicare over $200k, NYS (IT-2105-I Worksheet 8 recapture over $215,400)',
+    // NYS taxable=242000, NYAGI=$250,000 > $215,400
+    // Worksheet 8: base tax=13962.45, Line 4 Base Recapture=$567, Line 5 Incremental=$2047 × 34600/50000=1416.52 => State = 15945.97
     // NYC: 369.36+489.06+954.75+3.876%×192000=7441.92 = 9255.09
-    expectedDeductions: 90035.09,
-    expectedComponents: { federal: 51304, fica: 15514, state: 13962, local: 9255.09 },
-    expectedNet: 159964.91,
-    officialSourceUrl: 'https://www.ssa.gov/oact/cola/cbb.html',
+    expectedDeductions: 92019.06,
+    expectedComponents: { federal: 51304, fica: 15514, state: 15946, local: 9255.09 },
+    expectedNet: 157980.94,
+    officialSourceUrl: 'https://www.tax.ny.gov/pdf/current_forms/it/it2105i.pdf',
     tolerance: 5,
-    reasonForTolerance: 'Exact statutory bracket calculation with SSA 2026 cap and Addl Medicare — 2026 NYS enacted lower-bracket rates',
+    reasonForTolerance: 'Exact statutory calculation with SSA 2026 cap and Addl Medicare — 2026 NYS Form IT-2105-I Worksheet 8',
   },
 
   // =========================================================================

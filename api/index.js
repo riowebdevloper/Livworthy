@@ -5514,6 +5514,63 @@ function calculateGraduatedTax(taxableMinor, brackets) {
   }
   return { taxMinor: Math.round(taxMinor), topMarginalRate };
 }
+function calculateNysTax2026Single(nyagiMinor, nysTaxableMinor) {
+  if (nysTaxableMinor <= 0) {
+    return { taxMinor: 0, topMarginalRate: 0 };
+  }
+  if (nyagiMinor <= 10765e3) {
+    const base = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026);
+    return { taxMinor: base.taxMinor, topMarginalRate: base.topMarginalRate };
+  }
+  if (nysTaxableMinor <= 2154e4) {
+    const line3 = Math.round(nysTaxableMinor * 0.059);
+    if (nyagiMinor >= 15765e3) {
+      return { taxMinor: line3, topMarginalRate: 0.059, worksheetApplied: "Worksheet 7" };
+    }
+    const line4 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line5 = line3 - line4;
+    const line6 = nyagiMinor - 10765e3;
+    const line7 = Math.round(line6 / 5e6 * 1e4) / 1e4;
+    const line8 = Math.round(line5 * line7);
+    const line9 = line4 + line8;
+    return { taxMinor: line9, topMarginalRate: 0.059, worksheetApplied: "Worksheet 7" };
+  }
+  if (nysTaxableMinor <= 107755e3) {
+    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line4 = 56700;
+    const line5 = 204700;
+    const line6 = Math.max(0, nyagiMinor - 2154e4);
+    const line7 = Math.min(line6, 5e6);
+    const line8 = Math.round(line7 / 5e6 * 1e4) / 1e4;
+    const line9 = Math.round(line5 * line8);
+    const line10 = line3 + line4 + line9;
+    return { taxMinor: line10, topMarginalRate: 0.0685, worksheetApplied: "Worksheet 8" };
+  }
+  if (nysTaxableMinor <= 5e8) {
+    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line4 = 261400;
+    const line5 = 3017200;
+    const line6 = Math.max(0, nyagiMinor - 107755e3);
+    const line7 = Math.min(line6, 5e6);
+    const line8 = Math.round(line7 / 5e6 * 1e4) / 1e4;
+    const line9 = Math.round(line5 * line8);
+    const line10 = line3 + line4 + line9;
+    return { taxMinor: line10, topMarginalRate: 0.0965, worksheetApplied: "Worksheet 9" };
+  }
+  if (nysTaxableMinor <= 25e8) {
+    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line4 = 3278600;
+    const line5 = 325e4;
+    const line6 = Math.max(0, nyagiMinor - 5e8);
+    const line7 = Math.min(line6, 5e6);
+    const line8 = Math.round(line7 / 5e6 * 1e4) / 1e4;
+    const line9 = Math.round(line5 * line8);
+    const line10 = line3 + line4 + line9;
+    return { taxMinor: line10, topMarginalRate: 0.103, worksheetApplied: "Worksheet 10" };
+  }
+  const line2 = Math.round(nysTaxableMinor * 0.109);
+  return { taxMinor: line2, topMarginalRate: 0.109, worksheetApplied: "Worksheet 11" };
+}
 var UsTaxAdapter = class {
   constructor() {
     this.id = "us";
@@ -5558,10 +5615,16 @@ var UsTaxAdapter = class {
     if (isNewYorkState) {
       const nysStdDeductionMinor = NYS_STANDARD_DEDUCTION[profile.filingStatus];
       nysTaxableMinor = Math.max(0, adjustedGrossMinor - nysStdDeductionMinor);
-      const nysBrackets = taxYear === 2026 ? NYS_BRACKETS_SINGLE_2026 : NYS_BRACKETS_SINGLE_2025;
-      const stateCalc = calculateGraduatedTax(nysTaxableMinor, nysBrackets);
-      stateTaxMinor = stateCalc.taxMinor;
-      stateMarginal = stateCalc.topMarginalRate;
+      if (taxYear === 2026 && (profile.filingStatus === "single" || profile.filingStatus === "married_separate")) {
+        const stateCalc = calculateNysTax2026Single(adjustedGrossMinor, nysTaxableMinor);
+        stateTaxMinor = stateCalc.taxMinor;
+        stateMarginal = stateCalc.topMarginalRate;
+      } else {
+        const nysBrackets = taxYear === 2026 ? NYS_BRACKETS_SINGLE_2026 : NYS_BRACKETS_SINGLE_2025;
+        const stateCalc = calculateGraduatedTax(nysTaxableMinor, nysBrackets);
+        stateTaxMinor = stateCalc.taxMinor;
+        stateMarginal = stateCalc.topMarginalRate;
+      }
       if (isNycResident) {
         const localCalc = calculateGraduatedTax(nysTaxableMinor, NYC_BRACKETS_SINGLE);
         localTaxMinor = localCalc.taxMinor;

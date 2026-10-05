@@ -222,6 +222,100 @@ function calculateGraduatedTax(
   return { taxMinor: Math.round(taxMinor), topMarginalRate };
 }
 
+/**
+ * Official 2026 New York State Tax Computation Worksheets for Single Filers
+ * Authority: NYS Department of Taxation and Finance, Form IT-2105-I (2026) / Tax Law § 601(d)
+ *
+ * For NYAGI <= $107,650:
+ *   Standard graduated tax schedule (3.90% to 10.90%).
+ * For NYAGI > $107,650:
+ *   Special tax computation / tax table benefit recapture worksheets phase out
+ *   the benefit of lower tax brackets:
+ *   - Worksheet 7: NYAGI > $107,650 and taxable income <= $215,400.
+ *     Phases in flat 5.90% over NYAGI $107,650–$157,650. (Flat 5.90% if NYAGI >= $157,650).
+ *   - Worksheet 8: NYAGI > $215,400 and taxable income $215,400–$1,077,550.
+ *     Recaptures lower brackets to 6.85% (Base $567 + incremental $2,047 phased in over $215,400–$265,400).
+ *   - Worksheet 9: NYAGI > $1,077,550 and taxable income $1,077,550–$5,000,000.
+ *     Recaptures to 9.65% (Base $2,614 + incremental $30,172 phased in over $1,077,550–$1,127,550).
+ *   - Worksheet 10: NYAGI > $5,000,000 and taxable income $5,000,000–$25,000,000.
+ *     Recaptures to 10.30% (Base $32,786 + incremental $32,500 phased in over $5,000,000–$5,050,000).
+ *   - Worksheet 11: NYAGI > $25,000,000.
+ *     Flat 10.90% on all taxable income.
+ */
+function calculateNysTax2026Single(
+  nyagiMinor: number,
+  nysTaxableMinor: number
+): { taxMinor: number; topMarginalRate: number; worksheetApplied?: string } {
+  if (nysTaxableMinor <= 0) {
+    return { taxMinor: 0, topMarginalRate: 0 };
+  }
+
+  // Normal graduated tax for NYAGI <= $107,650
+  if (nyagiMinor <= 107_650_00) {
+    const base = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026);
+    return { taxMinor: base.taxMinor, topMarginalRate: base.topMarginalRate };
+  }
+
+  // Taxable income <= $215,400 (Worksheet 7)
+  if (nysTaxableMinor <= 215_400_00) {
+    const line3 = Math.round(nysTaxableMinor * 0.0590);
+    if (nyagiMinor >= 157_650_00) {
+      // Full recapture of brackets below 5.90% -> flat 5.90% on entire taxable income
+      return { taxMinor: line3, topMarginalRate: 0.0590, worksheetApplied: 'Worksheet 7' };
+    }
+    const line4 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line5 = line3 - line4;
+    const line6 = nyagiMinor - 107_650_00;
+    const line7 = Math.round((line6 / 50_000_00) * 10000) / 10000;
+    const line8 = Math.round(line5 * line7);
+    const line9 = line4 + line8;
+    return { taxMinor: line9, topMarginalRate: 0.0590, worksheetApplied: 'Worksheet 7' };
+  }
+
+  // Taxable income > $215,400 and <= $1,077,550 (Worksheet 8)
+  if (nysTaxableMinor <= 1_077_550_00) {
+    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line4 = 567_00;
+    const line5 = 2047_00;
+    const line6 = Math.max(0, nyagiMinor - 215_400_00);
+    const line7 = Math.min(line6, 50_000_00);
+    const line8 = Math.round((line7 / 50_000_00) * 10000) / 10000;
+    const line9 = Math.round(line5 * line8);
+    const line10 = line3 + line4 + line9;
+    return { taxMinor: line10, topMarginalRate: 0.0685, worksheetApplied: 'Worksheet 8' };
+  }
+
+  // Taxable income > $1,077,550 and <= $5,000,000 (Worksheet 9)
+  if (nysTaxableMinor <= 5_000_000_00) {
+    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line4 = 2614_00;
+    const line5 = 30172_00;
+    const line6 = Math.max(0, nyagiMinor - 1_077_550_00);
+    const line7 = Math.min(line6, 50_000_00);
+    const line8 = Math.round((line7 / 50_000_00) * 10000) / 10000;
+    const line9 = Math.round(line5 * line8);
+    const line10 = line3 + line4 + line9;
+    return { taxMinor: line10, topMarginalRate: 0.0965, worksheetApplied: 'Worksheet 9' };
+  }
+
+  // Taxable income > $5,000,000 and <= $25,000,000 (Worksheet 10)
+  if (nysTaxableMinor <= 25_000_000_00) {
+    const line3 = calculateGraduatedTax(nysTaxableMinor, NYS_BRACKETS_SINGLE_2026).taxMinor;
+    const line4 = 32786_00;
+    const line5 = 32500_00;
+    const line6 = Math.max(0, nyagiMinor - 5_000_000_00);
+    const line7 = Math.min(line6, 50_000_00);
+    const line8 = Math.round((line7 / 50_000_00) * 10000) / 10000;
+    const line9 = Math.round(line5 * line8);
+    const line10 = line3 + line4 + line9;
+    return { taxMinor: line10, topMarginalRate: 0.1030, worksheetApplied: 'Worksheet 10' };
+  }
+
+  // Taxable income > $25,000,000 (Worksheet 11)
+  const line2 = Math.round(nysTaxableMinor * 0.1090);
+  return { taxMinor: line2, topMarginalRate: 0.1090, worksheetApplied: 'Worksheet 11' };
+}
+
 export class UsTaxAdapter implements TaxAdapter {
   id = 'us';
   name = 'United States Tax Engine';
@@ -306,11 +400,19 @@ export class UsTaxAdapter implements TaxAdapter {
     if (isNewYorkState) {
       const nysStdDeductionMinor = NYS_STANDARD_DEDUCTION[profile.filingStatus];
       nysTaxableMinor = Math.max(0, adjustedGrossMinor - nysStdDeductionMinor);
-      // Select the correct NYS rate schedule for the tax year
-      const nysBrackets = taxYear === 2026 ? NYS_BRACKETS_SINGLE_2026 : NYS_BRACKETS_SINGLE_2025;
-      const stateCalc = calculateGraduatedTax(nysTaxableMinor, nysBrackets);
-      stateTaxMinor = stateCalc.taxMinor;
-      stateMarginal = stateCalc.topMarginalRate;
+
+      if (taxYear === 2026 && (profile.filingStatus === 'single' || profile.filingStatus === 'married_separate')) {
+        // Official 2026 NYS Tax Computation Worksheets (Form IT-2105-I / NYS Tax Law § 601(d))
+        const stateCalc = calculateNysTax2026Single(adjustedGrossMinor, nysTaxableMinor);
+        stateTaxMinor = stateCalc.taxMinor;
+        stateMarginal = stateCalc.topMarginalRate;
+      } else {
+        // Select the correct NYS rate schedule for the tax year (2025 or other filing statuses)
+        const nysBrackets = taxYear === 2026 ? NYS_BRACKETS_SINGLE_2026 : NYS_BRACKETS_SINGLE_2025;
+        const stateCalc = calculateGraduatedTax(nysTaxableMinor, nysBrackets);
+        stateTaxMinor = stateCalc.taxMinor;
+        stateMarginal = stateCalc.topMarginalRate;
+      }
 
       if (isNycResident) {
         // NYC Resident tax applies to NY taxable income (same schedule 2024–2026)
