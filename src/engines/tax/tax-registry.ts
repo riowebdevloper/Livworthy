@@ -1,4 +1,5 @@
 import { createMoney } from '../../lib/money';
+import { LATEST_VERIFIED_TAX_YEAR } from '../../lib/tax-year-policy';
 import { Money } from '../../types/money';
 import { TaxProfile, TaxResult } from '../../types/tax';
 import { AustraliaTaxAdapter } from './au/au-adapter';
@@ -24,7 +25,7 @@ import { UsTaxAdapter } from './us/us-adapter';
  * Any request for a year beyond this MUST return TAX_CALCULATION_UNAVAILABLE — never silently
  * calculate using the latest known rules without disclosure.
  */
-export const LATEST_STATUTORY_TAX_YEAR = 2026;
+export const LATEST_STATUTORY_TAX_YEAR = LATEST_VERIFIED_TAX_YEAR;
 
 export type TaxVerificationStatus = 'VERIFIED' | 'LIMITED' | 'PROVISIONAL' | 'UNSUPPORTED';
 

@@ -1,6 +1,7 @@
 import { createMoney } from '../lib/money';
 import { LivWorthScenario } from '../types/scenario';
 import { CITIES } from './locations';
+import { LATEST_VERIFIED_TAX_YEAR } from '../lib/tax-year-policy';
 
 const getCalculationDate = () => new Date().toISOString();
 
@@ -15,7 +16,7 @@ export const DEFAULT_NYC_100K_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2026,
+    taxYear: LATEST_VERIFIED_TAX_YEAR,
   },
   household: {
     adults: 1,
@@ -42,7 +43,7 @@ export const DEFAULT_AUSTIN_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2026,
+    taxYear: LATEST_VERIFIED_TAX_YEAR,
   },
   household: {
     adults: 1,
@@ -66,7 +67,7 @@ export const DEFAULT_LONDON_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2026,
+    taxYear: LATEST_VERIFIED_TAX_YEAR,
   },
   household: {
     adults: 1,
@@ -90,7 +91,7 @@ export const DEFAULT_SF_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2026,
+    taxYear: LATEST_VERIFIED_TAX_YEAR,
   },
   household: {
     adults: 1,
@@ -114,7 +115,7 @@ export const DEFAULT_DUBAI_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'single',
     dependentsCount: 0,
-    taxYear: 2026,
+    taxYear: LATEST_VERIFIED_TAX_YEAR,
   },
   household: {
     adults: 1,
@@ -138,7 +139,7 @@ export const DEFAULT_NYC_FAMILY_SCENARIO: LivWorthScenario = {
   taxProfile: {
     filingStatus: 'married_filing_jointly',
     dependentsCount: 2,
-    taxYear: 2026,
+    taxYear: LATEST_VERIFIED_TAX_YEAR,
   },
   household: {
     adults: 2,

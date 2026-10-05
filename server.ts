@@ -3,6 +3,7 @@ import path from 'path';
 import crypto from 'crypto';
 import fs from 'fs';
 import { validateEnv } from './src/lib/env';
+import { LATEST_VERIFIED_TAX_YEAR, resolveTaxYear } from './src/lib/tax-year-policy';
 import { dbService } from './src/db/client';
 import { cacheService } from './src/lib/redis';
 import { FxEngine } from './src/engines/fx/fx-service';
@@ -436,7 +437,7 @@ function configureApp() {
       const profile = {
         filingStatus: filingStatus || 'single',
         dependentsCount: typeof dependentsCount === 'number' ? dependentsCount : 0,
-        taxYear: typeof taxYear === 'number' ? taxYear : 2024,
+        taxYear: resolveTaxYear(taxYear),
       };
       const location = {
         countryId,
@@ -514,20 +515,35 @@ function configureApp() {
     const countryId = (req.query.countryId as string) || 'US';
     const regionId = req.query.regionId as string | undefined;
 
-    const adapter = TaxRegistry.getAdapter({ countryId, regionId, taxYear: 2024 });
+    const taxYear = resolveTaxYear(req.query.taxYear);
+    const adapter = TaxRegistry.getAdapter({ countryId, regionId, taxYear });
     const sample = adapter.calculate(
       createMoney(100000, COUNTRIES[countryId]?.defaultCurrency || 'USD'),
-      { filingStatus: 'single', dependentsCount: 0, taxYear: 2024 },
-      { countryId, regionId, taxYear: 2024 }
+      { filingStatus: 'single', dependentsCount: 0, taxYear },
+      { countryId, regionId, taxYear }
     );
 
     res.json({
       countryId,
       regionId,
+      taxYear,
       adapterName: adapter.name,
       taxRuleVersion: sample.taxRuleVersion,
       components: sample.components,
       evidenceSources: sample.evidenceSourceIds.map((id) => EVIDENCE_REGISTRY[id]).filter(Boolean),
+    });
+  });
+
+
+  app.get('/api/tax/years', rateLimit(120, 60), (req, res) => {
+    const requestedYear = resolveTaxYear(req.query.taxYear);
+    res.json({
+      latestVerifiedTaxYear: LATEST_VERIFIED_TAX_YEAR,
+      requestedYear,
+      requestedYearStatus:
+        requestedYear <= LATEST_VERIFIED_TAX_YEAR ? 'VERIFIED_PERIOD_AVAILABLE' : 'UNDER_VERIFICATION',
+      futureYearPolicy:
+        'Future statutory schedules are never inferred. Years newer than the latest verified period return TAX_CALCULATION_UNAVAILABLE until official rules are implemented and tested.',
     });
   });
 
