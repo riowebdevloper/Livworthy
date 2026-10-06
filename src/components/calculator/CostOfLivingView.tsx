@@ -5,7 +5,6 @@ import { calculateCostOfLiving } from '../../api/calculators';
 import { createMoney } from '../../lib/money';
 import { CostOfLivingResult, HouseholdProfile } from '../../types/col';
 import { LivingCostBreakdownCard } from './LivingCostBreakdownCard';
-import { useLocale } from '../../i18n/runtime';
 
 interface CostOfLivingViewProps {
   household: HouseholdProfile;
@@ -24,7 +23,6 @@ export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
   onOpenEvidence,
   onCalculationResult,
 }) => {
-  const { messages } = useLocale();
   const [selectedCityId, setSelectedCityId] = useState<string>('nyc');
   const [colResult, setColResult] = useState<CostOfLivingResult | null>(null);
   const [isCalculating, setIsCalculating] = useState<boolean>(true);
@@ -92,13 +90,13 @@ export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
 
         <div className="max-w-xl">
           <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
-            {messages.colKicker}
+            Household Living Costs
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            {messages.colTitlePrefix} {city.name}{messages.colTitleSuffix}
+            What would your household actually spend in {city.name}?
           </h2>
           <p className="text-xs sm:text-sm text-[#60706D] mt-1.5 leading-relaxed">
-            {messages.colIntro}
+            Detailed breakdown based on HUD metropolitan housing vacancy surveys and Bureau of Labor Statistics consumer expenditure tables.
           </p>
         </div>
 
@@ -106,7 +104,7 @@ export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
           <div className="w-full sm:w-72">
             <label htmlFor="col-city-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              {messages.selectCity}
+              Select City
             </label>
             <select
               id="col-city-select"
@@ -132,14 +130,14 @@ export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
               className="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 rounded-lg border border-[#DCE3E0] hover:bg-[#F7F8F5] text-[#102A2E] w-full sm:w-auto"
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-[#167D75]" />
-              <span>{messages.customizeHousehold}</span>
+              <span>Customize Household & Bedrooms</span>
             </button>
             <button
               onClick={onOpenEvidence}
               className="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 rounded-lg border border-[#DCE3E0] hover:bg-[#F7F8F5] text-[#167D75] w-full sm:w-auto"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>{messages.verifiedData}</span>
+              <span>Verified Data</span>
             </button>
           </div>
         </div>

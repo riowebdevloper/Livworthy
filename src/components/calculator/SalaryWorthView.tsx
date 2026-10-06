@@ -21,7 +21,6 @@ import { HouseholdProfile } from '../../types/col';
 import { LivWorthCalculationOutcome, LivWorthScenario } from '../../types/scenario';
 import { CurrencyInput } from '../ui/CurrencyInput';
 import { ResultSummaryCard } from './ResultSummaryCard';
-import { useLocale } from '../../i18n/runtime';
 
 // Defer non-critical cards to reduce initial JavaScript parse and transfer size
 const AssumptionPills = React.lazy(() =>
@@ -55,7 +54,6 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   onNavigateToCompare,
   onCalculationOutcome,
 }) => {
-  const { messages } = useLocale();
   const [salaryInputMajor, setSalaryInputMajor] = useState<number>(
     toMajor(scenario.compensation.baseSalary)
   );
@@ -253,19 +251,19 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
         {isCalculating && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
-            <span>{messages.calculating}</span>
+            <span>Calculating...</span>
           </div>
         )}
 
         <div className="max-w-2xl">
           <span className="text-xs font-bold tracking-wider text-[#167D75]">
-            {messages.salaryWorthKicker}
+            Global Income & Living Intelligence
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            {messages.salaryWorthTitle}
+            What is your salary really worth?
           </h1>
           <p className="text-sm sm:text-base text-[#60706D] mt-2 leading-relaxed">
-            {messages.salaryWorthIntro}
+            Enter your salary and city to see how much you could take home, spend and save.
           </p>
           <p className="text-xs text-[#167D75] mt-1 font-medium">
             See if your salary covers living costs and allows you to save in your chosen city.
@@ -276,7 +274,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
         <div className="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 [scrollbar-width:thin]">
           <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap flex items-center space-x-1 shrink-0">
             <Sparkles className="w-3.5 h-3.5 text-[#167D75]" />
-            <span>{messages.popularScenarios}</span>
+            <span>Popular Scenarios:</span>
           </span>
           <div className="flex items-center space-x-1.5 shrink-0">
             {PRESET_LIST.map((p) => {
@@ -311,7 +309,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
           <div className="sm:col-span-5">
             <label htmlFor="hero-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              {messages.chooseCity}
+              1. Choose City / Location
             </label>
             <div className="relative">
               <select
@@ -336,7 +334,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
           <div className="sm:col-span-5">
             <CurrencyInput
               id="hero-annual-salary-input"
-              label={messages.annualSalary}
+              label="2. Annual Salary"
               valueMajor={salaryInputMajor}
               currency={currency}
               onChangeMajor={handleSalaryChange}
@@ -355,7 +353,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
               className="w-full h-[52px] bg-[#102A2E] hover:bg-[#167D75] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center space-x-1.5 cursor-pointer"
             >
               <Calculator className="w-4 h-4" />
-              <span>{messages.calculate}</span>
+              <span>Calculate</span>
             </button>
           </div>
         </div>

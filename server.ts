@@ -658,6 +658,19 @@ function configureApp() {
     });
   });
 
+  app.get('/api/freshness-report', rateLimit(60, 60), (req, res) => {
+    const reportPath = path.resolve('data-freshness-report.json');
+    if (fs.existsSync(reportPath)) {
+      try {
+        const raw = fs.readFileSync(reportPath, 'utf-8');
+        return res.json(JSON.parse(raw));
+      } catch (err: any) {
+        return res.status(500).json({ error: 'FAILED_READING_REPORT', message: err.message });
+      }
+    }
+    res.status(404).json({ error: 'REPORT_NOT_FOUND', message: 'Data freshness report is not yet generated.' });
+  });
+
   // 4. FX RATES & CRON REFRESH
   app.get('/api/fx/latest', rateLimit(60, 60), async (req, res) => {
     const snapshot = await FxEngine.getLatestSnapshot();

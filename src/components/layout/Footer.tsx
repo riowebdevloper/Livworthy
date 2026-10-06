@@ -202,16 +202,6 @@ export const Footer: React.FC<FooterProps> = ({
                 </a>
               </li>
               <li>
-                <a href="/job-offer-comparison" className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors">
-                  Job Offer Comparison Guide
-                </a>
-              </li>
-              <li>
-                <a href="/relocation" className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors">
-                  Relocation Guides
-                </a>
-              </li>
-              <li>
                 <a
                   href="/compare"
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
@@ -330,11 +320,6 @@ export const Footer: React.FC<FooterProps> = ({
                   </button>
                 </li>
               )}
-              <li>
-                <a href="/coverage" className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors">
-                  Coverage & Verification
-                </a>
-              </li>
               <li>
                 <a
                   href="/about"

@@ -9,11 +9,15 @@ import {
   CORRECTIONS_LOG,
 } from '../src/data/transparency';
 import { CapabilityResolver } from '../src/engines/capabilities/capability-resolver';
-import { LATEST_STATUTORY_TAX_YEAR, TaxRegistry } from '../src/engines/tax/tax-registry';
+import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
-import { LIVWORTHY_LOCALES, LOCALIZED_HUBS } from '../src/data/localized-hubs';
-import { RELOCATION_ROUTES } from '../src/data/relocation-routes';
+import {
+  createRelocationPages,
+  createJobOfferAuthorityPage,
+  createCoveragePage,
+  createLocalizedPages,
+} from './seo-generators-content';
 
 const BASE_URL = 'https://www.livworthy.com';
 
@@ -27,9 +31,8 @@ interface SeoPage {
   structuredData: any;
   changefreq: 'daily' | 'weekly' | 'monthly';
   priority: number;
-  locale?: string;
-  direction?: 'ltr' | 'rtl';
-  alternates?: Record<string, string>;
+  lang?: string;
+  dir?: 'ltr' | 'rtl';
 }
 
 const COMPARISONS = [
@@ -562,6 +565,20 @@ export function runSeoGenerator() {
   const directoryPages = createDirectoryPages();
   pages.push(...directoryPages);
 
+  // 2c. Relocation Intelligence Pages (/relocation, /relocation/[slug])
+  const relocationPages = createRelocationPages(BASE_URL);
+  pages.push(...relocationPages);
+
+  // 2d. Job Offer Authority Guide (/job-offer-comparison)
+  pages.push(createJobOfferAuthorityPage(BASE_URL));
+
+  // 2e. Global Market Coverage Page (/coverage)
+  pages.push(createCoveragePage(BASE_URL));
+
+  // 2f. Localized Entry Pages (/en, /es, /fr, /ar)
+  const localizedPages = createLocalizedPages(BASE_URL, homeStructuredData);
+  pages.push(...localizedPages);
+
   // 3. Country Hub Pages
   for (const country of Object.values(COUNTRIES)) {
     const cap = CapabilityResolver.resolve(country.id);
@@ -1065,18 +1082,6 @@ export function runSeoGenerator() {
     });
   }
 
-  // Job-offer comparison authority hub
-  pages.push(createJobOfferComparisonPage());
-
-  // Relocation route directory and decision guides
-  pages.push(...createRelocationPages());
-
-  // Public coverage and verification inventory
-  pages.push(createCoveragePage());
-
-  // Localized global entry hubs (English, Spanish, French, Arabic)
-  pages.push(...createLocalizedHubPages());
-
   // Write all static HTML files
   let generatedCount = 0;
   for (const page of pages) {
@@ -1100,421 +1105,6 @@ export function runSeoGenerator() {
 
   // 9. Content Gap Report
   runContentGapReport();
-}
-
-
-
-
-
-function createJobOfferComparisonPage(): SeoPage {
-  const body = `
-    <article class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-      <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
-        <a href="/" class="hover:text-[#167D75]">Home</a> /
-        <span class="font-bold text-[#102A2E]">Job Offer Comparison</span>
-      </nav>
-
-      <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Offer Intelligence</span>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-black tracking-tight text-[#102A2E]">Compare job offers by spendable value — not headline salary</h1>
-      <p class="mt-4 text-base sm:text-lg leading-8 text-[#60706D]">
-        Two offers in different cities or currencies are not comparable by base salary alone. LivWorthy separates cash compensation, tax treatment, local living costs, benefits and currency effects so you can compare the amount of money that may actually remain.
-      </p>
-
-      <section class="mt-8 grid gap-4 md:grid-cols-2">
-        <div class="rounded-2xl border border-[#DCE3E0] bg-white p-6">
-          <h2 class="text-xl font-black text-[#102A2E]">Include in the comparison</h2>
-          <ul class="mt-4 space-y-3 text-sm leading-6 text-[#60706D]">
-            <li><strong class="text-[#102A2E]">Base cash:</strong> recurring guaranteed salary.</li>
-            <li><strong class="text-[#102A2E]">Variable cash:</strong> bonus or commission only when the expected value is defensible.</li>
-            <li><strong class="text-[#102A2E]">Benefits:</strong> insurance, housing, transport or relocation support separately from cash.</li>
-            <li><strong class="text-[#102A2E]">Tax:</strong> only where LivWorthy has an executable, disclosed jurisdiction/year model.</li>
-            <li><strong class="text-[#102A2E]">Living costs:</strong> use actual rent when you know it instead of relying only on a city baseline.</li>
-          </ul>
-        </div>
-
-        <div class="rounded-2xl border border-[#DCE3E0] bg-white p-6">
-          <h2 class="text-xl font-black text-[#102A2E]">Keep outside base salary</h2>
-          <ul class="mt-4 space-y-3 text-sm leading-6 text-[#60706D]">
-            <li>Unvested equity and speculative future appreciation.</li>
-            <li>One-time signing or relocation payments treated as recurring income.</li>
-            <li>Benefits valued at their employer list price rather than your real personal value.</li>
-            <li>Unsupported tax estimates copied from another jurisdiction or year.</li>
-            <li>FX assumptions presented as guaranteed future exchange rates.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="mt-8 rounded-2xl border border-[#DCE3E0] bg-white p-6 sm:p-8">
-        <h2 class="text-2xl font-black text-[#102A2E]">A useful decision sequence</h2>
-        <ol class="mt-5 space-y-4 text-sm leading-7 text-[#60706D]">
-          <li><strong class="text-[#102A2E]">1. Normalize cash compensation.</strong> Convert offers using the current FX snapshot while retaining the original currencies.</li>
-          <li><strong class="text-[#102A2E]">2. Estimate statutory take-home.</strong> Check the coverage status first; unavailable models remain unavailable.</li>
-          <li><strong class="text-[#102A2E]">3. Apply the same household assumptions.</strong> Rent, household size, transport and lifestyle settings should be comparable.</li>
-          <li><strong class="text-[#102A2E]">4. Compare remaining money and savings rate.</strong> This is more useful than comparing gross salaries.</li>
-          <li><strong class="text-[#102A2E]">5. Review non-cash trade-offs separately.</strong> Equity, visa support, leave, retirement, healthcare and career trajectory need their own judgment.</li>
-        </ol>
-
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="/?tab=job-offers" class="rounded-xl bg-[#102A2E] px-5 py-3 text-sm font-bold text-white">Open Job Offer Evaluator</a>
-          <a href="/coverage" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">Check tax coverage</a>
-          <a href="/relocation" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">Relocation guides</a>
-        </div>
-      </section>
-    </article>
-  `;
-
-  return {
-    relativePath: 'job-offer-comparison/index.html',
-    canonicalUrl: `${BASE_URL}/job-offer-comparison`,
-    title: 'Compare Job Offers Across Cities & Currencies | LivWorthy',
-    description: 'Compare job offers using after-tax cash, living costs, benefits, currency conversion and savings capacity instead of headline salary alone.',
-    robots: 'index, follow',
-    bodyContent: body,
-    structuredData: {
-      '@context': 'https://schema.org',
-      '@type': 'WebPage',
-      name: 'LivWorthy Job Offer Comparison',
-      url: `${BASE_URL}/job-offer-comparison`,
-      description: 'Framework and interactive tool for comparing job offers across cities, currencies, tax systems and living costs.',
-      isPartOf: { '@id': `${BASE_URL}/#website` },
-    },
-    changefreq: 'monthly',
-    priority: 0.9,
-  };
-}
-
-function createRelocationPages(): SeoPage[] {
-  const pages: SeoPage[] = [];
-
-  const cards = RELOCATION_ROUTES.map((route) => {
-    const from = CITIES[route.fromCityId];
-    const to = CITIES[route.toCityId];
-    return `
-      <a href="/relocation/${route.slug}" class="rounded-xl border border-[#DCE3E0] bg-white p-5 hover:border-[#167D75] hover:shadow-sm transition-all">
-        <div class="text-xs font-bold uppercase tracking-wider text-[#167D75]">${escapeHtml(from.name)} → ${escapeHtml(to.name)}</div>
-        <h2 class="mt-2 text-lg font-black text-[#102A2E]">${escapeHtml(route.headline)}</h2>
-        <p class="mt-2 text-sm leading-6 text-[#60706D]">${escapeHtml(route.editorialNote)}</p>
-      </a>
-    `;
-  }).join('');
-
-  pages.push({
-    relativePath: 'relocation/index.html',
-    canonicalUrl: `${BASE_URL}/relocation`,
-    title: 'Global Relocation Salary & Cost-of-Living Guides | LivWorthy',
-    description: 'Compare salary, tax, living costs, savings capacity and job-offer economics across major international relocation routes.',
-    robots: 'index, follow',
-    bodyContent: `
-      <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-        <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6"><a href="/" class="hover:text-[#167D75]">Home</a> / <span class="font-bold text-[#102A2E]">Relocation</span></nav>
-        <div class="max-w-4xl">
-          <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Relocation Intelligence</span>
-          <h1 class="mt-2 text-3xl sm:text-4xl font-black text-[#102A2E]">Compare a move by disposable income, not headline salary</h1>
-          <p class="mt-4 text-base sm:text-lg leading-8 text-[#60706D]">These route guides connect LivWorthy’s salary, tax, cost-of-living and job-offer tools. They do not guess a universal “equivalent salary”; they show the assumptions you need to model before accepting a move.</p>
-        </div>
-        <div class="mt-8 grid gap-4 md:grid-cols-2">${cards}</div>
-      </article>
-    `,
-    structuredData: {
-      '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      name: 'LivWorthy Global Relocation Guides',
-      url: `${BASE_URL}/relocation`,
-      description: 'Salary, tax and cost-of-living decision guides for international and domestic relocation routes.',
-    },
-    changefreq: 'weekly',
-    priority: 0.9,
-  });
-
-  for (const route of RELOCATION_ROUTES) {
-    const from = CITIES[route.fromCityId];
-    const to = CITIES[route.toCityId];
-    const fromCountry = COUNTRIES[from.countryId];
-    const toCountry = COUNTRIES[to.countryId];
-    const fromTax = TaxRegistry.getCountrySupport(from.countryId);
-    const toTax = TaxRegistry.getCountrySupport(to.countryId);
-
-    const questions = route.keyQuestions.map((question) => `<li class="flex gap-2"><span class="text-[#167D75] font-black">•</span><span>${escapeHtml(question)}</span></li>`).join('');
-
-    const body = `
-      <article class="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-        <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
-          <a href="/" class="hover:text-[#167D75]">Home</a> /
-          <a href="/relocation" class="hover:text-[#167D75]">Relocation</a> /
-          <span class="font-bold text-[#102A2E]">${escapeHtml(from.name)} to ${escapeHtml(to.name)}</span>
-        </nav>
-
-        <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Relocation Decision Guide</span>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-black tracking-tight text-[#102A2E]">${escapeHtml(route.headline)}</h1>
-        <p class="mt-4 text-lg leading-8 text-[#60706D]">${escapeHtml(route.editorialNote)}</p>
-
-        <section class="mt-8 grid gap-4 sm:grid-cols-2">
-          <div class="rounded-2xl border border-[#DCE3E0] bg-white p-5">
-            <div class="text-xs font-bold uppercase tracking-wider text-[#60706D]">Current city</div>
-            <div class="mt-2 text-2xl font-black text-[#102A2E]">${escapeHtml(from.name)}</div>
-            <div class="mt-1 text-sm text-[#60706D]">${escapeHtml(fromCountry.name)} · ${from.currency}</div>
-            <div class="mt-3 text-xs font-bold text-[#167D75]">Tax model: ${fromTax.verificationStatus}</div>
-          </div>
-          <div class="rounded-2xl border border-[#DCE3E0] bg-white p-5">
-            <div class="text-xs font-bold uppercase tracking-wider text-[#60706D]">Destination</div>
-            <div class="mt-2 text-2xl font-black text-[#102A2E]">${escapeHtml(to.name)}</div>
-            <div class="mt-1 text-sm text-[#60706D]">${escapeHtml(toCountry.name)} · ${to.currency}</div>
-            <div class="mt-3 text-xs font-bold text-[#167D75]">Tax model: ${toTax.verificationStatus}</div>
-          </div>
-        </section>
-
-        <section class="mt-8 rounded-2xl border border-[#DCE3E0] bg-white p-6">
-          <h2 class="text-xl font-black text-[#102A2E]">Questions to answer before accepting the move</h2>
-          <ul class="mt-4 space-y-3 text-sm leading-6 text-[#60706D]">${questions}</ul>
-        </section>
-
-        <section class="mt-8 rounded-2xl border border-[#DCE3E0] bg-white p-6">
-          <h2 class="text-xl font-black text-[#102A2E]">Model the move in LivWorthy</h2>
-          <p class="mt-3 text-sm leading-7 text-[#60706D]">Use the same household assumptions on both sides. For unsupported or limited tax jurisdictions, treat tax output according to the coverage disclosure rather than assuming another country’s rates.</p>
-          <div class="mt-5 flex flex-wrap gap-3">
-            <a href="/?city=${from.id}&tab=compare" class="rounded-xl bg-[#102A2E] px-4 py-2.5 text-sm font-bold text-white">Compare ${escapeHtml(from.name)} with ${escapeHtml(to.name)}</a>
-            <a href="/?city=${to.id}&tab=job-offers" class="rounded-xl border border-[#DCE3E0] bg-white px-4 py-2.5 text-sm font-bold text-[#102A2E]">Compare job offers</a>
-            <a href="/coverage" class="rounded-xl border border-[#DCE3E0] bg-white px-4 py-2.5 text-sm font-bold text-[#102A2E]">Check tax coverage</a>
-          </div>
-        </section>
-      </article>
-    `;
-
-    pages.push({
-      relativePath: `relocation/${route.slug}/index.html`,
-      canonicalUrl: `${BASE_URL}/relocation/${route.slug}`,
-      title: `${route.headline} | LivWorthy`,
-      description: `Compare salary, tax support, living-cost assumptions and job-offer economics when moving from ${from.name} to ${to.name}.`,
-      robots: 'index, follow',
-      bodyContent: body,
-      structuredData: {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: route.headline,
-        description: route.editorialNote,
-        mainEntityOfPage: `${BASE_URL}/relocation/${route.slug}`,
-        publisher: { '@id': `${BASE_URL}/#organization` },
-        about: [from.name, to.name, 'Relocation', 'Salary comparison', 'Cost of living'],
-      },
-      changefreq: 'monthly',
-      priority: 0.8,
-    });
-  }
-
-  return pages;
-}
-
-function createCoveragePage(): SeoPage {
-  const markets = Object.values(COUNTRIES)
-    .map((country) => {
-      const support = TaxRegistry.getCountrySupport(country.id);
-      const cities = Object.values(CITIES).filter((city) => city.countryId === country.id);
-      return {
-        country,
-        support,
-        cities,
-        years: TaxRegistry.getSupportedTaxYears(country.id),
-      };
-    })
-    .sort((a, b) => a.country.name.localeCompare(b.country.name));
-
-  const verified = markets.filter((item) => item.support.verificationStatus === 'VERIFIED').length;
-  const limited = markets.filter((item) => item.support.verificationStatus === 'LIMITED').length;
-  const unsupported = markets.filter((item) => !item.support.isSupported).length;
-  const cityCount = Object.keys(CITIES).length;
-
-  const rows = markets.map(({ country, support, cities, years }) => {
-    const statusClass =
-      support.verificationStatus === 'VERIFIED'
-        ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-        : support.verificationStatus === 'LIMITED'
-          ? 'bg-amber-50 text-amber-800 border-amber-200'
-          : 'bg-slate-50 text-slate-700 border-slate-200';
-
-    return `
-      <tr class="border-t border-[#E8EEEB] align-top">
-        <td class="p-3 font-bold text-[#102A2E]">
-          <a href="/countries/${country.id.toLowerCase()}" class="hover:text-[#167D75]">${escapeHtml(country.name)}</a>
-          <div class="text-xs font-normal text-[#60706D] mt-1">${country.defaultCurrency} · ${cities.length} ${cities.length === 1 ? 'city' : 'cities'}</div>
-        </td>
-        <td class="p-3">
-          <span class="inline-flex rounded-full border px-2.5 py-1 text-xs font-bold ${statusClass}">${support.verificationStatus}</span>
-        </td>
-        <td class="p-3 text-sm text-[#334D4A]">${years.length ? years.join(', ') : 'No executable statutory schedule'}</td>
-        <td class="p-3 text-sm leading-6 text-[#60706D]">${escapeHtml(support.notes)}</td>
-      </tr>
-    `;
-  }).join('');
-
-  const body = `
-    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-      <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
-        <a href="/" class="hover:text-[#167D75]">Home</a> /
-        <span class="font-bold text-[#102A2E]">Coverage</span>
-      </nav>
-
-      <div class="max-w-4xl">
-        <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Coverage & Verification</span>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-black tracking-tight text-[#102A2E]">What LivWorthy covers — and what it does not</h1>
-        <p class="mt-4 text-base sm:text-lg leading-8 text-[#60706D]">
-          LivWorthy tracks ${markets.length} commercial markets and ${cityCount} registered city benchmarks.
-          Tax calculations are exposed only where an executable statutory adapter exists. Future or unsupported tax years are never silently approximated with another year’s rates.
-        </p>
-      </div>
-
-      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="rounded-2xl border border-[#DCE3E0] bg-white p-5"><div class="text-xs font-bold uppercase tracking-wider text-[#60706D]">Markets</div><div class="mt-2 text-3xl font-black text-[#102A2E]">${markets.length}</div></div>
-        <div class="rounded-2xl border border-[#DCE3E0] bg-white p-5"><div class="text-xs font-bold uppercase tracking-wider text-[#60706D]">Registered cities</div><div class="mt-2 text-3xl font-black text-[#102A2E]">${cityCount}</div></div>
-        <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5"><div class="text-xs font-bold uppercase tracking-wider text-emerald-800">Verified tax adapters</div><div class="mt-2 text-3xl font-black text-emerald-900">${verified}</div></div>
-        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5"><div class="text-xs font-bold uppercase tracking-wider text-amber-800">Limited / research</div><div class="mt-2 text-3xl font-black text-amber-900">${limited + unsupported}</div></div>
-      </div>
-
-      <section class="mt-10 rounded-2xl border border-[#DCE3E0] bg-white overflow-hidden">
-        <div class="p-5 sm:p-6 border-b border-[#DCE3E0]">
-          <h2 class="text-xl font-black text-[#102A2E]">Country-by-country calculation status</h2>
-          <p class="mt-2 text-sm leading-6 text-[#60706D]">
-            VERIFIED means golden-vector-tested statutory logic. LIMITED means an executable adapter exists with documented scope limitations. UNSUPPORTED means LivWorthy will not fabricate an income-tax result.
-          </p>
-        </div>
-        <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Country tax coverage table">
-          <table class="min-w-[900px] w-full text-left">
-            <thead class="bg-[#F7F8F5] text-xs uppercase tracking-wider text-[#60706D]">
-              <tr><th class="p-3">Market</th><th class="p-3">Status</th><th class="p-3">Implemented tax years</th><th class="p-3">Scope notes</th></tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="mt-8 rounded-2xl border border-[#DCE3E0] bg-white p-6">
-        <h2 class="text-xl font-black text-[#102A2E]">2027 policy</h2>
-        <p class="mt-3 text-sm leading-7 text-[#60706D]">
-          The latest globally verified statutory year is ${LATEST_STATUTORY_TAX_YEAR}. LivWorthy’s 2027 architecture is ready, but 2027 calculations remain unavailable until the relevant official schedules are published, implemented and covered by regression tests. This is intentional.
-        </p>
-        <div class="mt-4 flex flex-wrap gap-4 text-sm font-bold text-[#167D75]">
-          <a href="/methodology">Calculation methodology</a>
-          <a href="/sources">Evidence registry</a>
-          <a href="/countries">Countries directory</a>
-        </div>
-      </section>
-    </article>
-  `;
-
-  return {
-    relativePath: 'coverage/index.html',
-    canonicalUrl: `${BASE_URL}/coverage`,
-    title: 'LivWorthy Global Coverage & Tax Verification Status',
-    description: `See LivWorthy coverage across ${markets.length} markets and ${cityCount} cities, including verified, limited and unsupported statutory tax calculation status.`,
-    robots: 'index, follow',
-    bodyContent: body,
-    structuredData: {
-      '@context': 'https://schema.org',
-      '@type': 'Dataset',
-      name: 'LivWorthy Global Tax & Cost-of-Living Coverage',
-      description: 'Public coverage inventory for LivWorthy markets, registered cities and statutory tax calculation support.',
-      url: `${BASE_URL}/coverage`,
-      temporalCoverage: `2024/${LATEST_STATUTORY_TAX_YEAR}`,
-      spatialCoverage: 'Global',
-      creator: { '@id': `${BASE_URL}/#organization` },
-    },
-    changefreq: 'weekly',
-    priority: 0.9,
-  };
-}
-
-function createLocalizedHubPages(): SeoPage[] {
-  const alternates = Object.fromEntries(
-    LIVWORTHY_LOCALES.map((locale) => [locale, `${BASE_URL}/${locale}`])
-  );
-  alternates['x-default'] = BASE_URL + '/';
-
-  return LIVWORTHY_LOCALES.map((locale) => {
-    const copy = LOCALIZED_HUBS[locale];
-    const directionClass = copy.direction === 'rtl' ? ' text-right' : '';
-    const body = `
-      <div dir="${copy.direction}" lang="${copy.locale}" class="min-h-screen bg-[#F7F8F5]${directionClass}">
-        <header class="border-b border-[#DCE3E0] bg-white">
-          <div class="max-w-6xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-            <a href="/" class="font-black text-xl text-[#102A2E]">LivWorthy</a>
-            <nav aria-label="${copy.languageLabel}" class="flex flex-wrap gap-2">
-              ${LIVWORTHY_LOCALES.map((code) => {
-                const item = LOCALIZED_HUBS[code];
-                return `<a href="/${code}" hreflang="${code}" lang="${code}" class="px-3 py-1.5 rounded-lg border ${code === locale ? 'bg-[#102A2E] text-white border-[#102A2E]' : 'bg-white text-[#334D4A] border-[#DCE3E0]'}">${item.languageName}</a>`;
-              }).join('')}
-            </nav>
-          </div>
-        </header>
-
-        <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-          <section class="max-w-4xl">
-            <p class="text-xs font-bold uppercase tracking-wider text-[#167D75]">${copy.kicker}</p>
-            <h1 class="text-4xl sm:text-5xl font-black text-[#102A2E] mt-3 tracking-tight">${copy.h1}</h1>
-            <p class="mt-5 text-lg leading-8 text-[#60706D]">${copy.intro}</p>
-            <div class="mt-7 flex flex-wrap gap-3">
-              <a href="/?lang=${locale}&tab=salary-worth" class="rounded-xl bg-[#102A2E] px-5 py-3 text-sm font-bold text-white">${copy.calculators[0].label}</a>
-              <a href="/countries" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">${copy.countriesLabel}</a>
-              <a href="/cities" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">${copy.citiesLabel}</a>
-            </div>
-          </section>
-
-          <section class="mt-12 rounded-2xl border border-[#DCE3E0] bg-white p-6 sm:p-8">
-            <h2 class="text-2xl font-black text-[#102A2E]">${copy.calculatorTitle}</h2>
-            <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              ${copy.calculators.map((item) => `
-                <a href="/?lang=${locale}&tab=${item.tab}" class="rounded-xl border border-[#DCE3E0] p-4 hover:border-[#167D75]">
-                  <div class="font-bold text-[#102A2E]">${item.label}</div>
-                  <div class="mt-1 text-sm leading-6 text-[#60706D]">${item.description}</div>
-                </a>
-              `).join('')}
-            </div>
-          </section>
-
-          <section class="mt-8 grid gap-6 md:grid-cols-2">
-            <div class="rounded-2xl border border-[#DCE3E0] bg-white p-6">
-              <h2 class="text-xl font-black text-[#102A2E]">${copy.trustTitle}</h2>
-              <p class="mt-3 text-sm leading-7 text-[#60706D]">${copy.trustBody}</p>
-              <div class="mt-4 flex gap-4 text-sm font-bold text-[#167D75]">
-                <a href="/methodology">${copy.methodologyLabel}</a>
-                <a href="/sources">${copy.sourcesLabel}</a>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-[#DCE3E0] bg-white p-6">
-              <h2 class="text-xl font-black text-[#102A2E]">${copy.exploreTitle}</h2>
-              <p class="mt-3 text-sm leading-7 text-[#60706D]">${copy.exploreBody}</p>
-              <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold text-[#167D75]">
-                <a href="/countries">${copy.countriesLabel}</a>
-                <a href="/cities">${copy.citiesLabel}</a>
-                <a href="/guides">${copy.guidesLabel}</a>
-              </div>
-            </div>
-          </section>
-        </main>
-      </div>
-    `;
-
-    return {
-      relativePath: `${locale}/index.html`,
-      canonicalUrl: `${BASE_URL}/${locale}`,
-      title: copy.title,
-      description: copy.description,
-      robots: 'index, follow',
-      bodyContent: body,
-      structuredData: {
-        '@context': 'https://schema.org',
-        '@type': 'WebPage',
-        name: copy.title,
-        description: copy.description,
-        url: `${BASE_URL}/${locale}`,
-        inLanguage: locale,
-        isPartOf: { '@id': `${BASE_URL}/#website` },
-      },
-      changefreq: 'weekly',
-      priority: 0.9,
-      locale,
-      direction: copy.direction,
-      alternates,
-    };
-  });
 }
 
 function createDirectoryPages(): SeoPage[] {
@@ -2174,14 +1764,18 @@ function renderPageHtml(
     robots: 'index, follow' | 'noindex, follow';
     bodyContent: string;
     structuredData?: any;
-    locale?: string;
-    direction?: 'ltr' | 'rtl';
-    alternates?: Record<string, string>;
+    lang?: string;
+    dir?: 'ltr' | 'rtl';
   },
   isHomepage = false,
   criticalCss = ''
 ): string {
   let html = template;
+
+  // Set html lang and dir attributes dynamically
+  const pageLang = page.lang || 'en';
+  const pageDir = page.dir || (pageLang === 'ar' ? 'rtl' : 'ltr');
+  html = html.replace(/<html(?:\s+[^>]*)?>/i, `<html lang="${pageLang}" dir="${pageDir}">`);
 
   // Replace external render-blocking stylesheet with inlined critical CSS to eliminate render delay
   if (criticalCss) {
@@ -2213,15 +1807,15 @@ function renderPageHtml(
     `<link rel="canonical" href="${page.canonicalUrl}" />`
   );
 
-  if (page.locale) {
-    html = html.replace(/<html\s+lang="[^"]*"[^>]*>/i, `<html lang="${page.locale}" dir="${page.direction || 'ltr'}">`);
-  }
-
-  if (page.alternates) {
-    const alternateLinks = Object.entries(page.alternates)
-      .map(([lang, url]) => `<link rel="alternate" hreflang="${lang}" href="${url}" />`)
-      .join('\n    ');
-    html = html.replace('</head>', `    ${alternateLinks}\n  </head>`);
+  // Inject hreflang multilingual alternate links
+  const hreflangTags = `
+    <link rel="alternate" hreflang="en" href="${BASE_URL}/en" />
+    <link rel="alternate" hreflang="es" href="${BASE_URL}/es" />
+    <link rel="alternate" hreflang="fr" href="${BASE_URL}/fr" />
+    <link rel="alternate" hreflang="ar" href="${BASE_URL}/ar" />
+    <link rel="alternate" hreflang="x-default" href="${BASE_URL}/" />`;
+  if (!html.includes('hreflang="x-default"')) {
+    html = html.replace('</head>', `${hreflangTags}\n  </head>`);
   }
 
   // Replace Open Graph metadata dynamically
@@ -2307,14 +1901,6 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
   const relocationPages = indexablePages.filter(
     (p) => p.relativePath.startsWith('relocation/') && p.relativePath !== 'relocation/index.html'
   );
-  const localizedPages = indexablePages
-    .filter((p) => LIVWORTHY_LOCALES.some((locale) => p.relativePath === `${locale}/index.html`))
-    .map((p) => ({
-      canonicalUrl: p.canonicalUrl,
-      changefreq: p.changefreq,
-      priority: p.priority,
-    }));
-
   const programmaticHubPages = indexablePages.filter(
     (p) =>
       p.relativePath.startsWith('salary-after-tax/') ||
@@ -2343,14 +1929,17 @@ ${items
 
   const mainUrls = [
     { canonicalUrl: `${BASE_URL}/`, changefreq: 'daily', priority: 1.0 },
+    { canonicalUrl: `${BASE_URL}/en`, changefreq: 'daily', priority: 0.95 },
+    { canonicalUrl: `${BASE_URL}/es`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/fr`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/ar`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/coverage`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/relocation`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/job-offer-comparison`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/countries`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/cities`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/compare`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/guides`, changefreq: 'weekly', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/relocation`, changefreq: 'weekly', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/job-offer-comparison`, changefreq: 'monthly', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/coverage`, changefreq: 'weekly', priority: 0.9 },
-    ...localizedPages,
     ...programmaticHubPages,
     { canonicalUrl: `${BASE_URL}/about`, changefreq: 'monthly', priority: 0.8 },
     { canonicalUrl: `${BASE_URL}/methodology`, changefreq: 'monthly', priority: 0.8 },
@@ -2450,10 +2039,7 @@ ${PLATFORM_IDENTITY.coreDefinition}
 - [Countries Directory](${BASE_URL}/countries)
 - [Cities Directory](${BASE_URL}/cities)
 - [City Comparisons Directory](${BASE_URL}/compare)
-- [Salary Guides](${BASE_URL}/guides)
-- [Relocation Guides](${BASE_URL}/relocation)
-- [Job Offer Comparison](${BASE_URL}/job-offer-comparison)
-- [Coverage & Verification](${BASE_URL}/coverage)
+- [Salary & Relocation Guides](${BASE_URL}/guides)
 - [Sitemap Index](${BASE_URL}/sitemap.xml)
 `;
 

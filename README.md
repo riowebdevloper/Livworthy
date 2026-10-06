@@ -108,7 +108,3 @@ The repository contains Vercel configuration for canonical host redirects, cachi
 ## Data integrity
 
 Tax, cost-of-living and evidence metadata are versioned. Unsupported jurisdictions or unverified future years must degrade explicitly rather than returning fabricated estimates. New statutory years should be added only after official-source verification, adapter implementation and regression coverage.
-
-## Data freshness automation
-
-`npm run audit:freshness` audits city benchmark source dates, evidence review dates, and statutory tax-year coverage. GitHub Actions runs the audit every Monday at 04:30 UTC and stores a JSON report artifact. Aging records remain usable with UI disclosure; critically old or malformed source dates fail the strict freshness gate.

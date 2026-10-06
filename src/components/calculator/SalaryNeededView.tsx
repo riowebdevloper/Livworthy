@@ -7,7 +7,6 @@ import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { HouseholdProfile } from '../../types/col';
 import { LivWorthScenario } from '../../types/scenario';
 import { CurrencyInput } from '../ui/CurrencyInput';
-import { useLocale } from '../../i18n/runtime';
 
 interface SalaryNeededViewProps {
   initialScenario: LivWorthScenario;
@@ -24,7 +23,6 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
   onOpenEvidence,
   onCalculationResult,
 }) => {
-  const { messages } = useLocale();
   const [targetSavingsMonthlyMajor, setTargetSavingsMonthlyMajor] = useState<number>(1000);
   const [selectedCityId, setSelectedCityId] = useState<string>(initialScenario.location.id);
   const [result, setResult] = useState<SalaryNeededResult | null>(null);
@@ -94,13 +92,13 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
 
         <div className="max-w-2xl">
           <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
-            {messages.salaryNeededKicker}
+            Reverse Financial Solver
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            {messages.salaryNeededTitlePrefix} {city.name}{messages.salaryNeededTitleSuffix}
+            How much do you need to earn in {city.name}?
           </h2>
           <p className="text-xs sm:text-sm text-[#60706D] mt-2 leading-relaxed">
-            {messages.salaryNeededIntro}
+            LivWorthy runs our tax and cost-of-living engines iteratively in reverse to calculate the exact gross salary required to cover your living costs and meet your monthly savings goal.
           </p>
         </div>
 
@@ -108,7 +106,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
           <div>
             <label htmlFor="target-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              {messages.targetLocation}
+              Target Location
             </label>
             <select
               id="target-location-select"
@@ -128,11 +126,11 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
           <div>
             <CurrencyInput
               id="target-savings-input"
-              label={messages.monthlySavingsTarget}
+              label="Desired Monthly Savings Target"
               valueMajor={targetSavingsMonthlyMajor}
               currency={currency}
               onChangeMajor={(val) => setTargetSavingsMonthlyMajor(val)}
-              helperText={messages.monthlySavingsHelp}
+              helperText="How much you want to save every month after taxes & expenses."
             />
           </div>
         </div>
