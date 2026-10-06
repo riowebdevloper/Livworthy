@@ -101,6 +101,7 @@ import { eq, desc, and, sql, like } from "drizzle-orm";
 var schema_exports = {};
 __export(schema_exports, {
   auditLogs: () => auditLogs,
+  backlinkRecords: () => backlinkRecords,
   calculationResults: () => calculationResults,
   calculationScenarios: () => calculationScenarios,
   cities: () => cities,
@@ -113,6 +114,8 @@ __export(schema_exports, {
   fxRates: () => fxRates,
   fxSnapshots: () => fxSnapshots,
   housingDatasets: () => housingDatasets,
+  prOutreachRecords: () => prOutreachRecords,
+  rankTrackingRecords: () => rankTrackingRecords,
   regions: () => regions,
   salaryDatasets: () => salaryDatasets,
   schemaMigrations: () => schemaMigrations,
@@ -120,6 +123,7 @@ __export(schema_exports, {
   taxBrackets: () => taxBrackets,
   taxJurisdictions: () => taxJurisdictions,
   taxRuleSets: () => taxRuleSets,
+  taxSourceMonitors: () => taxSourceMonitors,
   taxStatusEnum: () => taxStatusEnum,
   userRoleEnum: () => userRoleEnum,
   users: () => users,
@@ -405,6 +409,71 @@ var schemaMigrations = pgTable("schema_migrations", {
   id: integer("id").primaryKey(),
   migrationName: text("migration_name").notNull().unique(),
   appliedAt: timestamp("applied_at").defaultNow().notNull()
+});
+var backlinkRecords = pgTable("backlink_records", {
+  id: varchar("id", { length: 64 }).primaryKey(),
+  referringDomain: varchar("referring_domain", { length: 255 }).notNull(),
+  sourceUrl: text("source_url").notNull(),
+  targetUrl: text("target_url").notNull(),
+  anchorText: text("anchor_text").notNull(),
+  relAttribute: varchar("rel_attribute", { length: 64 }).notNull().default("dofollow"),
+  // 'dofollow', 'nofollow', 'ugc', 'sponsored'
+  acquisitionChannel: varchar("acquisition_channel", { length: 64 }).notNull(),
+  // 'DIGITAL_PR', 'EDITORIAL', 'RESOURCE_PAGE', 'UNLINKED_MENTION', 'PARTNERSHIP'
+  firstSeenAt: timestamp("first_seen_at").defaultNow().notNull(),
+  lastCheckedAt: timestamp("last_checked_at").defaultNow().notNull(),
+  status: varchar("status", { length: 32 }).notNull().default("PENDING_VERIFICATION"),
+  // 'ACTIVE', 'LOST', 'NOT_FOUND', 'PENDING_VERIFICATION'
+  httpStatusCode: integer("http_status_code"),
+  contactEmail: varchar("contact_email", { length: 128 }),
+  campaignName: varchar("campaign_name", { length: 128 }),
+  notes: text("notes")
+});
+var rankTrackingRecords = pgTable("rank_tracking_records", {
+  id: varchar("id", { length: 64 }).primaryKey(),
+  keyword: text("keyword").notNull(),
+  targetUrl: text("target_url").notNull(),
+  locale: varchar("locale", { length: 8 }).notNull().default("en"),
+  country: varchar("country", { length: 8 }).notNull().default("US"),
+  device: varchar("device", { length: 16 }).notNull().default("desktop"),
+  currentRank: integer("current_rank"),
+  previousRank: integer("previous_rank"),
+  rankDelta: integer("rank_delta"),
+  impressions: integer("impressions").notNull().default(0),
+  clicks: integer("clicks").notNull().default(0),
+  ctr: doublePrecision("ctr").notNull().default(0),
+  averagePosition: doublePrecision("average_position"),
+  serpFeature: varchar("serp_feature", { length: 64 }).default("STANDARD"),
+  // 'FEATURED_SNIPPET', 'PEOPLE_ALSO_ASK', 'KNOWLEDGE_PANEL', 'STANDARD'
+  lastCheckedAt: timestamp("last_checked_at").defaultNow().notNull()
+});
+var taxSourceMonitors = pgTable("tax_source_monitors", {
+  id: varchar("id", { length: 64 }).primaryKey(),
+  jurisdictionId: varchar("jurisdiction_id", { length: 32 }).notNull(),
+  authorityName: text("authority_name").notNull(),
+  officialPortalUrl: text("official_portal_url").notNull(),
+  lastCheckedAt: timestamp("last_checked_at").defaultNow().notNull(),
+  lastModifiedHeader: text("last_modified_header"),
+  etagHeader: text("etag_header"),
+  contentHash: text("content_hash"),
+  publicationDetected: boolean("publication_detected").notNull().default(false),
+  publishedStatuteYear: integer("published_statute_year").notNull().default(2026),
+  implementationStatus: varchar("implementation_status", { length: 32 }).notNull().default("CURRENT_2026"),
+  // 'CURRENT_2026', 'DETECTED_2027', 'ADAPTER_PENDING', 'VERIFIED_2027'
+  notes: text("notes")
+});
+var prOutreachRecords = pgTable("pr_outreach_records", {
+  id: varchar("id", { length: 64 }).primaryKey(),
+  journalistName: text("journalist_name").notNull(),
+  outlet: text("outlet").notNull(),
+  beat: text("beat").notNull(),
+  verifiedArticleUrl: text("verified_article_url").notNull(),
+  publicContactMethod: text("public_contact_method").notNull(),
+  pitchAngle: text("pitch_angle").notNull(),
+  status: varchar("status", { length: 32 }).notNull().default("PITCH_READY"),
+  // 'DRAFTED', 'PITCH_READY', 'SENT', 'REPLIED', 'COVERAGE_PUBLISHED', 'DECLINED'
+  sentAt: timestamp("sent_at"),
+  notes: text("notes")
 });
 
 // src/data/locations.ts
@@ -3286,6 +3355,149 @@ var PostgresDatabaseService = class {
       return { id, ...review };
     }
   }
+  async getBacklinks() {
+    try {
+      return await this.db.select().from(backlinkRecords);
+    } catch {
+      return [];
+    }
+  }
+  async recordBacklink(record) {
+    const id = record.id || `bl_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    try {
+      await this.db.insert(backlinkRecords).values({
+        id,
+        referringDomain: record.referringDomain,
+        sourceUrl: record.sourceUrl,
+        targetUrl: record.targetUrl,
+        anchorText: record.anchorText,
+        relAttribute: record.relAttribute || "dofollow",
+        acquisitionChannel: record.acquisitionChannel || "EDITORIAL",
+        status: record.status || "PENDING_VERIFICATION",
+        httpStatusCode: record.httpStatusCode || null,
+        contactEmail: record.contactEmail || null,
+        campaignName: record.campaignName || null,
+        notes: record.notes || null,
+        firstSeenAt: record.firstSeenAt ? new Date(record.firstSeenAt) : /* @__PURE__ */ new Date(),
+        lastCheckedAt: /* @__PURE__ */ new Date()
+      });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
+  async getRankRecords() {
+    try {
+      return await this.db.select().from(rankTrackingRecords);
+    } catch {
+      return [];
+    }
+  }
+  async upsertRankRecord(record) {
+    const id = record.id || `rank_${record.keyword.toLowerCase().replace(/[^a-z0-9]/g, "_")}_${record.country || "US"}`;
+    try {
+      await this.db.insert(rankTrackingRecords).values({
+        id,
+        keyword: record.keyword,
+        targetUrl: record.targetUrl,
+        locale: record.locale || "en",
+        country: record.country || "US",
+        device: record.device || "desktop",
+        currentRank: record.currentRank ?? null,
+        previousRank: record.previousRank ?? null,
+        rankDelta: record.rankDelta ?? null,
+        impressions: record.impressions || 0,
+        clicks: record.clicks || 0,
+        ctr: record.ctr || 0,
+        averagePosition: record.averagePosition ?? null,
+        serpFeature: record.serpFeature || "STANDARD",
+        lastCheckedAt: /* @__PURE__ */ new Date()
+      }).onConflictDoUpdate({
+        target: rankTrackingRecords.id,
+        set: {
+          currentRank: record.currentRank ?? null,
+          previousRank: record.previousRank ?? null,
+          rankDelta: record.rankDelta ?? null,
+          impressions: record.impressions || 0,
+          clicks: record.clicks || 0,
+          ctr: record.ctr || 0,
+          averagePosition: record.averagePosition ?? null,
+          lastCheckedAt: /* @__PURE__ */ new Date()
+        }
+      });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
+  async getTaxSourceMonitors() {
+    try {
+      return await this.db.select().from(taxSourceMonitors);
+    } catch {
+      return [];
+    }
+  }
+  async upsertTaxSourceMonitor(record) {
+    const id = record.id || `taxmon_${record.jurisdictionId}`;
+    try {
+      await this.db.insert(taxSourceMonitors).values({
+        id,
+        jurisdictionId: record.jurisdictionId,
+        authorityName: record.authorityName,
+        officialPortalUrl: record.officialPortalUrl,
+        lastCheckedAt: /* @__PURE__ */ new Date(),
+        lastModifiedHeader: record.lastModifiedHeader || null,
+        etagHeader: record.etagHeader || null,
+        contentHash: record.contentHash || null,
+        publicationDetected: !!record.publicationDetected,
+        publishedStatuteYear: record.publishedStatuteYear || 2026,
+        implementationStatus: record.implementationStatus || "CURRENT_2026",
+        notes: record.notes || null
+      }).onConflictDoUpdate({
+        target: taxSourceMonitors.id,
+        set: {
+          lastCheckedAt: /* @__PURE__ */ new Date(),
+          lastModifiedHeader: record.lastModifiedHeader || null,
+          etagHeader: record.etagHeader || null,
+          contentHash: record.contentHash || null,
+          publicationDetected: !!record.publicationDetected,
+          publishedStatuteYear: record.publishedStatuteYear || 2026,
+          implementationStatus: record.implementationStatus || "CURRENT_2026",
+          notes: record.notes || null
+        }
+      });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
+  async getPrOutreachRecords() {
+    try {
+      return await this.db.select().from(prOutreachRecords);
+    } catch {
+      return [];
+    }
+  }
+  async recordPrOutreach(record) {
+    const id = record.id || `pr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    try {
+      await this.db.insert(prOutreachRecords).values({
+        id,
+        journalistName: record.journalistName,
+        outlet: record.outlet,
+        beat: record.beat,
+        verifiedArticleUrl: record.verifiedArticleUrl,
+        publicContactMethod: record.publicContactMethod,
+        pitchAngle: record.pitchAngle,
+        status: record.status || "PITCH_READY",
+        sentAt: record.sentAt ? new Date(record.sentAt) : null,
+        notes: record.notes || null
+      });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
 };
 var LocalFallbackDatabaseService = class {
   constructor() {
@@ -3299,6 +3511,10 @@ var LocalFallbackDatabaseService = class {
     this.vitals = [];
     this.users = /* @__PURE__ */ new Map();
     this.reviews = [];
+    this.backlinks = [];
+    this.rankRecords = /* @__PURE__ */ new Map();
+    this.taxMonitors = /* @__PURE__ */ new Map();
+    this.prOutreach = [];
     this.seedInitialData();
   }
   seedInitialData() {
@@ -3603,6 +3819,42 @@ var LocalFallbackDatabaseService = class {
     };
     this.reviews.push(r);
     return r;
+  }
+  async getBacklinks() {
+    return this.backlinks;
+  }
+  async recordBacklink(record) {
+    const id = record.id || `bl_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const entry = { id, ...record, lastCheckedAt: (/* @__PURE__ */ new Date()).toISOString() };
+    this.backlinks.push(entry);
+    return entry;
+  }
+  async getRankRecords() {
+    return Array.from(this.rankRecords.values());
+  }
+  async upsertRankRecord(record) {
+    const id = record.id || `rank_${record.keyword.toLowerCase().replace(/[^a-z0-9]/g, "_")}_${record.country || "US"}`;
+    const entry = { id, ...record, lastCheckedAt: (/* @__PURE__ */ new Date()).toISOString() };
+    this.rankRecords.set(id, entry);
+    return entry;
+  }
+  async getTaxSourceMonitors() {
+    return Array.from(this.taxMonitors.values());
+  }
+  async upsertTaxSourceMonitor(record) {
+    const id = record.id || `taxmon_${record.jurisdictionId}`;
+    const entry = { id, ...record, lastCheckedAt: (/* @__PURE__ */ new Date()).toISOString() };
+    this.taxMonitors.set(id, entry);
+    return entry;
+  }
+  async getPrOutreachRecords() {
+    return this.prOutreach;
+  }
+  async recordPrOutreach(record) {
+    const id = record.id || `pr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const entry = { id, ...record };
+    this.prOutreach.push(entry);
+    return entry;
   }
 };
 function createDatabaseService() {

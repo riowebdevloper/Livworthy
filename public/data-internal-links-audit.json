@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2026-10-06T13:57:41.322Z",
+  "totalPagesAudited": 198,
+  "orphanPagesCount": 0,
+  "missingCanonicalsCount": 0,
+  "nonSelfCanonicalsCount": 0,
+  "orphanPages": [],
+  "sampleLinkDistribution": [
+    {
+      "urlPath": "/about",
+      "inboundLinksCount": 1,
+      "outboundLinksCount": 5
+    },
+    {
+      "urlPath": "/ar",
+      "inboundLinksCount": 1,
+      "outboundLinksCount": 6
+    },
+    {
+      "urlPath": "/cities/abudhabi",
+      "inboundLinksCount": 4,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/amsterdam",
+      "inboundLinksCount": 4,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/auckland",
+      "inboundLinksCount": 3,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/austin",
+      "inboundLinksCount": 4,
+      "outboundLinksCount": 4
+    },
+    {
+      "urlPath": "/cities/bangkok",
+      "inboundLinksCount": 3,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/barcelona",
+      "inboundLinksCount": 3,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/bengaluru",
+      "inboundLinksCount": 4,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/berlin",
+      "inboundLinksCount": 6,
+      "outboundLinksCount": 4
+    },
+    {
+      "urlPath": "/cities/birmingham",
+      "inboundLinksCount": 4,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/boston",
+      "inboundLinksCount": 4,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/brussels",
+      "inboundLinksCount": 3,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/calgary",
+      "inboundLinksCount": 4,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/cities/cape-town",
+      "inboundLinksCount": 3,
+      "outboundLinksCount": 3
+    }
+  ]
+}

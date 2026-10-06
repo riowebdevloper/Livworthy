@@ -209,6 +209,14 @@ export const Footer: React.FC<FooterProps> = ({
                   City Comparisons
                 </a>
               </li>
+              <li>
+                <a
+                  href="/reports"
+                  className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left text-[#167D75] font-semibold transition-colors"
+                >
+                  Empirical Research Reports →
+                </a>
+              </li>
             </ul>
           </div>
 

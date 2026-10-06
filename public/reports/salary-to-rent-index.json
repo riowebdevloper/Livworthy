@@ -1,0 +1,130 @@
+{
+  "id": "salary-to-rent-index",
+  "slug": "reports/salary-to-rent-index",
+  "title": "International Salary-to-Rent Ratio Index 2026",
+  "shortTitle": "Salary-to-Rent Ratio Index",
+  "subtitle": "Benchmarking housing affordability by measuring central 1-bedroom rent as a percentage of individual net take-home pay.",
+  "metaDescription": "The 2026 Salary-to-Rent Index evaluates median net professional income against HUD, ONS, and DSC rental data across 10 major global cities.",
+  "publishedDate": "2026-10-03",
+  "lastUpdated": "2026-10-06",
+  "citationString": "LivWorthy Research Institute. (2026). International Salary-to-Rent Ratio Index 2026. https://www.livworthy.com/reports/salary-to-rent-index",
+  "methodologyNotes": [
+    "Housing costs reflect median 1-bedroom apartment rents in central business districts.",
+    "Income baselines reflect median professional worker earnings from municipal and national labor agencies.",
+    "Rent burden threshold: Below 30% is considered financially sound; 30–40% is moderate; above 40% represents significant housing cost distress."
+  ],
+  "primarySources": [
+    {
+      "name": "U.S. Department of Housing and Urban Development (HUD FMR FY2026)",
+      "url": "https://www.huduser.gov",
+      "jurisdiction": "United States"
+    },
+    {
+      "name": "UK Valuation Office Agency / ONS",
+      "url": "https://www.ons.gov.uk",
+      "jurisdiction": "United Kingdom"
+    },
+    {
+      "name": "Statistisches Bundesamt (Destatis)",
+      "url": "https://www.destatis.de",
+      "jurisdiction": "Germany"
+    }
+  ],
+  "summaryInsights": [
+    "Zurich and Berlin offer the most favorable salary-to-rent profiles (<29% of net pay), affording median professionals substantial uncommitted savings.",
+    "New York City and London exhibit the most severe housing burdens, where central 1-bed rents absorb 45% and 48% of median net professional take-home pay respectively.",
+    "Austin provides substantially lower rent burdens (31%) than coastal US technology hubs like New York (45%) and San Francisco (41%)."
+  ],
+  "tableHeaders": [
+    "Metro & Country",
+    "Median Gross Salary",
+    "Net Monthly Pay",
+    "Median 1-Bed Rent",
+    "Rent-to-Net Ratio",
+    "Housing Burden Tier"
+  ],
+  "tableRows": [
+    [
+      "Zurich, Switzerland",
+      "CHF 110,000",
+      "CHF NaN",
+      "CHF 2,250",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "Berlin, Germany",
+      "EUR 62,000",
+      "EUR NaN",
+      "EUR 1,250",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "Austin, United States",
+      "USD 82,000",
+      "USD NaN",
+      "USD 1,650",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "Munich, Germany",
+      "EUR 68,000",
+      "EUR NaN",
+      "EUR 1,600",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "Dubai, United Arab Emirates",
+      "AED 240,000",
+      "AED NaN",
+      "AED 6,800",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "Toronto, Canada",
+      "CAD 78,000",
+      "CAD NaN",
+      "CAD 2,450",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "Sydney, Australia",
+      "AUD 95,000",
+      "AUD NaN",
+      "AUD 2,700",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "London, United Kingdom",
+      "GBP 55,000",
+      "GBP NaN",
+      "GBP 1,950",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "New York City, United States",
+      "USD 75,000",
+      "USD NaN",
+      "USD 2,655",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ],
+    [
+      "Paris, France",
+      "EUR 52,000",
+      "EUR NaN",
+      "EUR 1,500",
+      "NaN%",
+      "MODERATE (30–40%)"
+    ]
+  ],
+  "downloadableCsvUrl": "/reports/salary-to-rent-index.csv",
+  "downloadableJsonUrl": "/reports/salary-to-rent-index.json"
+}

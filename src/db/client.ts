@@ -64,6 +64,14 @@ export interface IDatabaseService {
   upsertUser(user: any): Promise<any>;
   getReviews(contentPageId?: string): Promise<any[]>;
   recordReview(review: any): Promise<any>;
+  getBacklinks(): Promise<any[]>;
+  recordBacklink(record: any): Promise<any>;
+  getRankRecords(): Promise<any[]>;
+  upsertRankRecord(record: any): Promise<any>;
+  getTaxSourceMonitors(): Promise<any[]>;
+  upsertTaxSourceMonitor(record: any): Promise<any>;
+  getPrOutreachRecords(): Promise<any[]>;
+  recordPrOutreach(record: any): Promise<any>;
 }
 
 function sanitizeDbUrl(raw?: string): string | undefined {
@@ -796,6 +804,163 @@ class PostgresDatabaseService implements IDatabaseService {
       return { id, ...review };
     }
   }
+
+  async getBacklinks() {
+    try {
+      return await this.db.select().from(schema.backlinkRecords);
+    } catch {
+      return [];
+    }
+  }
+
+  async recordBacklink(record: any) {
+    const id = record.id || `bl_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    try {
+      await this.db.insert(schema.backlinkRecords).values({
+        id,
+        referringDomain: record.referringDomain,
+        sourceUrl: record.sourceUrl,
+        targetUrl: record.targetUrl,
+        anchorText: record.anchorText,
+        relAttribute: record.relAttribute || 'dofollow',
+        acquisitionChannel: record.acquisitionChannel || 'EDITORIAL',
+        status: record.status || 'PENDING_VERIFICATION',
+        httpStatusCode: record.httpStatusCode || null,
+        contactEmail: record.contactEmail || null,
+        campaignName: record.campaignName || null,
+        notes: record.notes || null,
+        firstSeenAt: record.firstSeenAt ? new Date(record.firstSeenAt) : new Date(),
+        lastCheckedAt: new Date(),
+      });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
+
+  async getRankRecords() {
+    try {
+      return await this.db.select().from(schema.rankTrackingRecords);
+    } catch {
+      return [];
+    }
+  }
+
+  async upsertRankRecord(record: any) {
+    const id = record.id || `rank_${record.keyword.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${record.country || 'US'}`;
+    try {
+      await this.db
+        .insert(schema.rankTrackingRecords)
+        .values({
+          id,
+          keyword: record.keyword,
+          targetUrl: record.targetUrl,
+          locale: record.locale || 'en',
+          country: record.country || 'US',
+          device: record.device || 'desktop',
+          currentRank: record.currentRank ?? null,
+          previousRank: record.previousRank ?? null,
+          rankDelta: record.rankDelta ?? null,
+          impressions: record.impressions || 0,
+          clicks: record.clicks || 0,
+          ctr: record.ctr || 0.0,
+          averagePosition: record.averagePosition ?? null,
+          serpFeature: record.serpFeature || 'STANDARD',
+          lastCheckedAt: new Date(),
+        })
+        .onConflictDoUpdate({
+          target: schema.rankTrackingRecords.id,
+          set: {
+            currentRank: record.currentRank ?? null,
+            previousRank: record.previousRank ?? null,
+            rankDelta: record.rankDelta ?? null,
+            impressions: record.impressions || 0,
+            clicks: record.clicks || 0,
+            ctr: record.ctr || 0.0,
+            averagePosition: record.averagePosition ?? null,
+            lastCheckedAt: new Date(),
+          },
+        });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
+
+  async getTaxSourceMonitors() {
+    try {
+      return await this.db.select().from(schema.taxSourceMonitors);
+    } catch {
+      return [];
+    }
+  }
+
+  async upsertTaxSourceMonitor(record: any) {
+    const id = record.id || `taxmon_${record.jurisdictionId}`;
+    try {
+      await this.db
+        .insert(schema.taxSourceMonitors)
+        .values({
+          id,
+          jurisdictionId: record.jurisdictionId,
+          authorityName: record.authorityName,
+          officialPortalUrl: record.officialPortalUrl,
+          lastCheckedAt: new Date(),
+          lastModifiedHeader: record.lastModifiedHeader || null,
+          etagHeader: record.etagHeader || null,
+          contentHash: record.contentHash || null,
+          publicationDetected: !!record.publicationDetected,
+          publishedStatuteYear: record.publishedStatuteYear || 2026,
+          implementationStatus: record.implementationStatus || 'CURRENT_2026',
+          notes: record.notes || null,
+        })
+        .onConflictDoUpdate({
+          target: schema.taxSourceMonitors.id,
+          set: {
+            lastCheckedAt: new Date(),
+            lastModifiedHeader: record.lastModifiedHeader || null,
+            etagHeader: record.etagHeader || null,
+            contentHash: record.contentHash || null,
+            publicationDetected: !!record.publicationDetected,
+            publishedStatuteYear: record.publishedStatuteYear || 2026,
+            implementationStatus: record.implementationStatus || 'CURRENT_2026',
+            notes: record.notes || null,
+          },
+        });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
+
+  async getPrOutreachRecords() {
+    try {
+      return await this.db.select().from(schema.prOutreachRecords);
+    } catch {
+      return [];
+    }
+  }
+
+  async recordPrOutreach(record: any) {
+    const id = record.id || `pr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    try {
+      await this.db.insert(schema.prOutreachRecords).values({
+        id,
+        journalistName: record.journalistName,
+        outlet: record.outlet,
+        beat: record.beat,
+        verifiedArticleUrl: record.verifiedArticleUrl,
+        publicContactMethod: record.publicContactMethod,
+        pitchAngle: record.pitchAngle,
+        status: record.status || 'PITCH_READY',
+        sentAt: record.sentAt ? new Date(record.sentAt) : null,
+        notes: record.notes || null,
+      });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
 }
 
 class LocalFallbackDatabaseService implements IDatabaseService {
@@ -1151,6 +1316,55 @@ class LocalFallbackDatabaseService implements IDatabaseService {
     };
     this.reviews.push(r);
     return r;
+  }
+
+  private backlinks: any[] = [];
+  private rankRecords: Map<string, any> = new Map();
+  private taxMonitors: Map<string, any> = new Map();
+  private prOutreach: any[] = [];
+
+  async getBacklinks() {
+    return this.backlinks;
+  }
+
+  async recordBacklink(record: any) {
+    const id = record.id || `bl_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const entry = { id, ...record, lastCheckedAt: new Date().toISOString() };
+    this.backlinks.push(entry);
+    return entry;
+  }
+
+  async getRankRecords() {
+    return Array.from(this.rankRecords.values());
+  }
+
+  async upsertRankRecord(record: any) {
+    const id = record.id || `rank_${record.keyword.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${record.country || 'US'}`;
+    const entry = { id, ...record, lastCheckedAt: new Date().toISOString() };
+    this.rankRecords.set(id, entry);
+    return entry;
+  }
+
+  async getTaxSourceMonitors() {
+    return Array.from(this.taxMonitors.values());
+  }
+
+  async upsertTaxSourceMonitor(record: any) {
+    const id = record.id || `taxmon_${record.jurisdictionId}`;
+    const entry = { id, ...record, lastCheckedAt: new Date().toISOString() };
+    this.taxMonitors.set(id, entry);
+    return entry;
+  }
+
+  async getPrOutreachRecords() {
+    return this.prOutreach;
+  }
+
+  async recordPrOutreach(record: any) {
+    const id = record.id || `pr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const entry = { id, ...record };
+    this.prOutreach.push(entry);
+    return entry;
   }
 }
 

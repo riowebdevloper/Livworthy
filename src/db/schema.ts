@@ -339,3 +339,71 @@ export const schemaMigrations = pgTable('schema_migrations', {
   appliedAt: timestamp('applied_at').defaultNow().notNull(),
 });
 
+// 13. Backlink Verification & Acquisition Tracking
+export const backlinkRecords = pgTable('backlink_records', {
+  id: varchar('id', { length: 64 }).primaryKey(),
+  referringDomain: varchar('referring_domain', { length: 255 }).notNull(),
+  sourceUrl: text('source_url').notNull(),
+  targetUrl: text('target_url').notNull(),
+  anchorText: text('anchor_text').notNull(),
+  relAttribute: varchar('rel_attribute', { length: 64 }).notNull().default('dofollow'), // 'dofollow', 'nofollow', 'ugc', 'sponsored'
+  acquisitionChannel: varchar('acquisition_channel', { length: 64 }).notNull(), // 'DIGITAL_PR', 'EDITORIAL', 'RESOURCE_PAGE', 'UNLINKED_MENTION', 'PARTNERSHIP'
+  firstSeenAt: timestamp('first_seen_at').defaultNow().notNull(),
+  lastCheckedAt: timestamp('last_checked_at').defaultNow().notNull(),
+  status: varchar('status', { length: 32 }).notNull().default('PENDING_VERIFICATION'), // 'ACTIVE', 'LOST', 'NOT_FOUND', 'PENDING_VERIFICATION'
+  httpStatusCode: integer('http_status_code'),
+  contactEmail: varchar('contact_email', { length: 128 }),
+  campaignName: varchar('campaign_name', { length: 128 }),
+  notes: text('notes'),
+});
+
+// 14. Organic Search Rank Tracking Records
+export const rankTrackingRecords = pgTable('rank_tracking_records', {
+  id: varchar('id', { length: 64 }).primaryKey(),
+  keyword: text('keyword').notNull(),
+  targetUrl: text('target_url').notNull(),
+  locale: varchar('locale', { length: 8 }).notNull().default('en'),
+  country: varchar('country', { length: 8 }).notNull().default('US'),
+  device: varchar('device', { length: 16 }).notNull().default('desktop'),
+  currentRank: integer('current_rank'),
+  previousRank: integer('previous_rank'),
+  rankDelta: integer('rank_delta'),
+  impressions: integer('impressions').notNull().default(0),
+  clicks: integer('clicks').notNull().default(0),
+  ctr: doublePrecision('ctr').notNull().default(0.0),
+  averagePosition: doublePrecision('average_position'),
+  serpFeature: varchar('serp_feature', { length: 64 }).default('STANDARD'), // 'FEATURED_SNIPPET', 'PEOPLE_ALSO_ASK', 'KNOWLEDGE_PANEL', 'STANDARD'
+  lastCheckedAt: timestamp('last_checked_at').defaultNow().notNull(),
+});
+
+// 15. Statutory Authority & 2027 Tax Release Monitoring
+export const taxSourceMonitors = pgTable('tax_source_monitors', {
+  id: varchar('id', { length: 64 }).primaryKey(),
+  jurisdictionId: varchar('jurisdiction_id', { length: 32 }).notNull(),
+  authorityName: text('authority_name').notNull(),
+  officialPortalUrl: text('official_portal_url').notNull(),
+  lastCheckedAt: timestamp('last_checked_at').defaultNow().notNull(),
+  lastModifiedHeader: text('last_modified_header'),
+  etagHeader: text('etag_header'),
+  contentHash: text('content_hash'),
+  publicationDetected: boolean('publication_detected').notNull().default(false),
+  publishedStatuteYear: integer('published_statute_year').notNull().default(2026),
+  implementationStatus: varchar('implementation_status', { length: 32 }).notNull().default('CURRENT_2026'), // 'CURRENT_2026', 'DETECTED_2027', 'ADAPTER_PENDING', 'VERIFIED_2027'
+  notes: text('notes'),
+});
+
+// 16. Digital PR & Ethical Journalist Outreach
+export const prOutreachRecords = pgTable('pr_outreach_records', {
+  id: varchar('id', { length: 64 }).primaryKey(),
+  journalistName: text('journalist_name').notNull(),
+  outlet: text('outlet').notNull(),
+  beat: text('beat').notNull(),
+  verifiedArticleUrl: text('verified_article_url').notNull(),
+  publicContactMethod: text('public_contact_method').notNull(),
+  pitchAngle: text('pitch_angle').notNull(),
+  status: varchar('status', { length: 32 }).notNull().default('PITCH_READY'), // 'DRAFTED', 'PITCH_READY', 'SENT', 'REPLIED', 'COVERAGE_PUBLISHED', 'DECLINED'
+  sentAt: timestamp('sent_at'),
+  notes: text('notes'),
+});
+
+

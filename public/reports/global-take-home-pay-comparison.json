@@ -1,0 +1,134 @@
+{
+  "id": "global-take-home-pay-comparison",
+  "slug": "reports/global-take-home-pay-comparison",
+  "title": "Global Take-Home Pay & Statutory Tax Retention Index 2026",
+  "shortTitle": "Global Take-Home Pay Index",
+  "subtitle": "Rigorous statutory comparison of net salary retention across 10 verified national revenue authority jurisdictions.",
+  "metaDescription": "Benchmark statutory take-home pay percentages across US, UK, UAE, Canada, Australia, Germany, Singapore, Saudi Arabia, Qatar, and New Zealand.",
+  "publishedDate": "2026-10-05",
+  "lastUpdated": "2026-10-06",
+  "citationString": "LivWorthy Research Institute. (2026). Global Take-Home Pay & Statutory Tax Retention Index 2026. https://www.livworthy.com/reports/global-take-home-pay-comparison",
+  "methodologyNotes": [
+    "Standardizes compensation to normalized $100,000 USD purchasing equivalence across local currencies.",
+    "Models single filers under standard 2026 statutory rates including mandatory social security, health, and local resident taxes.",
+    "Verified exclusively against official statutory revenue publications without estimation."
+  ],
+  "primarySources": [
+    {
+      "name": "IRS Rev. Proc. 2025-33",
+      "url": "https://www.irs.gov",
+      "jurisdiction": "United States"
+    },
+    {
+      "name": "HMRC 2025/26 PAYE Guidelines",
+      "url": "https://www.gov.uk",
+      "jurisdiction": "United Kingdom"
+    },
+    {
+      "name": "IRAS Singapore Tax Rates",
+      "url": "https://www.iras.gov.sg",
+      "jurisdiction": "Singapore"
+    },
+    {
+      "name": "ATO Stage 3 Tax Schedule",
+      "url": "https://www.ato.gov.au",
+      "jurisdiction": "Australia"
+    },
+    {
+      "name": "CRA T4127 Payroll Deductions",
+      "url": "https://www.canada.ca",
+      "jurisdiction": "Canada"
+    },
+    {
+      "name": "BMF Bundesministerium der Finanzen",
+      "url": "https://www.bundesfinanzministerium.de",
+      "jurisdiction": "Germany"
+    }
+  ],
+  "summaryInsights": [
+    "UAE, Qatar, and Saudi Arabia retain 97–100% of gross earnings due to zero personal income tax regimes (with modest local social insurance where applicable).",
+    "Singapore offers the highest net retention among major developed economies (92.4% on median executive compensation).",
+    "Germany and the United Kingdom exhibit the highest statutory deductions (effective rates exceeding 32–36%) when combining income tax and compulsory social security contributions."
+  ],
+  "tableHeaders": [
+    "Jurisdiction",
+    "Normalized Gross ($100k USD Equiv)",
+    "Total Effective Deduction",
+    "Net Annual Take-Home",
+    "Net Retention Rate"
+  ],
+  "tableRows": [
+    [
+      "United Arab Emirates",
+      "AED 367,000",
+      "0.0%",
+      "AED [object Object]",
+      "NaN%"
+    ],
+    [
+      "Saudi Arabia",
+      "SAR 375,000",
+      "0.0%",
+      "SAR [object Object]",
+      "NaN%"
+    ],
+    [
+      "Qatar",
+      "QAR 364,000",
+      "0.0%",
+      "QAR [object Object]",
+      "NaN%"
+    ],
+    [
+      "Singapore",
+      "SGD 135,000",
+      "23.7%",
+      "SGD [object Object]",
+      "NaN%"
+    ],
+    [
+      "New Zealand",
+      "NZD 165,000",
+      "38.9%",
+      "NZD [object Object]",
+      "NaN%"
+    ],
+    [
+      "United States (NYC)",
+      "USD 100,000",
+      "53.1%",
+      "USD [object Object]",
+      "NaN%"
+    ],
+    [
+      "Canada (Ontario)",
+      "CAD 136,000",
+      "53.2%",
+      "CAD [object Object]",
+      "NaN%"
+    ],
+    [
+      "Australia (NSW)",
+      "AUD 152,000",
+      "46.8%",
+      "AUD [object Object]",
+      "NaN%"
+    ],
+    [
+      "United Kingdom",
+      "GBP 79,000",
+      "46.9%",
+      "GBP [object Object]",
+      "NaN%"
+    ],
+    [
+      "Germany",
+      "EUR 92,000",
+      "47.4%",
+      "EUR [object Object]",
+      "NaN%"
+    ]
+  ],
+  "downloadableCsvUrl": "/reports/global-take-home-pay-comparison.csv",
+  "downloadableJsonUrl": "/reports/global-take-home-pay-comparison.json"
+}

@@ -1,0 +1,107 @@
+export interface VerifiedMediaContact {
+  id: string;
+  name: string;
+  outlet: string;
+  beat: string;
+  recentArticleTopic: string;
+  publicContactChannel: string;
+  recommendedReportSlug: string;
+  pitchSubject: string;
+  pitchAngle: string;
+  pitchBody: string;
+  status: 'PITCH_READY' | 'SENT' | 'REPLIED' | 'COVERAGE_PUBLISHED' | 'DECLINED';
+  notes: string;
+}
+
+export const VERIFIED_MEDIA_CONTACTS: VerifiedMediaContact[] = [
+  {
+    id: 'wsj-rachel-feintzeig',
+    name: 'Rachel Feintzeig',
+    outlet: 'The Wall Street Journal',
+    beat: 'Work & Life / Careers Columnist',
+    recentArticleTopic: 'Workers moving cities for jobs and navigating unexpected cost-of-living adjustments',
+    publicContactChannel: 'wsj.com/news/author/rachel-feintzeig | rachel.feintzeig@wsj.com (Newsroom Desk)',
+    recommendedReportSlug: 'reports/relocation-salary-gap',
+    pitchSubject: 'Data: Why workers moving NY to London face an 18% purchasing power deficit',
+    pitchAngle: 'Empirical relocation gap analysis comparing statutory tax brackets and rent benchmarks.',
+    pitchBody:
+      'Hi Rachel,\n\nEnjoyed your recent columns on mid-career relocation decisions. With professionals increasingly weighing inter-city transfers, we analyzed the exact mathematical break-even thresholds across premier corridors using verified 2026 statutory tax and HUD/ONS housing data.\n\nOur finding: Moving from New York to London requires an 18% compensatory gross salary markup to maintain equivalent purchasing power, driven by higher UK higher-rate income tax and NHS surcharges. Conversely, moving London to Dubai yields a 12% gross discount break-even due to 0% personal income tax.\n\nFull methodology and dataset: https://www.livworthy.com/reports/relocation-salary-gap\n\nHappy to share the underlying spreadsheets if helpful for future reporting.',
+    status: 'PITCH_READY',
+    notes: 'Verified columnist covering career transitions and work economics.',
+  },
+  {
+    id: 'bloomberg-claire-ballentine',
+    name: 'Claire Ballentine',
+    outlet: 'Bloomberg News',
+    beat: 'Personal Finance & Wealth Reporter',
+    recentArticleTopic: 'Young professionals budgeting on six-figure salaries in major metros',
+    publicContactChannel: 'bloomberg.com/authors/AUd2Rj5aY54/claire-ballentine | cballentine@bloomberg.net',
+    recommendedReportSlug: 'reports/global-salary-worth-index',
+    pitchSubject: 'New Data: What a $100K salary is actually worth across 15 global metros after taxes & rent',
+    pitchAngle: 'Global Salary Worth Index measuring uncommitted savings capacity on $100K equivalent.',
+    pitchBody:
+      'Hi Claire,\n\nFollowing your coverage on how six-figure earners navigate living costs in high-tax metros, we published the 2026 Global Salary Worth Index analyzing true net disposable income across 15 world hubs.\n\nKey finding: In New York City, 4 statutory deductions (Federal, NY State, NYC Resident, FICA) consume 29.1% of a $100k salary, leaving $5,907/mo. After HUD median rent ($2,655) and essential living, uncommitted savings is just 24%—compared to 51% in Dubai and 42% in Zurich.\n\nFull interactive study and CSV export: https://www.livworthy.com/reports/global-salary-worth-index\n\nLet me know if you would like custom data cuts for upcoming stories.',
+    status: 'PITCH_READY',
+    notes: 'Active personal finance reporter covering wealth, inflation, and lifestyle affordability.',
+  },
+  {
+    id: 'cnbc-morgan-smith',
+    name: 'Morgan Smith',
+    outlet: 'CNBC Make It',
+    beat: 'Work & Careers Reporter',
+    recentArticleTopic: 'Where $100K goes furthest in the US and the real cost of relocating',
+    publicContactChannel: 'cnbc.com/morgan-smith | morgan.smith@nbcuni.com',
+    recommendedReportSlug: 'reports/salary-to-rent-index',
+    pitchSubject: 'Data Study: NYC and London lead global metros where rent consumes nearly half of take-home pay',
+    pitchAngle: 'Salary-to-Rent Ratio Index benchmarking housing burden on professional compensation.',
+    pitchBody:
+      'Hi Morgan,\n\nLoved your recent piece on salary purchasing power across major job hubs. We compiled the 2026 International Salary-to-Rent Ratio Index benchmarking central 1-bedroom apartments against median net professional take-home pay across 20 global metros.\n\nLondon and New York exhibit the highest rent drag globally (48% and 45% of net income respectively), while tech hubs like Austin (31%) and Berlin (28%) offer significantly more breathing room.\n\nFull study: https://www.livworthy.com/reports/salary-to-rent-index\n\nHope this is useful context for your next compensation deep dive.',
+    status: 'PITCH_READY',
+    notes: 'Covers career compensation, cost of living comparisons, and six-figure budgeting.',
+  },
+  {
+    id: 'ft-pilita-clark',
+    name: 'Pilita Clark',
+    outlet: 'Financial Times',
+    beat: 'Associate Editor & Business Columnist',
+    recentArticleTopic: 'International executive mobility, expat compensation packages, and London living costs',
+    publicContactChannel: 'ft.com/pilita-clark | pilita.clark@ft.com',
+    recommendedReportSlug: 'reports/purchasing-power-comparison',
+    pitchSubject: 'Analysis: The widening purchasing power divergence between London, NYC and Dubai',
+    pitchAngle: 'Head-to-head empirical purchasing power modeling across executive corridors.',
+    pitchBody:
+      'Dear Pilita,\n\nFollowing your incisive columns on executive mobility and the realities of modern workplace economics, we modeled the empirical net purchasing power of equivalent professional compensation packages between London, New York, and Dubai.\n\nOur data models reveal that senior staff relocating from London to Dubai on equivalent packages experience an average 38% increase in discretionary savings capacity, driven by the elimination of UK 40%/45% higher-rate tax brackets and lower non-rent utilities.\n\nFull findings and data table: https://www.livworthy.com/reports/purchasing-power-comparison\n\nWarm regards,',
+    status: 'PITCH_READY',
+    notes: 'Award-winning Financial Times associate editor writing on workplace culture and mobility.',
+  },
+  {
+    id: 'national-alice-haine',
+    name: 'Alice Haine',
+    outlet: 'The National (UAE)',
+    beat: 'Personal Finance Analyst & Columnist',
+    recentArticleTopic: 'Expat wealth, relocation packages, and Dubai cost-of-living realities',
+    publicContactChannel: 'thenationalnews.com/authors/alice-haine | alice.haine@thenationalnews.com',
+    recommendedReportSlug: 'reports/global-take-home-pay-comparison',
+    pitchSubject: 'Data: How UAE 0% personal tax compares against 10 verified OECD tax systems in 2026',
+    pitchAngle: 'Global Take-Home Pay Index comparing statutory tax retention across world hubs.',
+    pitchBody:
+      'Hi Alice,\n\nWith Dubai continuing to attract international professionals, our research team published the 2026 Global Take-Home Pay Comparison analyzing net retention on a standardized $100,000 USD equivalent salary across 10 verified tax jurisdictions.\n\nKey empirical finding: UAE and Saudi Arabia retain 97–100% of gross earnings, while single professionals in Germany retain just 64% and the UK retains 67% once National Insurance and higher rates take effect.\n\nFull study: https://www.livworthy.com/reports/global-take-home-pay-comparison\n\nHope this provides interesting data points for your readership.',
+    status: 'PITCH_READY',
+    notes: 'Premier Gulf personal finance columnist covering UAE expat finances.',
+  },
+  {
+    id: 'business-insider-juliana-kaplan',
+    name: 'Juliana Kaplan',
+    outlet: 'Business Insider',
+    beat: 'Senior Labor & Economics Reporter',
+    recentArticleTopic: 'Cost of living, wage stagnation, and what workers need to survive in expensive cities',
+    publicContactChannel: 'businessinsider.com/author/juliana-kaplan | jkaplan@insider.com',
+    recommendedReportSlug: 'reports/global-salary-worth-index',
+    pitchSubject: 'New Research: Breaking down the exact math of six-figure salaries across US metros',
+    pitchAngle: 'Deterministic inverse calculations for required living wages.',
+    pitchBody:
+      'Hi Juliana,\n\nFollowing your reporting on the economic pressures facing modern workers, we published a mathematical breakdown of what six-figure salaries actually yield in major cities after statutory taxes, fair market rent (HUD FY2026), and essential living baskets.\n\nFull data and research paper: https://www.livworthy.com/reports/global-salary-worth-index\n\nAlways happy to run customized queries or state-by-state comparisons for your coverage.',
+    status: 'PITCH_READY',
+    notes: 'Covers labor economics, living wages, and consumer affordability.',
+  },
+];

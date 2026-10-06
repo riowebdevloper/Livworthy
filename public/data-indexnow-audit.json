@@ -1,0 +1,53 @@
+[
+  {
+    "submittedAt": "2026-10-06T13:42:19.344Z",
+    "trigger": "new_empirical_reports",
+    "dryRun": false,
+    "success": true,
+    "validUrlsCount": 6,
+    "batches": [
+      {
+        "batchIndex": 0,
+        "urlCount": 6,
+        "statusCode": 202,
+        "statusText": "Accepted",
+        "success": true
+      }
+    ],
+    "message": "Successfully submitted 6 canonical URLs across 1 batch(es) to IndexNow."
+  },
+  {
+    "submittedAt": "2026-10-06T13:33:17.284Z",
+    "trigger": "manual_cli",
+    "dryRun": false,
+    "success": true,
+    "validUrlsCount": 2,
+    "batches": [
+      {
+        "batchIndex": 0,
+        "urlCount": 2,
+        "statusCode": 202,
+        "statusText": "Accepted",
+        "success": true
+      }
+    ],
+    "message": "Successfully submitted 2 canonical URLs across 1 batch(es) to IndexNow."
+  },
+  {
+    "submittedAt": "2026-10-06T13:32:54.753Z",
+    "trigger": "manual_cli",
+    "dryRun": true,
+    "success": true,
+    "validUrlsCount": 10,
+    "batches": [
+      {
+        "batchIndex": 0,
+        "urlCount": 10,
+        "statusCode": 200,
+        "statusText": "DRY_RUN_OK",
+        "success": true
+      }
+    ],
+    "message": "[Dry Run] Prepared 10 canonical URLs for IndexNow submission to host www.livworthy.com."
+  }
+]

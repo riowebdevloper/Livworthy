@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-10-06T13:43:00.361Z",
+  "totalTracked": 2,
+  "activeVerified": 0,
+  "referringDomainsCount": 0,
+  "referringDomains": [],
+  "lostCount": 2,
+  "pendingCount": 0,
+  "records": [
+    {
+      "id": "bl_1791294178039_cm82w",
+      "referringDomain": "github.com",
+      "sourceUrl": "https://github.com/riowebdevloper/Livworthy",
+      "targetUrl": "https://www.livworthy.com",
+      "anchorText": "LivWorthy",
+      "relAttribute": "nofollow",
+      "acquisitionChannel": "EDITORIAL",
+      "status": "ACTIVE",
+      "httpStatusCode": 200,
+      "campaignName": "open_source_repository",
+      "firstSeenAt": "2026-09-28T00:00:00.000Z",
+      "lastCheckedAt": "2026-10-06T13:42:59.209Z",
+      "notes": "Official open-source repository documentation and production deployment link.",
+      "verifiedStatus": "NOT_FOUND"
+    },
+    {
+      "id": "bl_1791294178039_44a2d",
+      "referringDomain": "vercel.app",
+      "sourceUrl": "https://livworthy.vercel.app",
+      "targetUrl": "https://www.livworthy.com",
+      "anchorText": "Canonical LivWorthy Platform",
+      "relAttribute": "dofollow",
+      "acquisitionChannel": "EDITORIAL",
+      "status": "ACTIVE",
+      "httpStatusCode": 200,
+      "campaignName": "infrastructure_canonical_redirect",
+      "firstSeenAt": "2026-09-28T00:00:00.000Z",
+      "lastCheckedAt": "2026-10-06T13:43:00.361Z",
+      "notes": "Platform preview and origin alias permanently redirecting to canonical production apex.",
+      "verifiedStatus": "NOT_FOUND"
+    }
+  ]
+}

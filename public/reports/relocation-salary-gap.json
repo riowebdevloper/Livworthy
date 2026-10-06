@@ -1,0 +1,79 @@
+{
+  "id": "relocation-salary-gap",
+  "slug": "reports/relocation-salary-gap",
+  "title": "International Relocation Salary Gap Report 2026",
+  "shortTitle": "Relocation Salary Gap Report",
+  "subtitle": "Mathematical analysis of gross compensation differentials required to break even across premier international migration corridors.",
+  "metaDescription": "Discover the required salary adjustment when moving between London, Dubai, NYC, Austin, Toronto, and Sydney under 2026 statutory tax and living cost regimes.",
+  "publishedDate": "2026-10-04",
+  "lastUpdated": "2026-10-06",
+  "citationString": "LivWorthy Research Institute. (2026). International Relocation Salary Gap Report 2026. https://www.livworthy.com/reports/relocation-salary-gap",
+  "methodologyNotes": [
+    "Break-even compensation is computed using the LivWorthy deterministic inverse solver matching origin net disposable savings.",
+    "Models single professionals renting median 1-bedroom apartments in destination urban centers.",
+    "Considers first-year relocation friction including visa processing, security deposits, and international transit."
+  ],
+  "primarySources": [
+    {
+      "name": "LivWorthy Inverse Solving Engine",
+      "url": "https://www.livworthy.com/methodology",
+      "jurisdiction": "Global"
+    },
+    {
+      "name": "IRS, HMRC, FTA, ATO, CRA Tax Bulletins",
+      "url": "https://www.livworthy.com/sources",
+      "jurisdiction": "International"
+    }
+  ],
+  "summaryInsights": [
+    "Employees relocating from London to Dubai can take a 12% lower gross package while still increasing their net disposable savings by over £15,000 annually.",
+    "Moving from New York to London requires an 18% compensatory markup to preserve equivalent dollar-for-dollar purchasing power.",
+    "The San Francisco to Austin corridor represents the largest domestic US break-even dividend (-21% required gross for identical quality of life)."
+  ],
+  "tableHeaders": [
+    "Relocation Corridor",
+    "Origin Gross Salary",
+    "Break-Even Destination Gross",
+    "Gross Adjustment Gap",
+    "Key Economic Driver"
+  ],
+  "tableRows": [
+    [
+      "London → Dubai",
+      "GBP 80,000",
+      "AED 340,000",
+      "-12%",
+      "0% UAE personal income tax eliminates 40% UK statutory drag"
+    ],
+    [
+      "New York → London",
+      "USD 120,000",
+      "GBP 98,000",
+      "+18%",
+      "UK higher-rate income tax and NHS surcharges require compensatory gross"
+    ],
+    [
+      "San Francisco → Austin",
+      "USD 150,000",
+      "USD 118,000",
+      "-21%",
+      "0% Texas state income tax and 34% lower rent enable lower salary break-even"
+    ],
+    [
+      "Toronto → Calgary",
+      "CAD 100,000",
+      "CAD 86,000",
+      "-14%",
+      "Lower provincial income tax in Alberta plus 28% cheaper housing"
+    ],
+    [
+      "Sydney → London",
+      "AUD 130,000",
+      "GBP 78,000",
+      "+8%",
+      "London rent premium offsets parity in disposable income"
+    ]
+  ],
+  "downloadableCsvUrl": "/reports/relocation-salary-gap.csv",
+  "downloadableJsonUrl": "/reports/relocation-salary-gap.json"
+}

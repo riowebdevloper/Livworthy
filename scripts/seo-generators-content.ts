@@ -3,6 +3,7 @@ import { RELOCATION_CORRIDORS } from '../src/data/relocation-corridors';
 import { TRANSLATIONS, SUPPORTED_LOCALES, SupportedLocale } from '../src/lib/i18n';
 import { LATEST_STATUTORY_TAX_YEAR, TaxRegistry } from '../src/engines/tax/tax-registry';
 import { PLATFORM_IDENTITY } from '../src/data/transparency';
+import { ALL_EMPIRICAL_REPORTS } from '../src/data/reports-data';
 
 export interface SeoPage {
   relativePath: string;
@@ -880,3 +881,266 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
 
   return pages;
 }
+
+export function createEmpiricalReportsPages(baseUrl: string): {
+  pages: SeoPage[];
+  downloads: { relativePath: string; content: string }[];
+} {
+  const pages: SeoPage[] = [];
+  const downloads: { relativePath: string; content: string }[] = [];
+
+  // 1. Research Hub (/reports)
+  const hubStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'LivWorthy Empirical Research & Global Financial Reports',
+    url: `${baseUrl}/reports`,
+    description: 'Empirical studies on international purchasing power, statutory tax retention, and cost of living benchmarks.',
+  };
+
+  const hubBody = `
+    <div class="min-h-screen bg-[#F7F8F5]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <nav aria-label="Breadcrumb" class="text-xs text-[#60706D] mb-6">
+          <a href="/" class="hover:text-[#167D75]">Home</a> /
+          <span class="text-[#102A2E] font-semibold">Research Reports</span>
+        </nav>
+
+        <header class="mb-10">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 bg-[#E8F3F1] border border-[#BCE1DC] rounded-full text-xs font-semibold text-[#167D75] mb-3">
+            <span>Quantitative Research Institute</span>
+            <span>•</span>
+            <span>Zero-AI Deterministic Modeling</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] tracking-tight">Empirical Research & Benchmark Indices</h1>
+          <p class="mt-3 text-base text-[#60706D] max-w-3xl leading-relaxed">
+            Transparent, citation-ready research datasets analyzing cross-border compensation, statutory income retention, and urban purchasing power across 39 international markets.
+          </p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          ${ALL_EMPIRICAL_REPORTS.map(
+            (r: any) => `
+            <article class="bg-[#FFFFFF] border border-[#DCE3E0] rounded-2xl p-6 shadow-xs hover:border-[#167D75] transition-colors flex flex-col justify-between">
+              <div>
+                <span class="text-[11px] font-bold text-[#167D75] tracking-wide uppercase">Empirical Benchmark Index</span>
+                <h2 class="text-xl font-bold text-[#102A2E] mt-1 mb-2 hover:text-[#167D75]">
+                  <a href="/${r.slug}">${escapeHtml(r.shortTitle)}</a>
+                </h2>
+                <p class="text-xs text-[#60706D] leading-relaxed mb-4">${escapeHtml(r.subtitle)}</p>
+                <div class="bg-[#F7F8F5] rounded-xl p-3 border border-[#E8ECE9] text-[11px] text-[#334D4A] space-y-1">
+                  <div class="font-semibold text-[#102A2E]">Key Insight:</div>
+                  <p class="leading-normal">${escapeHtml(r.summaryInsights[0])}</p>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-[#E8ECE9] flex items-center justify-between text-xs font-medium">
+                <span class="text-[#879895]">Updated: ${r.lastUpdated}</span>
+                <a href="/${r.slug}" class="text-[#167D75] font-semibold hover:underline inline-flex items-center space-x-1">
+                  <span>View Full Report</span>
+                  <span>→</span>
+                </a>
+              </div>
+            </article>
+          `
+          ).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  pages.push({
+    relativePath: 'reports/index.html',
+    canonicalUrl: `${baseUrl}/reports`,
+    title: 'Global Financial Research & Salary Worth Indices 2026 | LivWorthy',
+    description: 'Explore empirical datasets on international salary worth, statutory take-home pay, and metro rent burdens.',
+    robots: 'index, follow',
+    bodyContent: hubBody,
+    structuredData: hubStructuredData,
+    changefreq: 'weekly',
+    priority: 0.9,
+  });
+
+  // 2. Individual Report Pages
+  for (const report of ALL_EMPIRICAL_REPORTS) {
+    const csvContent = [
+      report.tableHeaders.map((h: string) => `"${h.replace(/"/g, '""')}"`).join(','),
+      ...report.tableRows.map((row: any[]) =>
+        row.map((cell: any) => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+      ),
+    ].join('\n');
+
+    downloads.push({
+      relativePath: `${report.slug}.csv`,
+      content: csvContent,
+    });
+
+    downloads.push({
+      relativePath: `${report.slug}.json`,
+      content: JSON.stringify(report, null, 2),
+    });
+
+    const reportStructuredData = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${baseUrl}/` },
+            { '@type': 'ListItem', position: 2, name: 'Research Reports', item: `${baseUrl}/reports` },
+            { '@type': 'ListItem', position: 3, name: report.shortTitle, item: `${baseUrl}/${report.slug}` },
+          ],
+        },
+        {
+          '@type': 'Dataset',
+          name: report.title,
+          description: report.metaDescription,
+          url: `${baseUrl}/${report.slug}`,
+          license: 'https://creativecommons.org/licenses/by/4.0/',
+          creator: {
+            '@type': 'Organization',
+            name: 'LivWorthy Quantitative Research Institute',
+            url: baseUrl,
+          },
+          distribution: [
+            {
+              '@type': 'DataDownload',
+              encodingFormat: 'text/csv',
+              contentUrl: `${baseUrl}/${report.slug}.csv`,
+            },
+            {
+              '@type': 'DataDownload',
+              encodingFormat: 'application/json',
+              contentUrl: `${baseUrl}/${report.slug}.json`,
+            },
+          ],
+        },
+        {
+          '@type': 'TechArticle',
+          headline: report.title,
+          description: report.metaDescription,
+          datePublished: report.publishedDate,
+          dateModified: report.lastUpdated,
+          author: {
+            '@type': 'Organization',
+            name: 'LivWorthy Quantitative Research Institute',
+          },
+        },
+      ],
+    };
+
+    const reportBody = `
+      <div class="min-h-screen bg-[#F7F8F5]">
+        <article class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <nav aria-label="Breadcrumb" class="text-xs text-[#60706D] mb-6">
+            <a href="/" class="hover:text-[#167D75]">Home</a> /
+            <a href="/reports" class="hover:text-[#167D75]">Research Reports</a> /
+            <span class="text-[#102A2E] font-semibold">${escapeHtml(report.shortTitle)}</span>
+          </nav>
+
+          <header class="mb-8 bg-[#FFFFFF] border border-[#DCE3E0] rounded-2xl p-6 sm:p-8 shadow-xs">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              <span class="px-2.5 py-0.5 bg-[#E8F3F1] border border-[#BCE1DC] rounded-md text-[11px] font-semibold text-[#167D75]">Empirical Dataset</span>
+              <span class="text-xs text-[#879895]">• Published: ${report.publishedDate}</span>
+              <span class="text-xs text-[#879895]">• Last Reviewed: ${report.lastUpdated}</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#102A2E] tracking-tight">${escapeHtml(report.title)}</h1>
+            <p class="mt-3 text-sm sm:text-base text-[#60706D] leading-relaxed">${escapeHtml(report.subtitle)}</p>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a href="/${report.slug}.csv" download class="inline-flex items-center space-x-1.5 px-4 py-2 bg-[#102A2E] text-white rounded-lg text-xs font-semibold hover:bg-[#167D75] transition-colors shadow-xs">
+                <span>Download Dataset (CSV)</span>
+              </a>
+              <a href="/${report.slug}.json" download class="inline-flex items-center space-x-1.5 px-4 py-2 bg-[#FFFFFF] text-[#102A2E] border border-[#DCE3E0] rounded-lg text-xs font-semibold hover:bg-[#F7F8F5] transition-colors">
+                <span>Export Schema (JSON)</span>
+              </a>
+            </div>
+          </header>
+
+          <!-- Key Findings Box -->
+          <section class="mb-8 bg-[#FFFFFF] border border-[#DCE3E0] rounded-2xl p-6 shadow-xs">
+            <h2 class="text-base font-bold text-[#102A2E] mb-3">Core Empirical Findings</h2>
+            <ul class="space-y-2 text-xs sm:text-sm text-[#334D4A]">
+              ${report.summaryInsights.map((insight: string) => `<li class="flex items-start space-x-2"><span class="text-[#167D75] font-bold">✔</span><span>${escapeHtml(insight)}</span></li>`).join('')}
+            </ul>
+          </section>
+
+          <!-- Interactive Data Table -->
+          <section class="mb-10 bg-[#FFFFFF] border border-[#DCE3E0] rounded-2xl shadow-xs overflow-hidden">
+            <div class="px-6 py-4 border-b border-[#DCE3E0] flex items-center justify-between">
+              <h2 class="text-base font-bold text-[#102A2E]">Empirical Benchmark Matrix</h2>
+              <span class="text-xs text-[#879895]">Verified 2026 Statutory Baseline</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-[#E8ECE9] text-xs">
+                <thead class="bg-[#F7F8F5] text-[#334D4A] font-semibold">
+                  <tr>
+                    ${report.tableHeaders.map((th: string) => `<th scope="col" class="px-4 py-3 text-left whitespace-nowrap">${escapeHtml(th)}</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[#E8ECE9] bg-white text-[#102A2E]">
+                  ${report.tableRows.map((row: any[]) => `
+                    <tr class="hover:bg-[#F7F8F5] transition-colors">
+                      ${row.map((cell: any, idx: number) => `<td class="px-4 py-3 whitespace-nowrap ${idx === 0 ? 'font-bold text-[#102A2E]' : 'text-[#334D4A]'}">${escapeHtml(String(cell))}</td>`).join('')}
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Methodology & Zero-AI Disclosure -->
+          <section class="mb-8 bg-[#FFFFFF] border border-[#DCE3E0] rounded-2xl p-6 shadow-xs space-y-4">
+            <h2 class="text-base font-bold text-[#102A2E]">Calculation Methodology & Governance</h2>
+            <div class="space-y-2 text-xs text-[#60706D] leading-relaxed">
+              ${report.methodologyNotes.map((note: string) => `<p>• ${escapeHtml(note)}</p>`).join('')}
+            </div>
+            <div class="pt-3 border-t border-[#E8ECE9]">
+              <h3 class="text-xs font-bold text-[#102A2E] mb-2">Primary Statutory & Statistical Authorities:</h3>
+              <div class="flex flex-wrap gap-2 text-xs">
+                ${report.primarySources.map((s: any) => `
+                  <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-[#F7F8F5] border border-[#DCE3E0] rounded-md text-[#167D75] hover:border-[#167D75]">
+                    ${escapeHtml(s.name)} ↗
+                  </a>
+                `).join('')}
+              </div>
+            </div>
+          </section>
+
+          <!-- Press & Academic Citation Standard -->
+          <section class="mb-10 bg-[#E8F3F1] border border-[#BCE1DC] rounded-2xl p-6 shadow-xs">
+            <h2 class="text-sm font-bold text-[#102A2E] mb-2">Standard Academic & Editorial Citation</h2>
+            <p class="text-xs text-[#60706D] mb-3">If utilizing this data in journalism, academic papers, or corporate compensation analysis, please cite:</p>
+            <div class="p-3 bg-white border border-[#BCE1DC] rounded-xl font-mono text-[11px] text-[#102A2E] select-all leading-normal">
+              ${escapeHtml(report.citationString)}
+            </div>
+          </section>
+
+          <!-- Next Action CTAs -->
+          <footer class="pt-6 border-t border-[#DCE3E0] flex flex-wrap items-center justify-between gap-4 text-xs">
+            <div class="flex items-center space-x-3 text-[#167D75] font-semibold">
+              <a href="/salary-after-tax" class="hover:underline">Run Custom Tax Calculation →</a>
+              <a href="/compare" class="hover:underline">Bilateral City Comparison →</a>
+              <a href="/coverage" class="hover:underline">View 39 Supported Markets →</a>
+            </div>
+            <span class="text-[#879895]">© 2026 LivWorthy Quantitative Research Institute</span>
+          </footer>
+        </article>
+      </div>
+    `;
+
+    pages.push({
+      relativePath: `${report.slug}/index.html`,
+      canonicalUrl: `${baseUrl}/${report.slug}`,
+      title: `${report.title} | LivWorthy`,
+      description: report.metaDescription,
+      robots: 'index, follow',
+      bodyContent: reportBody,
+      structuredData: reportStructuredData,
+      changefreq: 'weekly',
+      priority: 0.9,
+    });
+  }
+
+  return { pages, downloads };
+}
+

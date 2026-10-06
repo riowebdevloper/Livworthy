@@ -17,6 +17,7 @@ import {
   createJobOfferAuthorityPage,
   createCoveragePage,
   createLocalizedPages,
+  createEmpiricalReportsPages,
 } from './seo-generators-content';
 
 const BASE_URL = 'https://www.livworthy.com';
@@ -456,7 +457,7 @@ export function runSeoGenerator() {
             </div>
 
             <div>
-              <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">Calculators & Tools</div>
+              <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">Calculators & Directories</div>
               <ul class="space-y-2 text-xs">
                 <li><a href="/?tab=salary-worth" class="hover:text-[#102A2E]">Is My Salary Enough?</a></li>
                 <li><a href="/?tab=salary-needed" class="hover:text-[#102A2E]">How Much Should I Earn?</a></li>
@@ -464,7 +465,10 @@ export function runSeoGenerator() {
                 <li><a href="/?tab=cost-of-living" class="hover:text-[#102A2E]">Cost of Living</a></li>
                 <li><a href="/?tab=compare" class="hover:text-[#102A2E]">Compare Cities</a></li>
                 <li><a href="/?tab=job-offers" class="hover:text-[#102A2E]">Compare Job Offers</a></li>
-                <li><a href="/guides/nyc-100k" class="hover:text-[#102A2E] text-[#167D75] font-semibold">City Salary Intelligence Guides →</a></li>
+                <li><a href="/reports" class="hover:text-[#102A2E] text-[#167D75] font-semibold">Empirical Research Reports →</a></li>
+                <li><a href="/countries" class="hover:text-[#102A2E]">Countries Directory</a></li>
+                <li><a href="/cities" class="hover:text-[#102A2E]">Cities Directory</a></li>
+                <li><a href="/guides" class="hover:text-[#102A2E]">Salary Guides Directory</a></li>
               </ul>
             </div>
 
@@ -472,6 +476,7 @@ export function runSeoGenerator() {
               <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">City Salary Guides</div>
               <ul class="space-y-1 text-xs">
                 <li><a href="/guides/nyc-100k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $100k a Good Salary in NYC?</a></li>
+                <li><a href="/guides/100k-salary-new-york" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">NYC $100k Salary Breakdown</a></li>
                 <li><a href="/guides/london-75k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is £75k a Good Salary in London?</a></li>
                 <li><a href="/guides/sf-150k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $150k a Good Salary in San Francisco?</a></li>
                 <li><a href="/guides/toronto-100k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is CA$100k a Good Salary in Toronto?</a></li>
@@ -578,6 +583,10 @@ export function runSeoGenerator() {
   // 2f. Localized Entry Pages (/en, /es, /fr, /ar)
   const localizedPages = createLocalizedPages(BASE_URL, homeStructuredData);
   pages.push(...localizedPages);
+
+  // 2g. Empirical Benchmark Reports (/reports, /reports/[slug])
+  const empiricalReports = createEmpiricalReportsPages(BASE_URL);
+  pages.push(...empiricalReports.pages);
 
   // 3. Country Hub Pages
   for (const country of Object.values(COUNTRIES)) {
@@ -1095,6 +1104,19 @@ export function runSeoGenerator() {
     fs.writeFileSync(outFilePath, html);
     generatedCount++;
   }
+
+  // Write empirical report downloadable CSV & JSON datasets
+  for (const dl of empiricalReports.downloads) {
+    for (const base of [distDir, publicDir]) {
+      const outPath = path.join(base, dl.relativePath);
+      const outDir = path.dirname(outPath);
+      if (!fs.existsSync(outDir)) {
+        fs.mkdirSync(outDir, { recursive: true });
+      }
+      fs.writeFileSync(outPath, dl.content, 'utf-8');
+    }
+  }
+
   console.log(`[SEO Generator] Successfully prerendered ${generatedCount} static HTML pages.`);
 
   // 7. Generate Segmented Sitemaps & Sitemap Index
@@ -1901,6 +1923,7 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
   const relocationPages = indexablePages.filter(
     (p) => p.relativePath.startsWith('relocation/') && p.relativePath !== 'relocation/index.html'
   );
+  const reportsPages = indexablePages.filter((p) => p.relativePath.startsWith('reports/'));
   const programmaticHubPages = indexablePages.filter(
     (p) =>
       p.relativePath.startsWith('salary-after-tax/') ||
@@ -1957,6 +1980,7 @@ ${items
   const comparisonsXml = buildUrlSet(comparisonPages);
   const guidesXml = buildUrlSet(guidePages);
   const relocationXml = buildUrlSet(relocationPages);
+  const reportsXml = buildUrlSet(reportsPages);
 
   const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -1978,6 +2002,9 @@ ${items
   <sitemap>
     <loc>${BASE_URL}/sitemap-relocation.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-reports.xml</loc>
+  </sitemap>
 </sitemapindex>`;
 
   const filesToWrite = [
@@ -1988,6 +2015,7 @@ ${items
     { name: 'sitemap-comparisons.xml', content: comparisonsXml },
     { name: 'sitemap-guides.xml', content: guidesXml },
     { name: 'sitemap-relocation.xml', content: relocationXml },
+    { name: 'sitemap-reports.xml', content: reportsXml },
   ];
 
   for (const f of filesToWrite) {
