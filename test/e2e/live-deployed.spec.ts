@@ -4,7 +4,7 @@ const LIVE_URL = process.env.LIVE_URL || 'http://127.0.0.1:3000';
 
 test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
   test('1. Live Homepage loads branding, tabs, and default $100K NYC scenario', async ({ page }) => {
-    const response = await page.goto(LIVE_URL, { waitUntil: 'networkidle' });
+    const response = await page.goto(LIVE_URL, { waitUntil: 'domcontentloaded' });
     expect(response?.status()).toBe(200);
     await expect(page).toHaveTitle(/LivWorthy/);
 
@@ -28,7 +28,8 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
   });
 
   test('2. Live Navigation across all 6 calculators', async ({ page }) => {
-    await page.goto(LIVE_URL, { waitUntil: 'networkidle' });
+    await page.goto(LIVE_URL, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#salary-worth-view')).toBeVisible({ timeout: 10000 });
 
     // 1. Salary After Tax
     await page.click('#tab-salary-after-tax');
@@ -56,7 +57,7 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
   });
 
   test('3. Live URL query parameter deep linking', async ({ page }) => {
-    await page.goto(`${LIVE_URL}/?city=london&salary=75000&tab=salary-worth`, { waitUntil: 'networkidle' });
+    await page.goto(`${LIVE_URL}/?city=london&salary=75000&tab=salary-worth`, { waitUntil: 'domcontentloaded' });
 
     // Verify London £75,000 is loaded
     await expect(page.locator('#hero-location-select')).toHaveValue('london');
@@ -65,27 +66,34 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
   });
 
   test('4. Live Drawers & Modals: Evidence, Methodology, Diagnostics', async ({ page }) => {
-    await page.goto(LIVE_URL, { waitUntil: 'networkidle' });
+    await page.goto(LIVE_URL, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#salary-worth-view')).toBeVisible({ timeout: 10000 });
 
     // 1. Methodology Modal
     await page.click('#footer-methodology-btn');
-    await expect(page.locator('text=LivWorthy Calculation Methodology').first()).toBeVisible({ timeout: 10000 });
+    const methodologyDialog = page.locator('text=LivWorthy Calculation Methodology').first();
+    await expect(methodologyDialog).toBeVisible({ timeout: 10000 });
     await page.keyboard.press('Escape');
+    await expect(methodologyDialog).toBeHidden({ timeout: 10000 });
 
     // 2. Diagnostics Modal
     const diagBtn = page.locator('#btn-open-diagnostics');
     if (await diagBtn.isVisible()) {
       await diagBtn.click();
-      await expect(page.locator('text=LivWorthy System Architecture & Diagnostics').first()).toBeVisible({ timeout: 10000 });
+      const diagDialog = page.locator('text=LivWorthy System Architecture & Diagnostics').first();
+      await expect(diagDialog).toBeVisible({ timeout: 10000 });
       await page.keyboard.press('Escape');
+      await expect(diagDialog).toBeHidden({ timeout: 10000 });
     }
 
     // 3. Customizer
     const customizerBtn = page.locator('text=Customize Assumptions').first();
     if (await customizerBtn.isVisible()) {
       await customizerBtn.click();
-      await expect(page.locator('text=Household Structure').first()).toBeVisible({ timeout: 10000 });
+      const customizerDialog = page.locator('text=Household Structure').first();
+      await expect(customizerDialog).toBeVisible({ timeout: 10000 });
       await page.keyboard.press('Escape');
+      await expect(customizerDialog).toBeHidden({ timeout: 10000 });
     }
 
     console.log('Modals and Drawers verified live on Vercel.');
@@ -155,7 +163,7 @@ test.describe('LivWorthy Live Institutional Pages Verification (All Eight Routes
   test('Live Footer click verification across all eight institutional pages', async ({ page }) => {
     for (const item of INSTITUTIONAL_PAGES) {
       // Load homepage and wait for SPA footer hydration
-      await page.goto(LIVE_URL, { waitUntil: 'networkidle' });
+      await page.goto(LIVE_URL, { waitUntil: 'domcontentloaded' });
 
       const link = page.locator(`#livworthy-footer a[href="${item.path}"]`).first();
       await expect(link).toBeVisible({ timeout: 10000 });
@@ -175,7 +183,7 @@ test.describe('LivWorthy Live Institutional Pages Verification (All Eight Routes
 
   test('Live Native Header Logo navigation returns to homepage', async ({ page }) => {
     // Navigate to a parameterized tab view on homepage
-    await page.goto(`${LIVE_URL}/?tab=cost-of-living`, { waitUntil: 'networkidle' });
+    await page.goto(`${LIVE_URL}/?tab=cost-of-living`, { waitUntil: 'domcontentloaded' });
     const logoLink = page.locator('#header-logo-link');
     await expect(logoLink).toBeVisible();
     expect(await logoLink.getAttribute('href')).toBe('/');
