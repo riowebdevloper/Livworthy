@@ -151,6 +151,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(page.locator('text=Internal Revenue Service (IRS)').first()).toBeVisible();
     await expect(page.locator('text=Social Security Administration (SSA)').first()).toBeVisible();
     await page.keyboard.press('Escape');
+    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
 
     const locSelect = page.locator('#hero-location-select');
     await locSelect.selectOption('london');
@@ -160,6 +161,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(page.locator('text=Office for National Statistics (ONS)').first()).toBeVisible();
     await expect(page.locator('text=Internal Revenue Service (IRS)')).not.toBeVisible();
     await page.keyboard.press('Escape');
+    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
 
     await locSelect.selectOption('dubai');
     await page.waitForTimeout(300);
@@ -168,6 +170,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(page.locator('text=Dubai Statistics Center (DSC)').first()).toBeVisible();
     await expect(page.locator('text=Internal Revenue Service (IRS)')).not.toBeVisible();
     await page.keyboard.press('Escape');
+    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
   });
 
   test('9. URL STATE & NAVIGATION: Deep link restoration, Back, Forward, and reload persistence', async ({ page }) => {
@@ -379,15 +382,18 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(breadcrumb.getByRole('button', { name: 'England', exact: true })).toBeVisible();
     await expect(breadcrumb.getByRole('button', { name: 'London', exact: true })).toBeVisible();
 
+    const methodologyDialog = page.locator('text=LivWorthy Calculation Methodology').first();
     const integrityHeadBtn = footer.getByRole('button', { name: /Integrity/i });
     await integrityHeadBtn.click();
-    await expect(page.locator('text=LivWorthy Calculation Methodology').first()).toBeVisible();
+    await expect(methodologyDialog).toBeVisible();
     await page.keyboard.press('Escape');
+    await expect(methodologyDialog).toBeHidden({ timeout: 10000 });
 
     const methodBtn = footer.locator('#footer-methodology-btn');
     await methodBtn.click();
-    await expect(page.locator('text=LivWorthy Calculation Methodology').first()).toBeVisible();
+    await expect(methodologyDialog).toBeVisible();
     await page.keyboard.press('Escape');
+    await expect(methodologyDialog).toBeHidden({ timeout: 10000 });
   });
 
   test('13. UNAVAILABLE TAX INVARIANTS: Unsupported cities show pending tax verification across Salary Worth, Salary Needed, and Comparisons', async ({ page }) => {
