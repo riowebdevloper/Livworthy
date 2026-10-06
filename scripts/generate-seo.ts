@@ -12,6 +12,12 @@ import { CapabilityResolver } from '../src/engines/capabilities/capability-resol
 import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
+import {
+  createRelocationPages,
+  createJobOfferAuthorityPage,
+  createCoveragePage,
+  createLocalizedPages,
+} from './seo-generators-content';
 
 const BASE_URL = 'https://www.livworthy.com';
 
@@ -25,6 +31,8 @@ interface SeoPage {
   structuredData: any;
   changefreq: 'daily' | 'weekly' | 'monthly';
   priority: number;
+  lang?: string;
+  dir?: 'ltr' | 'rtl';
 }
 
 const COMPARISONS = [
@@ -556,6 +564,20 @@ export function runSeoGenerator() {
   // 2b. Directory Pages (/countries, /cities, /guides)
   const directoryPages = createDirectoryPages();
   pages.push(...directoryPages);
+
+  // 2c. Relocation Intelligence Pages (/relocation, /relocation/[slug])
+  const relocationPages = createRelocationPages(BASE_URL);
+  pages.push(...relocationPages);
+
+  // 2d. Job Offer Authority Guide (/job-offer-comparison)
+  pages.push(createJobOfferAuthorityPage(BASE_URL));
+
+  // 2e. Global Market Coverage Page (/coverage)
+  pages.push(createCoveragePage(BASE_URL));
+
+  // 2f. Localized Entry Pages (/en, /es, /fr, /ar)
+  const localizedPages = createLocalizedPages(BASE_URL, homeStructuredData);
+  pages.push(...localizedPages);
 
   // 3. Country Hub Pages
   for (const country of Object.values(COUNTRIES)) {
@@ -1742,11 +1764,18 @@ function renderPageHtml(
     robots: 'index, follow' | 'noindex, follow';
     bodyContent: string;
     structuredData?: any;
+    lang?: string;
+    dir?: 'ltr' | 'rtl';
   },
   isHomepage = false,
   criticalCss = ''
 ): string {
   let html = template;
+
+  // Set html lang and dir attributes dynamically
+  const pageLang = page.lang || 'en';
+  const pageDir = page.dir || (pageLang === 'ar' ? 'rtl' : 'ltr');
+  html = html.replace(/<html(?:\s+[^>]*)?>/i, `<html lang="${pageLang}" dir="${pageDir}">`);
 
   // Replace external render-blocking stylesheet with inlined critical CSS to eliminate render delay
   if (criticalCss) {
@@ -1777,6 +1806,17 @@ function renderPageHtml(
     /<link\s+rel="canonical"\s+href=".*?"\s*\/?>/i,
     `<link rel="canonical" href="${page.canonicalUrl}" />`
   );
+
+  // Inject hreflang multilingual alternate links
+  const hreflangTags = `
+    <link rel="alternate" hreflang="en" href="${BASE_URL}/en" />
+    <link rel="alternate" hreflang="es" href="${BASE_URL}/es" />
+    <link rel="alternate" hreflang="fr" href="${BASE_URL}/fr" />
+    <link rel="alternate" hreflang="ar" href="${BASE_URL}/ar" />
+    <link rel="alternate" hreflang="x-default" href="${BASE_URL}/" />`;
+  if (!html.includes('hreflang="x-default"')) {
+    html = html.replace('</head>', `${hreflangTags}\n  </head>`);
+  }
 
   // Replace Open Graph metadata dynamically
   html = html.replace(
@@ -1858,6 +1898,9 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
   const guidePages = indexablePages.filter(
     (p) => p.relativePath.startsWith('guides/') && p.relativePath !== 'guides/index.html'
   );
+  const relocationPages = indexablePages.filter(
+    (p) => p.relativePath.startsWith('relocation/') && p.relativePath !== 'relocation/index.html'
+  );
   const programmaticHubPages = indexablePages.filter(
     (p) =>
       p.relativePath.startsWith('salary-after-tax/') ||
@@ -1886,6 +1929,13 @@ ${items
 
   const mainUrls = [
     { canonicalUrl: `${BASE_URL}/`, changefreq: 'daily', priority: 1.0 },
+    { canonicalUrl: `${BASE_URL}/en`, changefreq: 'daily', priority: 0.95 },
+    { canonicalUrl: `${BASE_URL}/es`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/fr`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/ar`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/coverage`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/relocation`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/job-offer-comparison`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/countries`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/cities`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/compare`, changefreq: 'weekly', priority: 0.9 },
@@ -1906,6 +1956,7 @@ ${items
   const citiesXml = buildUrlSet(cityPages);
   const comparisonsXml = buildUrlSet(comparisonPages);
   const guidesXml = buildUrlSet(guidePages);
+  const relocationXml = buildUrlSet(relocationPages);
 
   const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -1924,6 +1975,9 @@ ${items
   <sitemap>
     <loc>${BASE_URL}/sitemap-guides.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-relocation.xml</loc>
+  </sitemap>
 </sitemapindex>`;
 
   const filesToWrite = [
@@ -1933,6 +1987,7 @@ ${items
     { name: 'sitemap-cities.xml', content: citiesXml },
     { name: 'sitemap-comparisons.xml', content: comparisonsXml },
     { name: 'sitemap-guides.xml', content: guidesXml },
+    { name: 'sitemap-relocation.xml', content: relocationXml },
   ];
 
   for (const f of filesToWrite) {
@@ -1940,7 +1995,7 @@ ${items
     fs.writeFileSync(path.join(publicDir, f.name), f.content);
   }
 
-  console.log(`[SEO Generator] Generated sitemap index + 5 segmented sitemaps (${indexablePages.length + mainUrls.length} total URLs).`);
+  console.log(`[SEO Generator] Generated sitemap index + 6 segmented sitemaps (${indexablePages.length + mainUrls.length} total URLs).`);
 }
 
 function writeStaticFiles(distDir: string, publicDir: string) {

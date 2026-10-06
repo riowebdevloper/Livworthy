@@ -1,0 +1,1021 @@
+{
+  "generatedAt": "2026-10-06T08:31:34.553Z",
+  "auditPolicy": {
+    "currentThresholdMonths": 18,
+    "agingThresholdMonths": 30,
+    "staleThresholdMonths": 31,
+    "taxPolicy": "Statutory 2026 verified; 2027 structurally supported with fail-safe TAX_CALCULATION_UNAVAILABLE"
+  },
+  "summary": {
+    "totalCityBenchmarks": 40,
+    "currentCount": 1,
+    "agingCount": 39,
+    "staleCount": 0,
+    "unknownCount": 0,
+    "currentPercent": 3,
+    "totalEvidenceSources": 89,
+    "activeTaxYears": [
+      2026,
+      2027
+    ],
+    "latestVerifiedTaxYear": 2026,
+    "pendingTaxYears": [
+      2027
+    ]
+  },
+  "taxCoverageStatus": {
+    "latestVerifiedYear": 2026,
+    "pendingVerificationYear": 2027,
+    "futureYearSafetyRule": "2027 tax calculations return TAX_CALCULATION_UNAVAILABLE until official statutory rules are published by revenue authorities."
+  },
+  "cityBenchmarks": [
+    {
+      "cityId": "nyc",
+      "currency": "USD",
+      "sourceDate": "2026-01",
+      "freshnessStatus": "CURRENT",
+      "evidenceSourceId": "us-hud-nyc-fmr-2026"
+    },
+    {
+      "cityId": "sf",
+      "currency": "USD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "us-hud-sf-fmr-2024"
+    },
+    {
+      "cityId": "la",
+      "currency": "USD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "us-hud-la-fmr-2024"
+    },
+    {
+      "cityId": "seattle",
+      "currency": "USD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "us-hud-seattle-fmr-2024"
+    },
+    {
+      "cityId": "austin",
+      "currency": "USD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "us-hud-austin-fmr-2024"
+    },
+    {
+      "cityId": "chicago",
+      "currency": "USD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "us-hud-chicago-fmr-2024"
+    },
+    {
+      "cityId": "miami",
+      "currency": "USD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "us-hud-miami-fmr-2024"
+    },
+    {
+      "cityId": "boston",
+      "currency": "USD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "us-hud-boston-fmr-2024"
+    },
+    {
+      "cityId": "dc",
+      "currency": "USD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "us-hud-dc-fmr-2024"
+    },
+    {
+      "cityId": "london",
+      "currency": "GBP",
+      "sourceDate": "2024-11",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "uk-ons-london-2024"
+    },
+    {
+      "cityId": "manchester",
+      "currency": "GBP",
+      "sourceDate": "2024-11",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "uk-ons-col-2024"
+    },
+    {
+      "cityId": "birmingham",
+      "currency": "GBP",
+      "sourceDate": "2024-11",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "uk-ons-col-2024"
+    },
+    {
+      "cityId": "edinburgh",
+      "currency": "GBP",
+      "sourceDate": "2024-11",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "uk-ons-col-2024"
+    },
+    {
+      "cityId": "glasgow",
+      "currency": "GBP",
+      "sourceDate": "2024-11",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "uk-ons-col-2024"
+    },
+    {
+      "cityId": "dubai",
+      "currency": "AED",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "ae-dsc-col-2024"
+    },
+    {
+      "cityId": "abudhabi",
+      "currency": "AED",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "ae-scad-col-2024"
+    },
+    {
+      "cityId": "sharjah",
+      "currency": "AED",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "ae-dsc-col-2024"
+    },
+    {
+      "cityId": "toronto",
+      "currency": "CAD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "ca-statcan-toronto-2024"
+    },
+    {
+      "cityId": "vancouver",
+      "currency": "CAD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "ca-statcan-vancouver-2024"
+    },
+    {
+      "cityId": "calgary",
+      "currency": "CAD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "ca-statcan-calgary-2024"
+    },
+    {
+      "cityId": "sydney",
+      "currency": "AUD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "au-abs-sydney-2024"
+    },
+    {
+      "cityId": "melbourne",
+      "currency": "AUD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "au-abs-melbourne-2024"
+    },
+    {
+      "cityId": "berlin",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "de-destatis-berlin-2024"
+    },
+    {
+      "cityId": "munich",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "de-destatis-munich-2024"
+    },
+    {
+      "cityId": "paris",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "fr-insee-paris-2024"
+    },
+    {
+      "cityId": "lyon",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "fr-insee-lyon-2024"
+    },
+    {
+      "cityId": "madrid",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "es-ine-madrid-2024"
+    },
+    {
+      "cityId": "barcelona",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "es-ine-barcelona-2024"
+    },
+    {
+      "cityId": "valencia",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "es-ine-valencia-2024"
+    },
+    {
+      "cityId": "amsterdam",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "nl-cbs-amsterdam-2024"
+    },
+    {
+      "cityId": "rotterdam",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "nl-cbs-rotterdam-2024"
+    },
+    {
+      "cityId": "riyadh",
+      "currency": "SAR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "sa-gastat-riyadh-2024"
+    },
+    {
+      "cityId": "jeddah",
+      "currency": "SAR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "sa-gastat-jeddah-2024"
+    },
+    {
+      "cityId": "dublin",
+      "currency": "EUR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "ie-cso-dublin-2024"
+    },
+    {
+      "cityId": "zurich",
+      "currency": "CHF",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "ch-bfs-zurich-2024"
+    },
+    {
+      "cityId": "singapore",
+      "currency": "SGD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "sg-singstat-2024"
+    },
+    {
+      "cityId": "doha",
+      "currency": "QAR",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "qa-psa-doha-2024"
+    },
+    {
+      "cityId": "auckland",
+      "currency": "NZD",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "nz-stats-auckland-2024"
+    },
+    {
+      "cityId": "tokyo",
+      "currency": "JPY",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "jp-stat-tokyo-2024"
+    },
+    {
+      "cityId": "seoul",
+      "currency": "KRW",
+      "sourceDate": "2024-12",
+      "freshnessStatus": "AGING",
+      "evidenceSourceId": "kr-kostat-seoul-2024"
+    }
+  ],
+  "evidenceSources": [
+    {
+      "id": "us-irs-tax-2024",
+      "organization": "Internal Revenue Service (IRS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "United States (Federal)"
+    },
+    {
+      "id": "us-ssa-fica-2024",
+      "organization": "Social Security Administration (SSA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "United States (Federal FICA)"
+    },
+    {
+      "id": "us-nys-tax-2024",
+      "organization": "New York State Department of Taxation and Finance",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-12",
+      "jurisdiction": "New York State"
+    },
+    {
+      "id": "us-nyc-tax-2024",
+      "organization": "New York City Department of Finance",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-12",
+      "jurisdiction": "New York City (Local Resident)"
+    },
+    {
+      "id": "us-irs-tax-2025",
+      "organization": "Internal Revenue Service (IRS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2025-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "United States (Federal)"
+    },
+    {
+      "id": "us-ssa-fica-2025",
+      "organization": "Social Security Administration (SSA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2025-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "United States (Federal FICA)"
+    },
+    {
+      "id": "us-nys-tax-2025",
+      "organization": "New York State Department of Taxation and Finance",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2025-01-01",
+      "verifiedAt": "2026-01-12",
+      "jurisdiction": "New York State"
+    },
+    {
+      "id": "us-nyc-tax-2025",
+      "organization": "New York City Department of Finance",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2025-01-01",
+      "verifiedAt": "2026-01-12",
+      "jurisdiction": "New York City (Local Resident)"
+    },
+    {
+      "id": "us-hud-nyc-fmr-2026",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2025-10-01",
+      "jurisdiction": "New York City Metro Area"
+    },
+    {
+      "id": "us-hud-nyc-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "New York City Metro Area"
+    },
+    {
+      "id": "us-hud-sf-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "San Francisco Metro Area"
+    },
+    {
+      "id": "us-hud-la-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Los Angeles Metro Area"
+    },
+    {
+      "id": "us-hud-seattle-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Seattle Metro Area"
+    },
+    {
+      "id": "us-hud-austin-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Austin Metro Area"
+    },
+    {
+      "id": "us-hud-chicago-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Chicago Metro Area"
+    },
+    {
+      "id": "us-hud-miami-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Miami Metro Area"
+    },
+    {
+      "id": "us-hud-boston-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Boston Metro Area"
+    },
+    {
+      "id": "us-hud-dc-fmr-2024",
+      "organization": "U.S. Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Washington DC Metro Area"
+    },
+    {
+      "id": "us-bls-cex-nyc-2026",
+      "organization": "U.S. Bureau of Labor Statistics (BLS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-06",
+      "jurisdiction": "New York-Newark-Jersey City Metro Area"
+    },
+    {
+      "id": "us-bls-cpi-nyc-2024",
+      "organization": "U.S. Bureau of Labor Statistics (BLS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-11-01",
+      "jurisdiction": "New York-Newark-Jersey City Metro Area"
+    },
+    {
+      "id": "us-mta-nyc-transit-2026",
+      "organization": "Metropolitan Transportation Authority (MTA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-04",
+      "jurisdiction": "New York City"
+    },
+    {
+      "id": "us-nyc-childcare-benchmark",
+      "organization": "LivWorthy Planning Benchmarks informed by NYS OCFS Market Rate Survey",
+      "reliabilityTier": "Tier 2",
+      "jurisdiction": "New York City"
+    },
+    {
+      "id": "us-mta-nyc-transit-2024",
+      "organization": "Metropolitan Transportation Authority (MTA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2023-08-20",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "New York City"
+    },
+    {
+      "id": "uk-hmrc-tax-2024",
+      "organization": "HM Revenue & Customs (HMRC)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-04-06",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "United Kingdom"
+    },
+    {
+      "id": "uk-ons-london-2024",
+      "organization": "Office for National Statistics (ONS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-12",
+      "jurisdiction": "London, United Kingdom"
+    },
+    {
+      "id": "uk-ons-col-2024",
+      "organization": "Office for National Statistics (ONS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-12",
+      "jurisdiction": "United Kingdom Regional Metros"
+    },
+    {
+      "id": "uae-fta-2024",
+      "organization": "Federal Tax Authority (FTA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-05",
+      "jurisdiction": "United Arab Emirates"
+    },
+    {
+      "id": "ae-dsc-col-2024",
+      "organization": "Dubai Statistics Center (DSC) & RERA",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Dubai, UAE"
+    },
+    {
+      "id": "ae-scad-col-2024",
+      "organization": "Statistics Centre Abu Dhabi (SCAD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Abu Dhabi, UAE"
+    },
+    {
+      "id": "cra-income-tax-2024",
+      "organization": "Canada Revenue Agency (CRA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Canada (Federal & Provincial)"
+    },
+    {
+      "id": "cra-cpp-2024",
+      "organization": "Canada Revenue Agency (CRA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Canada (Federal CPP)"
+    },
+    {
+      "id": "cra-ei-2024",
+      "organization": "Employment and Social Development Canada (ESDC)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Canada (Federal EI)"
+    },
+    {
+      "id": "ca-statcan-toronto-2024",
+      "organization": "Statistics Canada & CMHC",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Toronto, Ontario, Canada"
+    },
+    {
+      "id": "ca-statcan-vancouver-2024",
+      "organization": "Statistics Canada & CMHC",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Vancouver, BC, Canada"
+    },
+    {
+      "id": "ca-statcan-calgary-2024",
+      "organization": "Statistics Canada & CMHC",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Calgary, Alberta, Canada"
+    },
+    {
+      "id": "ato-individual-rates-2024",
+      "organization": "Australian Taxation Office (ATO)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-07-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Australia (Commonwealth)"
+    },
+    {
+      "id": "ato-medicare-levy-2024",
+      "organization": "Australian Taxation Office (ATO)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-07-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Australia (Commonwealth)"
+    },
+    {
+      "id": "au-abs-sydney-2024",
+      "organization": "Australian Bureau of Statistics (ABS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-09-30",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Sydney, NSW, Australia"
+    },
+    {
+      "id": "au-abs-melbourne-2024",
+      "organization": "Australian Bureau of Statistics (ABS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-09-30",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Melbourne, Victoria, Australia"
+    },
+    {
+      "id": "bzst-lohnsteuer-2024",
+      "organization": "Bundeszentralamt für Steuern (BZSt) & BMF",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Germany (Federal)"
+    },
+    {
+      "id": "gkv-beitragssaetze-2024",
+      "organization": "GKV-Spitzenverband & Deutsche Rentenversicherung",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Germany (Federal Social Insurance)"
+    },
+    {
+      "id": "de-destatis-berlin-2024",
+      "organization": "Statistisches Bundesamt (Destatis) & Berlin Mietspiegel",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-11-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Berlin, Germany"
+    },
+    {
+      "id": "de-destatis-munich-2024",
+      "organization": "Statistisches Bundesamt (Destatis) & München Mietspiegel",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-11-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Munich, Bavaria, Germany"
+    },
+    {
+      "id": "iras-tax-rates-2024",
+      "organization": "Inland Revenue Authority of Singapore (IRAS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Singapore"
+    },
+    {
+      "id": "sg-singstat-2024",
+      "organization": "Singapore Department of Statistics (SingStat) & URA",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Singapore"
+    },
+    {
+      "id": "revenue-paye-rates-2024",
+      "organization": "Office of the Revenue Commissioners (Revenue)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Ireland"
+    },
+    {
+      "id": "revenue-usc-rates-2024",
+      "organization": "Office of the Revenue Commissioners (Revenue)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Ireland"
+    },
+    {
+      "id": "dsp-prsi-rates-2024",
+      "organization": "Department of Social Protection (DSP)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Ireland"
+    },
+    {
+      "id": "ie-cso-dublin-2024",
+      "organization": "Central Statistics Office (CSO) & RTB",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Dublin, Ireland"
+    },
+    {
+      "id": "ird-tax-rates-2024-2026",
+      "organization": "Inland Revenue Department (IRD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-07-31",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "New Zealand"
+    },
+    {
+      "id": "acc-earners-levy-2024",
+      "organization": "Accident Compensation Corporation (ACC)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-04-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "New Zealand"
+    },
+    {
+      "id": "nz-stats-auckland-2024",
+      "organization": "Stats NZ (Tatauranga Aotearoa) & Tenancy Services",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Auckland, New Zealand"
+    },
+    {
+      "id": "ch-bfs-zurich-2024",
+      "organization": "Bundesamt für Statistik (BFS) & Statistisches Amt Zürich",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Zurich, Switzerland"
+    },
+    {
+      "id": "qatar-income-tax-law-2018",
+      "organization": "General Tax Authority (GTA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2019-01-01",
+      "verifiedAt": "2026-01-05",
+      "jurisdiction": "State of Qatar"
+    },
+    {
+      "id": "qa-psa-doha-2024",
+      "organization": "Planning and Statistics Authority (PSA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Doha, Qatar"
+    },
+    {
+      "id": "gulf-zero-income-tax-statute",
+      "organization": "Zakat, Tax and Customs Authority (ZATCA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-05",
+      "jurisdiction": "Kingdom of Saudi Arabia"
+    },
+    {
+      "id": "sa-gastat-riyadh-2024",
+      "organization": "General Authority for Statistics (GASTAT)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Riyadh, Saudi Arabia"
+    },
+    {
+      "id": "sa-gastat-jeddah-2024",
+      "organization": "General Authority for Statistics (GASTAT)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Jeddah, Saudi Arabia"
+    },
+    {
+      "id": "belastingdienst-box1-2024",
+      "organization": "Belastingdienst (Dutch Tax and Customs Administration)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Netherlands"
+    },
+    {
+      "id": "belastingdienst-premies-2024",
+      "organization": "Sociale Verzekeringsbank (SVB) & Belastingdienst",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Netherlands"
+    },
+    {
+      "id": "nl-cbs-amsterdam-2024",
+      "organization": "Centraal Bureau voor de Statistiek (CBS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Amsterdam, Netherlands"
+    },
+    {
+      "id": "nl-cbs-rotterdam-2024",
+      "organization": "Centraal Bureau voor de Statistiek (CBS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Rotterdam, Netherlands"
+    },
+    {
+      "id": "dgfip-bareme-ir-2024",
+      "organization": "Direction Générale des Finances Publiques (DGFiP)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "France"
+    },
+    {
+      "id": "urssaf-taux-cotisations-2024",
+      "organization": "URSSAF",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "France"
+    },
+    {
+      "id": "fr-insee-paris-2024",
+      "organization": "Institut National de la Statistique et des Études Économiques (INSEE) & OLAP",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Paris, France"
+    },
+    {
+      "id": "fr-insee-lyon-2024",
+      "organization": "INSEE & Observatoire Local des Loyers Lyon",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Lyon, France"
+    },
+    {
+      "id": "aeat-tramos-irpf-2024",
+      "organization": "Agencia Estatal de Administración Tributaria (AEAT)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Spain"
+    },
+    {
+      "id": "tgss-bases-cotizacion-2024",
+      "organization": "Tesorería General de la Seguridad Social (TGSS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Spain"
+    },
+    {
+      "id": "es-ine-madrid-2024",
+      "organization": "Instituto Nacional de Estadística (INE) & MITMA",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Madrid, Spain"
+    },
+    {
+      "id": "es-ine-barcelona-2024",
+      "organization": "INE & Generalitat de Catalunya (Incasòl)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Barcelona, Catalonia, Spain"
+    },
+    {
+      "id": "es-ine-valencia-2024",
+      "organization": "INE & Observatori de l’Habitatge Comunitat Valenciana",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-10-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Valencia, Spain"
+    },
+    {
+      "id": "us-irs-tax-2026",
+      "organization": "Internal Revenue Service (IRS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "United States (Federal)"
+    },
+    {
+      "id": "us-ssa-fica-2026",
+      "organization": "Social Security Administration (SSA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "United States (Federal FICA)"
+    },
+    {
+      "id": "us-nys-tax-2026",
+      "organization": "New York State Department of Taxation and Finance",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-12",
+      "jurisdiction": "New York State"
+    },
+    {
+      "id": "us-nyc-tax-2026",
+      "organization": "New York City Department of Finance",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-12",
+      "jurisdiction": "New York City (Local Resident)"
+    },
+    {
+      "id": "uk-hmrc-tax-2026",
+      "organization": "HM Revenue & Customs (HMRC)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-04-06",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "United Kingdom (HMRC)"
+    },
+    {
+      "id": "uae-fta-2026",
+      "organization": "Federal Tax Authority (FTA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "United Arab Emirates"
+    },
+    {
+      "id": "ca-cra-tax-2026",
+      "organization": "Canada Revenue Agency (CRA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Canada (Federal & Ontario)"
+    },
+    {
+      "id": "au-ato-tax-2026",
+      "organization": "Australian Taxation Office (ATO)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-07-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Australia (Commonwealth)"
+    },
+    {
+      "id": "de-bmf-tax-2026",
+      "organization": "Bundesministerium der Finanzen (BMF)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Germany (Federal)"
+    },
+    {
+      "id": "sg-iras-tax-2026",
+      "organization": "Inland Revenue Authority of Singapore (IRAS)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Singapore"
+    },
+    {
+      "id": "qa-gta-tax-2026",
+      "organization": "General Tax Authority (GTA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "State of Qatar"
+    },
+    {
+      "id": "sa-zatca-tax-2026",
+      "organization": "Zakat, Tax and Customs Authority (ZATCA)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Kingdom of Saudi Arabia"
+    },
+    {
+      "id": "nz-ird-tax-2026",
+      "organization": "Inland Revenue Department (Te Tari Taake)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2024-07-31",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "New Zealand"
+    },
+    {
+      "id": "fr-dgfip-tax-2026",
+      "organization": "Direction Générale des Finances Publiques (DGFiP)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "France"
+    },
+    {
+      "id": "es-aeat-tax-2026",
+      "organization": "Agencia Estatal de Administración Tributaria (AEAT)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Spain"
+    },
+    {
+      "id": "nl-belasting-tax-2026",
+      "organization": "Belastingdienst",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Netherlands"
+    },
+    {
+      "id": "ie-revenue-tax-2026",
+      "organization": "Office of the Revenue Commissioners",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Ireland"
+    },
+    {
+      "id": "ch-estv-tax-2026",
+      "organization": "Eidgenössische Steuerverwaltung (ESTV)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Switzerland"
+    }
+  ]
+}

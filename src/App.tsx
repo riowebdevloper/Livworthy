@@ -51,8 +51,25 @@ import { LivWorthCalculationOutcome, LivWorthScenario } from './types/scenario';
 import { TaxProfile, TaxResult } from './types/tax';
 import { ComparisonResult } from './engines/calculator-core/compare';
 import { SalaryNeededResult } from './engines/calculator-core/salary-needed';
+import { SupportedLocale, getInitialLocale, setStoredLocale, TRANSLATIONS } from './lib/i18n';
 
 export default function App() {
+  const [locale, setLocale] = useState<SupportedLocale>(getInitialLocale);
+  const t = TRANSLATIONS[locale] || TRANSLATIONS.en;
+
+  const handleSelectLocale = (newLoc: SupportedLocale) => {
+    setLocale(newLoc);
+    setStoredLocale(newLoc);
+    try {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        params.set('lang', newLoc);
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.pushState(null, '', newUrl);
+      }
+    } catch {}
+  };
+
   const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
@@ -120,6 +137,12 @@ export default function App() {
       const salaryParam = params.get('salary');
       const tabParam = params.get('tab') as ActiveTab;
       const rentParam = params.get('rent');
+      const langParam = params.get('lang') as SupportedLocale | null;
+
+      if (langParam && TRANSLATIONS[langParam]) {
+        setLocale(langParam);
+        setStoredLocale(langParam);
+      }
 
       if (
         tabParam &&
@@ -434,6 +457,8 @@ export default function App() {
         onOpenEvidence={() => setIsEvidenceOpen(true)}
         onOpenMethodology={() => setIsMethodologyOpen(true)}
         onOpenDiagnostics={() => setIsDiagnosticsOpen(true)}
+        locale={locale}
+        onSelectLocale={handleSelectLocale}
       />
 
       {/* Main Dynamic Calculator Workspace */}

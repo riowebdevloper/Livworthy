@@ -189,7 +189,9 @@ test.describe('Phase 3 & 4 — Complete Device Matrix Responsive Layout Audit', 
       expect(hasCompareOverflow, `Horizontal scroll detected in Compare view at ${device.name}`).toBe(false);
 
       // Return to homepage
-      await page.locator('#tab-salary-worth').click();
+      const salaryWorthTab = page.locator('#tab-salary-worth');
+      await salaryWorthTab.scrollIntoViewIfNeeded();
+      await salaryWorthTab.click();
       await expect(page.locator('#salary-worth-view')).toBeVisible();
 
       // =========================================================================
