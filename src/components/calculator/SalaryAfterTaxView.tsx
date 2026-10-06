@@ -6,6 +6,7 @@ import { createMoney, formatMoney, getDefaultSalaryForCurrency, toMajor } from '
 import { TaxResult, FilingStatus } from '../../types/tax';
 import { CurrencyInput } from '../ui/CurrencyInput';
 import { LATEST_VERIFIED_TAX_YEAR, TAX_YEAR_OPTIONS, isFutureUnverifiedTaxYear } from '../../lib/tax-year-policy';
+import { useI18n } from '../../context/I18nContext';
 
 interface SalaryAfterTaxViewProps {
   onSwitchToSalaryWorthWithSalary: (salaryMajor: number, cityId?: string) => void;
@@ -18,6 +19,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
   onOpenEvidence,
   onCalculationResult,
 }) => {
+  const { dict, isRtl } = useI18n();
   const [grossSalaryMajor, setGrossSalaryMajor] = useState<number>(100000);
   const [selectedCityId, setSelectedCityId] = useState<string>('nyc');
   const [filingStatus, setFilingStatus] = useState<FilingStatus>('single');
@@ -111,20 +113,20 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
     : '$0';
 
   return (
-    <div id="salary-after-tax-view" className="space-y-8">
+    <div id="salary-after-tax-view" className="space-y-8" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Input Header */}
       <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isCalculating && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
-            <span>Calculating statutory tax...</span>
+            <span>{dict.common.calculating}</span>
           </div>
         )}
 
         <div className="max-w-xl">
           <div className="flex items-center space-x-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
-              Precision Tax Calculator
+              {dict.common.livingIntelligence}
             </span>
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
@@ -139,10 +141,10 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            Salary After Tax Calculator
+            {dict.salaryAfterTax.headline}
           </h2>
           <p className="text-xs sm:text-sm text-[#60706D] mt-1.5">
-            Instant statutory breakdown including federal tax, state tax, local city resident tax, and social contributions.
+            {dict.salaryAfterTax.subheadline}
           </p>
         </div>
 
@@ -150,7 +152,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
           <div className="sm:col-span-1">
             <CurrencyInput
               id="tax-gross-salary-input"
-              label="Annual Gross Salary"
+              label={dict.calculator.annualSalary}
               valueMajor={grossSalaryMajor}
               currency={currency}
               onChangeMajor={(val) => setGrossSalaryMajor(val)}
@@ -159,7 +161,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
           <div>
             <label htmlFor="tax-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              Location & Jurisdiction
+              {dict.calculator.chooseCity}
             </label>
             <select
               id="tax-location-select"
@@ -182,7 +184,6 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
               ))}
             </select>
           </div>
-
 
           <div>
             <label htmlFor="tax-year-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
@@ -236,7 +237,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
                     : 'text-[#60706D] hover:text-[#102A2E]'
                 }`}
               >
-                {freq.charAt(0).toUpperCase() + freq.slice(1)}
+                {freq === 'annual' ? dict.common.annual : freq === 'monthly' ? dict.common.monthly : freq}
               </button>
             ))}
           </div>
@@ -245,7 +246,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             onClick={onOpenEvidence}
             className="text-xs text-[#167D75] font-semibold hover:underline flex items-center"
           >
-            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> View Statutory Rates & Evidence
+            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> {dict.common.evidence}
           </button>
         </div>
       </div>
@@ -272,7 +273,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
                   `Statutory personal income tax calculation for ${city.name} is currently undergoing institutional verification against official government revenue tables. In accordance with LivWorthy's Data Integrity Charter, we never substitute synthetic approximations or unverified formulas.`}
               </p>
               <div className="p-3 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0] flex items-center justify-between">
-                <span className="text-xs text-[#60706D]">Stated Gross Salary:</span>
+                <span className="text-xs text-[#60706D]">{dict.calculator.annualSalary}:</span>
                 <span className="text-sm font-bold text-[#102A2E] font-tabular">
                   {formatMoney({ amountMinor: Math.round(grossSalaryMajor * 100), currency })}/year
                 </span>
@@ -298,10 +299,10 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
                 Spendable Cash
               </span>
               <h3 className="text-xl font-bold text-[#102A2E] mt-0.5">
-                Estimated Net Take-Home Pay
+                {dict.salaryAfterTax.netTakeHome}
               </h3>
               <p className="text-xs text-[#60706D] mt-1">
-                Your actual in-pocket income after all statutory withholdings.
+                {dict.salaryAfterTax.subheadline}
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-[#F7F8F5]">
@@ -317,10 +318,10 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
           <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#60706D]">
-                Total Deductions
+                {dict.salaryAfterTax.totalDeductions}
               </span>
               <h3 className="text-xl font-bold text-[#102A2E] mt-0.5">
-                Total Deducted Taxes & FICA
+                {dict.results.taxesAndDeductions}
               </h3>
               <p className="text-xs text-[#60706D] mt-1">
                 Combined income taxes, social security, and health contributions.
@@ -339,10 +340,10 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
           <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#60706D]">
-                Living Worth
+                {dict.results.summaryTitle}
               </span>
               <h3 className="text-xl font-bold text-[#102A2E] mt-0.5">
-                Living Cost Feasibility
+                {dict.results.estimatedLivingCosts}
               </h3>
               <p className="text-xs text-[#60706D] mt-1">
                 See what remains after local housing, food, and living expenses in {city.name}.

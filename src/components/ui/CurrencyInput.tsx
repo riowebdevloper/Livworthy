@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CurrencyCode } from '../../types/money';
+import { useI18n } from '../../context/I18nContext';
 
 interface CurrencyInputProps {
   id: string;
@@ -83,12 +84,14 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
     setIsFocused(false);
   };
 
+  const { formatNumber } = useI18n();
+
   // Formatted with thousands separators when idle; raw digits when actively typing
   const displayValue = isFocused
     ? rawText
     : valueMajor === 0
     ? ''
-    : valueMajor.toLocaleString('en-US');
+    : formatNumber(valueMajor);
 
   return (
     <div className="w-full">

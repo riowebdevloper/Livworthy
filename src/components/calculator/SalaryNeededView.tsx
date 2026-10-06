@@ -7,6 +7,7 @@ import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { HouseholdProfile } from '../../types/col';
 import { LivWorthScenario } from '../../types/scenario';
 import { CurrencyInput } from '../ui/CurrencyInput';
+import { useI18n } from '../../context/I18nContext';
 
 interface SalaryNeededViewProps {
   initialScenario: LivWorthScenario;
@@ -23,6 +24,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
   onOpenEvidence,
   onCalculationResult,
 }) => {
+  const { dict, isRtl } = useI18n();
   const [targetSavingsMonthlyMajor, setTargetSavingsMonthlyMajor] = useState<number>(1000);
   const [selectedCityId, setSelectedCityId] = useState<string>(initialScenario.location.id);
   const [result, setResult] = useState<SalaryNeededResult | null>(null);
@@ -80,13 +82,13 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
   }, [selectedCityId, targetSavingsMonthlyMajor, initialScenario.household, onCalculationResult]);
 
   return (
-    <div id="salary-needed-view" className="space-y-8">
+    <div id="salary-needed-view" className="space-y-8" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Question Hero */}
       <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isCalculating && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
-            <span>Solving iteratively...</span>
+            <span>{dict.common.calculating}</span>
           </div>
         )}
 
@@ -95,10 +97,10 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
             Reverse Financial Solver
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            How much do you need to earn in {city.name}?
+            {dict.salaryNeeded.headline.replace('{city}', city.name)}
           </h2>
           <p className="text-xs sm:text-sm text-[#60706D] mt-2 leading-relaxed">
-            LivWorthy runs our tax and cost-of-living engines iteratively in reverse to calculate the exact gross salary required to cover your living costs and meet your monthly savings goal.
+            {dict.salaryNeeded.subheadline}
           </p>
         </div>
 
@@ -106,7 +108,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
           <div>
             <label htmlFor="target-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              Target Location
+              {dict.calculator.chooseCity}
             </label>
             <select
               id="target-location-select"
@@ -126,7 +128,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
           <div>
             <CurrencyInput
               id="target-savings-input"
-              label="Desired Monthly Savings Target"
+              label={dict.salaryNeeded.targetSavings}
               valueMajor={targetSavingsMonthlyMajor}
               currency={currency}
               onChangeMajor={(val) => setTargetSavingsMonthlyMajor(val)}

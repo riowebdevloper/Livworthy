@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const LIVE_URL = process.env.LIVE_URL || 'http://127.0.0.1:3000';
+const PORT = process.env.PORT || '3000';
+const LIVE_URL = process.env.LIVE_URL || `http://127.0.0.1:${PORT}`;
 
 test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
   test('1. Live Homepage loads branding, tabs, and default $100K NYC scenario', async ({ page }) => {

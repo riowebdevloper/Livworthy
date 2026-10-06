@@ -5,8 +5,9 @@ import './index.css';
 
 import { NycSalaryCalculator } from './components/calculator/NycSalaryCalculator.tsx';
 
-const pathname = typeof window !== 'undefined' ? window.location.pathname.replace(/\/$/, '') : '/';
-const isHomepage = pathname === '' || pathname === '/' || pathname === '/en' || pathname === '/es' || pathname === '/fr' || pathname === '/ar';
+const pathname = window.location.pathname;
+const TIER1_HOMEPAGE_PATHS = new Set(['', '/', '/en', '/es', '/fr', '/ar', '/de', '/pt', '/hi', '/ur', '/zh', '/ja']);
+const isHomepage = TIER1_HOMEPAGE_PATHS.has(pathname);
 const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
 
 const rootEl = document.getElementById('root');

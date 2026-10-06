@@ -709,7 +709,7 @@ export function createCoveragePage(baseUrl: string): SeoPage {
 export function createLocalizedPages(baseUrl: string, homeStructuredData: any): SeoPage[] {
   const pages: SeoPage[] = [];
 
-  const locales: SupportedLocale[] = ['en', 'es', 'fr', 'ar'];
+  const locales: SupportedLocale[] = ['en', 'es', 'fr', 'ar', 'de', 'pt', 'hi', 'ur', 'zh', 'ja'];
 
   for (const loc of locales) {
     const t = TRANSLATIONS[loc];

@@ -3,6 +3,7 @@ import { X, Check, Home, Users, Bus, Sparkles, MapPin, DollarSign } from 'lucide
 import { AreaType, HouseholdProfile, HousingType, LifestyleLevel, TransportMode } from '../../types/col';
 import { FilingStatus, TaxProfile } from '../../types/tax';
 import { TAX_YEAR_OPTIONS, isFutureUnverifiedTaxYear } from '../../lib/tax-year-policy';
+import { useI18n } from '../../context/I18nContext';
 
 interface CustomizationDrawerProps {
   isOpen: boolean;
@@ -25,6 +26,8 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
   onUpdateTaxProfile,
   onUpdateRentOverride,
 }) => {
+  const { dict, isRtl } = useI18n();
+
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -39,7 +42,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Customize Assumptions" className="fixed inset-0 z-50 flex justify-end">
+    <div role="dialog" aria-modal="true" aria-label={dict.results.customizeAssumptions} className="fixed inset-0 z-50 flex justify-end">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-[#102A2E]/40 backdrop-blur-xs transition-opacity"
@@ -47,11 +50,11 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
       />
 
       {/* Drawer Panel */}
-      <div className="relative w-full max-w-md bg-[#FFFFFF] h-full shadow-2xl overflow-y-auto flex flex-col z-10 border-l border-[#DCE3E0]">
+      <div className="relative w-full max-w-md bg-[#FFFFFF] h-full shadow-2xl overflow-y-auto flex flex-col z-10 border-l border-[#DCE3E0]" dir={isRtl ? 'rtl' : 'ltr'}>
         {/* Header */}
         <div className="p-5 border-b border-[#DCE3E0] flex items-center justify-between sticky top-0 bg-[#FFFFFF] z-20">
           <div>
-            <h2 className="text-base font-bold text-[#102A2E]">Customize Assumptions</h2>
+            <h2 className="text-base font-bold text-[#102A2E]">{dict.results.customizeAssumptions}</h2>
             <p className="text-xs text-[#60706D] mt-0.5">
               Reflect your exact lifestyle, housing, and tax profile
             </p>

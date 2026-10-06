@@ -1835,6 +1835,12 @@ function renderPageHtml(
     <link rel="alternate" hreflang="es" href="${BASE_URL}/es" />
     <link rel="alternate" hreflang="fr" href="${BASE_URL}/fr" />
     <link rel="alternate" hreflang="ar" href="${BASE_URL}/ar" />
+    <link rel="alternate" hreflang="de" href="${BASE_URL}/de" />
+    <link rel="alternate" hreflang="pt" href="${BASE_URL}/pt" />
+    <link rel="alternate" hreflang="hi" href="${BASE_URL}/hi" />
+    <link rel="alternate" hreflang="ur" href="${BASE_URL}/ur" />
+    <link rel="alternate" hreflang="zh" href="${BASE_URL}/zh" />
+    <link rel="alternate" hreflang="ja" href="${BASE_URL}/ja" />
     <link rel="alternate" hreflang="x-default" href="${BASE_URL}/" />`;
   if (!html.includes('hreflang="x-default"')) {
     html = html.replace('</head>', `${hreflangTags}\n  </head>`);
@@ -1956,6 +1962,12 @@ ${items
     { canonicalUrl: `${BASE_URL}/es`, changefreq: 'daily', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/fr`, changefreq: 'daily', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/ar`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/de`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/pt`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/hi`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/ur`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/zh`, changefreq: 'daily', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/ja`, changefreq: 'daily', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/coverage`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/relocation`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/job-offer-comparison`, changefreq: 'weekly', priority: 0.9 },

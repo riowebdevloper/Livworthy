@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const PORT = process.env.PORT || '3000';
+
 export default defineConfig({
   testDir: './test/e2e',
   timeout: 45000,
@@ -10,7 +12,7 @@ export default defineConfig({
   workers: 1,
   reporter: [['list']],
   use: {
-    baseURL: 'http://127.0.0.1:3000',
+    baseURL: `http://127.0.0.1:${PORT}`,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -40,8 +42,8 @@ export default defineConfig({
     // Run against the production build in dist/ to verify static documents, SPA homepage,
     // assets, API endpoints, and 404 behavior exactly as served in production.
     command: 'SERVE_STATIC=1 npx tsx server.ts',
-    url: 'http://127.0.0.1:3000/api/health',
-    reuseExistingServer: false,
+    url: `http://127.0.0.1:${PORT}/api/health`,
+    reuseExistingServer: !process.env.CI,
     timeout: 30000,
   },
 });

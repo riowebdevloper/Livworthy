@@ -3,6 +3,7 @@ import { ShieldCheck, Database, FileText, MapPin, Calculator, ChevronRight } fro
 import { LivWorthLogo } from '../ui/LivWorthBrand';
 import { ActiveTab } from './Header';
 import { POPULAR_GUIDE_LINKS, TOTAL_GUIDES_COUNT } from '../../data/salary-guides-links';
+import { useI18n } from '../../context/I18nContext';
 
 interface FooterProps {
   onOpenEvidence: () => void;
@@ -38,12 +39,14 @@ export const Footer: React.FC<FooterProps> = ({
   onSelectGuide,
   onSelectCity,
 }) => {
+  const { dict, isRtl } = useI18n();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer id="livworthy-footer" data-testid="livworth-footer" className="bg-[#FFFFFF] border-t border-[#DCE3E0] mt-16 py-12 text-sm text-[#60706D]">
+    <footer id="livworthy-footer" data-testid="livworth-footer" className="bg-[#FFFFFF] border-t border-[#DCE3E0] mt-16 py-12 text-sm text-[#60706D]" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main 4-Column Grid */}
@@ -63,7 +66,7 @@ export const Footer: React.FC<FooterProps> = ({
               <LivWorthLogo size="sm" showTagline={true} />
             </button>
             <p className="text-xs leading-relaxed text-[#60706D]">
-              LivWorthy provides deterministic income and living intelligence across 39 international commercial markets, with statutory tax calculations available for supported jurisdictions, verified consumer price indexes, and official government statistics.
+              {dict.footer.aboutDesc}
             </p>
             <div className="space-y-1.5 text-xs pt-1">
               <button
@@ -96,7 +99,7 @@ export const Footer: React.FC<FooterProps> = ({
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group cursor-pointer"
               title="Click to view all calculators"
             >
-              <span>Calculators & Tools</span>
+              <span>{dict.footer.calculatorsTitle}</span>
               <ChevronRight className="w-3 h-3 ml-1 text-[#167D75] opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
             <ul className="space-y-1 text-xs">
@@ -109,7 +112,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Is My Salary Enough?
+                  {dict.nav.tabSalaryWorth}
                 </button>
               </li>
               <li>
@@ -121,7 +124,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  How Much Should I Earn?
+                  {dict.nav.tabSalaryNeeded}
                 </button>
               </li>
               <li>
@@ -133,7 +136,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Salary After Tax
+                  {dict.nav.tabSalaryAfterTax}
                 </button>
               </li>
               <li>
@@ -145,7 +148,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Living Costs
+                  {dict.nav.tabCostOfLiving}
                 </button>
               </li>
               <li>
@@ -157,7 +160,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Compare Cities
+                  {dict.nav.tabCompare}
                 </button>
               </li>
               <li>
@@ -169,7 +172,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors cursor-pointer"
                 >
-                  Compare Job Offers
+                  {dict.nav.tabJobOffers}
                 </button>
               </li>
               <li>
@@ -182,7 +185,7 @@ export const Footer: React.FC<FooterProps> = ({
                   }}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left text-[#167D75] font-semibold transition-colors"
                 >
-                  City Salary Intelligence Guides →
+                  {dict.nav.tabGuides}
                 </a>
               </li>
               <li>
@@ -206,7 +209,7 @@ export const Footer: React.FC<FooterProps> = ({
                   href="/compare"
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
                 >
-                  City Comparisons
+                  {dict.footer.cityComparisons}
                 </a>
               </li>
               <li>
@@ -214,7 +217,7 @@ export const Footer: React.FC<FooterProps> = ({
                   href="/reports"
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left text-[#167D75] font-semibold transition-colors"
                 >
-                  Empirical Research Reports →
+                  {dict.footer.empiricalReports}
                 </a>
               </li>
             </ul>
@@ -232,7 +235,7 @@ export const Footer: React.FC<FooterProps> = ({
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group"
               title="Click to view all country & city salary guides"
             >
-              <span>City Salary Guides</span>
+              <span>{dict.footer.intelligenceTitle}</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </a>
             <ul className="space-y-1 text-xs">
@@ -280,7 +283,7 @@ export const Footer: React.FC<FooterProps> = ({
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group cursor-pointer"
               title="Click to view Calculation Methodology and Standards"
             >
-              <span>Integrity & Governance</span>
+              <span>{dict.footer.institutionalTitle}</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
             <ul className="space-y-1 text-xs">
@@ -291,7 +294,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={onOpenMethodology}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors cursor-pointer"
                 >
-                  Calculation Methodology
+                  {dict.nav.howItWorks}
                 </button>
               </li>
               <li>
@@ -301,7 +304,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={onOpenEvidence}
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors cursor-pointer"
                 >
-                  Sources & Evidence Registry
+                  {dict.nav.sources}
                 </button>
               </li>
               {onOpenCorrections && (
@@ -312,7 +315,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onClick={onOpenCorrections}
                     className="w-full min-h-[24px] py-1 flex items-center text-[#167D75] font-semibold hover:underline text-left transition-colors cursor-pointer"
                   >
-                    Report Data Correction
+                    {dict.footer.corrections}
                   </button>
                 </li>
               )}
@@ -341,7 +344,7 @@ export const Footer: React.FC<FooterProps> = ({
                   href="/editorial-policy"
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors"
                 >
-                  Editorial & Verification Policy
+                  {dict.footer.editorialPolicy}
                 </a>
               </li>
               <li>
@@ -349,7 +352,7 @@ export const Footer: React.FC<FooterProps> = ({
                   href="/data-policy"
                   className="w-full min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
                 >
-                  Data Policy (Zero PII & Zero Fabrication)
+                  {dict.footer.dataPolicy}
                 </a>
               </li>
               <li>
@@ -357,7 +360,7 @@ export const Footer: React.FC<FooterProps> = ({
                   href="/privacy"
                   className="w-full min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
                 >
-                  Privacy Policy
+                  {dict.footer.privacy}
                 </a>
               </li>
             </ul>
@@ -409,23 +412,23 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Bottom Bar */}
         <div className="border-t border-[#F7F8F5] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#60706D] gap-3">
-          <p>© {new Date().getFullYear()} LivWorthy. Know what your income is really worth.</p>
+          <p>© {new Date().getFullYear()} LivWorthy. {dict.footer.copyright}</p>
           <nav aria-label="Legal and policy links" className="flex flex-wrap items-center justify-center sm:justify-end gap-x-2 sm:gap-x-3 gap-y-2 text-xs">
             <a href="/about" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">About</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
-            <a href="/methodology" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Methodology</a>
+            <a href="/methodology" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.nav.howItWorks}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
-            <a href="/sources" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Sources</a>
+            <a href="/sources" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.nav.sources}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
-            <a href="/editorial-policy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Editorial Policy</a>
+            <a href="/editorial-policy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.editorialPolicy}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
-            <a href="/data-policy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Data Policy</a>
+            <a href="/data-policy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.dataPolicy}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
-            <a href="/corrections" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Corrections</a>
+            <a href="/corrections" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.corrections}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
-            <a href="/terms" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Terms & YMYL Disclaimer</a>
+            <a href="/terms" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.terms}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
-            <a href="/privacy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Privacy Policy</a>
+            <a href="/privacy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.privacy}</a>
           </nav>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { CurrencyCode } from '../../types/money';
 import { LivWorthScenario } from '../../types/scenario';
 import { CurrencyInput } from '../ui/CurrencyInput';
+import { useI18n } from '../../context/I18nContext';
 
 interface CompareViewProps {
   initialScenarioA: LivWorthScenario;
@@ -19,6 +20,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
   onOpenEvidence,
   onComparisonResult,
 }) => {
+  const { dict, isRtl } = useI18n();
   const [cityAId, setCityAId] = useState<string>(initialScenarioA.location.id);
   const [cityBId, setCityBId] = useState<string>('austin');
 
@@ -92,26 +94,26 @@ export const CompareView: React.FC<CompareViewProps> = ({
   }, [cityAId, cityBId, salaryAMajor, salaryBMajor, displayCurrency, onComparisonResult]);
 
   return (
-    <div id="compare-view" className="space-y-8">
+    <div id="compare-view" className="space-y-8" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isComparing && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
-            <span>Comparing locations...</span>
+            <span>{dict.common.calculating}</span>
           </div>
         )}
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
-              Objective Location Intelligence
+              {dict.common.livingIntelligence}
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-              Compare Real Living Worth Between Cities
+              {dict.compare.headline}
             </h2>
             <p className="text-xs sm:text-sm text-[#60706D] mt-1 max-w-xl">
-              Compare two scenarios side-by-side through the same unified financial calculation engine. Retains full statutory tax differences and regional cost benchmarks.
+              {dict.compare.subheadline}
             </p>
           </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { BookOpen, ShieldCheck, Scale, ArrowLeftRight, Calculator, DollarSign, Home, Globe, Compass, CheckCircle2 } from 'lucide-react';
 import { LivWorthLogo } from '../ui/LivWorthBrand';
 import { SupportedLocale, SUPPORTED_LOCALES, TRANSLATIONS } from '../../lib/i18n';
+import { LanguageModal } from './LanguageModal';
 
 export type ActiveTab =
   | 'salary-worth'
@@ -32,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
   const langMenuRef = useRef<HTMLDivElement | null>(null);
 
   const t = TRANSLATIONS[locale] || TRANSLATIONS.en;
@@ -149,7 +151,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div
                   id="lang-dropdown"
                   role="menu"
-                  className="absolute right-0 mt-1.5 w-36 bg-white border border-[#DCE3E0] rounded-lg shadow-lg py-1 z-50 animate-in fade-in zoom-in-95 duration-100"
+                  className="absolute right-0 mt-1.5 w-44 bg-white border border-[#DCE3E0] rounded-xl shadow-xl py-1 z-50 animate-in fade-in zoom-in-95 duration-100 max-h-72 overflow-y-auto"
                 >
                   {(Object.keys(SUPPORTED_LOCALES) as SupportedLocale[]).map((loc) => {
                     const cfg = SUPPORTED_LOCALES[loc];
@@ -175,9 +177,26 @@ export const Header: React.FC<HeaderProps> = ({
                       </button>
                     );
                   })}
+                  <div className="border-t border-[#DCE3E0] mt-1 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsLangMenuOpen(false);
+                        setIsLanguageModalOpen(true);
+                      }}
+                      className="w-full text-left px-3 py-1.5 text-xs text-[#167D75] font-semibold hover:bg-[#F7F8F5] transition-colors flex items-center justify-between"
+                    >
+                      <span>Search all languages...</span>
+                      <span>→</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
+            <LanguageModal
+              isOpen={isLanguageModalOpen}
+              onClose={() => setIsLanguageModalOpen(false)}
+            />
           </nav>
         </div>
 

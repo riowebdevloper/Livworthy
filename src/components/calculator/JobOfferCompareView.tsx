@@ -17,6 +17,7 @@ import { ComparisonResult, RelocationProfile } from '../../engines/calculator-co
 import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { CurrencyCode } from '../../types/money';
 import { LivWorthScenario } from '../../types/scenario';
+import { useI18n } from '../../context/I18nContext';
 
 interface JobOfferCompareViewProps {
   initialScenario: LivWorthScenario;
@@ -29,6 +30,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
   onOpenEvidence,
   onComparisonResult,
 }) => {
+  const { dict, isRtl } = useI18n();
   // Current / Baseline Offer (Offer A)
   const [offerACityId, setOfferACityId] = useState<string>(initialScenario.location.id);
   const [offerABase, setOfferABase] = useState<number>(100000);
@@ -152,25 +154,25 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
   ]);
 
   return (
-    <div id="job-offer-compare-view" className="space-y-8">
+    <div id="job-offer-compare-view" className="space-y-8" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-8 shadow-xs relative">
         {isComparing && (
           <div className="absolute top-4 right-4 flex items-center space-x-1.5 text-xs font-semibold text-[#0D524D] bg-[#DDF2EC] px-2.5 py-1 rounded-full">
             <Loader2 className="w-3 h-3 animate-spin" />
-            <span>Evaluating offers...</span>
+            <span>{dict.common.calculating}</span>
           </div>
         )}
 
         <div className="max-w-2xl">
           <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
-            Compensation & Relocation Intelligence
+            {dict.common.livingIntelligence}
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            Job Offer & Relocation Comparison
+            {dict.jobOffers.headline}
           </h2>
           <p className="text-xs sm:text-sm text-[#60706D] mt-1.5 leading-relaxed">
-            Separate spendable cash from expense-replacing benefits. Model Year 1 one-time relocation costs versus Year 2+ recurring disposable income.
+            {dict.jobOffers.subheadline}
           </p>
         </div>
 
