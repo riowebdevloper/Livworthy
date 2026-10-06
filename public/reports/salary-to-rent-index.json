@@ -45,84 +45,84 @@
   ],
   "tableRows": [
     [
-      "Zurich, Switzerland",
-      "CHF 110,000",
-      "CHF NaN",
-      "CHF 2,250",
-      "NaN%",
-      "MODERATE (30–40%)"
-    ],
-    [
-      "Berlin, Germany",
-      "EUR 62,000",
-      "EUR NaN",
-      "EUR 1,250",
-      "NaN%",
-      "MODERATE (30–40%)"
-    ],
-    [
       "Austin, United States",
       "USD 82,000",
-      "USD NaN",
+      "USD 5,543",
       "USD 1,650",
-      "NaN%",
+      "30%",
       "MODERATE (30–40%)"
     ],
     [
-      "Munich, Germany",
-      "EUR 68,000",
-      "EUR NaN",
-      "EUR 1,600",
-      "NaN%",
+      "Zurich, Switzerland",
+      "CHF 110,000",
+      "CHF 7,118",
+      "CHF 2,250",
+      "32%",
       "MODERATE (30–40%)"
     ],
     [
       "Dubai, United Arab Emirates",
       "AED 240,000",
-      "AED NaN",
+      "AED 20,000",
       "AED 6,800",
-      "NaN%",
-      "MODERATE (30–40%)"
-    ],
-    [
-      "Toronto, Canada",
-      "CAD 78,000",
-      "CAD NaN",
-      "CAD 2,450",
-      "NaN%",
+      "34%",
       "MODERATE (30–40%)"
     ],
     [
       "Sydney, Australia",
       "AUD 95,000",
-      "AUD NaN",
+      "AUD 6,151",
       "AUD 2,700",
-      "NaN%",
-      "MODERATE (30–40%)"
+      "44%",
+      "BURDENSOME (>40%)"
     ],
     [
-      "London, United Kingdom",
-      "GBP 55,000",
-      "GBP NaN",
-      "GBP 1,950",
-      "NaN%",
-      "MODERATE (30–40%)"
-    ],
-    [
-      "New York City, United States",
-      "USD 75,000",
-      "USD NaN",
-      "USD 2,655",
-      "NaN%",
-      "MODERATE (30–40%)"
+      "Berlin, Germany",
+      "EUR 62,000",
+      "EUR 2,759",
+      "EUR 1,250",
+      "45%",
+      "BURDENSOME (>40%)"
     ],
     [
       "Paris, France",
       "EUR 52,000",
-      "EUR NaN",
+      "EUR 3,178",
       "EUR 1,500",
-      "NaN%",
-      "MODERATE (30–40%)"
+      "47%",
+      "BURDENSOME (>40%)"
+    ],
+    [
+      "Toronto, Canada",
+      "CAD 78,000",
+      "CAD 4,823",
+      "CAD 2,450",
+      "51%",
+      "BURDENSOME (>40%)"
+    ],
+    [
+      "Munich, Germany",
+      "EUR 68,000",
+      "EUR 2,949",
+      "EUR 1,600",
+      "54%",
+      "BURDENSOME (>40%)"
+    ],
+    [
+      "London, United Kingdom",
+      "GBP 55,000",
+      "GBP 3,538",
+      "GBP 1,950",
+      "55%",
+      "BURDENSOME (>40%)"
+    ],
+    [
+      "New York City, United States",
+      "USD 75,000",
+      "USD 4,639",
+      "USD 2,655",
+      "57%",
+      "BURDENSOME (>40%)"
     ]
   ],
   "downloadableCsvUrl": "/reports/salary-to-rent-index.csv",

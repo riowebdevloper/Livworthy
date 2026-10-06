@@ -1,7 +1,7 @@
 import { TaxRegistry } from '../engines/tax/tax-registry';
 import { CITIES, COUNTRIES } from './locations';
 import { CITY_COL_BENCHMARKS } from './city-benchmarks';
-import { createMoney, fromMinor } from '../lib/money';
+import { createMoney, toMajor } from '../lib/money';
 
 export interface EmpiricalReportMetadata {
   id: string;
@@ -43,12 +43,12 @@ export function getGlobalSalaryWorthIndexReport(): EmpiricalReportMetadata {
     const city = CITIES[h.cityId];
     const country = COUNTRIES[h.countryId];
     const taxRes = TaxRegistry.calculate(
-      createMoney(h.gross * 100, h.currency as any),
-      { filingStatus: 'single', taxYear: 2026 },
+      createMoney(h.gross, h.currency as any),
+      { filingStatus: 'single', taxYear: 2026, dependentsCount: 0 },
       { countryId: h.countryId, cityId: h.cityId, taxYear: 2026 }
     );
 
-    const netAnnual = fromMinor(taxRes.netIncome);
+    const netAnnual = Math.round(toMajor(taxRes.netIncome));
     const effectiveTaxRate = (taxRes.effectiveTaxRate * 100).toFixed(1) + '%';
     const bm = CITY_COL_BENCHMARKS[h.cityId];
     const monthlyRent = bm?.rentBase?.['1-bedroom'] || 2000;
@@ -220,12 +220,12 @@ export function getSalaryToRentIndexReport(): EmpiricalReportMetadata {
     const city = CITIES[m.cityId];
     const country = COUNTRIES[m.countryId];
     const taxRes = TaxRegistry.calculate(
-      createMoney(m.medianGross * 100, m.curr as any),
-      { filingStatus: 'single', taxYear: 2026 },
+      createMoney(m.medianGross, m.curr as any),
+      { filingStatus: 'single', taxYear: 2026, dependentsCount: 0 },
       { countryId: m.countryId, cityId: m.cityId, taxYear: 2026 }
     );
 
-    const netAnnual = fromMinor(taxRes.netIncome);
+    const netAnnual = Math.round(toMajor(taxRes.netIncome));
     const netMonthly = netAnnual / 12;
     const bm = CITY_COL_BENCHMARKS[m.cityId];
     const rentMonthly = bm?.rentBase?.['1-bedroom'] || 2000;
@@ -375,12 +375,12 @@ export function getGlobalTakeHomePayReport(): EmpiricalReportMetadata {
 
   for (const j of jurisdictions) {
     const taxRes = TaxRegistry.calculate(
-      createMoney(j.baseline100kUsd * 100, j.curr as any),
-      { filingStatus: 'single', taxYear: 2026 },
+      createMoney(j.baseline100kUsd, j.curr as any),
+      { filingStatus: 'single', taxYear: 2026, dependentsCount: 0 },
       { countryId: j.countryId, cityId: j.cityId, taxYear: 2026 }
     );
 
-    const netAnnual = fromMinor(taxRes.netIncome);
+    const netAnnual = Math.round(toMajor(taxRes.netIncome));
     const retentionPct = Math.round((netAnnual / j.baseline100kUsd) * 100) + '%';
     const effectiveTaxPct = (taxRes.effectiveTaxRate * 100).toFixed(1) + '%';
 

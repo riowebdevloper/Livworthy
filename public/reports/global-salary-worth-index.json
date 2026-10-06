@@ -61,82 +61,82 @@
     [
       "New York City, United States",
       "USD 100,000",
-      "53.1%",
-      "USD [object Object]",
+      "29.1%",
+      "USD 70,879",
       "USD 31,860",
       "USD 12,380",
-      "USD NaN",
-      "NaN%"
+      "USD 26,639",
+      "38%"
     ],
     [
       "London, United Kingdom",
       "GBP 75,000",
-      "46.9%",
-      "GBP [object Object]",
+      "27.9%",
+      "GBP 54,057",
       "GBP 23,400",
       "GBP 10,800",
-      "GBP NaN",
-      "NaN%"
+      "GBP 19,857",
+      "37%"
     ],
     [
       "Dubai, United Arab Emirates",
       "AED 350,000",
       "0.0%",
-      "AED [object Object]",
+      "AED 350,000",
       "AED 81,600",
       "AED 38,400",
-      "AED NaN",
-      "NaN%"
+      "AED 230,000",
+      "66%"
     ],
     [
       "Toronto, Canada",
       "CAD 100,000",
-      "53.1%",
-      "CAD [object Object]",
+      "26.9%",
+      "CAD 73,099",
       "CAD 29,400",
       "CAD 12,072",
-      "CAD NaN",
-      "NaN%"
+      "CAD 31,627",
+      "43%"
     ],
     [
       "Sydney, Australia",
       "AUD 120,000",
-      "46.7%",
-      "AUD [object Object]",
+      "24.3%",
+      "AUD 90,812",
       "AUD 32,400",
       "AUD 12,720",
-      "AUD NaN",
-      "NaN%"
+      "AUD 45,692",
+      "50%"
     ],
     [
       "Berlin, Germany",
       "EUR 80,000",
-      "47.4%",
-      "EUR [object Object]",
+      "47.9%",
+      "EUR 41,656",
       "EUR 15,000",
       "EUR 9,468",
-      "EUR NaN",
-      "NaN%"
+      "EUR 17,188",
+      "41%"
     ],
     [
       "Singapore, Singapore",
       "SGD 120,000",
-      "23.7%",
-      "SGD [object Object]",
+      "6.6%",
+      "SGD 112,050",
       "SGD 43,200",
       "SGD 13,320",
-      "SGD NaN",
-      "NaN%"
+      "SGD 55,530",
+      "50%"
     ],
     [
       "Zurich, Switzerland",
       "CHF 130,000",
-      "31.5%",
-      "CHF [object Object]",
+      "22.8%",
+      "CHF 100,423",
       "CHF 27,000",
       "CHF 15,204",
-      "CHF NaN",
-      "NaN%"
+      "CHF 58,219",
+      "58%"
     ]
   ],
   "downloadableCsvUrl": "/reports/global-salary-worth-index.csv",
