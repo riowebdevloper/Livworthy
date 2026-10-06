@@ -1064,6 +1064,9 @@ export function runSeoGenerator() {
     });
   }
 
+  // Public coverage and verification inventory
+  pages.push(createCoveragePage());
+
   // Localized global entry hubs (English, Spanish, French, Arabic)
   pages.push(...createLocalizedHubPages());
 
@@ -1092,6 +1095,125 @@ export function runSeoGenerator() {
   runContentGapReport();
 }
 
+
+
+function createCoveragePage(): SeoPage {
+  const markets = Object.values(COUNTRIES)
+    .map((country) => {
+      const support = TaxRegistry.getCountrySupport(country.id);
+      const cities = Object.values(CITIES).filter((city) => city.countryId === country.id);
+      return {
+        country,
+        support,
+        cities,
+        years: TaxRegistry.getSupportedTaxYears(country.id),
+      };
+    })
+    .sort((a, b) => a.country.name.localeCompare(b.country.name));
+
+  const verified = markets.filter((item) => item.support.verificationStatus === 'VERIFIED').length;
+  const limited = markets.filter((item) => item.support.verificationStatus === 'LIMITED').length;
+  const unsupported = markets.filter((item) => !item.support.isSupported).length;
+  const cityCount = Object.keys(CITIES).length;
+
+  const rows = markets.map(({ country, support, cities, years }) => {
+    const statusClass =
+      support.verificationStatus === 'VERIFIED'
+        ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+        : support.verificationStatus === 'LIMITED'
+          ? 'bg-amber-50 text-amber-800 border-amber-200'
+          : 'bg-slate-50 text-slate-700 border-slate-200';
+
+    return `
+      <tr class="border-t border-[#E8EEEB] align-top">
+        <td class="p-3 font-bold text-[#102A2E]">
+          <a href="/countries/${country.id.toLowerCase()}" class="hover:text-[#167D75]">${escapeHtml(country.name)}</a>
+          <div class="text-xs font-normal text-[#60706D] mt-1">${country.defaultCurrency} · ${cities.length} ${cities.length === 1 ? 'city' : 'cities'}</div>
+        </td>
+        <td class="p-3">
+          <span class="inline-flex rounded-full border px-2.5 py-1 text-xs font-bold ${statusClass}">${support.verificationStatus}</span>
+        </td>
+        <td class="p-3 text-sm text-[#334D4A]">${years.length ? years.join(', ') : 'No executable statutory schedule'}</td>
+        <td class="p-3 text-sm leading-6 text-[#60706D]">${escapeHtml(support.notes)}</td>
+      </tr>
+    `;
+  }).join('');
+
+  const body = `
+    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
+        <a href="/" class="hover:text-[#167D75]">Home</a> /
+        <span class="font-bold text-[#102A2E]">Coverage</span>
+      </nav>
+
+      <div class="max-w-4xl">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Coverage & Verification</span>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-black tracking-tight text-[#102A2E]">What LivWorthy covers — and what it does not</h1>
+        <p class="mt-4 text-base sm:text-lg leading-8 text-[#60706D]">
+          LivWorthy tracks ${markets.length} commercial markets and ${cityCount} registered city benchmarks.
+          Tax calculations are exposed only where an executable statutory adapter exists. Future or unsupported tax years are never silently approximated with another year’s rates.
+        </p>
+      </div>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-2xl border border-[#DCE3E0] bg-white p-5"><div class="text-xs font-bold uppercase tracking-wider text-[#60706D]">Markets</div><div class="mt-2 text-3xl font-black text-[#102A2E]">${markets.length}</div></div>
+        <div class="rounded-2xl border border-[#DCE3E0] bg-white p-5"><div class="text-xs font-bold uppercase tracking-wider text-[#60706D]">Registered cities</div><div class="mt-2 text-3xl font-black text-[#102A2E]">${cityCount}</div></div>
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5"><div class="text-xs font-bold uppercase tracking-wider text-emerald-800">Verified tax adapters</div><div class="mt-2 text-3xl font-black text-emerald-900">${verified}</div></div>
+        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5"><div class="text-xs font-bold uppercase tracking-wider text-amber-800">Limited / research</div><div class="mt-2 text-3xl font-black text-amber-900">${limited + unsupported}</div></div>
+      </div>
+
+      <section class="mt-10 rounded-2xl border border-[#DCE3E0] bg-white overflow-hidden">
+        <div class="p-5 sm:p-6 border-b border-[#DCE3E0]">
+          <h2 class="text-xl font-black text-[#102A2E]">Country-by-country calculation status</h2>
+          <p class="mt-2 text-sm leading-6 text-[#60706D]">
+            VERIFIED means golden-vector-tested statutory logic. LIMITED means an executable adapter exists with documented scope limitations. UNSUPPORTED means LivWorthy will not fabricate an income-tax result.
+          </p>
+        </div>
+        <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Country tax coverage table">
+          <table class="min-w-[900px] w-full text-left">
+            <thead class="bg-[#F7F8F5] text-xs uppercase tracking-wider text-[#60706D]">
+              <tr><th class="p-3">Market</th><th class="p-3">Status</th><th class="p-3">Implemented tax years</th><th class="p-3">Scope notes</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mt-8 rounded-2xl border border-[#DCE3E0] bg-white p-6">
+        <h2 class="text-xl font-black text-[#102A2E]">2027 policy</h2>
+        <p class="mt-3 text-sm leading-7 text-[#60706D]">
+          The latest globally verified statutory year is ${LATEST_STATUTORY_TAX_YEAR}. LivWorthy’s 2027 architecture is ready, but 2027 calculations remain unavailable until the relevant official schedules are published, implemented and covered by regression tests. This is intentional.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-4 text-sm font-bold text-[#167D75]">
+          <a href="/methodology">Calculation methodology</a>
+          <a href="/sources">Evidence registry</a>
+          <a href="/countries">Countries directory</a>
+        </div>
+      </section>
+    </article>
+  `;
+
+  return {
+    relativePath: 'coverage/index.html',
+    canonicalUrl: `${BASE_URL}/coverage`,
+    title: 'LivWorthy Global Coverage & Tax Verification Status',
+    description: `See LivWorthy coverage across ${markets.length} markets and ${cityCount} cities, including verified, limited and unsupported statutory tax calculation status.`,
+    robots: 'index, follow',
+    bodyContent: body,
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'Dataset',
+      name: 'LivWorthy Global Tax & Cost-of-Living Coverage',
+      description: 'Public coverage inventory for LivWorthy markets, registered cities and statutory tax calculation support.',
+      url: `${BASE_URL}/coverage`,
+      temporalCoverage: `2024/${LATEST_STATUTORY_TAX_YEAR}`,
+      spatialCoverage: 'Global',
+      creator: { '@id': `${BASE_URL}/#organization` },
+    },
+    changefreq: 'weekly',
+    priority: 0.9,
+  };
+}
 
 function createLocalizedHubPages(): SeoPage[] {
   const alternates = Object.fromEntries(
@@ -2111,6 +2233,7 @@ ${PLATFORM_IDENTITY.coreDefinition}
 - [Cities Directory](${BASE_URL}/cities)
 - [City Comparisons Directory](${BASE_URL}/compare)
 - [Salary & Relocation Guides](${BASE_URL}/guides)
+- [Coverage & Verification](${BASE_URL}/coverage)
 - [Sitemap Index](${BASE_URL}/sitemap.xml)
 `;
 

@@ -321,6 +321,11 @@ export const Footer: React.FC<FooterProps> = ({
                 </li>
               )}
               <li>
+                <a href="/coverage" className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors">
+                  Coverage & Verification
+                </a>
+              </li>
+              <li>
                 <a
                   href="/about"
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors"
