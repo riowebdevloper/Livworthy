@@ -66,12 +66,12 @@ export const Header: React.FC<HeaderProps> = ({
     const activeButton = navRef.current.querySelector<HTMLElement>(`#tab-${activeTab}`);
     if (activeButton) {
       activeButton.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'auto',
         block: 'nearest',
         inline: 'center',
       });
     }
-    const timer = setTimeout(checkScroll, 350);
+    const timer = setTimeout(checkScroll, 100);
     return () => clearTimeout(timer);
   }, [activeTab, checkScroll]);
 
@@ -186,20 +186,20 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Left scroll affordance gradient */}
           {canScrollLeft && (
             <div
-              className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white via-white/80 to-transparent z-10 flex items-center pl-1 text-[#60706D]"
+              className="pointer-events-none select-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white via-white/80 to-transparent z-10 flex items-center pl-1 text-[#60706D]"
               aria-hidden="true"
             >
-              <span className="text-[10px] bg-white/90 rounded-full px-1 shadow-xs border border-[#DCE3E0]">‹</span>
+              <span className="pointer-events-none select-none text-[10px] bg-white/90 rounded-full px-1 shadow-xs border border-[#DCE3E0]">‹</span>
             </div>
           )}
 
           {/* Right scroll affordance gradient */}
           {canScrollRight && (
             <div
-              className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/80 to-transparent z-10 flex items-center justify-end pr-1 text-[#60706D]"
+              className="pointer-events-none select-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/80 to-transparent z-10 flex items-center justify-end pr-1 text-[#60706D]"
               aria-hidden="true"
             >
-              <span className="text-[10px] bg-white/90 rounded-full px-1 shadow-xs border border-[#DCE3E0]">›</span>
+              <span className="pointer-events-none select-none text-[10px] bg-white/90 rounded-full px-1 shadow-xs border border-[#DCE3E0]">›</span>
             </div>
           )}
 
@@ -207,7 +207,7 @@ export const Header: React.FC<HeaderProps> = ({
             ref={navRef}
             onScroll={checkScroll}
             aria-label="Calculator tabs"
-            className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scroll-smooth overscroll-x-contain touch-pan-x [scrollbar-width:thin] [scrollbar-color:#DCE3E0_transparent] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#DCE3E0] hover:[&::-webkit-scrollbar-thumb]:bg-[#167D75]"
+            className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 overscroll-x-contain touch-pan-x [scrollbar-width:thin] [scrollbar-color:#DCE3E0_transparent] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#DCE3E0] hover:[&::-webkit-scrollbar-thumb]:bg-[#167D75]"
           >
             <button
               id="tab-salary-worth"
