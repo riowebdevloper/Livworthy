@@ -9,7 +9,7 @@ import {
   CORRECTIONS_LOG,
 } from '../src/data/transparency';
 import { CapabilityResolver } from '../src/engines/capabilities/capability-resolver';
-import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
+import { LATEST_STATUTORY_TAX_YEAR, TaxRegistry } from '../src/engines/tax/tax-registry';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
 import { LIVWORTHY_LOCALES, LOCALIZED_HUBS } from '../src/data/localized-hubs';
