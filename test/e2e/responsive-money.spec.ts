@@ -37,8 +37,7 @@ test.describe('Responsive Money Display & Currency Overlap Regression Suite', ()
       // Verify currency input spacing
       const salaryInput = page.locator('#hero-annual-salary-input');
       await expect(salaryInput).toBeVisible();
-      const inputValue = await salaryInput.inputValue();
-      expect(inputValue).toContain('350,000');
+      await expect(salaryInput).toHaveValue(/350,000/, { timeout: 10000 });
 
       // Verify exact result values are visible and rendered
       await expect(page.locator('text=Gross Compensation').first()).toBeVisible();
