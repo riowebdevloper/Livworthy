@@ -204,7 +204,7 @@ export default function App() {
 
     try {
       if (typeof window === 'undefined') return;
-      const params = new URLSearchParams();
+      const params = new URLSearchParams(window.location.search);
       params.set('city', scenario.location.id);
       params.set('salary', toMajor(scenario.compensation.baseSalary).toString());
       params.set('tab', activeTab);
@@ -276,7 +276,7 @@ export default function App() {
 
     try {
       if (typeof window === 'undefined') return;
-      const params = new URLSearchParams();
+      const params = new URLSearchParams(window.location.search);
       params.set('city', targetCity.id);
       params.set('salary', salaryMajor.toString());
       params.set('tab', 'salary-worth');
@@ -401,7 +401,7 @@ export default function App() {
         const targetSalaryMajor = targetCity.currency !== scenario.location.currency
           ? getDefaultSalaryForCurrency(targetCity.currency)
           : toMajor(scenario.compensation.baseSalary);
-        const params = new URLSearchParams();
+        const params = new URLSearchParams(window.location.search);
         params.set('city', targetCity.id);
         params.set('salary', targetSalaryMajor.toString());
         params.set('tab', 'salary-worth');

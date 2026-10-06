@@ -78,11 +78,11 @@ export const Header: React.FC<HeaderProps> = ({
             <a
               id="nav-how-it-works"
               href="/methodology"
-              className="inline-flex items-center space-x-1 sm:space-x-1.5 text-xs sm:text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-2 sm:px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
+              className="inline-flex items-center space-x-0 sm:space-x-1.5 text-xs sm:text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-1.5 sm:px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
               aria-label="How It Works — Methodology"
             >
               <BookOpen className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>{messages.howItWorks}</span>
+              <span className="hidden sm:inline">{messages.howItWorks}</span>
             </a>
             <label className="sr-only" htmlFor="global-language-select">{messages.language}</label>
             <select
@@ -90,7 +90,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label={messages.language}
               value={locale}
               onChange={(event) => setLocale(event.target.value as RuntimeLocale)}
-              className="rounded border border-[#DCE3E0] bg-white px-2 py-1.5 text-xs font-bold text-[#334D4A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
+              className="w-14 sm:w-auto min-w-0 rounded border border-[#DCE3E0] bg-white px-1 sm:px-2 py-1.5 text-xs font-bold text-[#334D4A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
             >
               <option value="en">EN</option>
               <option value="es">ES</option>
@@ -104,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="Sources — Data & Evidence Registry"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-[#167D75] shrink-0" aria-hidden="true" />
-              <span>{messages.sources}</span>
+              <span className="hidden sm:inline">{messages.sources}</span>
             </a>
           </nav>
         </div>
