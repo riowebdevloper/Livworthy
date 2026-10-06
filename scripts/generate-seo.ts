@@ -1244,7 +1244,7 @@ function createLocalizedHubPages(): SeoPage[] {
             <h1 class="text-4xl sm:text-5xl font-black text-[#102A2E] mt-3 tracking-tight">${copy.h1}</h1>
             <p class="mt-5 text-lg leading-8 text-[#60706D]">${copy.intro}</p>
             <div class="mt-7 flex flex-wrap gap-3">
-              <a href="/?tab=salary-worth" class="rounded-xl bg-[#102A2E] px-5 py-3 text-sm font-bold text-white">${copy.calculators[0].label}</a>
+              <a href="/?lang=${locale}&tab=salary-worth" class="rounded-xl bg-[#102A2E] px-5 py-3 text-sm font-bold text-white">${copy.calculators[0].label}</a>
               <a href="/countries" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">${copy.countriesLabel}</a>
               <a href="/cities" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">${copy.citiesLabel}</a>
             </div>
@@ -1254,7 +1254,7 @@ function createLocalizedHubPages(): SeoPage[] {
             <h2 class="text-2xl font-black text-[#102A2E]">${copy.calculatorTitle}</h2>
             <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               ${copy.calculators.map((item) => `
-                <a href="/?tab=${item.tab}" class="rounded-xl border border-[#DCE3E0] p-4 hover:border-[#167D75]">
+                <a href="/?lang=${locale}&tab=${item.tab}" class="rounded-xl border border-[#DCE3E0] p-4 hover:border-[#167D75]">
                   <div class="font-bold text-[#102A2E]">${item.label}</div>
                   <div class="mt-1 text-sm leading-6 text-[#60706D]">${item.description}</div>
                 </a>

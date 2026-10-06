@@ -1,6 +1,7 @@
 import React from 'react';
 import { BookOpen, ShieldCheck, Scale, ArrowLeftRight, Calculator, DollarSign, Home } from 'lucide-react';
 import { LivWorthLogo } from '../ui/LivWorthBrand';
+import { RuntimeLocale, useLocale } from '../../i18n/runtime';
 
 export type ActiveTab =
   | 'salary-worth'
@@ -23,6 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
   activeTab,
   onSelectTab,
 }) => {
+  const { locale, messages, setLocale } = useLocale();
   const navRef = React.useRef<HTMLElement | null>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(false);
@@ -80,8 +82,21 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="How It Works — Methodology"
             >
               <BookOpen className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>How It Works</span>
+              <span>{messages.howItWorks}</span>
             </a>
+            <label className="sr-only" htmlFor="global-language-select">{messages.language}</label>
+            <select
+              id="global-language-select"
+              aria-label={messages.language}
+              value={locale}
+              onChange={(event) => setLocale(event.target.value as RuntimeLocale)}
+              className="rounded border border-[#DCE3E0] bg-white px-2 py-1.5 text-xs font-bold text-[#334D4A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
+            >
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+              <option value="fr">FR</option>
+              <option value="ar">العربية</option>
+            </select>
             <a
               id="nav-sources"
               href="/sources"
@@ -89,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="Sources — Data & Evidence Registry"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-[#167D75] shrink-0" aria-hidden="true" />
-              <span>Sources</span>
+              <span>{messages.sources}</span>
             </a>
           </nav>
         </div>
@@ -132,7 +147,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Calculator className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>Is My Salary Enough?</span>
+              <span>{messages.salaryWorth}</span>
             </button>
 
             <button
@@ -145,7 +160,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <DollarSign className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>How Much Should I Earn?</span>
+              <span>{messages.salaryNeeded}</span>
             </button>
 
             <button
@@ -157,7 +172,7 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
               }`}
             >
-              <span>Salary After Tax</span>
+              <span>{messages.salaryAfterTax}</span>
             </button>
 
             <button
@@ -170,7 +185,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Home className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>Living Costs</span>
+              <span>{messages.livingCosts}</span>
             </button>
 
             <button
@@ -183,7 +198,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <ArrowLeftRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>Compare Cities</span>
+              <span>{messages.compareCities}</span>
             </button>
 
             <button
@@ -196,7 +211,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Scale className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span>Compare Job Offers</span>
+              <span>{messages.compareOffers}</span>
             </button>
 
             <button
@@ -208,7 +223,7 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'border-dashed border-[#DCE3E0] bg-white text-[#167D75] hover:bg-[#F7F8F5]'
               }`}
             >
-              <span>$100K in NYC Guide</span>
+              <span>{messages.guide}</span>
             </button>
           </nav>
         </div>
