@@ -13,6 +13,7 @@ import { LATEST_STATUTORY_TAX_YEAR, TaxRegistry } from '../src/engines/tax/tax-r
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
 import { LIVWORTHY_LOCALES, LOCALIZED_HUBS } from '../src/data/localized-hubs';
+import { RELOCATION_ROUTES } from '../src/data/relocation-routes';
 
 const BASE_URL = 'https://www.livworthy.com';
 
@@ -1064,6 +1065,9 @@ export function runSeoGenerator() {
     });
   }
 
+  // Relocation route directory and decision guides
+  pages.push(...createRelocationPages());
+
   // Public coverage and verification inventory
   pages.push(createCoveragePage());
 
@@ -1096,6 +1100,128 @@ export function runSeoGenerator() {
 }
 
 
+
+
+function createRelocationPages(): SeoPage[] {
+  const pages: SeoPage[] = [];
+
+  const cards = RELOCATION_ROUTES.map((route) => {
+    const from = CITIES[route.fromCityId];
+    const to = CITIES[route.toCityId];
+    return `
+      <a href="/relocation/${route.slug}" class="rounded-xl border border-[#DCE3E0] bg-white p-5 hover:border-[#167D75] hover:shadow-sm transition-all">
+        <div class="text-xs font-bold uppercase tracking-wider text-[#167D75]">${escapeHtml(from.name)} → ${escapeHtml(to.name)}</div>
+        <h2 class="mt-2 text-lg font-black text-[#102A2E]">${escapeHtml(route.headline)}</h2>
+        <p class="mt-2 text-sm leading-6 text-[#60706D]">${escapeHtml(route.editorialNote)}</p>
+      </a>
+    `;
+  }).join('');
+
+  pages.push({
+    relativePath: 'relocation/index.html',
+    canonicalUrl: `${BASE_URL}/relocation`,
+    title: 'Global Relocation Salary & Cost-of-Living Guides | LivWorthy',
+    description: 'Compare salary, tax, living costs, savings capacity and job-offer economics across major international relocation routes.',
+    robots: 'index, follow',
+    bodyContent: `
+      <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6"><a href="/" class="hover:text-[#167D75]">Home</a> / <span class="font-bold text-[#102A2E]">Relocation</span></nav>
+        <div class="max-w-4xl">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Relocation Intelligence</span>
+          <h1 class="mt-2 text-3xl sm:text-4xl font-black text-[#102A2E]">Compare a move by disposable income, not headline salary</h1>
+          <p class="mt-4 text-base sm:text-lg leading-8 text-[#60706D]">These route guides connect LivWorthy’s salary, tax, cost-of-living and job-offer tools. They do not guess a universal “equivalent salary”; they show the assumptions you need to model before accepting a move.</p>
+        </div>
+        <div class="mt-8 grid gap-4 md:grid-cols-2">${cards}</div>
+      </article>
+    `,
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'LivWorthy Global Relocation Guides',
+      url: `${BASE_URL}/relocation`,
+      description: 'Salary, tax and cost-of-living decision guides for international and domestic relocation routes.',
+    },
+    changefreq: 'weekly',
+    priority: 0.9,
+  });
+
+  for (const route of RELOCATION_ROUTES) {
+    const from = CITIES[route.fromCityId];
+    const to = CITIES[route.toCityId];
+    const fromCountry = COUNTRIES[from.countryId];
+    const toCountry = COUNTRIES[to.countryId];
+    const fromTax = TaxRegistry.getCountrySupport(from.countryId);
+    const toTax = TaxRegistry.getCountrySupport(to.countryId);
+
+    const questions = route.keyQuestions.map((question) => `<li class="flex gap-2"><span class="text-[#167D75] font-black">•</span><span>${escapeHtml(question)}</span></li>`).join('');
+
+    const body = `
+      <article class="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+        <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
+          <a href="/" class="hover:text-[#167D75]">Home</a> /
+          <a href="/relocation" class="hover:text-[#167D75]">Relocation</a> /
+          <span class="font-bold text-[#102A2E]">${escapeHtml(from.name)} to ${escapeHtml(to.name)}</span>
+        </nav>
+
+        <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Relocation Decision Guide</span>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-black tracking-tight text-[#102A2E]">${escapeHtml(route.headline)}</h1>
+        <p class="mt-4 text-lg leading-8 text-[#60706D]">${escapeHtml(route.editorialNote)}</p>
+
+        <section class="mt-8 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-2xl border border-[#DCE3E0] bg-white p-5">
+            <div class="text-xs font-bold uppercase tracking-wider text-[#60706D]">Current city</div>
+            <div class="mt-2 text-2xl font-black text-[#102A2E]">${escapeHtml(from.name)}</div>
+            <div class="mt-1 text-sm text-[#60706D]">${escapeHtml(fromCountry.name)} · ${from.currency}</div>
+            <div class="mt-3 text-xs font-bold text-[#167D75]">Tax model: ${fromTax.verificationStatus}</div>
+          </div>
+          <div class="rounded-2xl border border-[#DCE3E0] bg-white p-5">
+            <div class="text-xs font-bold uppercase tracking-wider text-[#60706D]">Destination</div>
+            <div class="mt-2 text-2xl font-black text-[#102A2E]">${escapeHtml(to.name)}</div>
+            <div class="mt-1 text-sm text-[#60706D]">${escapeHtml(toCountry.name)} · ${to.currency}</div>
+            <div class="mt-3 text-xs font-bold text-[#167D75]">Tax model: ${toTax.verificationStatus}</div>
+          </div>
+        </section>
+
+        <section class="mt-8 rounded-2xl border border-[#DCE3E0] bg-white p-6">
+          <h2 class="text-xl font-black text-[#102A2E]">Questions to answer before accepting the move</h2>
+          <ul class="mt-4 space-y-3 text-sm leading-6 text-[#60706D]">${questions}</ul>
+        </section>
+
+        <section class="mt-8 rounded-2xl border border-[#DCE3E0] bg-white p-6">
+          <h2 class="text-xl font-black text-[#102A2E]">Model the move in LivWorthy</h2>
+          <p class="mt-3 text-sm leading-7 text-[#60706D]">Use the same household assumptions on both sides. For unsupported or limited tax jurisdictions, treat tax output according to the coverage disclosure rather than assuming another country’s rates.</p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a href="/?city=${from.id}&tab=compare" class="rounded-xl bg-[#102A2E] px-4 py-2.5 text-sm font-bold text-white">Compare ${escapeHtml(from.name)} with ${escapeHtml(to.name)}</a>
+            <a href="/?city=${to.id}&tab=job-offers" class="rounded-xl border border-[#DCE3E0] bg-white px-4 py-2.5 text-sm font-bold text-[#102A2E]">Compare job offers</a>
+            <a href="/coverage" class="rounded-xl border border-[#DCE3E0] bg-white px-4 py-2.5 text-sm font-bold text-[#102A2E]">Check tax coverage</a>
+          </div>
+        </section>
+      </article>
+    `;
+
+    pages.push({
+      relativePath: `relocation/${route.slug}/index.html`,
+      canonicalUrl: `${BASE_URL}/relocation/${route.slug}`,
+      title: `${route.headline} | LivWorthy`,
+      description: `Compare salary, tax support, living-cost assumptions and job-offer economics when moving from ${from.name} to ${to.name}.`,
+      robots: 'index, follow',
+      bodyContent: body,
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: route.headline,
+        description: route.editorialNote,
+        mainEntityOfPage: `${BASE_URL}/relocation/${route.slug}`,
+        publisher: { '@id': `${BASE_URL}/#organization` },
+        about: [from.name, to.name, 'Relocation', 'Salary comparison', 'Cost of living'],
+      },
+      changefreq: 'monthly',
+      priority: 0.8,
+    });
+  }
+
+  return pages;
+}
 
 function createCoveragePage(): SeoPage {
   const markets = Object.values(COUNTRIES)
@@ -2097,6 +2223,9 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
   const guidePages = indexablePages.filter(
     (p) => p.relativePath.startsWith('guides/') && p.relativePath !== 'guides/index.html'
   );
+  const relocationPages = indexablePages.filter(
+    (p) => p.relativePath.startsWith('relocation/') && p.relativePath !== 'relocation/index.html'
+  );
   const localizedPages = indexablePages
     .filter((p) => LIVWORTHY_LOCALES.some((locale) => p.relativePath === `${locale}/index.html`))
     .map((p) => ({
@@ -2137,6 +2266,7 @@ ${items
     { canonicalUrl: `${BASE_URL}/cities`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/compare`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/guides`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/relocation`, changefreq: 'weekly', priority: 0.9 },
     ...localizedPages,
     ...programmaticHubPages,
     { canonicalUrl: `${BASE_URL}/about`, changefreq: 'monthly', priority: 0.8 },
@@ -2154,6 +2284,7 @@ ${items
   const citiesXml = buildUrlSet(cityPages);
   const comparisonsXml = buildUrlSet(comparisonPages);
   const guidesXml = buildUrlSet(guidePages);
+  const relocationXml = buildUrlSet(relocationPages);
 
   const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -2172,6 +2303,9 @@ ${items
   <sitemap>
     <loc>${BASE_URL}/sitemap-guides.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-relocation.xml</loc>
+  </sitemap>
 </sitemapindex>`;
 
   const filesToWrite = [
@@ -2181,6 +2315,7 @@ ${items
     { name: 'sitemap-cities.xml', content: citiesXml },
     { name: 'sitemap-comparisons.xml', content: comparisonsXml },
     { name: 'sitemap-guides.xml', content: guidesXml },
+    { name: 'sitemap-relocation.xml', content: relocationXml },
   ];
 
   for (const f of filesToWrite) {
@@ -2188,7 +2323,7 @@ ${items
     fs.writeFileSync(path.join(publicDir, f.name), f.content);
   }
 
-  console.log(`[SEO Generator] Generated sitemap index + 5 segmented sitemaps (${indexablePages.length + mainUrls.length} total URLs).`);
+  console.log(`[SEO Generator] Generated sitemap index + 6 segmented sitemaps (${indexablePages.length + mainUrls.length} total URLs).`);
 }
 
 function writeStaticFiles(distDir: string, publicDir: string) {
@@ -2232,7 +2367,8 @@ ${PLATFORM_IDENTITY.coreDefinition}
 - [Countries Directory](${BASE_URL}/countries)
 - [Cities Directory](${BASE_URL}/cities)
 - [City Comparisons Directory](${BASE_URL}/compare)
-- [Salary & Relocation Guides](${BASE_URL}/guides)
+- [Salary Guides](${BASE_URL}/guides)
+- [Relocation Guides](${BASE_URL}/relocation)
 - [Coverage & Verification](${BASE_URL}/coverage)
 - [Sitemap Index](${BASE_URL}/sitemap.xml)
 `;
