@@ -7,6 +7,7 @@ import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { CurrencyCode } from '../../types/money';
 import { LivWorthScenario } from '../../types/scenario';
 import { CurrencyInput } from '../ui/CurrencyInput';
+import { useLocale } from '../../i18n/runtime';
 
 interface CompareViewProps {
   initialScenarioA: LivWorthScenario;
@@ -19,6 +20,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
   onOpenEvidence,
   onComparisonResult,
 }) => {
+  const { messages } = useLocale();
   const [cityAId, setCityAId] = useState<string>(initialScenarioA.location.id);
   const [cityBId, setCityBId] = useState<string>('austin');
 
@@ -105,19 +107,19 @@ export const CompareView: React.FC<CompareViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
-              Objective Location Intelligence
+              {messages.compareKicker}
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-              Compare Real Living Worth Between Cities
+              {messages.compareTitle}
             </h2>
             <p className="text-xs sm:text-sm text-[#60706D] mt-1 max-w-xl">
-              Compare two scenarios side-by-side through the same unified financial calculation engine. Retains full statutory tax differences and regional cost benchmarks.
+              {messages.compareIntro}
             </p>
           </div>
 
           {/* Currency Switcher */}
           <div className="flex items-center space-x-1.5 bg-[#F7F8F5] p-1 rounded-xl border border-[#DCE3E0] overflow-x-auto max-w-full [scrollbar-width:thin]">
-            <span className="text-xs text-[#60706D] font-medium pl-2 whitespace-nowrap">Display in:</span>
+            <span className="text-xs text-[#60706D] font-medium pl-2 whitespace-nowrap">{messages.displayIn}</span>
             {(['USD', 'EUR', 'GBP', 'AED', 'CAD', 'AUD', 'SGD'] as CurrencyCode[]).map((curr) => (
               <button
                 key={curr}
@@ -138,7 +140,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
 
         {/* Quick Comparisons */}
         <div className="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 [scrollbar-width:thin]">
-          <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap">Popular Pairs:</span>
+          <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap">{messages.popularPairs}</span>
           {[
             { a: 'nyc', aSal: 100000, b: 'austin', bSal: 100000, label: 'NYC vs Austin ($100k)' },
             { a: 'sf', aSal: 150000, b: 'seattle', bSal: 150000, label: 'SF vs Seattle ($150k)' },
@@ -175,7 +177,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
         {/* City A Input */}
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
-            <span className="font-bold text-sm text-[#102A2E]">Location A (Baseline)</span>
+            <span className="font-bold text-sm text-[#102A2E]">{messages.locationBaseline}</span>
             <span className="text-xs bg-[#DDF2EC] text-[#0D625B] font-bold px-2 py-0.5 rounded">
               {cityA.currency}
             </span>
@@ -184,7 +186,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           <div className="space-y-3">
             <div>
               <label htmlFor="compare-city-a-select" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
-                Select City A
+                {messages.selectCityA}
               </label>
               <select
                 id="compare-city-a-select"
@@ -204,7 +206,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
             <div>
               <CurrencyInput
                 id="compare-salary-a-input"
-                label={`Annual Gross Salary (${cityA.currency})`}
+                label={`${messages.grossSalary} (${cityA.currency})`}
                 valueMajor={salaryAMajor}
                 currency={cityA.currency}
                 onChangeMajor={setSalaryAMajor}
@@ -216,7 +218,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
         {/* City B Input */}
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
-            <span className="font-bold text-sm text-[#102A2E]">Location B (Target)</span>
+            <span className="font-bold text-sm text-[#102A2E]">{messages.locationTarget}</span>
             <span className="text-xs bg-[#DDF2EC] text-[#0D625B] font-bold px-2 py-0.5 rounded">
               {cityB.currency}
             </span>
@@ -225,7 +227,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           <div className="space-y-3">
             <div>
               <label htmlFor="compare-city-b-select" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
-                Select City B
+                {messages.selectCityB}
               </label>
               <select
                 id="compare-city-b-select"
@@ -245,7 +247,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
             <div>
               <CurrencyInput
                 id="compare-salary-b-input"
-                label={`Annual Gross Salary (${cityB.currency})`}
+                label={`${messages.grossSalary} (${cityB.currency})`}
                 valueMajor={salaryBMajor}
                 currency={cityB.currency}
                 onChangeMajor={setSalaryBMajor}

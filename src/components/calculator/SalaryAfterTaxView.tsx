@@ -5,6 +5,7 @@ import { calculateSalaryAfterTax } from '../../api/calculators';
 import { createMoney, formatMoney, getDefaultSalaryForCurrency, toMajor } from '../../lib/money';
 import { TaxResult, FilingStatus } from '../../types/tax';
 import { CurrencyInput } from '../ui/CurrencyInput';
+import { useLocale } from '../../i18n/runtime';
 import { LATEST_VERIFIED_TAX_YEAR, TAX_YEAR_OPTIONS, isFutureUnverifiedTaxYear } from '../../lib/tax-year-policy';
 
 interface SalaryAfterTaxViewProps {
@@ -18,6 +19,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
   onOpenEvidence,
   onCalculationResult,
 }) => {
+  const { messages } = useLocale();
   const [grossSalaryMajor, setGrossSalaryMajor] = useState<number>(100000);
   const [selectedCityId, setSelectedCityId] = useState<string>('nyc');
   const [filingStatus, setFilingStatus] = useState<FilingStatus>('single');
@@ -124,7 +126,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
         <div className="max-w-xl">
           <div className="flex items-center space-x-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
-              Precision Tax Calculator
+              {messages.salaryAfterTaxKicker}
             </span>
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
@@ -139,10 +141,10 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            Salary After Tax Calculator
+            {messages.salaryAfterTaxTitle}
           </h2>
           <p className="text-xs sm:text-sm text-[#60706D] mt-1.5">
-            Instant statutory breakdown including federal tax, state tax, local city resident tax, and social contributions.
+            {messages.salaryAfterTaxIntro}
           </p>
         </div>
 
@@ -150,7 +152,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
           <div className="sm:col-span-1">
             <CurrencyInput
               id="tax-gross-salary-input"
-              label="Annual Gross Salary"
+              label={messages.grossSalary}
               valueMajor={grossSalaryMajor}
               currency={currency}
               onChangeMajor={(val) => setGrossSalaryMajor(val)}
@@ -159,7 +161,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
           <div>
             <label htmlFor="tax-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              Location & Jurisdiction
+              {messages.locationJurisdiction}
             </label>
             <select
               id="tax-location-select"
@@ -186,7 +188,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
           <div>
             <label htmlFor="tax-year-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              Tax Year
+              {messages.taxYear}
             </label>
             <select
               id="tax-year-select"
@@ -205,7 +207,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
           <div>
             <label htmlFor="tax-filing-status-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              Filing Status
+              {messages.filingStatus}
             </label>
             <select
               id="tax-filing-status-select"
@@ -265,7 +267,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
             <div className="space-y-3">
               <h3 className="font-bold text-lg text-[#102A2E]">
-                Tax Year {taxYear} Schedules Under Verification for {city.name} ({city.countryId})
+                {messages.taxYear} {taxYear} Schedules Under Verification for {city.name} ({city.countryId})
               </h3>
               <p className="text-xs sm:text-sm text-[#60706D] leading-relaxed">
                 {taxResult.unsupportedExplanation ||

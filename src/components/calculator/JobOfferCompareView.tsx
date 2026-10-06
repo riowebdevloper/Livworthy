@@ -17,6 +17,7 @@ import { ComparisonResult, RelocationProfile } from '../../engines/calculator-co
 import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { CurrencyCode } from '../../types/money';
 import { LivWorthScenario } from '../../types/scenario';
+import { useLocale } from '../../i18n/runtime';
 
 interface JobOfferCompareViewProps {
   initialScenario: LivWorthScenario;
@@ -29,6 +30,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
   onOpenEvidence,
   onComparisonResult,
 }) => {
+  const { messages } = useLocale();
   // Current / Baseline Offer (Offer A)
   const [offerACityId, setOfferACityId] = useState<string>(initialScenario.location.id);
   const [offerABase, setOfferABase] = useState<number>(100000);
@@ -164,13 +166,13 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
 
         <div className="max-w-2xl">
           <span className="text-xs font-bold uppercase tracking-wider text-[#167D75]">
-            Compensation & Relocation Intelligence
+            {messages.jobOfferKicker}
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-            Job Offer & Relocation Comparison
+            {messages.jobOfferTitle}
           </h2>
           <p className="text-xs sm:text-sm text-[#60706D] mt-1.5 leading-relaxed">
-            Separate spendable cash from expense-replacing benefits. Model Year 1 one-time relocation costs versus Year 2+ recurring disposable income.
+            {messages.jobOfferIntro}
           </p>
         </div>
 
@@ -225,13 +227,13 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex items-center space-x-2 border-b border-[#F7F8F5] pb-3">
             <Briefcase className="w-4 h-4 text-[#167D75]" />
-            <h3 className="font-bold text-sm text-[#102A2E]">Job Offer A (Current / Baseline)</h3>
+            <h3 className="font-bold text-sm text-[#102A2E]">{messages.offerABaseline}</h3>
           </div>
 
           <div className="space-y-3">
             <div>
               <label htmlFor="offer-a-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
-                Location A
+                {messages.locationA}
               </label>
               <select
                 id="offer-a-location-select"
@@ -251,7 +253,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="offer-a-base-salary" className="block text-xs font-semibold text-[#102A2E] mb-1">
-                  Base Salary ({cityA.currency})
+                  {messages.baseSalary} ({cityA.currency})
                 </label>
                 <input
                   id="offer-a-base-salary"
@@ -265,7 +267,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
 
               <div>
                 <label htmlFor="offer-a-bonus" className="block text-xs font-semibold text-[#102A2E] mb-1">
-                  Annual Cash Bonus ({cityA.currency})
+                  {messages.annualCashBonus} ({cityA.currency})
                 </label>
                 <input
                   id="offer-a-bonus"
@@ -280,7 +282,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
 
             <div>
               <label htmlFor="offer-a-housing" className="block text-xs font-semibold text-[#102A2E] mb-1">
-                Housing Allowance / Relocation Stipend (Annual)
+                {messages.housingAllowance}
               </label>
               <input
                 id="offer-a-housing"
@@ -299,13 +301,13 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex items-center space-x-2 border-b border-[#F7F8F5] pb-3">
             <Building className="w-4 h-4 text-[#167D75]" />
-            <h3 className="font-bold text-sm text-[#102A2E]">Job Offer B (Target Opportunity)</h3>
+            <h3 className="font-bold text-sm text-[#102A2E]">{messages.offerBTarget}</h3>
           </div>
 
           <div className="space-y-3">
             <div>
               <label htmlFor="offer-b-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1 uppercase tracking-wider">
-                Location B
+                {messages.locationB}
               </label>
               <select
                 id="offer-b-location-select"
@@ -325,7 +327,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="offer-b-base-salary" className="block text-xs font-semibold text-[#102A2E] mb-1">
-                  Base Salary ({cityB.currency})
+                  {messages.baseSalary} ({cityB.currency})
                 </label>
                 <input
                   id="offer-b-base-salary"
@@ -339,7 +341,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
 
               <div>
                 <label htmlFor="offer-b-bonus" className="block text-xs font-semibold text-[#102A2E] mb-1">
-                  Annual Cash Bonus ({cityB.currency})
+                  {messages.annualCashBonus} ({cityB.currency})
                 </label>
                 <input
                   id="offer-b-bonus"
@@ -354,7 +356,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
 
             <div>
               <label htmlFor="offer-b-housing" className="block text-xs font-semibold text-[#102A2E] mb-1">
-                Housing Allowance / Relocation Stipend (Annual)
+                {messages.housingAllowance}
               </label>
               <input
                 id="offer-b-housing"
