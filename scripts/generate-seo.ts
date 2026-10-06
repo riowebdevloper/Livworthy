@@ -2267,6 +2267,7 @@ ${items
     { canonicalUrl: `${BASE_URL}/compare`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/guides`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/relocation`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/coverage`, changefreq: 'weekly', priority: 0.9 },
     ...localizedPages,
     ...programmaticHubPages,
     { canonicalUrl: `${BASE_URL}/about`, changefreq: 'monthly', priority: 0.8 },

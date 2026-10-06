@@ -29,6 +29,7 @@ assert.equal(TaxRegistry.getCommercialMarketIds().length, 39, 'tax registry must
 
 for (const required of [
   'https://www.livworthy.com/coverage',
+  'https://www.livworthy.com/relocation',
   'https://www.livworthy.com/en',
   'https://www.livworthy.com/es',
   'https://www.livworthy.com/fr',
