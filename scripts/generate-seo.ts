@@ -12,6 +12,7 @@ import { CapabilityResolver } from '../src/engines/capabilities/capability-resol
 import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
+import { LIVWORTHY_LOCALES, LOCALIZED_HUBS } from '../src/data/localized-hubs';
 
 const BASE_URL = 'https://www.livworthy.com';
 
@@ -25,6 +26,9 @@ interface SeoPage {
   structuredData: any;
   changefreq: 'daily' | 'weekly' | 'monthly';
   priority: number;
+  locale?: string;
+  direction?: 'ltr' | 'rtl';
+  alternates?: Record<string, string>;
 }
 
 const COMPARISONS = [
@@ -1060,6 +1064,9 @@ export function runSeoGenerator() {
     });
   }
 
+  // Localized global entry hubs (English, Spanish, French, Arabic)
+  pages.push(...createLocalizedHubPages());
+
   // Write all static HTML files
   let generatedCount = 0;
   for (const page of pages) {
@@ -1083,6 +1090,102 @@ export function runSeoGenerator() {
 
   // 9. Content Gap Report
   runContentGapReport();
+}
+
+
+function createLocalizedHubPages(): SeoPage[] {
+  const alternates = Object.fromEntries(
+    LIVWORTHY_LOCALES.map((locale) => [locale, `${BASE_URL}/${locale}`])
+  );
+  alternates['x-default'] = BASE_URL + '/';
+
+  return LIVWORTHY_LOCALES.map((locale) => {
+    const copy = LOCALIZED_HUBS[locale];
+    const directionClass = copy.direction === 'rtl' ? ' text-right' : '';
+    const body = `
+      <div dir="${copy.direction}" lang="${copy.locale}" class="min-h-screen bg-[#F7F8F5]${directionClass}">
+        <header class="border-b border-[#DCE3E0] bg-white">
+          <div class="max-w-6xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+            <a href="/" class="font-black text-xl text-[#102A2E]">LivWorthy</a>
+            <nav aria-label="${copy.languageLabel}" class="flex flex-wrap gap-2">
+              ${LIVWORTHY_LOCALES.map((code) => {
+                const item = LOCALIZED_HUBS[code];
+                return `<a href="/${code}" hreflang="${code}" lang="${code}" class="px-3 py-1.5 rounded-lg border ${code === locale ? 'bg-[#102A2E] text-white border-[#102A2E]' : 'bg-white text-[#334D4A] border-[#DCE3E0]'}">${item.languageName}</a>`;
+              }).join('')}
+            </nav>
+          </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+          <section class="max-w-4xl">
+            <p class="text-xs font-bold uppercase tracking-wider text-[#167D75]">${copy.kicker}</p>
+            <h1 class="text-4xl sm:text-5xl font-black text-[#102A2E] mt-3 tracking-tight">${copy.h1}</h1>
+            <p class="mt-5 text-lg leading-8 text-[#60706D]">${copy.intro}</p>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="/?tab=salary-worth" class="rounded-xl bg-[#102A2E] px-5 py-3 text-sm font-bold text-white">${copy.calculators[0].label}</a>
+              <a href="/countries" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">${copy.countriesLabel}</a>
+              <a href="/cities" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">${copy.citiesLabel}</a>
+            </div>
+          </section>
+
+          <section class="mt-12 rounded-2xl border border-[#DCE3E0] bg-white p-6 sm:p-8">
+            <h2 class="text-2xl font-black text-[#102A2E]">${copy.calculatorTitle}</h2>
+            <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              ${copy.calculators.map((item) => `
+                <a href="/?tab=${item.tab}" class="rounded-xl border border-[#DCE3E0] p-4 hover:border-[#167D75]">
+                  <div class="font-bold text-[#102A2E]">${item.label}</div>
+                  <div class="mt-1 text-sm leading-6 text-[#60706D]">${item.description}</div>
+                </a>
+              `).join('')}
+            </div>
+          </section>
+
+          <section class="mt-8 grid gap-6 md:grid-cols-2">
+            <div class="rounded-2xl border border-[#DCE3E0] bg-white p-6">
+              <h2 class="text-xl font-black text-[#102A2E]">${copy.trustTitle}</h2>
+              <p class="mt-3 text-sm leading-7 text-[#60706D]">${copy.trustBody}</p>
+              <div class="mt-4 flex gap-4 text-sm font-bold text-[#167D75]">
+                <a href="/methodology">${copy.methodologyLabel}</a>
+                <a href="/sources">${copy.sourcesLabel}</a>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-[#DCE3E0] bg-white p-6">
+              <h2 class="text-xl font-black text-[#102A2E]">${copy.exploreTitle}</h2>
+              <p class="mt-3 text-sm leading-7 text-[#60706D]">${copy.exploreBody}</p>
+              <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold text-[#167D75]">
+                <a href="/countries">${copy.countriesLabel}</a>
+                <a href="/cities">${copy.citiesLabel}</a>
+                <a href="/guides">${copy.guidesLabel}</a>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    `;
+
+    return {
+      relativePath: `${locale}/index.html`,
+      canonicalUrl: `${BASE_URL}/${locale}`,
+      title: copy.title,
+      description: copy.description,
+      robots: 'index, follow',
+      bodyContent: body,
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: copy.title,
+        description: copy.description,
+        url: `${BASE_URL}/${locale}`,
+        inLanguage: locale,
+        isPartOf: { '@id': `${BASE_URL}/#website` },
+      },
+      changefreq: 'weekly',
+      priority: 0.9,
+      locale,
+      direction: copy.direction,
+      alternates,
+    };
+  });
 }
 
 function createDirectoryPages(): SeoPage[] {
@@ -1742,6 +1845,9 @@ function renderPageHtml(
     robots: 'index, follow' | 'noindex, follow';
     bodyContent: string;
     structuredData?: any;
+    locale?: string;
+    direction?: 'ltr' | 'rtl';
+    alternates?: Record<string, string>;
   },
   isHomepage = false,
   criticalCss = ''
@@ -1777,6 +1883,17 @@ function renderPageHtml(
     /<link\s+rel="canonical"\s+href=".*?"\s*\/?>/i,
     `<link rel="canonical" href="${page.canonicalUrl}" />`
   );
+
+  if (page.locale) {
+    html = html.replace(/<html\s+lang="[^"]*"[^>]*>/i, `<html lang="${page.locale}" dir="${page.direction || 'ltr'}">`);
+  }
+
+  if (page.alternates) {
+    const alternateLinks = Object.entries(page.alternates)
+      .map(([lang, url]) => `<link rel="alternate" hreflang="${lang}" href="${url}" />`)
+      .join('\n    ');
+    html = html.replace('</head>', `    ${alternateLinks}\n  </head>`);
+  }
 
   // Replace Open Graph metadata dynamically
   html = html.replace(
@@ -1858,6 +1975,14 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
   const guidePages = indexablePages.filter(
     (p) => p.relativePath.startsWith('guides/') && p.relativePath !== 'guides/index.html'
   );
+  const localizedPages = indexablePages
+    .filter((p) => LIVWORTHY_LOCALES.some((locale) => p.relativePath === `${locale}/index.html`))
+    .map((p) => ({
+      canonicalUrl: p.canonicalUrl,
+      changefreq: p.changefreq,
+      priority: p.priority,
+    }));
+
   const programmaticHubPages = indexablePages.filter(
     (p) =>
       p.relativePath.startsWith('salary-after-tax/') ||
@@ -1890,6 +2015,7 @@ ${items
     { canonicalUrl: `${BASE_URL}/cities`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/compare`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/guides`, changefreq: 'weekly', priority: 0.9 },
+    ...localizedPages,
     ...programmaticHubPages,
     { canonicalUrl: `${BASE_URL}/about`, changefreq: 'monthly', priority: 0.8 },
     { canonicalUrl: `${BASE_URL}/methodology`, changefreq: 'monthly', priority: 0.8 },
