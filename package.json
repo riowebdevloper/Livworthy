@@ -11,7 +11,8 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "test": "tsx test/tax-year-policy.test.ts && tsx test/col-freshness.test.ts && tsx test/financial-engine.test.ts && tsx test/database-and-backend.test.ts && tsx test/tax-golden-vectors.test.ts && tsx test/country-capability-consistency.test.ts && tsx test/production-integration-and-failure.test.ts && tsx test/unavailable-tax-regression.test.ts && npm run build && tsx test/seo/canonical-redirect-regression.test.ts && tsx test/seo/localization-regression.test.ts && tsx test/seo/launch-inventory.test.ts && tsx test/seo/relocation-regression.test.ts && tsx test/seo/aeo-geo-audit.test.ts && tsx test/seo/top-20-seo-clusters.test.ts && tsx test/nyc-phase-regression.test.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "audit:freshness": "tsx scripts/audit-data-freshness.ts --strict"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
