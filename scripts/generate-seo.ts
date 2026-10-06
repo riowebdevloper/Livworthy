@@ -1065,6 +1065,9 @@ export function runSeoGenerator() {
     });
   }
 
+  // Job-offer comparison authority hub
+  pages.push(createJobOfferComparisonPage());
+
   // Relocation route directory and decision guides
   pages.push(...createRelocationPages());
 
@@ -1101,6 +1104,84 @@ export function runSeoGenerator() {
 
 
 
+
+
+function createJobOfferComparisonPage(): SeoPage {
+  const body = `
+    <article class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      <nav aria-label="Breadcrumb" class="text-sm text-[#60706D] mb-6">
+        <a href="/" class="hover:text-[#167D75]">Home</a> /
+        <span class="font-bold text-[#102A2E]">Job Offer Comparison</span>
+      </nav>
+
+      <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Offer Intelligence</span>
+      <h1 class="mt-2 text-3xl sm:text-4xl font-black tracking-tight text-[#102A2E]">Compare job offers by spendable value — not headline salary</h1>
+      <p class="mt-4 text-base sm:text-lg leading-8 text-[#60706D]">
+        Two offers in different cities or currencies are not comparable by base salary alone. LivWorthy separates cash compensation, tax treatment, local living costs, benefits and currency effects so you can compare the amount of money that may actually remain.
+      </p>
+
+      <section class="mt-8 grid gap-4 md:grid-cols-2">
+        <div class="rounded-2xl border border-[#DCE3E0] bg-white p-6">
+          <h2 class="text-xl font-black text-[#102A2E]">Include in the comparison</h2>
+          <ul class="mt-4 space-y-3 text-sm leading-6 text-[#60706D]">
+            <li><strong class="text-[#102A2E]">Base cash:</strong> recurring guaranteed salary.</li>
+            <li><strong class="text-[#102A2E]">Variable cash:</strong> bonus or commission only when the expected value is defensible.</li>
+            <li><strong class="text-[#102A2E]">Benefits:</strong> insurance, housing, transport or relocation support separately from cash.</li>
+            <li><strong class="text-[#102A2E]">Tax:</strong> only where LivWorthy has an executable, disclosed jurisdiction/year model.</li>
+            <li><strong class="text-[#102A2E]">Living costs:</strong> use actual rent when you know it instead of relying only on a city baseline.</li>
+          </ul>
+        </div>
+
+        <div class="rounded-2xl border border-[#DCE3E0] bg-white p-6">
+          <h2 class="text-xl font-black text-[#102A2E]">Keep outside base salary</h2>
+          <ul class="mt-4 space-y-3 text-sm leading-6 text-[#60706D]">
+            <li>Unvested equity and speculative future appreciation.</li>
+            <li>One-time signing or relocation payments treated as recurring income.</li>
+            <li>Benefits valued at their employer list price rather than your real personal value.</li>
+            <li>Unsupported tax estimates copied from another jurisdiction or year.</li>
+            <li>FX assumptions presented as guaranteed future exchange rates.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="mt-8 rounded-2xl border border-[#DCE3E0] bg-white p-6 sm:p-8">
+        <h2 class="text-2xl font-black text-[#102A2E]">A useful decision sequence</h2>
+        <ol class="mt-5 space-y-4 text-sm leading-7 text-[#60706D]">
+          <li><strong class="text-[#102A2E]">1. Normalize cash compensation.</strong> Convert offers using the current FX snapshot while retaining the original currencies.</li>
+          <li><strong class="text-[#102A2E]">2. Estimate statutory take-home.</strong> Check the coverage status first; unavailable models remain unavailable.</li>
+          <li><strong class="text-[#102A2E]">3. Apply the same household assumptions.</strong> Rent, household size, transport and lifestyle settings should be comparable.</li>
+          <li><strong class="text-[#102A2E]">4. Compare remaining money and savings rate.</strong> This is more useful than comparing gross salaries.</li>
+          <li><strong class="text-[#102A2E]">5. Review non-cash trade-offs separately.</strong> Equity, visa support, leave, retirement, healthcare and career trajectory need their own judgment.</li>
+        </ol>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/?tab=job-offers" class="rounded-xl bg-[#102A2E] px-5 py-3 text-sm font-bold text-white">Open Job Offer Evaluator</a>
+          <a href="/coverage" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">Check tax coverage</a>
+          <a href="/relocation" class="rounded-xl border border-[#DCE3E0] bg-white px-5 py-3 text-sm font-bold text-[#102A2E]">Relocation guides</a>
+        </div>
+      </section>
+    </article>
+  `;
+
+  return {
+    relativePath: 'job-offer-comparison/index.html',
+    canonicalUrl: `${BASE_URL}/job-offer-comparison`,
+    title: 'Compare Job Offers Across Cities & Currencies | LivWorthy',
+    description: 'Compare job offers using after-tax cash, living costs, benefits, currency conversion and savings capacity instead of headline salary alone.',
+    robots: 'index, follow',
+    bodyContent: body,
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: 'LivWorthy Job Offer Comparison',
+      url: `${BASE_URL}/job-offer-comparison`,
+      description: 'Framework and interactive tool for comparing job offers across cities, currencies, tax systems and living costs.',
+      isPartOf: { '@id': `${BASE_URL}/#website` },
+    },
+    changefreq: 'monthly',
+    priority: 0.9,
+  };
+}
 
 function createRelocationPages(): SeoPage[] {
   const pages: SeoPage[] = [];
@@ -2267,6 +2348,7 @@ ${items
     { canonicalUrl: `${BASE_URL}/compare`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/guides`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/relocation`, changefreq: 'weekly', priority: 0.9 },
+    { canonicalUrl: `${BASE_URL}/job-offer-comparison`, changefreq: 'monthly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/coverage`, changefreq: 'weekly', priority: 0.9 },
     ...localizedPages,
     ...programmaticHubPages,
@@ -2370,6 +2452,7 @@ ${PLATFORM_IDENTITY.coreDefinition}
 - [City Comparisons Directory](${BASE_URL}/compare)
 - [Salary Guides](${BASE_URL}/guides)
 - [Relocation Guides](${BASE_URL}/relocation)
+- [Job Offer Comparison](${BASE_URL}/job-offer-comparison)
 - [Coverage & Verification](${BASE_URL}/coverage)
 - [Sitemap Index](${BASE_URL}/sitemap.xml)
 `;
