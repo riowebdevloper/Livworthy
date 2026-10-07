@@ -135,7 +135,9 @@ async function runMultilingualSeoSuite() {
     assert(fs.existsSync(locSitemapPath), `${sitemapName} exists on disk in dist/`);
     const locSitemapContent = fs.readFileSync(locSitemapPath, 'utf-8');
     assert(locSitemapContent.includes(`https://www.livworthy.com/${loc}`), `${sitemapName} includes root url for /${loc}`);
-    assert(locSitemapContent.includes(`https://www.livworthy.com/${loc}?tab=salary-worth`), `${sitemapName} includes tab deep links`);
+    assert(locSitemapContent.includes(`https://www.livworthy.com/${loc}/cities/nyc`), `${sitemapName} includes canonical localized city routes`);
+    assert(locSitemapContent.includes(`https://www.livworthy.com/${loc}/guides/nyc-100k`), `${sitemapName} includes canonical localized guide routes`);
+    assert(!locSitemapContent.includes('?tab='), `${sitemapName} excludes query-parameter pseudo-pages`);
   }
 
   // --- 4. Competitor Analysis & Content Gap Engine ---
