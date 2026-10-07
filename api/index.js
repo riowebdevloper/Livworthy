@@ -113,6 +113,7 @@ __export(schema_exports, {
   evidenceSources: () => evidenceSources,
   fxRates: () => fxRates,
   fxSnapshots: () => fxSnapshots,
+  gscPerformanceRecords: () => gscPerformanceRecords,
   housingDatasets: () => housingDatasets,
   prOutreachRecords: () => prOutreachRecords,
   rankTrackingRecords: () => rankTrackingRecords,
@@ -474,6 +475,21 @@ var prOutreachRecords = pgTable("pr_outreach_records", {
   // 'DRAFTED', 'PITCH_READY', 'SENT', 'REPLIED', 'COVERAGE_PUBLISHED', 'DECLINED'
   sentAt: timestamp("sent_at"),
   notes: text("notes")
+});
+var gscPerformanceRecords = pgTable("gsc_performance_records", {
+  id: varchar("id", { length: 128 }).primaryKey(),
+  date: varchar("date", { length: 16 }).notNull(),
+  query: text("query").notNull(),
+  page: text("page").notNull(),
+  locale: varchar("locale", { length: 16 }).notNull().default("en"),
+  country: varchar("country", { length: 16 }).notNull().default("all"),
+  device: varchar("device", { length: 16 }).notNull().default("all"),
+  clicks: integer("clicks").notNull().default(0),
+  impressions: integer("impressions").notNull().default(0),
+  ctr: doublePrecision("ctr").notNull().default(0),
+  averagePosition: doublePrecision("average_position"),
+  dataSource: varchar("data_source", { length: 64 }).notNull().default("GOOGLE_SEARCH_CONSOLE_API"),
+  fetchedAt: timestamp("fetched_at").defaultNow().notNull()
 });
 
 // src/data/locations.ts
@@ -3498,6 +3514,45 @@ var PostgresDatabaseService = class {
       return { id, ...record };
     }
   }
+  async getGscPerformanceRecords(limit = 100) {
+    try {
+      return await this.db.select().from(gscPerformanceRecords).limit(limit);
+    } catch {
+      return [];
+    }
+  }
+  async upsertGscPerformanceRecord(record) {
+    const id = record.id || `gsc_${record.date}_${record.query.toLowerCase().replace(/[^a-z0-9]/g, "_").substring(0, 30)}_${record.country || "all"}_${record.device || "all"}`;
+    try {
+      await this.db.insert(gscPerformanceRecords).values({
+        id,
+        date: record.date,
+        query: record.query,
+        page: record.page,
+        locale: record.locale || "en",
+        country: record.country || "all",
+        device: record.device || "all",
+        clicks: record.clicks ?? 0,
+        impressions: record.impressions ?? 0,
+        ctr: record.ctr ?? 0,
+        averagePosition: record.averagePosition ?? null,
+        dataSource: record.dataSource || "GOOGLE_SEARCH_CONSOLE_API",
+        fetchedAt: /* @__PURE__ */ new Date()
+      }).onConflictDoUpdate({
+        target: gscPerformanceRecords.id,
+        set: {
+          clicks: record.clicks ?? 0,
+          impressions: record.impressions ?? 0,
+          ctr: record.ctr ?? 0,
+          averagePosition: record.averagePosition ?? null,
+          fetchedAt: /* @__PURE__ */ new Date()
+        }
+      });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
 };
 var LocalFallbackDatabaseService = class {
   constructor() {
@@ -3515,6 +3570,7 @@ var LocalFallbackDatabaseService = class {
     this.rankRecords = /* @__PURE__ */ new Map();
     this.taxMonitors = /* @__PURE__ */ new Map();
     this.prOutreach = [];
+    this.gscRecords = [];
     this.seedInitialData();
   }
   seedInitialData() {
@@ -3854,6 +3910,20 @@ var LocalFallbackDatabaseService = class {
     const id = record.id || `pr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const entry = { id, ...record };
     this.prOutreach.push(entry);
+    return entry;
+  }
+  async getGscPerformanceRecords(limit = 100) {
+    return this.gscRecords.slice(0, limit);
+  }
+  async upsertGscPerformanceRecord(record) {
+    const id = record.id || `gsc_${record.date}_${record.query.toLowerCase().replace(/[^a-z0-9]/g, "_").substring(0, 30)}_${record.country || "all"}_${record.device || "all"}`;
+    const idx = this.gscRecords.findIndex((r) => r.id === id);
+    const entry = { id, ...record, fetchedAt: (/* @__PURE__ */ new Date()).toISOString() };
+    if (idx >= 0) {
+      this.gscRecords[idx] = entry;
+    } else {
+      this.gscRecords.push(entry);
+    }
     return entry;
   }
 };
@@ -8200,7 +8270,7 @@ var SUPPORTED_LOCALES = {
     lifecycleStatus: "INDEXABLE",
     isIndexable: true
   },
-  // Tier 2 Production Rollout (13 locales)
+  // Tier 2 Production Rollout (13 locales: Full UI & Calculators published; long-form content in translation QA)
   it: {
     code: "it",
     name: "Italian",
@@ -8210,8 +8280,8 @@ var SUPPORTED_LOCALES = {
     script: "Latn",
     tier: 2,
     intlLocale: "it-IT",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   nl: {
     code: "nl",
@@ -8222,8 +8292,8 @@ var SUPPORTED_LOCALES = {
     script: "Latn",
     tier: 2,
     intlLocale: "nl-NL",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   ko: {
     code: "ko",
@@ -8234,8 +8304,8 @@ var SUPPORTED_LOCALES = {
     script: "Kore",
     tier: 2,
     intlLocale: "ko-KR",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   ru: {
     code: "ru",
@@ -8246,8 +8316,8 @@ var SUPPORTED_LOCALES = {
     script: "Cyrl",
     tier: 2,
     intlLocale: "ru-RU",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   tr: {
     code: "tr",
@@ -8258,8 +8328,8 @@ var SUPPORTED_LOCALES = {
     script: "Latn",
     tier: 2,
     intlLocale: "tr-TR",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   pl: {
     code: "pl",
@@ -8270,8 +8340,8 @@ var SUPPORTED_LOCALES = {
     script: "Latn",
     tier: 2,
     intlLocale: "pl-PL",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   id: {
     code: "id",
@@ -8282,8 +8352,8 @@ var SUPPORTED_LOCALES = {
     script: "Latn",
     tier: 2,
     intlLocale: "id-ID",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   vi: {
     code: "vi",
@@ -8294,8 +8364,8 @@ var SUPPORTED_LOCALES = {
     script: "Latn",
     tier: 2,
     intlLocale: "vi-VN",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   bn: {
     code: "bn",
@@ -8306,8 +8376,8 @@ var SUPPORTED_LOCALES = {
     script: "Beng",
     tier: 2,
     intlLocale: "bn-BD",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   pa: {
     code: "pa",
@@ -8318,8 +8388,8 @@ var SUPPORTED_LOCALES = {
     script: "Guru",
     tier: 2,
     intlLocale: "pa-IN",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   ms: {
     code: "ms",
@@ -8330,8 +8400,8 @@ var SUPPORTED_LOCALES = {
     script: "Latn",
     tier: 2,
     intlLocale: "ms-MY",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   th: {
     code: "th",
@@ -8342,8 +8412,8 @@ var SUPPORTED_LOCALES = {
     script: "Thai",
     tier: 2,
     intlLocale: "th-TH",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   tl: {
     code: "tl",
@@ -8354,8 +8424,8 @@ var SUPPORTED_LOCALES = {
     script: "Latn",
     tier: 2,
     intlLocale: "fil-PH",
-    lifecycleStatus: "PUBLISHED",
-    isIndexable: true
+    lifecycleStatus: "PUBLISHED_UI",
+    isIndexable: false
   },
   // Tier 3 South Asia (8 locales)
   ta: {
@@ -15027,17 +15097,43 @@ var MultilingualContentGapEngine = class {
 };
 
 // src/lib/seo/search-console-connector.ts
+import { google } from "googleapis";
+var ACTUAL_SITEMAP_SUBMITTED_PAGES = 223;
 var SearchConsoleConnector = class {
   static {
     this.DEFAULT_SITE_URL = "https://www.livworthy.com/";
   }
+  static {
+    this.SCOPE = "https://www.googleapis.com/auth/webmasters.readonly";
+  }
   /**
-   * Evaluates if official Google Search Console service account credentials are provided.
+   * Evaluates whether valid GSC credentials exist in the environment.
    */
   static hasValidCredentials() {
     const clientEmail = process.env.GSC_CLIENT_EMAIL || process.env.GOOGLE_SEARCH_CONSOLE_CLIENT_EMAIL;
     const privateKey = process.env.GSC_PRIVATE_KEY || process.env.GOOGLE_SEARCH_CONSOLE_PRIVATE_KEY;
     return Boolean(clientEmail && privateKey);
+  }
+  /**
+   * Initializes official Google Search Console client with JWT authorization.
+   */
+  static getAuthenticatedClient() {
+    if (!this.hasValidCredentials()) return null;
+    const email = process.env.GSC_CLIENT_EMAIL || process.env.GOOGLE_SEARCH_CONSOLE_CLIENT_EMAIL;
+    let key = process.env.GSC_PRIVATE_KEY || process.env.GOOGLE_SEARCH_CONSOLE_PRIVATE_KEY || "";
+    key = key.replace(/\\n/g, "\n");
+    try {
+      const auth = new google.auth.JWT({
+        email,
+        key,
+        scopes: [this.SCOPE]
+      });
+      const searchconsole = google.searchconsole({ version: "v1", auth });
+      return { auth, searchconsole };
+    } catch (err) {
+      console.warn("[GSC Connector] Failed to instantiate Google JWT client:", err.message);
+      return null;
+    }
   }
   /**
    * Reports connector availability status and diagnostic message.
@@ -15046,16 +15142,58 @@ var SearchConsoleConnector = class {
     const isConfigured = this.hasValidCredentials();
     return {
       isConfigured,
-      status: isConfigured ? "MEASURED" : "BLOCKED_BY_ACCOUNT_ACCESS",
-      message: isConfigured ? "Google Search Console API credentials active." : "Google Search Console credentials (GSC_CLIENT_EMAIL / GSC_PRIVATE_KEY) not provided in environment. Connector is ready and fails safely with zero fabricated data."
+      status: isConfigured ? "AWAITING_DATA" : "BLOCKED_BY_ACCOUNT_ACCESS",
+      message: isConfigured ? "Google Search Console API credentials active and configured." : "Google Search Console credentials (GSC_CLIENT_EMAIL / GSC_PRIVATE_KEY) not provided in environment. Connector is ready and fails safely with zero fabricated data."
     };
   }
   /**
-   * Ingests real performance records from Google Search Console or safely reports BLOCKED_BY_ACCOUNT_ACCESS.
+   * Validates whether the configured site property is accessible to the authenticated account.
    */
-  static async fetchSearchAnalytics(startDate, endDate) {
+  static async validatePropertyAccess(targetSiteUrl) {
+    const siteUrl = targetSiteUrl || process.env.GSC_SITE_URL || this.DEFAULT_SITE_URL;
+    const client = this.getAuthenticatedClient();
+    if (!client) {
+      return {
+        accessible: false,
+        siteUrl,
+        status: "BLOCKED_BY_ACCOUNT_ACCESS",
+        errorMessage: "Missing GSC_CLIENT_EMAIL or GSC_PRIVATE_KEY credentials in environment."
+      };
+    }
+    try {
+      const sitesList = await client.searchconsole.sites.list({});
+      const entries = sitesList.data.siteEntry || [];
+      const match = entries.find((s) => s.siteUrl === siteUrl || s.siteUrl === `sc-domain:${siteUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")}`);
+      if (match) {
+        return {
+          accessible: true,
+          siteUrl: match.siteUrl || siteUrl,
+          permissionLevel: match.permissionLevel || "siteFullUser",
+          status: "VERIFIED"
+        };
+      }
+      return {
+        accessible: false,
+        siteUrl,
+        status: "BLOCKED_BY_ACCOUNT_ACCESS",
+        errorMessage: `Property ${siteUrl} is not found in verified properties list for this service account.`
+      };
+    } catch (err) {
+      return {
+        accessible: false,
+        siteUrl,
+        status: "API_ERROR",
+        errorMessage: `Google Search Console sites.list error: ${err.message}`
+      };
+    }
+  }
+  /**
+   * Executes a real Google Search Console Search Analytics API query.
+   */
+  static async fetchSearchAnalytics(startDate, endDate, rowLimit = 500, startRow = 0) {
     const siteUrl = process.env.GSC_SITE_URL || this.DEFAULT_SITE_URL;
-    if (!this.hasValidCredentials()) {
+    const client = this.getAuthenticatedClient();
+    if (!client) {
       return {
         success: false,
         status: "BLOCKED_BY_ACCOUNT_ACCESS",
@@ -15074,25 +15212,99 @@ var SearchConsoleConnector = class {
           crawledNotIndexed: null,
           discoveredNotIndexed: null,
           redirectErrors: null,
-          sitemapSubmittedPages: 204,
-          // Verified prerendered static pages from sitemap.xml
+          sitemapSubmittedPages: ACTUAL_SITEMAP_SUBMITTED_PAGES,
           lastSyncTimestamp: null,
-          diagnosticNotice: "GSC credentials (GSC_CLIENT_EMAIL / GSC_PRIVATE_KEY) not provided in environment. Real metrics are kept honest as null."
+          diagnosticNotice: "GSC credentials not provided in environment. Real metrics kept honest as null."
         },
-        errorMessage: "Google Search Console API authentication blocked by missing environment credentials. Historical data preserved without fabrication."
+        errorMessage: "Google Search Console API authentication blocked by missing environment credentials."
       };
     }
+    const end = endDate || (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+    const start = startDate || new Date(Date.now() - 28 * 864e5).toISOString().split("T")[0];
     try {
+      const response = await client.searchconsole.searchanalytics.query({
+        siteUrl,
+        requestBody: {
+          startDate: start,
+          endDate: end,
+          dimensions: ["query", "page", "country", "device", "date"],
+          rowLimit,
+          startRow
+        }
+      });
+      const rows = response.data.rows || [];
+      if (rows.length === 0) {
+        return {
+          success: true,
+          status: "MEASURED_ZERO_RESULTS",
+          capabilityStatus: "SEARCH_ANALYTICS_AVAILABLE",
+          siteUrl,
+          totalImpressions: 0,
+          totalClicks: 0,
+          averageCtr: 0,
+          averagePosition: null,
+          records: [],
+          coverage: {
+            status: "VERIFIED",
+            coverageCapability: "SEARCH_ANALYTICS_AVAILABLE",
+            indexedPages: null,
+            notIndexedPages: null,
+            crawledNotIndexed: null,
+            discoveredNotIndexed: null,
+            redirectErrors: 0,
+            sitemapSubmittedPages: ACTUAL_SITEMAP_SUBMITTED_PAGES,
+            lastSyncTimestamp: (/* @__PURE__ */ new Date()).toISOString(),
+            diagnosticNotice: "Search analytics query returned zero rows for the specified date range."
+          }
+        };
+      }
+      let totalClicks = 0;
+      let totalImpressions = 0;
+      let weightedPositionSum = 0;
+      const records = rows.map((r) => {
+        const clicks = r.clicks || 0;
+        const impressions = r.impressions || 0;
+        const ctr = r.ctr || 0;
+        const position = r.position || 0;
+        totalClicks += clicks;
+        totalImpressions += impressions;
+        weightedPositionSum += position * impressions;
+        const keys = r.keys || [];
+        const query = keys[0] || "";
+        const page = keys[1] || "";
+        const country = keys[2] || "";
+        const device = keys[3] || "";
+        const date = keys[4] || "";
+        const match = page.match(/https?:\/\/[^/]+\/([a-z]{2}(?:-[a-z]{2})?)(\/|\?|$)/i);
+        const locale = match ? match[1].toLowerCase() : "en";
+        return {
+          query,
+          page,
+          locale,
+          clicks,
+          impressions,
+          ctr: Math.round(ctr * 1e4) / 100,
+          // percentage e.g. 4.25%
+          averagePosition: Math.round(position * 10) / 10,
+          country,
+          device,
+          date,
+          status: "MEASURED",
+          dataSource: "GOOGLE_SEARCH_CONSOLE_API"
+        };
+      });
+      const averagePosition = totalImpressions > 0 ? Math.round(weightedPositionSum / totalImpressions * 10) / 10 : null;
+      const averageCtr = totalImpressions > 0 ? Math.round(totalClicks / totalImpressions * 1e4) / 100 : 0;
       return {
         success: true,
         status: "MEASURED",
         capabilityStatus: "SEARCH_ANALYTICS_AVAILABLE",
         siteUrl,
-        totalImpressions: 0,
-        totalClicks: 0,
-        averageCtr: 0,
-        averagePosition: null,
-        records: [],
+        totalImpressions,
+        totalClicks,
+        averageCtr,
+        averagePosition,
+        records,
         coverage: {
           status: "VERIFIED",
           coverageCapability: "SEARCH_ANALYTICS_AVAILABLE",
@@ -15101,15 +15313,15 @@ var SearchConsoleConnector = class {
           crawledNotIndexed: null,
           discoveredNotIndexed: null,
           redirectErrors: 0,
-          sitemapSubmittedPages: 204,
+          sitemapSubmittedPages: ACTUAL_SITEMAP_SUBMITTED_PAGES,
           lastSyncTimestamp: (/* @__PURE__ */ new Date()).toISOString(),
-          diagnosticNotice: "Search Console sync active."
+          diagnosticNotice: `Search analytics sync successful (${records.length} records).`
         }
       };
     } catch (err) {
       return {
         success: false,
-        status: "BLOCKED_BY_ACCOUNT_ACCESS",
+        status: "API_ERROR",
         capabilityStatus: "INDEX_COVERAGE_NOT_AVAILABLE",
         siteUrl,
         totalImpressions: null,
@@ -15118,18 +15330,119 @@ var SearchConsoleConnector = class {
         averagePosition: null,
         records: [],
         coverage: {
-          status: "BLOCKED_BY_ACCOUNT_ACCESS",
+          status: "API_ERROR",
           coverageCapability: "INDEX_COVERAGE_NOT_AVAILABLE",
           indexedPages: null,
           notIndexedPages: null,
           crawledNotIndexed: null,
           discoveredNotIndexed: null,
           redirectErrors: null,
-          sitemapSubmittedPages: 204,
+          sitemapSubmittedPages: ACTUAL_SITEMAP_SUBMITTED_PAGES,
           lastSyncTimestamp: null,
-          diagnosticNotice: `GSC API call error: ${err.message}`
+          diagnosticNotice: `Google Search Console API error: ${err.message}`
         },
         errorMessage: err.message
+      };
+    }
+  }
+  /**
+   * Ingests Google Search Console performance data and synchronizes it into the database
+   * and rank tracker records.
+   */
+  static async ingestAndPersistAnalytics(startDate, endDate) {
+    const analytics = await this.fetchSearchAnalytics(startDate, endDate);
+    if (!analytics.success || analytics.records.length === 0) {
+      return {
+        success: analytics.success,
+        status: analytics.status,
+        ingestedCount: 0,
+        rankUpdatedCount: 0,
+        errorMessage: analytics.errorMessage
+      };
+    }
+    let ingestedCount = 0;
+    let rankUpdatedCount = 0;
+    for (const record of analytics.records) {
+      await dbService.upsertGscPerformanceRecord({
+        date: record.date,
+        query: record.query,
+        page: record.page,
+        locale: record.locale,
+        country: record.country,
+        device: record.device,
+        clicks: record.clicks,
+        impressions: record.impressions,
+        ctr: record.ctr,
+        averagePosition: record.averagePosition,
+        dataSource: record.dataSource
+      });
+      ingestedCount++;
+      try {
+        await dbService.upsertRankRecord({
+          keyword: record.query,
+          targetUrl: record.page,
+          locale: record.locale,
+          country: record.country,
+          device: record.device,
+          currentRank: Math.round(record.averagePosition),
+          impressions: record.impressions,
+          clicks: record.clicks,
+          ctr: record.ctr,
+          averagePosition: record.averagePosition,
+          lastCheckedAt: /* @__PURE__ */ new Date()
+        });
+        rankUpdatedCount++;
+      } catch {
+      }
+    }
+    return {
+      success: true,
+      status: "VERIFIED",
+      ingestedCount,
+      rankUpdatedCount
+    };
+  }
+  /**
+   * Inspects a specific URL using the Search Console URL Inspection API.
+   */
+  static async inspectUrl(inspectionUrl, targetSiteUrl) {
+    const siteUrl = targetSiteUrl || process.env.GSC_SITE_URL || this.DEFAULT_SITE_URL;
+    const client = this.getAuthenticatedClient();
+    if (!client) {
+      return {
+        success: false,
+        status: "BLOCKED_BY_ACCOUNT_ACCESS",
+        inspectionUrl,
+        errorMessage: "Missing GSC_CLIENT_EMAIL or GSC_PRIVATE_KEY credentials in environment."
+      };
+    }
+    try {
+      const response = await client.searchconsole.urlInspection.index.inspect({
+        requestBody: {
+          inspectionUrl,
+          siteUrl
+        }
+      });
+      const inspection = response.data.inspectionResult;
+      const indexStatus = inspection?.indexStatusResult;
+      return {
+        success: true,
+        status: "VERIFIED",
+        inspectionUrl,
+        verdict: indexStatus?.verdict || "NEUTRAL",
+        coverageState: indexStatus?.coverageState || "UNKNOWN",
+        googleCanonical: indexStatus?.googleCanonical || void 0,
+        userCanonical: indexStatus?.userCanonical || void 0,
+        lastCrawlTime: indexStatus?.lastCrawlTime || void 0,
+        robotsTxtState: indexStatus?.robotsTxtState || void 0,
+        indexingState: indexStatus?.indexingState || void 0
+      };
+    } catch (err) {
+      return {
+        success: false,
+        status: "API_ERROR",
+        inspectionUrl,
+        errorMessage: `Google URL Inspection API error: ${err.message}`
       };
     }
   }
@@ -16097,6 +16410,32 @@ function configureApp() {
     res.json({
       scorecard,
       gscStatus,
+      timestamp: (/* @__PURE__ */ new Date()).toISOString()
+    });
+  });
+  app.post("/api/admin/seo/search-console/sync", rateLimit(10, 60, { isSecuritySensitive: true }), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: "UNAUTHORIZED", message: "Admin authentication required." });
+    }
+    const { startDate, endDate } = req.body || {};
+    const result = await SearchConsoleConnector.ingestAndPersistAnalytics(startDate, endDate);
+    res.json(result);
+  });
+  app.get("/api/admin/seo/search-console/status", rateLimit(60, 60), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: "UNAUTHORIZED", message: "Admin authentication required." });
+    }
+    const status = SearchConsoleConnector.isAvailable();
+    const coverage = SearchConsoleConnector.getIndexCoverageCapability();
+    const recentRecords = await dbService.getGscPerformanceRecords(20);
+    res.json({
+      status,
+      coverage,
+      recentRecords,
       timestamp: (/* @__PURE__ */ new Date()).toISOString()
     });
   });

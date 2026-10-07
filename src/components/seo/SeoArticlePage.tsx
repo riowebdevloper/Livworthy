@@ -25,6 +25,8 @@ import { AnswerSummary } from './AnswerSummary';
 import { FinancialGlossary } from './FinancialGlossary';
 import { CapabilityResolver } from '../../engines/capabilities/capability-resolver';
 import { LATEST_STATUTORY_TAX_YEAR } from '../../engines/tax/tax-registry';
+import { useI18n } from '../../context/I18nContext';
+import { getLocalizedGuide, getLocalizedCity } from '../../lib/i18n/content';
 
 interface SeoArticlePageProps {
   initialGuideSlug?: string;
@@ -83,7 +85,10 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
     }
   }, [initialGuideSlug]);
 
+  const { locale } = useI18n();
   const activeGuide: SalaryGuide = SALARY_GUIDES[currentSlug] || SALARY_GUIDES['nyc-100k'];
+  const localizedGuide = getLocalizedGuide(activeGuide.slug, locale);
+  const localizedCity = getLocalizedCity(activeGuide.cityId, locale);
   const city = CITIES[activeGuide.cityId] || CITIES.nyc;
   const country = COUNTRIES[activeGuide.countryId] || COUNTRIES.US;
   const region = (activeGuide.regionId && REGIONS[activeGuide.regionId])
@@ -335,19 +340,19 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
           <span>Statutory Tax Status: {country.verificationStatus}</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-[#102A2E] tracking-tight leading-tight">
-          {activeGuide.title}
+          {localizedGuide?.h1 || activeGuide.title}
         </h1>
         <p className="text-xs sm:text-sm text-[#60706D] mt-2 leading-relaxed">
-          Authoritative financial intelligence analyzing statutory deductions, local housing benchmarks, itemized necessities, and discretionary savings in {city.name}, {region ? `${region.name}, ` : ''}{country.name}.
+          {localizedGuide?.intro || `Authoritative financial intelligence analyzing statutory deductions, local housing benchmarks, itemized necessities, and discretionary savings in ${city.name}, ${region ? `${region.name}, ` : ''}${country.name}.`}
         </p>
       </div>
 
       {/* 4. AEO Direct Answer & Fact Summary Block */}
       <AnswerSummary
-        question={activeGuide.title}
-        headlineSummary={activeGuide.headlineSummary}
-        lifestyleContext={activeGuide.lifestyleContext}
-        cityName={city.name}
+        question={localizedGuide?.h1 || activeGuide.title}
+        headlineSummary={localizedGuide?.directAnswer || activeGuide.headlineSummary}
+        lifestyleContext={localizedGuide?.breakdownNarrative || activeGuide.lifestyleContext}
+        cityName={localizedCity?.name || city.name}
         countryName={country.name}
         currency={activeGuide.currency}
         grossSalaryMajor={activeGuide.salaryMajor}

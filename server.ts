@@ -995,6 +995,34 @@ function configureApp() {
     });
   });
 
+  app.post('/api/admin/seo/search-console/sync', rateLimit(10, 60, { isSecuritySensitive: true }), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin authentication required.' });
+    }
+    const { startDate, endDate } = req.body || {};
+    const result = await SearchConsoleConnector.ingestAndPersistAnalytics(startDate, endDate);
+    res.json(result);
+  });
+
+  app.get('/api/admin/seo/search-console/status', rateLimit(60, 60), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin authentication required.' });
+    }
+    const status = SearchConsoleConnector.isAvailable();
+    const coverage = SearchConsoleConnector.getIndexCoverageCapability();
+    const recentRecords = await dbService.getGscPerformanceRecords(20);
+    res.json({
+      status,
+      coverage,
+      recentRecords,
+      timestamp: new Date().toISOString(),
+    });
+  });
+
   app.get('/api/seo/scorecard', rateLimit(60, 60), (req, res) => {
     const locale = (req.query.locale as string) || 'en';
     const scorecard = generateTopicalAuthorityScorecard(locale);

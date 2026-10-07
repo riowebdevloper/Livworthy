@@ -28,6 +28,7 @@ export * from './types';
 export * from './config';
 export * from './formatters';
 export * from './audit';
+export * from './content';
 
 export const DICTIONARIES: Record<string, I18nDictionary> = {
   en: enDictionary,

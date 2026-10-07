@@ -4,6 +4,8 @@ export type LocaleLifecycleStatus =
   | 'REGISTERED'
   | 'TRANSLATING'
   | 'QA'
+  | 'PUBLISHED_UI'
+  | 'PARTIAL_CONTENT'
   | 'PUBLISHED'
   | 'INDEXABLE';
 
@@ -324,4 +326,92 @@ export interface I18nDictionary {
   footer: I18nFooterTranslations;
   languageSelector: I18nLanguageSelectorTranslations;
   reports: I18nReportsTranslations;
+}
+
+export type ContentTranslationStatus =
+  | 'MISSING'
+  | 'MACHINE_TRANSLATED'
+  | 'REVIEW_REQUIRED'
+  | 'VERIFIED'
+  | 'PUBLISHED';
+
+export interface LocalizedCityContent {
+  cityId: string;
+  locale: string;
+  name: string;
+  intro: string;
+  salaryContext: string;
+  housingContext: string;
+  taxContext: string;
+  seoTitle: string;
+  seoDescription: string;
+  status: ContentTranslationStatus;
+}
+
+export interface LocalizedCountryContent {
+  countryId: string;
+  locale: string;
+  name: string;
+  intro: string;
+  salaryContext: string;
+  taxationExplanation: string;
+  costContext: string;
+  mobilityContext: string;
+  seoTitle: string;
+  seoDescription: string;
+  status: ContentTranslationStatus;
+}
+
+export interface LocalizedGuideContent {
+  guideSlug: string;
+  locale: string;
+  title: string;
+  h1: string;
+  directAnswer: string;
+  intro: string;
+  breakdownNarrative: string;
+  recommendation: string;
+  faq: Array<{ question: string; answer: string }>;
+  seoTitle: string;
+  seoDescription: string;
+  status: ContentTranslationStatus;
+}
+
+export interface LocalizedRelocationContent {
+  corridorSlug: string;
+  locale: string;
+  headline: string;
+  context: string;
+  salaryEquivalenceExplanation: string;
+  taxExplanation: string;
+  housingExplanation: string;
+  conclusion: string;
+  seoTitle: string;
+  seoDescription: string;
+  status: ContentTranslationStatus;
+}
+
+export interface LocalizedReportContent {
+  reportId: string;
+  locale: string;
+  title: string;
+  subtitle: string;
+  executiveSummary: string;
+  insights: string[];
+  methodology: string;
+  explanatoryText: string;
+  citationInstructions: string;
+  status: ContentTranslationStatus;
+}
+
+export interface LongFormCompletenessAudit {
+  locale: string;
+  totalRequiredFields: number;
+  translatedFields: number;
+  completenessPct: number;
+  cityCoveragePct: number;
+  countryCoveragePct: number;
+  guideCoveragePct: number;
+  reportCoveragePct: number;
+  isPublishable: boolean;
 }

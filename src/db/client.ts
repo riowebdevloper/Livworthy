@@ -72,6 +72,8 @@ export interface IDatabaseService {
   upsertTaxSourceMonitor(record: any): Promise<any>;
   getPrOutreachRecords(): Promise<any[]>;
   recordPrOutreach(record: any): Promise<any>;
+  getGscPerformanceRecords(limit?: number): Promise<any[]>;
+  upsertGscPerformanceRecord(record: any): Promise<any>;
 }
 
 function sanitizeDbUrl(raw?: string): string | undefined {
@@ -961,6 +963,50 @@ class PostgresDatabaseService implements IDatabaseService {
       return { id, ...record };
     }
   }
+
+  async getGscPerformanceRecords(limit = 100) {
+    try {
+      return await this.db.select().from(schema.gscPerformanceRecords).limit(limit);
+    } catch {
+      return [];
+    }
+  }
+
+  async upsertGscPerformanceRecord(record: any) {
+    const id = record.id || `gsc_${record.date}_${record.query.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 30)}_${record.country || 'all'}_${record.device || 'all'}`;
+    try {
+      await this.db
+        .insert(schema.gscPerformanceRecords)
+        .values({
+          id,
+          date: record.date,
+          query: record.query,
+          page: record.page,
+          locale: record.locale || 'en',
+          country: record.country || 'all',
+          device: record.device || 'all',
+          clicks: record.clicks ?? 0,
+          impressions: record.impressions ?? 0,
+          ctr: record.ctr ?? 0.0,
+          averagePosition: record.averagePosition ?? null,
+          dataSource: record.dataSource || 'GOOGLE_SEARCH_CONSOLE_API',
+          fetchedAt: new Date(),
+        })
+        .onConflictDoUpdate({
+          target: schema.gscPerformanceRecords.id,
+          set: {
+            clicks: record.clicks ?? 0,
+            impressions: record.impressions ?? 0,
+            ctr: record.ctr ?? 0.0,
+            averagePosition: record.averagePosition ?? null,
+            fetchedAt: new Date(),
+          },
+        });
+      return { id, ...record };
+    } catch {
+      return { id, ...record };
+    }
+  }
 }
 
 class LocalFallbackDatabaseService implements IDatabaseService {
@@ -1364,6 +1410,24 @@ class LocalFallbackDatabaseService implements IDatabaseService {
     const id = record.id || `pr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const entry = { id, ...record };
     this.prOutreach.push(entry);
+    return entry;
+  }
+
+  private gscRecords: any[] = [];
+
+  async getGscPerformanceRecords(limit = 100) {
+    return this.gscRecords.slice(0, limit);
+  }
+
+  async upsertGscPerformanceRecord(record: any) {
+    const id = record.id || `gsc_${record.date}_${record.query.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 30)}_${record.country || 'all'}_${record.device || 'all'}`;
+    const idx = this.gscRecords.findIndex((r) => r.id === id);
+    const entry = { id, ...record, fetchedAt: new Date().toISOString() };
+    if (idx >= 0) {
+      this.gscRecords[idx] = entry;
+    } else {
+      this.gscRecords.push(entry);
+    }
     return entry;
   }
 }

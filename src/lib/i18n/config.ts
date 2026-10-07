@@ -204,7 +204,7 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     isIndexable: true,
   },
 
-  // Tier 2 Production Rollout (13 locales)
+  // Tier 2 Production Rollout (13 locales: Full UI & Calculators published; long-form content in translation QA)
   it: {
     code: 'it',
     name: 'Italian',
@@ -214,8 +214,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Latn',
     tier: 2,
     intlLocale: 'it-IT',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   nl: {
     code: 'nl',
@@ -226,8 +226,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Latn',
     tier: 2,
     intlLocale: 'nl-NL',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   ko: {
     code: 'ko',
@@ -238,8 +238,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Kore',
     tier: 2,
     intlLocale: 'ko-KR',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   ru: {
     code: 'ru',
@@ -250,8 +250,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Cyrl',
     tier: 2,
     intlLocale: 'ru-RU',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   tr: {
     code: 'tr',
@@ -262,8 +262,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Latn',
     tier: 2,
     intlLocale: 'tr-TR',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   pl: {
     code: 'pl',
@@ -274,8 +274,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Latn',
     tier: 2,
     intlLocale: 'pl-PL',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   id: {
     code: 'id',
@@ -286,8 +286,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Latn',
     tier: 2,
     intlLocale: 'id-ID',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   vi: {
     code: 'vi',
@@ -298,8 +298,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Latn',
     tier: 2,
     intlLocale: 'vi-VN',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   bn: {
     code: 'bn',
@@ -310,8 +310,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Beng',
     tier: 2,
     intlLocale: 'bn-BD',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   pa: {
     code: 'pa',
@@ -322,8 +322,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Guru',
     tier: 2,
     intlLocale: 'pa-IN',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   ms: {
     code: 'ms',
@@ -334,8 +334,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Latn',
     tier: 2,
     intlLocale: 'ms-MY',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   th: {
     code: 'th',
@@ -346,8 +346,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Thai',
     tier: 2,
     intlLocale: 'th-TH',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
   tl: {
     code: 'tl',
@@ -358,8 +358,8 @@ export const SUPPORTED_LOCALES: Record<string, LocaleConfig> = {
     script: 'Latn',
     tier: 2,
     intlLocale: 'fil-PH',
-    lifecycleStatus: 'PUBLISHED',
-    isIndexable: true,
+    lifecycleStatus: 'PUBLISHED_UI',
+    isIndexable: false,
   },
 
   // Tier 3 South Asia (8 locales)

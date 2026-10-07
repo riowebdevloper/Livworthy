@@ -406,4 +406,21 @@ export const prOutreachRecords = pgTable('pr_outreach_records', {
   notes: text('notes'),
 });
 
+// 17. Google Search Console Performance Records
+export const gscPerformanceRecords = pgTable('gsc_performance_records', {
+  id: varchar('id', { length: 128 }).primaryKey(),
+  date: varchar('date', { length: 16 }).notNull(),
+  query: text('query').notNull(),
+  page: text('page').notNull(),
+  locale: varchar('locale', { length: 16 }).notNull().default('en'),
+  country: varchar('country', { length: 16 }).notNull().default('all'),
+  device: varchar('device', { length: 16 }).notNull().default('all'),
+  clicks: integer('clicks').notNull().default(0),
+  impressions: integer('impressions').notNull().default(0),
+  ctr: doublePrecision('ctr').notNull().default(0.0),
+  averagePosition: doublePrecision('average_position'),
+  dataSource: varchar('data_source', { length: 64 }).notNull().default('GOOGLE_SEARCH_CONSOLE_API'),
+  fetchedAt: timestamp('fetched_at').defaultNow().notNull(),
+});
+
 
