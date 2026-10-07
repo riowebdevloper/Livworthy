@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { BookOpen, ShieldCheck, Scale, ArrowLeftRight, Calculator, DollarSign, Home, Globe, Compass, CheckCircle2 } from 'lucide-react';
 import { LivWorthLogo } from '../ui/LivWorthBrand';
-import { SupportedLocale, SUPPORTED_LOCALES, TRANSLATIONS } from '../../lib/i18n';
+import { SupportedLocale, SUPPORTED_LOCALES, TIER_1_LOCALES, TRANSLATIONS } from '../../lib/i18n';
 import { LanguageModal } from './LanguageModal';
 
 export type ActiveTab =
@@ -153,7 +153,7 @@ export const Header: React.FC<HeaderProps> = ({
                   role="menu"
                   className="absolute right-0 mt-1.5 w-44 bg-white border border-[#DCE3E0] rounded-xl shadow-xl py-1 z-50 animate-in fade-in zoom-in-95 duration-100 max-h-72 overflow-y-auto"
                 >
-                  {(Object.keys(SUPPORTED_LOCALES) as SupportedLocale[]).map((loc) => {
+                  {TIER_1_LOCALES.map((loc) => {
                     const cfg = SUPPORTED_LOCALES[loc];
                     const isCurrent = loc === locale;
                     return (

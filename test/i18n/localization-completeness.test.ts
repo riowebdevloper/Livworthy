@@ -4,6 +4,7 @@ import {
   SUPPORTED_LOCALES,
   DICTIONARIES,
   SupportedLocale,
+  Tier1Locale,
   formatLocalizedNumber,
   formatLocalizedCurrency,
   formatLocalizedDate,
@@ -22,7 +23,7 @@ console.log('======================================================\n');
 console.log('--- 1. Tier-1 Locales Registry & Configuration ---');
 assert.strictEqual(TIER_1_LOCALES.length, 10, 'Must have exactly 10 Tier-1 production locales');
 
-const expectedTier1: SupportedLocale[] = [
+const expectedTier1: Tier1Locale[] = [
   'en',
   'es',
   'fr',

@@ -17,6 +17,8 @@ import { COUNTRIES, CITIES } from './src/data/locations';
 import { EVIDENCE_REGISTRY } from './src/data/evidence-registry';
 import { createMoney, fromMinor } from './src/lib/money';
 import { CapabilityResolver } from './src/engines/capabilities/capability-resolver';
+import { generateTopicalAuthorityScorecard } from './src/lib/seo/topical-authority-scorecard';
+import { SearchConsoleConnector } from './src/lib/seo/search-console-connector';
 
 const env = validateEnv();
 const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -975,6 +977,28 @@ function configureApp() {
     });
     const { passwordHash: _, mfaSecret: __, ...rest } = created;
     res.json({ success: true, user: rest });
+  });
+
+  app.get('/api/admin/seo-health', rateLimit(60, 60), async (req, res) => {
+    const session = await validateCurrentSession(req, res);
+    if (res.headersSent) return;
+    if (!session) {
+      return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin authentication required.' });
+    }
+    const locale = (req.query.locale as string) || 'en';
+    const scorecard = generateTopicalAuthorityScorecard(locale);
+    const gscStatus = SearchConsoleConnector.isAvailable();
+    res.json({
+      scorecard,
+      gscStatus,
+      timestamp: new Date().toISOString(),
+    });
+  });
+
+  app.get('/api/seo/scorecard', rateLimit(60, 60), (req, res) => {
+    const locale = (req.query.locale as string) || 'en';
+    const scorecard = generateTopicalAuthorityScorecard(locale);
+    res.json({ scorecard, timestamp: new Date().toISOString() });
   });
 
   app.get('/api/reviews', rateLimit(60, 60), async (req, res) => {

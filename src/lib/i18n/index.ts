@@ -9,13 +9,27 @@ import { hiDictionary } from './locales/hi';
 import { urDictionary } from './locales/ur';
 import { zhDictionary } from './locales/zh';
 import { jaDictionary } from './locales/ja';
+import { itDictionary } from './locales/it';
+import { nlDictionary } from './locales/nl';
+import { koDictionary } from './locales/ko';
+import { ruDictionary } from './locales/ru';
+import { trDictionary } from './locales/tr';
+import { plDictionary } from './locales/pl';
+import { idDictionary } from './locales/id';
+import { viDictionary } from './locales/vi';
+import { bnDictionary } from './locales/bn';
+import { paDictionary } from './locales/pa';
+import { msDictionary } from './locales/ms';
+import { thDictionary } from './locales/th';
+import { tlDictionary } from './locales/tl';
 import { I18nDictionary, SupportedLocale } from './types';
 
 export * from './types';
 export * from './config';
 export * from './formatters';
+export * from './audit';
 
-export const DICTIONARIES: Record<SupportedLocale, I18nDictionary> = {
+export const DICTIONARIES: Record<string, I18nDictionary> = {
   en: enDictionary,
   es: esDictionary,
   fr: frDictionary,
@@ -26,10 +40,46 @@ export const DICTIONARIES: Record<SupportedLocale, I18nDictionary> = {
   ur: urDictionary,
   zh: zhDictionary,
   ja: jaDictionary,
+  it: itDictionary,
+  nl: nlDictionary,
+  ko: koDictionary,
+  ru: ruDictionary,
+  tr: trDictionary,
+  pl: plDictionary,
+  id: idDictionary,
+  vi: viDictionary,
+  bn: bnDictionary,
+  pa: paDictionary,
+  ms: msDictionary,
+  th: thDictionary,
+  tl: tlDictionary,
 };
 
-export function getDictionary(locale: SupportedLocale): I18nDictionary {
+export function getDictionary(locale: string): I18nDictionary {
   return DICTIONARIES[locale] || DICTIONARIES.en;
+}
+
+/**
+ * Route-preserving language switcher (Requirement 54):
+ * Preserves the current path (e.g. /cities/london -> /ar/cities/london or /es/guides/nyc-100k -> /de/guides/nyc-100k)
+ */
+export function getLocalizedRoute(currentPath: string, targetLocale: string): string {
+  if (!currentPath) return targetLocale === DEFAULT_LOCALE ? '/' : `/${targetLocale}`;
+  const [pathname, search] = currentPath.split('?');
+  const query = search ? `?${search}` : '';
+  const segments = pathname.split('/').filter(Boolean);
+
+  let basePath = pathname;
+  if (segments.length > 0 && isSupportedLocale(segments[0])) {
+    basePath = '/' + segments.slice(1).join('/');
+  }
+  if (!basePath.startsWith('/')) basePath = '/' + basePath;
+  if (basePath === '/') basePath = '';
+
+  if (targetLocale === DEFAULT_LOCALE) {
+    return (basePath || '/') + query;
+  }
+  return `/${targetLocale}${basePath}` + query;
 }
 
 export const LOCALE_STORAGE_KEY = 'livworthy_preferred_locale';
@@ -183,7 +233,7 @@ function createLegacyBridge(dict: I18nDictionary): LegacyTranslations {
   };
 }
 
-export const TRANSLATIONS: Record<SupportedLocale, LegacyTranslations> = {
+export const TRANSLATIONS: Record<string, LegacyTranslations> = {
   en: createLegacyBridge(DICTIONARIES.en),
   es: createLegacyBridge(DICTIONARIES.es),
   fr: createLegacyBridge(DICTIONARIES.fr),

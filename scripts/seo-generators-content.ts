@@ -1,6 +1,6 @@
 import { COUNTRIES, CITIES } from '../src/data/locations';
 import { RELOCATION_CORRIDORS } from '../src/data/relocation-corridors';
-import { TRANSLATIONS, SUPPORTED_LOCALES, SupportedLocale } from '../src/lib/i18n';
+import { TRANSLATIONS, SUPPORTED_LOCALES, SupportedLocale, Tier1Locale } from '../src/lib/i18n';
 import { LATEST_STATUTORY_TAX_YEAR, TaxRegistry } from '../src/engines/tax/tax-registry';
 import { PLATFORM_IDENTITY } from '../src/data/transparency';
 import { ALL_EMPIRICAL_REPORTS } from '../src/data/reports-data';
@@ -706,7 +706,7 @@ export function createCoveragePage(baseUrl: string): SeoPage {
   };
 }
 
-const LOCALE_SEO_METADATA: Record<SupportedLocale, {
+const LOCALE_SEO_METADATA: Record<Tier1Locale, {
   title: string;
   description: string;
   h1: string;
@@ -788,7 +788,7 @@ const LOCALE_SEO_METADATA: Record<SupportedLocale, {
 export function createLocalizedPages(baseUrl: string, homeStructuredData: any): SeoPage[] {
   const pages: SeoPage[] = [];
 
-  const locales: SupportedLocale[] = ['en', 'es', 'fr', 'ar', 'de', 'pt', 'hi', 'ur', 'zh', 'ja'];
+  const locales: Tier1Locale[] = ['en', 'es', 'fr', 'ar', 'de', 'pt', 'hi', 'ur', 'zh', 'ja'];
 
   for (const loc of locales) {
     const t = TRANSLATIONS[loc];

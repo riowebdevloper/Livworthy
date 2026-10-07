@@ -165,7 +165,8 @@ export interface ContentGapResult {
 
 export interface QuickWinKeyword {
   keyword: MultilingualKeywordItem;
-  currentEstimatedPosition: number;
+  observedPosition: number | null;
+  opportunityClassification: 'QUICK_WIN' | 'POTENTIAL_OPPORTUNITY';
   targetPosition: string;
   improvementActions: string[];
   expectedImpact: 'HIGH' | 'MEDIUM';
@@ -229,17 +230,21 @@ export class MultilingualContentGapEngine {
   }
 
   /**
-   * Identifies Quick Win opportunities (keywords ranked in positions 4-20)
-   * where targeted optimizations can quickly elevate rankings into Top 3.
+   * Identifies Quick Win opportunities where verified ranking evidence exists (positions 4-20)
+   * or marks as POTENTIAL_OPPORTUNITY awaiting Search Console / provider ranking data.
    */
   public static getQuickWins(): QuickWinKeyword[] {
-    // Modeled baseline based on search intent strength & search volume
-    return MULTILINGUAL_KEYWORD_DATABASE.map((kw, idx) => {
-      // Deterministically model positions 4-18 for quick win optimization roadmap
-      const simulatedPosition = 4 + (idx % 12);
+    return MULTILINGUAL_KEYWORD_DATABASE.map((kw) => {
+      // True quick win logic: Classified as QUICK_WIN ONLY when observed position exists between 4 and 20
+      const isObservedQuickWin =
+        kw.currentRank !== null && kw.currentRank >= 4 && kw.currentRank <= 20;
+
       return {
         keyword: kw,
-        currentEstimatedPosition: simulatedPosition,
+        observedPosition: kw.currentRank,
+        opportunityClassification: isObservedQuickWin
+          ? 'QUICK_WIN'
+          : 'POTENTIAL_OPPORTUNITY',
         targetPosition: kw.targetRank,
         improvementActions: [
           'Verify answer-first direct definition in first paragraph',
@@ -247,7 +252,7 @@ export class MultilingualContentGapEngine {
           'Add internal links from regional research reports',
           'Audit and ensure valid schema markup (SoftwareApplication / Dataset)',
         ],
-        expectedImpact: kw.searchVolume > 8000 ? 'HIGH' : 'MEDIUM',
+        expectedImpact: (kw.searchVolume ?? 0) > 8000 ? 'HIGH' : 'MEDIUM',
       };
     });
   }

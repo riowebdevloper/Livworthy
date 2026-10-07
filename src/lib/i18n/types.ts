@@ -1,5 +1,14 @@
 import { CurrencyCode } from '../../types/money';
 
+export type LocaleLifecycleStatus =
+  | 'REGISTERED'
+  | 'TRANSLATING'
+  | 'QA'
+  | 'PUBLISHED'
+  | 'INDEXABLE';
+
+export type LocaleTier = 1 | 2 | 3;
+
 export type Tier1Locale =
   | 'en'
   | 'es'
@@ -12,19 +21,91 @@ export type Tier1Locale =
   | 'zh'
   | 'ja';
 
-export type SupportedLocale = Tier1Locale;
+export type Tier2Locale =
+  | 'it'
+  | 'nl'
+  | 'ko'
+  | 'ru'
+  | 'tr'
+  | 'pl'
+  | 'id'
+  | 'vi'
+  | 'bn'
+  | 'pa'
+  | 'ms'
+  | 'th'
+  | 'tl';
+
+export type Tier3Locale =
+  | 'ta'
+  | 'te'
+  | 'mr'
+  | 'gu'
+  | 'ml'
+  | 'kn'
+  | 'ne'
+  | 'si'
+  | 'sv'
+  | 'no'
+  | 'da'
+  | 'fi'
+  | 'cs'
+  | 'sk'
+  | 'ro'
+  | 'hu'
+  | 'el'
+  | 'uk'
+  | 'hr'
+  | 'sr'
+  | 'bg'
+  | 'fa'
+  | 'he';
+
+export type RegionalVariantLocale =
+  | 'zh-CN'
+  | 'zh-TW'
+  | 'pt-BR'
+  | 'pt-PT'
+  | 'es-ES'
+  | 'es-MX'
+  | 'es-US'
+  | 'en-US'
+  | 'en-GB'
+  | 'en-CA'
+  | 'en-AU';
+
+export type SupportedLocale =
+  | Tier1Locale
+  | Tier2Locale
+  | Tier3Locale
+  | RegionalVariantLocale
+  | (string & {});
 
 export type TextDirection = 'ltr' | 'rtl';
 
 export interface LocaleConfig {
-  code: SupportedLocale;
+  code: string;
   name: string;
   nativeName: string;
   dir: TextDirection;
   flag: string;
   script: string;
-  tier: 1 | 2 | 3;
+  tier: LocaleTier;
   intlLocale: string;
+  lifecycleStatus: LocaleLifecycleStatus;
+  regionVariantOf?: string;
+  isIndexable: boolean;
+}
+
+export interface TranslationCompletenessAudit {
+  locale: string;
+  totalRequiredKeys: number;
+  translatedKeys: number;
+  missingKeys: string[];
+  fallbackKeys: string[];
+  completenessPct: number;
+  isComplete: boolean;
+  englishLeakageCount: number;
 }
 
 export interface I18nCommonTranslations {
