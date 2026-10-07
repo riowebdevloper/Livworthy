@@ -12,6 +12,8 @@ import { CapabilityResolver } from '../src/engines/capabilities/capability-resol
 import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
+import { createLocalizedLongFormPages } from './localized-long-form-pages';
+import { LONG_FORM_LOCALES } from '../src/lib/i18n/long-form';
 import {
   createRelocationPages,
   createJobOfferAuthorityPage,
@@ -587,6 +589,9 @@ export function runSeoGenerator() {
   // 2g. Empirical Benchmark Reports (/reports, /reports/[slug])
   const empiricalReports = createEmpiricalReportsPages(BASE_URL);
   pages.push(...empiricalReports.pages);
+
+  // Full localized long-form authority routes.
+  pages.push(...createLocalizedLongFormPages(BASE_URL));
 
   // 3. Country Hub Pages
   for (const country of Object.values(COUNTRIES)) {
@@ -1829,22 +1834,17 @@ function renderPageHtml(
     `<link rel="canonical" href="${page.canonicalUrl}" />`
   );
 
-  // Inject hreflang multilingual alternate links
-  const hreflangTags = `
-    <link rel="alternate" hreflang="en" href="${BASE_URL}/en" />
-    <link rel="alternate" hreflang="es" href="${BASE_URL}/es" />
-    <link rel="alternate" hreflang="fr" href="${BASE_URL}/fr" />
-    <link rel="alternate" hreflang="ar" href="${BASE_URL}/ar" />
-    <link rel="alternate" hreflang="de" href="${BASE_URL}/de" />
-    <link rel="alternate" hreflang="pt" href="${BASE_URL}/pt" />
-    <link rel="alternate" hreflang="hi" href="${BASE_URL}/hi" />
-    <link rel="alternate" hreflang="ur" href="${BASE_URL}/ur" />
-    <link rel="alternate" hreflang="zh" href="${BASE_URL}/zh" />
-    <link rel="alternate" hreflang="ja" href="${BASE_URL}/ja" />
-    <link rel="alternate" hreflang="x-default" href="${BASE_URL}/" />`;
-  if (!html.includes('hreflang="x-default"')) {
-    html = html.replace('</head>', `${hreflangTags}\n  </head>`);
+  // Path-preserving hreflang alternates for localized routes.
+  let hreflangTags = '';
+  if (page.lang && LONG_FORM_LOCALES.includes(page.lang)) {
+    const current = new URL(page.canonicalUrl);
+    const prefix = `/${page.lang}`;
+    const suffix = current.pathname.startsWith(prefix) ? current.pathname.slice(prefix.length) : '';
+    hreflangTags = '\n' + LONG_FORM_LOCALES.map((loc) => `    <link rel="alternate" hreflang="${loc}" href="${BASE_URL}/${loc}${suffix}" />`).join('\n') + `\n    <link rel="alternate" hreflang="x-default" href="${BASE_URL}${suffix || '/'}" />`;
+  } else {
+    hreflangTags = `\n    <link rel="alternate" hreflang="x-default" href="${page.canonicalUrl}" />`;
   }
+  if (!html.includes('hreflang="x-default"')) html = html.replace('</head>', `${hreflangTags}\n  </head>`);
 
   // Replace Open Graph metadata dynamically
   html = html.replace(
@@ -1994,24 +1994,11 @@ ${items
   const relocationXml = buildUrlSet(relocationPages);
   const reportsXml = buildUrlSet(reportsPages);
 
-  // Dedicated Segmented Multilingual Sitemaps (Section 28)
-  const TIER_1_SITEMAP_LOCALES = ['en', 'es', 'fr', 'ar', 'de', 'pt', 'hi', 'ur', 'zh', 'ja'];
+  // Segmented multilingual sitemaps contain only real canonical localized routes.
   const localeSitemaps: { name: string; content: string }[] = [];
-
-  for (const loc of TIER_1_SITEMAP_LOCALES) {
-    const locUrls = [
-      { canonicalUrl: `${BASE_URL}/${loc}`, changefreq: 'daily', priority: 0.95 },
-      { canonicalUrl: `${BASE_URL}/${loc}?tab=salary-worth`, changefreq: 'daily', priority: 0.9 },
-      { canonicalUrl: `${BASE_URL}/${loc}?tab=salary-needed`, changefreq: 'daily', priority: 0.9 },
-      { canonicalUrl: `${BASE_URL}/${loc}?tab=salary-after-tax`, changefreq: 'daily', priority: 0.9 },
-      { canonicalUrl: `${BASE_URL}/${loc}?tab=cost-of-living`, changefreq: 'daily', priority: 0.9 },
-      { canonicalUrl: `${BASE_URL}/${loc}?tab=compare`, changefreq: 'daily', priority: 0.9 },
-      { canonicalUrl: `${BASE_URL}/${loc}?tab=job-offers`, changefreq: 'daily', priority: 0.9 },
-    ];
-    localeSitemaps.push({
-      name: `sitemap-${loc}.xml`,
-      content: buildUrlSet(locUrls),
-    });
+  for (const loc of LONG_FORM_LOCALES) {
+    const locPages = indexablePages.filter((p) => p.relativePath === `${loc}/index.html` || p.relativePath.startsWith(`${loc}/`)).map((p) => ({ canonicalUrl: p.canonicalUrl, changefreq: p.changefreq, priority: p.priority }));
+    localeSitemaps.push({ name: `sitemap-${loc}.xml`, content: buildUrlSet(locPages) });
   }
 
   const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -2037,7 +2024,7 @@ ${items
   <sitemap>
     <loc>${BASE_URL}/sitemap-reports.xml</loc>
   </sitemap>
-${TIER_1_SITEMAP_LOCALES.map(loc => `  <sitemap>
+${LONG_FORM_LOCALES.map(loc => `  <sitemap>
     <loc>${BASE_URL}/sitemap-${loc}.xml</loc>
   </sitemap>`).join('\n')}
 </sitemapindex>`;
