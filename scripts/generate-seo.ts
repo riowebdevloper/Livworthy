@@ -1994,6 +1994,26 @@ ${items
   const relocationXml = buildUrlSet(relocationPages);
   const reportsXml = buildUrlSet(reportsPages);
 
+  // Dedicated Segmented Multilingual Sitemaps (Section 28)
+  const TIER_1_SITEMAP_LOCALES = ['en', 'es', 'fr', 'ar', 'de', 'pt', 'hi', 'ur', 'zh', 'ja'];
+  const localeSitemaps: { name: string; content: string }[] = [];
+
+  for (const loc of TIER_1_SITEMAP_LOCALES) {
+    const locUrls = [
+      { canonicalUrl: `${BASE_URL}/${loc}`, changefreq: 'daily', priority: 0.95 },
+      { canonicalUrl: `${BASE_URL}/${loc}?tab=salary-worth`, changefreq: 'daily', priority: 0.9 },
+      { canonicalUrl: `${BASE_URL}/${loc}?tab=salary-needed`, changefreq: 'daily', priority: 0.9 },
+      { canonicalUrl: `${BASE_URL}/${loc}?tab=salary-after-tax`, changefreq: 'daily', priority: 0.9 },
+      { canonicalUrl: `${BASE_URL}/${loc}?tab=cost-of-living`, changefreq: 'daily', priority: 0.9 },
+      { canonicalUrl: `${BASE_URL}/${loc}?tab=compare`, changefreq: 'daily', priority: 0.9 },
+      { canonicalUrl: `${BASE_URL}/${loc}?tab=job-offers`, changefreq: 'daily', priority: 0.9 },
+    ];
+    localeSitemaps.push({
+      name: `sitemap-${loc}.xml`,
+      content: buildUrlSet(locUrls),
+    });
+  }
+
   const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
@@ -2017,6 +2037,9 @@ ${items
   <sitemap>
     <loc>${BASE_URL}/sitemap-reports.xml</loc>
   </sitemap>
+${TIER_1_SITEMAP_LOCALES.map(loc => `  <sitemap>
+    <loc>${BASE_URL}/sitemap-${loc}.xml</loc>
+  </sitemap>`).join('\n')}
 </sitemapindex>`;
 
   const filesToWrite = [
@@ -2028,6 +2051,7 @@ ${items
     { name: 'sitemap-guides.xml', content: guidesXml },
     { name: 'sitemap-relocation.xml', content: relocationXml },
     { name: 'sitemap-reports.xml', content: reportsXml },
+    ...localeSitemaps,
   ];
 
   for (const f of filesToWrite) {

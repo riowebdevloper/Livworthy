@@ -706,6 +706,85 @@ export function createCoveragePage(baseUrl: string): SeoPage {
   };
 }
 
+const LOCALE_SEO_METADATA: Record<SupportedLocale, {
+  title: string;
+  description: string;
+  h1: string;
+  directLead: string;
+  directPassage: string;
+}> = {
+  en: {
+    title: "Global Living Intelligence & Net Salary Calculator | LivWorthy",
+    description: "Evaluate what your salary is truly worth across 65 world cities after statutory taxes, fair market rent, and living essentials.",
+    h1: "What is your salary really worth?",
+    directLead: "Direct Answer",
+    directPassage: "A salary is only as valuable as the disposable cash left after mandatory taxes and fair market housing. In high-cost metros like NYC or London, statutory taxes and rent consume up to 74% of gross income, whereas zero-income-tax hubs like Dubai retain significantly higher discretionary savings.",
+  },
+  es: {
+    title: "Calculadora de Salario Neto y Costo de Vida Mundial | LivWorthy",
+    description: "Descubre cuánto rinde tu sueldo en 65 ciudades del mundo tras impuestos oficiales, alquiler HUD y gastos reales.",
+    h1: "¿Cuánto vale realmente tu salario?",
+    directLead: "Respuesta Directa",
+    directPassage: "El valor real de un salario no se mide en bruto, sino en el dinero disponible tras impuestos y alquiler. En capitales de alta carga fiscal, las retenciones y la vivienda absorben hasta el 70% del sueldo, mientras que centros sin impuesto sobre la renta retienen un ahorro muy superior.",
+  },
+  fr: {
+    title: "Calculateur de Salaire Net et Coût de la Vie Mondial | LivWorthy",
+    description: "Évaluez la valeur réelle de votre salaire net après impôts, loyer et dépenses essentielles dans 65 métropoles mondiales.",
+    h1: "Que vaut réellement votre salaire ?",
+    directLead: "Réponse Directe",
+    directPassage: "La valeur d’une rémunération dépend de ce qu’il reste après l’impôt sur le revenu et le loyer médian. Dans les métropoles comme Paris ou Londres, les cotisations et le logement absorbent l’essentiel du revenu brut, contrastant avec les hubs à fiscalité allégée.",
+  },
+  ar: {
+    title: "حاسبة الراتب الصافي وتكلفة المعيشة الحقيقية عالمياً | ليف ورثي",
+    description: "احسب القيمة الحقيقية لراتبك بعد خصم الضرائب والإيجار والمصاريف في 65 مدينة عالمية.",
+    h1: "ما هي القيمة الفعلية لراتبك بعد الضرائب والمعيشة؟",
+    directLead: "إجابة مباشرة",
+    directPassage: "لا تُقاس قيمة الراتب بالرقم الإجمالي، بل بما يتبقى بعد خصم الضرائب الإلزامية وإيجار السكن العادل. تتيح مدن الخليج مثل دبي والرياض الاحتفاظ بكامل الدخل تقريباً بفضل الإعفاء الضريبي، بينما تستنزف الضرائب في نيويورك ولندن ما يزيد عن 30% من الراتب.",
+  },
+  de: {
+    title: "Netto-Gehaltsrechner & Weltweite Lebenshaltungskosten | LivWorthy",
+    description: "Berechnen Sie, was Ihr Gehalt nach Steuern, Miete und Lebenshaltungskosten in 65 internationalen Städten wirklich wert ist.",
+    h1: "Was ist Ihr Gehalt wirklich wert?",
+    directLead: "Direkte Antwort",
+    directPassage: "Der reale Wert eines Gehalts bemisst sich an der verbleibenden Kaufkraft nach Steuern und Miete. Während in Deutschland Spitzensteuersatz und Sozialabgaben die Sparquote dämpfen, ermöglichen steuerfreie Standorte wie Dubai eine ungebundene Sparquote von über 50%.",
+  },
+  pt: {
+    title: "Calculadora de Salário Líquido e Custo de Vida Global | LivWorthy",
+    description: "Calcule o poder de compra real do seu salário após impostos, aluguel e despesas essenciais em 65 cidades do mundo.",
+    h1: "Quanto realmente vale o seu salário?",
+    directLead: "Resposta Direta",
+    directPassage: "O poder de compra de um salário é determinado pelo saldo disponível após descontos obrigatórios e moradia. Em metrópoles de alta tributação, os impostos consomem parcela substancial do rendimento, diferentemente de centros com isenção fiscal.",
+  },
+  hi: {
+    title: "नेट सैलरी कैलकुलेटर और दुनिया भर में रहने का खर्च | लिववर्दी",
+    description: "जानिए आधिकारिक टैक्स, किराया और आवश्यक खर्चों के बाद 65 वैश्विक शहरों में आपकी सैलरी की वास्तविक बचत क्षमता क्या है।",
+    h1: "आपके वेतन का वास्तविक मूल्य क्या है?",
+    directLead: "सीधा उत्तर",
+    directPassage: "सैलरी का वास्तविक महत्व केवल ग्रॉस पैकेज में नहीं, बल्कि टैक्स और मकान किराए के बाद बचने वाले इन-हैंड कैश में होता है। दुबई जैसे शहरों में 0% टैक्स के कारण भारतीय प्रोफेशनल्स अपनी आय का 50% से अधिक हिस्सा बचा पाते हैं।",
+  },
+  ur: {
+    title: "خالص تنخواہ کیلکولیٹر اور دنیا بھر میں رہائشی اخراجات | لِو ورتھی",
+    description: "جانئے ٹیکس کٹوتیوں، کرایہ اور لازمی اخراجات کے بعد 65 عالمی شہروں میں آپ کی تنخواہ کی حقیقی بچت کتنی ہے۔",
+    h1: "آپ کی تنخواہ کی اصل قدر کیا ہے؟",
+    directLead: "براہ راست جواب",
+    directPassage: "کسی بھی تنخواہ کی اصل قدر اس رقم سے ناپی جاتی ہے جو لازمی انکم ٹیکس اور رہائشی کرایہ ادا کرنے کے بعد ہاتھ میں بچتی ہے۔ لندن اور نیویارک کے مقابلے میں خلیجی ریاستیں بغیر انکم ٹیکس کے نمایاں طور پر زیادہ بچت فراہم کرتی ہیں۔",
+  },
+  zh: {
+    title: "全球税后实际工资与生活成本计算器 | LivWorthy",
+    description: "计算扣除法定税费、公允租金和必要生活开支后，全球65座核心城市的真实可支配薪资与储蓄。",
+    h1: "您的薪资真正价值是多少？",
+    directLead: "核心摘要",
+    directPassage: "薪资的真实购买力取决于扣除所得税、社保以及中位数房租后的实际结余。在高税率大都市，税费与住房占据了总薪酬的绝大部分，而无个人所得税的国际枢纽则能保留极高的储蓄比例。",
+  },
+  ja: {
+    title: "世界の税引後手取り給与・生活費シミュレーター | LivWorthy",
+    description: "法定税金・適正家賃・生活費を差し引いた後、世界65都市での実質的な手取り給与と貯蓄余力をシミュレーション。",
+    h1: "あなたの給与の真の価値はいくらですか？",
+    directLead: "要約・回答",
+    directPassage: "給与の真の価値は、法定税金・社会保険料および住居費を控除した後に残る可処分所得によって決まります。先進国の大都市では税金と家賃が収入の大半を占める一方、所得税ゼロの都市では高い貯蓄率が維持されます。",
+  },
+};
+
 export function createLocalizedPages(baseUrl: string, homeStructuredData: any): SeoPage[] {
   const pages: SeoPage[] = [];
 
@@ -714,6 +793,7 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
   for (const loc of locales) {
     const t = TRANSLATIONS[loc];
     const cfg = SUPPORTED_LOCALES[loc];
+    const meta = LOCALE_SEO_METADATA[loc];
     const isRtl = cfg.dir === 'rtl';
 
     const localizedStructuredData = {
@@ -724,7 +804,8 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
             return {
               ...item,
               url: `${baseUrl}/${loc}`,
-              description: t.siteTagline,
+              name: meta.title,
+              description: meta.description,
             };
           }
           return item;
@@ -784,13 +865,20 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
 
         <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div id="salary-worth-view" class="space-y-8">
+            <!-- AEO Answer-First Direct Answer Block -->
+            <div class="direct-answer bg-[#E8F3F1] border border-[#BCE1DC] rounded-2xl p-5 sm:p-6 shadow-xs">
+              <p class="text-xs sm:text-sm text-[#102A2E] leading-relaxed">
+                <strong class="font-bold text-[#167D75]">${escapeHtml(meta.directLead)}:</strong> ${escapeHtml(meta.directPassage)}
+              </p>
+            </div>
+
             <div class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs relative">
               <div class="max-w-2xl">
                 <span class="text-xs font-bold tracking-wider text-[#167D75]">
                   ${escapeHtml(t.livingIntelligence)}
                 </span>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] mt-1 tracking-tight">
-                  ${escapeHtml(t.heroHeadline)}
+                  ${escapeHtml(meta.h1)}
                 </h1>
                 <p class="text-sm sm:text-base text-[#60706D] mt-2 leading-relaxed">
                   ${escapeHtml(t.heroSubheadline)}
@@ -849,12 +937,12 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
 
               <div class="space-y-6">
                 <div class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
-                  <h3 class="font-bold text-base text-[#102A2E]">Global Intelligence</h3>
+                  <h3 class="font-bold text-base text-[#102A2E]">${escapeHtml(t.livingIntelligence)}</h3>
                   <p class="text-xs text-[#60706D] leading-relaxed">${escapeHtml(t.coverageNotice)}</p>
                   <div class="pt-2 border-t border-[#DCE3E0] flex flex-col space-y-2 text-xs font-semibold text-[#167D75]">
-                    <a href="/coverage" class="hover:underline">Market Coverage →</a>
-                    <a href="/relocation" class="hover:underline">Relocation Intelligence →</a>
-                    <a href="/job-offer-comparison" class="hover:underline">Job Offer Evaluator →</a>
+                    <a href="/coverage" class="hover:underline">${escapeHtml(t.navCoverage)} →</a>
+                    <a href="/relocation" class="hover:underline">${escapeHtml(t.navRelocation)} →</a>
+                    <a href="/job-offer-comparison" class="hover:underline">${escapeHtml(t.navJobOfferComparison)} →</a>
                   </div>
                 </div>
               </div>
@@ -867,8 +955,8 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
     pages.push({
       relativePath: `${loc}/index.html`,
       canonicalUrl: `${baseUrl}/${loc}`,
-      title: `${t.siteTitle}`,
-      description: t.siteTagline,
+      title: meta.title,
+      description: meta.description,
       robots: 'index, follow',
       bodyContent,
       structuredData: localizedStructuredData,

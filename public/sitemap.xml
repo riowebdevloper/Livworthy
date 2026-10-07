@@ -21,4 +21,34 @@
   <sitemap>
     <loc>https://www.livworthy.com/sitemap-reports.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-en.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-es.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-fr.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-ar.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-de.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-pt.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-hi.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-ur.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-zh.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.livworthy.com/sitemap-ja.xml</loc>
+  </sitemap>
 </sitemapindex>

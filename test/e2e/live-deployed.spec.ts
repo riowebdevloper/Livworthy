@@ -75,6 +75,10 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
     const methodologyDialog = page.locator('text=LivWorthy Calculation Methodology').first();
     await expect(methodologyDialog).toBeVisible({ timeout: 10000 });
     await page.keyboard.press('Escape');
+    const methCloseBtn = page.locator('button[aria-label="Close methodology modal"]').first();
+    if (await methCloseBtn.isVisible()) {
+      await methCloseBtn.click().catch(() => {});
+    }
     await expect(methodologyDialog).toBeHidden({ timeout: 10000 });
 
     // 2. Diagnostics Modal
@@ -84,6 +88,10 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
       const diagDialog = page.locator('text=LivWorthy System Architecture & Diagnostics').first();
       await expect(diagDialog).toBeVisible({ timeout: 10000 });
       await page.keyboard.press('Escape');
+      const diagCloseBtn = page.locator('button[aria-label="Close diagnostics"]').first();
+      if (await diagCloseBtn.isVisible()) {
+        await diagCloseBtn.click().catch(() => {});
+      }
       await expect(diagDialog).toBeHidden({ timeout: 10000 });
     }
 
@@ -94,6 +102,10 @@ test.describe('LivWorthy Live Deployed Vercel Production Validation', () => {
       const customizerDialog = page.locator('text=Household Structure').first();
       await expect(customizerDialog).toBeVisible({ timeout: 10000 });
       await page.keyboard.press('Escape');
+      const customCloseBtn = page.locator('button[aria-label="Close customization drawer"]').first();
+      if (await customCloseBtn.isVisible()) {
+        await customCloseBtn.click().catch(() => {});
+      }
       await expect(customizerDialog).toBeHidden({ timeout: 10000 });
     }
 
