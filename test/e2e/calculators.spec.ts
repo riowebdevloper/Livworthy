@@ -382,18 +382,24 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(breadcrumb.getByRole('button', { name: 'England', exact: true })).toBeVisible();
     await expect(breadcrumb.getByRole('button', { name: 'London', exact: true })).toBeVisible();
 
-    const methodologyDialog = page.locator('text=LivWorthy Calculation Methodology').first();
+    const methodologyDialog = page.getByRole('dialog', { name: 'Calculation Methodology' });
+    const closeMethodology = async () => {
+      await page.keyboard.press('Escape');
+      if (await methodologyDialog.isVisible()) {
+        await methodologyDialog.getByRole('button', { name: 'Close methodology modal' }).click();
+      }
+      await expect(methodologyDialog).toBeHidden({ timeout: 10000 });
+    };
+
     const integrityHeadBtn = footer.getByRole('button', { name: /Integrity/i });
     await integrityHeadBtn.click();
     await expect(methodologyDialog).toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(methodologyDialog).toBeHidden({ timeout: 10000 });
+    await closeMethodology();
 
     const methodBtn = footer.locator('#footer-methodology-btn');
     await methodBtn.click();
     await expect(methodologyDialog).toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(methodologyDialog).toBeHidden({ timeout: 10000 });
+    await closeMethodology();
   });
 
   test('13. UNAVAILABLE TAX INVARIANTS: Unsupported cities show pending tax verification across Salary Worth, Salary Needed, and Comparisons', async ({ page }) => {
