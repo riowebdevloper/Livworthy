@@ -119,7 +119,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
 
           {/* Currency Switcher */}
           <div className="flex items-center space-x-1.5 bg-[#F7F8F5] p-1 rounded-xl border border-[#DCE3E0] overflow-x-auto max-w-full [scrollbar-width:thin]">
-            <span className="text-xs text-[#60706D] font-medium pl-2 whitespace-nowrap">Display in:</span>
+            <span className="text-xs text-[#60706D] font-medium pl-2 whitespace-nowrap">{dict.common.action}:</span>
             {(['USD', 'EUR', 'GBP', 'AED', 'CAD', 'AUD', 'SGD'] as CurrencyCode[]).map((curr) => (
               <button
                 key={curr}
@@ -140,7 +140,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
 
         {/* Quick Comparisons */}
         <div className="mt-5 flex items-center space-x-2 overflow-x-auto pb-1 [scrollbar-width:thin]">
-          <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap">Popular Pairs:</span>
+          <span className="text-xs font-semibold text-[#60706D] whitespace-nowrap">{dict.calculator.popularScenarios}:</span>
           {[
             { a: 'nyc', aSal: 100000, b: 'austin', bSal: 100000, label: 'NYC vs Austin ($100k)' },
             { a: 'sf', aSal: 150000, b: 'seattle', bSal: 150000, label: 'SF vs Seattle ($150k)' },
@@ -177,7 +177,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
         {/* City A Input */}
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
-            <span className="font-bold text-sm text-[#102A2E]">Location A (Baseline)</span>
+            <span className="font-bold text-sm text-[#102A2E]">{dict.compare.cityA}</span>
             <span className="text-xs bg-[#DDF2EC] text-[#0D625B] font-bold px-2 py-0.5 rounded">
               {cityA.currency}
             </span>
@@ -218,7 +218,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
         {/* City B Input */}
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
-            <span className="font-bold text-sm text-[#102A2E]">Location B (Target)</span>
+            <span className="font-bold text-sm text-[#102A2E]">{dict.compare.cityB}</span>
             <span className="text-xs bg-[#DDF2EC] text-[#0D625B] font-bold px-2 py-0.5 rounded">
               {cityB.currency}
             </span>
@@ -312,7 +312,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
             <table className="w-full min-w-[480px] sm:min-w-0 text-xs text-left">
               <thead>
                 <tr className="border-b border-[#DCE3E0] text-[#60706D] font-bold">
-                  <th className="py-2.5">Financial Metric</th>
+                  <th className="py-2.5">{dict.common.action}</th>
                   <th className="py-2.5 text-right">{cityA.name}</th>
                   <th className="py-2.5 text-right">{cityB.name}</th>
                   <th className="py-2.5 text-right">Net Delta ({displayCurrency})</th>
@@ -320,7 +320,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
               </thead>
               <tbody className="divide-y divide-[#F7F8F5]">
                 <tr>
-                  <td className="py-3 font-semibold text-[#102A2E]">Gross Compensation</td>
+                  <td className="py-3 font-semibold text-[#102A2E]">{dict.results.annualGross}</td>
                   <td className="py-3 text-right font-tabular text-[#60706D]">
                     {formatMoney(comparison.convertedA.grossAnnual, { hideDecimals: true })}
                   </td>
@@ -334,7 +334,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
                 </tr>
 
                 <tr>
-                  <td className="py-3 font-semibold text-[#102A2E]">Net Take-Home (Post-Tax)</td>
+                  <td className="py-3 font-semibold text-[#102A2E]">{dict.salaryAfterTax.netTakeHome}</td>
                   <td className="py-3 text-right font-tabular text-[#167D75] font-semibold">
                     {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
                       ? 'Under Verification'
@@ -354,7 +354,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
                 </tr>
 
                 <tr>
-                  <td className="py-3 font-semibold text-[#102A2E]">Annual Living Expenses</td>
+                  <td className="py-3 font-semibold text-[#102A2E]">{dict.results.monthlyLivingCosts}</td>
                   <td className="py-3 text-right font-tabular text-[#60706D]">
                     {formatMoney(comparison.convertedA.livingCostsAnnual, { hideDecimals: true })}
                   </td>
@@ -368,7 +368,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
                 </tr>
 
                 <tr className="bg-[#DDF2EC]/40 font-bold text-sm">
-                  <td className="py-3.5 pl-2 rounded-l-lg text-[#102A2E]">Disposable Income Remaining</td>
+                  <td className="py-3.5 pl-2 rounded-l-lg text-[#102A2E]">{dict.results.spendableSurplus}</td>
                   <td className="py-3.5 text-right font-tabular text-[#102A2E]">
                     {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
                       ? 'Under Verification'

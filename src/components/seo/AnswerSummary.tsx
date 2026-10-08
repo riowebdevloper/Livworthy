@@ -114,19 +114,19 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
         {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? (
           <>
             <p>
-              <strong>{headlineSummary}</strong> For a <strong>{grossFormatted}</strong> gross salary in {cityName}, statutory personal income tax schedules are currently undergoing official verification. In accordance with LivWorthy's Data Integrity Charter, net take-home pay is not approximated or estimated without verified statutory schedules.
+              <strong>{headlineSummary}</strong> {`For a ${grossFormatted} gross salary in ${cityName}, statutory personal income tax schedules are currently undergoing official verification. In accordance with LivWorthy's Data Integrity Charter, net take-home pay is not approximated or estimated without verified statutory schedules.`}
             </p>
             <p className="text-slate-700 text-xs sm:text-sm">
-              Local baseline rent benchmarks are estimated at <strong>{rentMonthlyFormatted}/month</strong> ({rentAnnualFormatted}/year) and essential household necessities at <strong>{livingCostsMonthlyFormatted}/month</strong> ({livingCostsAnnualFormatted}/year). Uncommitted savings capacity will be determined once official statutory tax brackets are verified.
+              {`Local baseline rent benchmarks are estimated at ${rentMonthlyFormatted}/month (${rentAnnualFormatted}/year) and essential household necessities at ${livingCostsMonthlyFormatted}/month (${livingCostsAnnualFormatted}/year). Uncommitted savings capacity will be determined once official statutory tax brackets are verified.`}
             </p>
           </>
         ) : (
           <>
             <p>
-              <strong>{headlineSummary}</strong> A <strong>{grossFormatted}</strong> gross salary in {cityName} produces an estimated <strong>{netAnnualFormatted}</strong> in annual statutory take-home pay (approximately <strong>{netMonthlyFormatted}/month</strong>) under {taxYear} statutory schedules (an effective deduction rate of {effectiveRate}%).
+              <strong>{headlineSummary}</strong> {`A ${grossFormatted} gross salary in ${cityName} produces an estimated ${netAnnualFormatted} in annual statutory take-home pay (approximately ${netMonthlyFormatted}/month) under ${taxYear} statutory schedules (an effective deduction rate of ${effectiveRate}%).`}
             </p>
             <p className="text-slate-700 text-xs sm:text-sm">
-              After accounting for an assumed baseline rent of <strong>{rentMonthlyFormatted}/month</strong> ({rentAnnualFormatted}/year) and essential household necessities of <strong>{livingCostsMonthlyFormatted}/month</strong>, approximately <strong>{disposableMonthlyFormatted}/month ({disposableAnnualFormatted}/year)</strong> remains as uncommitted disposable savings capacity.
+              {`After accounting for an assumed baseline rent of ${rentMonthlyFormatted}/month (${rentAnnualFormatted}/year) and essential household necessities of ${livingCostsMonthlyFormatted}/month, approximately ${disposableMonthlyFormatted}/month (${disposableAnnualFormatted}/year) remains as uncommitted disposable savings capacity.`}
             </p>
           </>
         )}
@@ -142,65 +142,65 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
         <table className="w-full text-left text-xs border-collapse border border-slate-200 rounded-xl overflow-hidden">
           <thead>
             <tr className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-              <th className="py-2.5 px-3">Financial Component</th>
-              <th className="py-2.5 px-3">Annual Amount</th>
-              <th className="py-2.5 px-3">Monthly Amount</th>
-              <th className="py-2.5 px-3">Data Classification</th>
+              <th className="py-2.5 px-3">{dict.common.action}</th>
+              <th className="py-2.5 px-3">{dict.common.annual}</th>
+              <th className="py-2.5 px-3">{dict.common.monthly}</th>
+              <th className="py-2.5 px-3">{dict.common.evidence}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 text-slate-800">
             <tr>
-              <td className="py-2 px-3 font-semibold text-[#102A2E]">Gross Compensation</td>
+              <td className="py-2 px-3 font-semibold text-[#102A2E]">{dict.calculator.annualSalary}</td>
               <td className="py-2 px-3 font-bold text-[#102A2E]">{grossFormatted}</td>
               <td className="py-2 px-3 font-medium text-slate-600">{currency} {Math.round(grossSalaryMajor / 12).toLocaleString()}</td>
-              <td className="py-2 px-3 text-[11px] text-slate-500">Scenario Input</td>
+              <td className="py-2 px-3 text-[11px] text-slate-500">{dict.common.action}</td>
             </tr>
             <tr className="bg-slate-50/50">
-              <td className="py-2 px-3 font-semibold text-[#102A2E]">Total Statutory Taxes & Levies</td>
+              <td className="py-2 px-3 font-semibold text-[#102A2E]">{dict.salaryAfterTax.totalDeductions}</td>
               <td className="py-2 px-3 font-semibold text-rose-700">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : `-${totalTaxFormatted}`}
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? '—' : `-${totalTaxFormatted}`}
               </td>
               <td className="py-2 px-3 text-rose-700 font-medium">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : `-${totalTaxMonthlyFormatted}`}
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? '—' : `-${totalTaxMonthlyFormatted}`}
               </td>
               <td className="py-2 px-3 text-[11px] text-teal-800 font-semibold">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Pending Statutory Verification' : 'Official Statutory Schedule'}
+                {dict.common.verifiedTaxBaseline}
               </td>
             </tr>
             <tr>
-              <td className="py-2 px-3 font-bold text-[#102A2E]">Net Take-Home Pay</td>
+              <td className="py-2 px-3 font-bold text-[#102A2E]">{dict.salaryAfterTax.netTakeHome}</td>
               <td className="py-2 px-3 font-extrabold text-[#167D75]">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : netAnnualFormatted}
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? '—' : netAnnualFormatted}
               </td>
               <td className="py-2 px-3 font-bold text-[#167D75]">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : netMonthlyFormatted}
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? '—' : netMonthlyFormatted}
               </td>
               <td className="py-2 px-3 text-[11px] text-teal-800 font-semibold">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Pending Tax Verification' : 'Statutory Net Income'}
+                {dict.salaryAfterTax.headline}
               </td>
             </tr>
             <tr className="bg-slate-50/50">
-              <td className="py-2 px-3 font-semibold text-[#102A2E]">Baseline Housing (1-Bed Typical)</td>
+              <td className="py-2 px-3 font-semibold text-[#102A2E]">{dict.costOfLiving.housingRent}</td>
               <td className="py-2 px-3 text-slate-700">-{rentAnnualFormatted}</td>
               <td className="py-2 px-3 text-slate-700 font-medium">-{rentMonthlyFormatted}</td>
-              <td className="py-2 px-3 text-[11px] text-slate-500">Fair Market Rent Benchmark</td>
+              <td className="py-2 px-3 text-[11px] text-slate-500">{dict.costOfLiving.housingRent}</td>
             </tr>
             <tr>
-              <td className="py-2 px-3 font-semibold text-[#102A2E]">Itemized Living Necessities</td>
+              <td className="py-2 px-3 font-semibold text-[#102A2E]">{dict.costOfLiving.totalMonthlyLiving}</td>
               <td className="py-2 px-3 text-slate-700">-{livingCostsAnnualFormatted}</td>
               <td className="py-2 px-3 text-slate-700 font-medium">-{livingCostsMonthlyFormatted}</td>
-              <td className="py-2 px-3 text-[11px] text-slate-500">BLS / Eurostat Weighted Basket</td>
+              <td className="py-2 px-3 text-[11px] text-slate-500">{dict.costOfLiving.subheadline}</td>
             </tr>
             <tr className="bg-[#DDF2EC]/40 font-bold border-t-2 border-teal-600">
-              <td className="py-2.5 px-3 text-[#0D524D]">Uncommitted Disposable Cash</td>
+              <td className="py-2.5 px-3 text-[#0D524D]">{dict.salaryNeeded.targetSavings}</td>
               <td className="py-2.5 px-3 text-[#0D524D]">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : disposableAnnualFormatted}
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? '—' : disposableAnnualFormatted}
               </td>
               <td className="py-2.5 px-3 text-[#0D524D]">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Under Verification' : disposableMonthlyFormatted}
+                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? '—' : disposableMonthlyFormatted}
               </td>
               <td className="py-2.5 px-3 text-[11px] text-[#0D524D] font-bold">
-                {outcome.tax.status === 'TAX_CALCULATION_UNAVAILABLE' ? 'Pending Tax Verification' : 'LivWorthy Derived Model'}
+                {dict.common.livingIntelligence}
               </td>
             </tr>
           </tbody>
@@ -212,10 +212,10 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1 font-semibold text-slate-700">
             <ShieldCheck className="w-4 h-4 text-[#167D75]" />
-            Deterministic Zero-AI Math
+            {dict.reports.modelBadge}
           </span>
           <span>•</span>
-          <span>Effective Deduction Rate: <strong>{effectiveRate}%</strong></span>
+          <span>{dict.salaryAfterTax.effectiveTaxNote}: <strong>{effectiveRate}%</strong></span>
         </div>
 
         <div className="flex items-center space-x-3">
@@ -225,7 +225,7 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
               onClick={onOpenMethodology}
               className="text-[#167D75] hover:underline font-semibold cursor-pointer"
             >
-              Methodology
+              {dict.common.methodology}
             </button>
           )}
           {onOpenEvidence && (
@@ -234,7 +234,7 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
               onClick={onOpenEvidence}
               className="text-[#167D75] hover:underline font-semibold cursor-pointer"
             >
-              Official Sources
+              {dict.common.evidence}
             </button>
           )}
           {onReportCorrection && (
@@ -243,7 +243,7 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
               onClick={onReportCorrection}
               className="text-slate-500 hover:text-slate-800 hover:underline cursor-pointer"
             >
-              Report Correction
+              {dict.common.diagnostics}
             </button>
           )}
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { BookOpen, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { CORE_GLOSSARY, GlossaryTerm } from '../../data/transparency';
+import { useI18n } from '../../context/I18nContext';
 
 interface FinancialGlossaryProps {
   termsToShow?: string[];
@@ -10,10 +11,13 @@ interface FinancialGlossaryProps {
 
 export const FinancialGlossary: React.FC<FinancialGlossaryProps> = ({
   termsToShow,
-  title = 'Canonical Financial & Living Definitions',
+  title,
   defaultExpanded = false,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(defaultExpanded);
+  const { t } = useI18n();
+
+  const displayTitle = title || t('common.methodology');
 
   const displayedTerms = termsToShow
     ? CORE_GLOSSARY.filter((t) => termsToShow.includes(t.term))
@@ -21,7 +25,7 @@ export const FinancialGlossary: React.FC<FinancialGlossaryProps> = ({
 
   return (
     <section
-      aria-label={title}
+      aria-label={displayTitle}
       className="bg-white border border-[#DCE3E0] rounded-2xl p-6 shadow-xs space-y-4"
     >
       <div className="flex items-center justify-between cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
@@ -30,13 +34,13 @@ export const FinancialGlossary: React.FC<FinancialGlossaryProps> = ({
             <BookOpen className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-[#102A2E]">{title}</h3>
-            <p className="text-xs text-[#60706D]">Standardized definitions for global compensation and living metrics</p>
+            <h3 className="text-base font-bold text-[#102A2E]">{displayTitle}</h3>
+            <p className="text-xs text-[#60706D]">{t('common.disclaimer')}</p>
           </div>
         </div>
         <button
           type="button"
-          aria-label={isExpanded ? 'Collapse glossary' : 'Expand glossary'}
+          aria-label={isExpanded ? t('common.close') : t('common.action')}
           className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
         >
           {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}

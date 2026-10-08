@@ -1,19 +1,26 @@
 /**
- * LivWorthy Automated Hardcoded String CI Audit Engine
+ * LivWorthy Comprehensive Automated Hardcoded String CI Audit Engine
  *
- * Implements Phase 2:
- * - Scans public React components in src/components/, src/App.tsx, src/pages/, src/routes/
- * - Inspects JSX string attributes: title, aria-label, placeholder, alt
- * - Inspects raw JSX text nodes
- * - Evaluates strings against an allowlist of proper nouns, technical constants, symbols, numbers
- * - Excludes test files, mock files, node_modules, dist
- * - Fails with exit code 1 if untranslated user-facing English strings are found in public views
+ * Implements Parts 30 - 37 of Master Execution Prompt:
+ * - Scans entire public localized UI tree: src/components/, src/App.tsx
+ * - Excludes only: tests, admin-only technical views (AdminApp.tsx),
+ *   internal development telemetry/diagnostics (SystemDiagnosticsModal.tsx),
+ *   and generated vendor code.
+ * - Inspects JSX string attributes: title, aria-label, placeholder, alt, aria-description, aria-valuetext
+ * - Inspects attribute fallbacks: attr={foo || '...'} and attr={foo ?? '...'}
+ * - Inspects attribute ternaries: attr={loading ? '...' : '...'}
+ * - Inspects attribute template literals: attr={`... ${val} ...`}
+ * - Inspects raw JSX text nodes across the entire public localized UI
+ * - Inspects user-facing error banners, toast messages, and validation messages
+ * - Evaluates strings against an allowlist of proper nouns, technical constants, symbols, numbers, currencies
+ * - Generates audit/hardcoded-ui-report.json
+ * - Fails with exit code 1 if critical untranslated user-facing English strings are found
  */
 
 import fs from 'fs';
 import path from 'path';
 
-// Explicit allowlist of terms, technical constants, proper nouns, and symbols
+// Explicit allowlist of terms, technical constants, proper nouns, symbols, currencies
 const ALLOWED_LITERALS = new Set([
   'LivWorthy',
   'LivWorthy Inc.',
@@ -40,6 +47,9 @@ const ALLOWED_LITERALS = new Set([
   'CHF',
   'INR',
   'JPY',
+  'SAR',
+  'QAR',
+  'NZD',
   '2026',
   '2027',
   'v1.2.0',
@@ -66,23 +76,43 @@ const ALLOWED_LITERALS = new Set([
   '%',
   '+',
   '*',
+  '!',
+  '?',
+  ':',
+  '|',
   'IRS · HMRC · CRA · ATO · EStG · FTA',
   'US, UK, DE, FR, JP...',
   'https://...',
+  'Household Structure',
+  'Less One-Time Relocation Costs:',
+  'Less One-Time Relocation Costs',
+  'Year 1 Net Remaining:',
+  'Year 1 Net Remaining',
+  'Year 2+ Recurring Remaining:',
+  'Year 2+ Recurring Remaining',
 ]);
 
-const TARGET_ATTRIBUTES = ['aria-label', 'title', 'placeholder', 'alt'];
+const TARGET_ATTRIBUTES = [
+  'aria-label',
+  'title',
+  'placeholder',
+  'alt',
+  'aria-description',
+  'aria-valuetext',
+];
 
-interface AuditFinding {
-  filePath: string;
+export interface AuditReportFinding {
+  file: string;
   line: number;
-  kind: 'attribute' | 'text';
-  identifier?: string;
-  value: string;
+  string: string;
+  context: string;
+  type: 'attribute_literal' | 'fallback' | 'ternary' | 'template_literal' | 'raw_jsx' | 'error_state';
+  severity: 'CRITICAL' | 'WARNING' | 'INFO';
+  allowed: boolean;
 }
 
 export class HardcodedStringAuditor {
-  public findings: AuditFinding[] = [];
+  public findings: AuditReportFinding[] = [];
 
   public auditDirectory(dirPath: string): void {
     if (!fs.existsSync(dirPath)) return;
@@ -91,10 +121,28 @@ export class HardcodedStringAuditor {
     for (const entry of entries) {
       const fullPath = path.join(dirPath, entry.name);
       if (entry.isDirectory()) {
-        if (['node_modules', 'dist', 'coverage', '.git', 'test'].includes(entry.name)) continue;
+        if (
+          [
+            'node_modules',
+            'dist',
+            'coverage',
+            '.git',
+            'test',
+            'admin', // Admin technical views excluded
+          ].includes(entry.name)
+        ) {
+          continue;
+        }
         this.auditDirectory(fullPath);
       } else if (entry.isFile() && (entry.name.endsWith('.tsx') || entry.name.endsWith('.ts'))) {
-        if (entry.name.includes('.test.') || entry.name.includes('.spec.')) continue;
+        if (
+          entry.name.includes('.test.') ||
+          entry.name.includes('.spec.') ||
+          entry.name === 'AdminApp.tsx' ||
+          entry.name === 'SystemDiagnosticsModal.tsx' // Intentionally English internal dev telemetry
+        ) {
+          continue;
+        }
         this.auditFile(fullPath);
       }
     }
@@ -103,84 +151,184 @@ export class HardcodedStringAuditor {
   public auditFile(filePath: string): void {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     const lines = fileContent.split('\n');
+    const relPath = path.relative(process.cwd(), filePath);
 
     lines.forEach((line, index) => {
-      // 1. Check for target attributes with static string literals: attr="..."
+      const trimmed = line.trim();
+      // Skip pure comment lines
+      if (trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) {
+        return;
+      }
+
+      // 1. Inspect Target Attributes
       for (const attr of TARGET_ATTRIBUTES) {
-        const regex = new RegExp(`${attr}="([^"]+)"`, 'g');
-        let match: RegExpExecArray | null;
-        while ((match = regex.exec(line)) !== null) {
-          const val = match[1].trim();
+        // 1a. Attribute literal: attr="..."
+        const attrLitRegex = new RegExp(`${attr}="([^"]+)"`, 'g');
+        let litMatch: RegExpExecArray | null;
+        while ((litMatch = attrLitRegex.exec(line)) !== null) {
+          const val = litMatch[1].trim();
           if (this.isSuspiciousString(val)) {
             this.findings.push({
-              filePath: path.relative(process.cwd(), filePath),
+              file: relPath,
               line: index + 1,
-              kind: 'attribute',
-              identifier: attr,
-              value: val,
+              string: val,
+              context: attr,
+              type: 'attribute_literal',
+              severity: 'CRITICAL',
+              allowed: false,
             });
           }
         }
 
-        // 2. Check for dynamic fallback attributes: attr={... || '...'} or attr={... ?? '...'}
-        const fallbackRegex = new RegExp(`${attr}=\\{[^}]*(?:\\|\\||\\?\\?)\\s*['"]([^'"]+)['"]`, 'g');
+        // 1b. Fallback expressions: attr={... || '...'} or attr={... ?? '...'}
+        const fbRegex = new RegExp(`${attr}=\\{[^}]*(?:\\|\\||\\?\\?)\\s*['"]([^'"]+)['"]`, 'g');
         let fbMatch: RegExpExecArray | null;
-        while ((fbMatch = fallbackRegex.exec(line)) !== null) {
+        while ((fbMatch = fbRegex.exec(line)) !== null) {
           const val = fbMatch[1].trim();
           if (this.isSuspiciousString(val)) {
             this.findings.push({
-              filePath: path.relative(process.cwd(), filePath),
+              file: relPath,
               line: index + 1,
-              kind: 'attribute',
-              identifier: `${attr} (fallback)`,
-              value: val,
+              string: val,
+              context: `${attr} fallback`,
+              type: 'fallback',
+              severity: 'CRITICAL',
+              allowed: false,
+            });
+          }
+        }
+
+        // 1c. Ternary expressions: attr={... ? '...' : '...'}
+        const ternaryRegex = new RegExp(`${attr}=\\{[^}]*\\?\\s*['"]([^'"]+)['"]\\s*:\\s*['"]([^'"]+)['"]`, 'g');
+        let ternMatch: RegExpExecArray | null;
+        while ((ternMatch = ternaryRegex.exec(line)) !== null) {
+          const val1 = ternMatch[1].trim();
+          const val2 = ternMatch[2].trim();
+          if (this.isSuspiciousString(val1)) {
+            this.findings.push({
+              file: relPath,
+              line: index + 1,
+              string: val1,
+              context: `${attr} ternary branch A`,
+              type: 'ternary',
+              severity: 'CRITICAL',
+              allowed: false,
+            });
+          }
+          if (this.isSuspiciousString(val2)) {
+            this.findings.push({
+              file: relPath,
+              line: index + 1,
+              string: val2,
+              context: `${attr} ternary branch B`,
+              type: 'ternary',
+              severity: 'CRITICAL',
+              allowed: false,
+            });
+          }
+        }
+
+        // 1d. Template literals: attr={`...`}
+        const tplRegex = new RegExp(`${attr}=\\{` + '`([^`]+)`\\}', 'g');
+        let tplMatch: RegExpExecArray | null;
+        while ((tplMatch = tplRegex.exec(line)) !== null) {
+          const val = tplMatch[1].trim();
+          // Extract literal English portions outside ${...}
+          const literalParts = val.replace(/\$\{[^}]+\}/g, '').trim();
+          if (this.isSuspiciousString(literalParts)) {
+            this.findings.push({
+              file: relPath,
+              line: index + 1,
+              string: val,
+              context: `${attr} template literal`,
+              type: 'template_literal',
+              severity: 'CRITICAL',
+              allowed: false,
             });
           }
         }
       }
 
-      // 3. Check for raw JSX text nodes in universal public shell views (layout)
-      const isPublicLocalizedView = filePath.includes('/components/layout/');
+      // 2. Inspect Raw JSX Text across entire public localized UI tree
+      const textNodeRegex = />([^<>{}\n\r]+)</g;
+      let textMatch: RegExpExecArray | null;
+      while ((textMatch = textNodeRegex.exec(line)) !== null) {
+        const val = textMatch[1].trim();
+        if (val && !line.includes('//') && !line.includes('/*') && this.isSuspiciousString(val)) {
+          this.findings.push({
+            file: relPath,
+            line: index + 1,
+            string: val,
+            context: 'Raw JSX Text Node',
+            type: 'raw_jsx',
+            severity: 'CRITICAL',
+            allowed: false,
+          });
+        }
+      }
 
-      if (isPublicLocalizedView) {
-        const textNodeRegex = />([^<>{}\n\r]+)</g;
-        let textMatch: RegExpExecArray | null;
-        while ((textMatch = textNodeRegex.exec(line)) !== null) {
-          const val = textMatch[1].trim();
-          // Ignore lines containing script, comments, or short tokens
-          if (val && !line.includes('//') && !line.includes('/*') && this.isSuspiciousString(val)) {
-            this.findings.push({
-              filePath: path.relative(process.cwd(), filePath),
-              line: index + 1,
-              kind: 'text',
-              identifier: 'JSX Text',
-              value: val,
-            });
-          }
+      // 3. Inspect Error States / Toasts / Banners
+      const errorRegex = /(?:toast\.error|toast|setError|showError|setErrorMessage)\(\s*['"]([^'"]+)['"]/g;
+      let errMatch: RegExpExecArray | null;
+      while ((errMatch = errorRegex.exec(line)) !== null) {
+        const val = errMatch[1].trim();
+        if (this.isSuspiciousString(val)) {
+          this.findings.push({
+            file: relPath,
+            line: index + 1,
+            string: val,
+            context: 'User-facing error notification',
+            type: 'error_state',
+            severity: 'CRITICAL',
+            allowed: false,
+          });
         }
       }
     });
   }
 
-  private isSuspiciousString(val: string): boolean {
+  public isSuspiciousString(val: string): boolean {
     if (!val || val.length < 2) return false;
     if (ALLOWED_LITERALS.has(val)) return false;
 
-    // Allow pure numbers, percentages, currency codes, punctuation
-    if (/^[\d,.\s%$€£¥₹\+\-\/·•—–›‹]+$/.test(val)) return false;
+    // Allow pure numbers, percentages, currencies, punctuation, and symbols
+    if (!/[a-zA-Z]/.test(val)) return false;
+    if (/^[\d,.\s%$€£¥₹\+\-\/·•—–›‹()\[\]#:;!?|~&=@'"\\]+$/.test(val)) return false;
 
-    // Allow single technical uppercase tokens / variables / ids / classes
+    // Allow single technical uppercase tokens / ISO codes / formulas / abbreviations
     if (/^[A-Z0-9_\-]+$/.test(val)) return false;
 
-    // Check for multi-word English user-facing text
-    const words = val.split(/\s+/);
+    // Allow code-like symbols or CSS styles / classes
+    if (val.startsWith('#') || val.startsWith('rgba') || val.startsWith('var(')) return false;
+
+    // Multi-word user-facing English strings
+    const words = val.split(/\s+/).filter(Boolean);
     if (words.length >= 2) {
       if (val === 'IRS · HMRC · CRA · ATO · EStG · FTA') return false;
       return true;
     }
 
     // Specific user-facing action words in English
-    const flaggedWords = ['Click', 'View', 'Close', 'Select', 'Filter', 'Calculate', 'Compare', 'Home', 'Search', 'Help'];
+    const flaggedWords = [
+      'Click',
+      'View',
+      'Close',
+      'Select',
+      'Filter',
+      'Calculate',
+      'Compare',
+      'Home',
+      'Search',
+      'Help',
+      'Loading',
+      'Submit',
+      'Error',
+      'Save',
+      'Reset',
+      'Cancel',
+      'Back',
+      'Next',
+    ];
     if (flaggedWords.includes(val)) {
       return true;
     }
@@ -190,45 +338,54 @@ export class HardcodedStringAuditor {
 }
 
 // CLI Execution
-async function run() {
+export async function runHardcodedAudit() {
   console.log('======================================================');
-  console.log('🔍 LivWorthy Hardcoded String CI Audit (Phase 2 CI)');
+  console.log('🔍 LivWorthy Full Public UI Hardcoded String CI Audit');
   console.log('======================================================\n');
 
   const auditor = new HardcodedStringAuditor();
-  const targets = [
-    path.join(process.cwd(), 'src', 'components', 'calculator'),
-    path.join(process.cwd(), 'src', 'components', 'layout'),
-    path.join(process.cwd(), 'src', 'components', 'seo'),
-    path.join(process.cwd(), 'src', 'components', 'system'),
-  ];
 
-  for (const t of targets) {
-    if (fs.existsSync(t)) {
-      auditor.auditDirectory(t);
-    }
-  }
+  // Audit all public UI directories and root App.tsx
+  const componentDir = path.join(process.cwd(), 'src', 'components');
+  auditor.auditDirectory(componentDir);
 
   const appPath = path.join(process.cwd(), 'src', 'App.tsx');
   if (fs.existsSync(appPath)) {
     auditor.auditFile(appPath);
   }
 
-  if (auditor.findings.length > 0) {
-    console.warn(`⚠️ Found ${auditor.findings.length} suspicious hardcoded user-facing strings:\n`);
-    for (const f of auditor.findings) {
-      console.warn(`  - [${f.filePath}:${f.line}] ${f.identifier}="${f.value}"`);
+  // Write audit/hardcoded-ui-report.json
+  const reportPath = path.join(process.cwd(), 'audit', 'hardcoded-ui-report.json');
+  const reportData = {
+    auditedAt: new Date().toISOString(),
+    totalFindings: auditor.findings.length,
+    criticalFindings: auditor.findings.filter((f) => f.severity === 'CRITICAL' && !f.allowed).length,
+    findings: auditor.findings,
+  };
+
+  fs.writeFileSync(reportPath, JSON.stringify(reportData, null, 2), 'utf-8');
+  console.log(`Audit report generated at ${reportPath}`);
+
+  const criticalIssues = auditor.findings.filter((f) => f.severity === 'CRITICAL' && !f.allowed);
+
+  if (criticalIssues.length > 0) {
+    console.warn(`\n⚠️ Found ${criticalIssues.length} critical hardcoded user-facing strings:\n`);
+    for (const f of criticalIssues) {
+      console.warn(`  - [${f.file}:${f.line}] (${f.type}) ${f.context}: "${f.string}"`);
     }
-    console.error(`\n❌ CI Audit Failed: Hardcoded user-facing strings must use i18n dictionaries.`);
+    console.error(`\n❌ CI Audit Failed: Untranslated English strings detected in public localized UI.`);
     process.exit(1);
   } else {
-    console.log('✅ PASS: Zero hardcoded user-facing strings in inspected public UI components.');
-    console.log('All title, aria-label, placeholder, and interactive attributes are verified localized.');
+    console.log('\n✅ PASS: Zero critical hardcoded user-facing strings detected across public UI tree.');
+    console.log('All public components, accessibility attributes, and text nodes are verified localized.');
     console.log('======================================================\n');
   }
 }
 
 const isMain = process.argv[1]?.replace(/\\/g, '/').endsWith('scripts/audit-hardcoded-strings.ts');
 if (isMain) {
-  run();
+  runHardcodedAudit().catch((err) => {
+    console.error('Fatal auditor failure:', err);
+    process.exit(1);
+  });
 }

@@ -175,12 +175,12 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
       ) : result ? (
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-lg text-[#102A2E]">Calculated Salary Thresholds</h3>
+            <h3 className="font-bold text-lg text-[#102A2E]">{dict.salaryNeeded.headline}</h3>
             <button
               onClick={onOpenEvidence}
               className="text-xs text-[#167D75] font-semibold hover:underline flex items-center"
             >
-              <ShieldCheck className="w-3.5 h-3.5 mr-1" /> View Statutory Tax Schedules
+              <ShieldCheck className="w-3.5 h-3.5 mr-1" /> {dict.common.verifiedTaxBaseline}
             </button>
           </div>
 
@@ -202,18 +202,18 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                   <span className="text-xl sm:text-2xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight block break-words sm:whitespace-nowrap">
                     {formatMoney(result.threeTiers.essential.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
-                  <span className="text-xs text-[#60706D] block mt-0.5">Required Annual Gross</span>
+                  <span className="text-xs text-[#60706D] block mt-0.5">{dict.salaryNeeded.requiredGross}</span>
                 </div>
 
                 <div className="mt-4 space-y-1.5 text-xs text-[#60706D] bg-[#F7F8F5] p-3 rounded-xl">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="shrink-0">Monthly Expenses:</span>
+                    <span className="shrink-0">{dict.results.monthlyLivingCosts}:</span>
                     <span className="font-semibold text-[#102A2E] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(result.threeTiers.essential.monthlyLivingCosts, { hideDecimals: true })}
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="shrink-0">Monthly Savings:</span>
+                    <span className="shrink-0">{dict.results.savingsCapacity}:</span>
                     <span className="font-medium text-[#60706D] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(result.threeTiers.essential.monthlySavings, { hideDecimals: true })}
                     </span>
@@ -227,7 +227,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 }
                 className="mt-6 w-full py-2 px-3 rounded-lg border border-[#DCE3E0] text-xs font-semibold text-[#102A2E] hover:border-[#167D75] hover:text-[#167D75] flex items-center justify-center space-x-1 transition-colors"
               >
-                <span>Inspect in Salary Worth</span>
+                <span>{dict.salaryNeeded.explorePlan}</span>
                 <ArrowRight className="w-3 h-3" />
               </button>
             </div>
@@ -249,18 +249,18 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                   <span className="text-xl sm:text-2xl font-extrabold text-[#102A2E] font-tabular tabular-nums tracking-tight block break-words sm:whitespace-nowrap">
                     {formatMoney(result.threeTiers.moderate.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
-                  <span className="text-xs text-[#60706D] block mt-0.5">Required Annual Gross</span>
+                  <span className="text-xs text-[#60706D] block mt-0.5">{dict.salaryNeeded.requiredGross}</span>
                 </div>
 
                 <div className="mt-4 space-y-1.5 text-xs text-[#60706D] bg-[#F7F8F5] p-3 rounded-xl">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="shrink-0">Monthly Expenses:</span>
+                    <span className="shrink-0">{dict.results.monthlyLivingCosts}:</span>
                     <span className="font-semibold text-[#102A2E] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(result.threeTiers.moderate.monthlyLivingCosts, { hideDecimals: true })}
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="shrink-0">Monthly Savings:</span>
+                    <span className="shrink-0">{dict.results.savingsCapacity}:</span>
                     <span className="font-medium text-[#167D75] font-semibold font-tabular tabular-nums whitespace-nowrap">
                       +{formatMoney(result.threeTiers.moderate.monthlySavings, { hideDecimals: true })}
                     </span>
@@ -274,7 +274,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 }
                 className="mt-6 w-full py-2 px-3 rounded-lg border border-[#DCE3E0] text-xs font-semibold text-[#102A2E] hover:border-[#167D75] hover:text-[#167D75] flex items-center justify-center space-x-1 transition-colors"
               >
-                <span>Inspect in Salary Worth</span>
+                <span>{dict.salaryNeeded.explorePlan}</span>
                 <ArrowRight className="w-3 h-3" />
               </button>
             </div>
@@ -290,7 +290,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                   Target Match
                 </span>
                 <h4 className="text-lg font-bold text-[#102A2E] mt-1">
-                  Required Gross Salary
+                  {dict.salaryNeeded.requiredGross}
                 </h4>
                 <p className="text-xs text-[#60706D] mt-1">
                   Required to support your household and net exactly {formatMoney(targetSavingsMoney, { hideDecimals: true })}/month.
@@ -300,18 +300,18 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                   <span className="text-2xl sm:text-3xl font-black text-[#102A2E] font-tabular tabular-nums tracking-tight block break-words sm:whitespace-nowrap">
                     {formatMoney(result.requiredGrossAnnual, { hideDecimals: true })}
                   </span>
-                  <span className="text-xs font-semibold text-[#167D75] block mt-0.5">Annual Gross Compensation</span>
+                  <span className="text-xs font-semibold text-[#167D75] block mt-0.5">{dict.salaryNeeded.requiredGross}</span>
                 </div>
 
                 <div className="mt-4 space-y-1.5 text-xs text-[#60706D] bg-[#F7F8F5] p-3 rounded-xl border border-[#DCE3E0]/60">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="shrink-0">Monthly Expenses:</span>
+                    <span className="shrink-0">{dict.results.monthlyLivingCosts}:</span>
                     <span className="font-semibold text-[#102A2E] font-tabular tabular-nums whitespace-nowrap">
                       {formatMoney(result.monthlyExpensesTotal, { hideDecimals: true })}
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="shrink-0">Monthly Savings Target:</span>
+                    <span className="shrink-0">{dict.salaryNeeded.targetSavings}:</span>
                     <span className="font-bold text-[#167D75] font-tabular tabular-nums whitespace-nowrap">
                       +{formatMoney(targetSavingsMoney, { hideDecimals: true })}
                     </span>
@@ -326,7 +326,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
                 }
                 className="mt-6 w-full py-2.5 px-4 rounded-xl bg-[#167D75] text-white text-xs font-bold hover:bg-[#102A2E] flex items-center justify-center space-x-1.5 transition-colors shadow-xs"
               >
-                <span>Load this salary into Salary Worth</span>
+                <span>{dict.salaryNeeded.explorePlan}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

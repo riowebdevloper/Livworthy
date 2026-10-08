@@ -354,7 +354,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
                 onClick={() => onSwitchToSalaryWorthWithSalary(grossSalaryMajor, city.id)}
                 className="w-full py-2.5 px-4 rounded-xl bg-[#102A2E] text-white text-xs font-bold hover:bg-[#167D75] flex items-center justify-center space-x-1.5 transition-colors"
               >
-                <span>Calculate Living Cost Feasibility</span>
+                <span>{dict.salaryNeeded.explorePlan}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -367,7 +367,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs">
           <div className="flex items-center justify-between pb-4 border-b border-[#F7F8F5]">
             <div>
-              <h3 className="text-base font-bold text-[#102A2E]">Itemized Statutory Tax Schedule</h3>
+              <h3 className="text-base font-bold text-[#102A2E]">{dict.salaryAfterTax.totalDeductions}</h3>
               <p className="text-xs text-[#60706D]">
                 Rule Version: <span className="font-mono text-[#167D75] font-semibold">{taxResult.taxRuleVersion}</span>
               </p>

@@ -24,7 +24,7 @@ auditor.auditFile(appPath);
 if (auditor.findings.length > 0) {
   console.error(`Found ${auditor.findings.length} hardcoded strings:`);
   for (const f of auditor.findings) {
-    console.error(`  - ${f.filePath}:${f.line} [${f.identifier}="${f.value}"]`);
+    console.error(`  - ${f.file}:${f.line} [${f.context}="${f.string}"]`);
   }
 }
 

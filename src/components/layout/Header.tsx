@@ -139,7 +139,7 @@ export const Header: React.FC<HeaderProps> = ({
                 id="lang-selector-btn"
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                 className="inline-flex items-center space-x-0.5 min-[360px]:space-x-1 px-1.5 min-[360px]:px-2 py-1 min-[360px]:py-1.5 text-[11px] min-[360px]:text-xs font-semibold rounded border border-[#DCE3E0] bg-[#FFFFFF] hover:bg-[#F7F8F5] text-[#102A2E] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] shrink-0"
-                aria-label={`Select Language (current: ${SUPPORTED_LOCALES[locale].name})`}
+                aria-label={dict.accessibility.languageSuggestionAriaLabel}
                 aria-haspopup="true"
                 aria-expanded={isLangMenuOpen}
               >

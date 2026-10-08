@@ -4,31 +4,58 @@ import {
   initializeBacklinkTracker,
   verifyLiveBacklink,
   BacklinkEntry,
+  BacklinkVerificationResult,
 } from '../src/lib/backlink-tracker';
 
 async function main() {
   console.log('======================================================');
-  console.log('🔗 LivWorthy Backlink Verification & Acquisition Engine');
+  console.log('🔗 LivWorthy Strict Backlink Verification Engine');
   console.log('======================================================');
 
-  const links = await initializeBacklinkTracker();
-  console.log(`Loaded ${links.length} backlink record(s) from database.\n`);
+  // 1. Load tracked opportunities & outreach
+  const opportunitiesPath = path.join(process.cwd(), 'data', 'backlink-opportunities.json');
+  const outreachPath = path.join(process.cwd(), 'data', 'backlink-outreach.json');
 
-  let activeCount = 0;
+  const opportunities = fs.existsSync(opportunitiesPath)
+    ? JSON.parse(fs.readFileSync(opportunitiesPath, 'utf-8'))
+    : [];
+  const outreach = fs.existsSync(outreachPath)
+    ? JSON.parse(fs.readFileSync(outreachPath, 'utf-8'))
+    : [];
+
+  const links = await initializeBacklinkTracker();
+  console.log(`Loaded ${links.length} seed/candidate backlink record(s).`);
+  console.log(`Loaded ${opportunities.length} tracked editorial opportunities.`);
+  console.log(`Loaded ${outreach.length} outreach records.\n`);
+
+  let verifiedEarnedBacklinks = 0;
+  let ownedLinks = 0;
+  let infrastructureLinks = 0;
   let lostCount = 0;
   let pendingCount = 0;
 
-  const results: any[] = [];
+  const verificationOutputs: BacklinkVerificationResult[] = [];
 
   for (const b of links) {
-    console.log(`Verifying: ${b.referringDomain} (${b.sourceUrl}) -> ${b.targetUrl}...`);
+    console.log(`Verifying: [${b.category}] ${b.referringDomain} (${b.sourceUrl}) -> ${b.targetUrl}...`);
     const verification = await verifyLiveBacklink(b.sourceUrl, b.targetUrl);
 
+    console.log(`  Verified: ${verification.verified}`);
     console.log(`  Status: ${verification.status}`);
-    console.log(`  HTTP Code: ${verification.httpStatus}`);
-    if (verification.isFound) {
-      console.log(`  Anchor: "${verification.anchorText}" [${verification.relAttribute}]`);
-      activeCount++;
+    console.log(`  Source HTTP: ${verification.sourceStatus}`);
+    console.log(`  Link Type: ${verification.linkType}`);
+
+    if (verification.verified) {
+      if (b.category === 'OWNED') {
+        ownedLinks++;
+        console.log(`  Classification: OWNED_LINK (Not counted in earned authority SEO)`);
+      } else if (b.category === 'INFRASTRUCTURE') {
+        infrastructureLinks++;
+        console.log(`  Classification: INFRASTRUCTURE_REDIRECT (Not counted in earned authority SEO)`);
+      } else {
+        verifiedEarnedBacklinks++;
+        console.log(`  Classification: EARNED_EDITORIAL_BACKLINK`);
+      }
     } else {
       if (verification.status === 'NOT_FOUND') lostCount++;
       else pendingCount++;
@@ -36,40 +63,44 @@ async function main() {
     }
     console.log('');
 
-    results.push({
-      ...b,
-      verifiedStatus: verification.status,
-      httpStatusCode: verification.httpStatus,
-      detectedAnchor: verification.anchorText,
-      detectedRel: verification.relAttribute,
-      lastCheckedAt: new Date().toISOString(),
-    });
+    verificationOutputs.push(verification);
   }
 
-  const referringDomains = Array.from(new Set(results.filter((r) => r.verifiedStatus === 'ACTIVE').map((r) => r.referringDomain)));
+  // Count outreach lifecycle states
+  const pitchReadyCount = outreach.filter((o: any) => o.status === 'PITCH_READY').length;
+  const submittedPitchesCount = outreach.filter((o: any) => o.status === 'SUBMITTED').length;
+  const publishedArticlesCount = outreach.filter((o: any) => o.status === 'PUBLISHED').length;
 
-  console.log('--- Verification Summary ---');
-  console.log(`Total Tracked Records: ${links.length}`);
-  console.log(`Active Verified Backlinks: ${activeCount}`);
-  console.log(`Referring Domains (Verified): ${referringDomains.length} (${referringDomains.join(', ')})`);
-  console.log(`Lost / Not Found: ${lostCount}`);
-  console.log(`Unreachable / Pending: ${pendingCount}`);
+  console.log('--- Comprehensive Backlink Status Summary ---');
+  console.log(`Tracked Opportunities:        ${opportunities.length}`);
+  console.log(`Pitch Ready Outreach:         ${pitchReadyCount}`);
+  console.log(`Submitted Pitches:            ${submittedPitchesCount}`);
+  console.log(`Published Guest Articles:     ${publishedArticlesCount}`);
+  console.log(`Verified Earned Backlinks:    ${verifiedEarnedBacklinks}`);
+  console.log(`Owned Links:                  ${ownedLinks}`);
+  console.log(`Infrastructure Redirects:     ${infrastructureLinks}`);
+  console.log(`Referring Earned Domains:     0 (Strictly 0 until third-party publication)\n`);
 
-  // Write audit report
+  // Save audit report
   const auditPath = path.join('public', 'data-backlinks-audit.json');
   const auditData = {
     generatedAt: new Date().toISOString(),
-    totalTracked: links.length,
-    activeVerified: activeCount,
-    referringDomainsCount: referringDomains.length,
-    referringDomains,
+    trackedOpportunities: opportunities.length,
+    pitchReady: pitchReadyCount,
+    submittedPitches: submittedPitchesCount,
+    publishedArticles: publishedArticlesCount,
+    verifiedEarnedBacklinks,
+    ownedLinks,
+    infrastructureLinks,
+    referringEarnedDomainsCount: 0,
+    referringEarnedDomains: [],
     lostCount,
     pendingCount,
-    records: results,
+    records: verificationOutputs,
   };
 
   fs.writeFileSync(auditPath, JSON.stringify(auditData, null, 2), 'utf-8');
-  console.log(`\nAudit report saved to ${auditPath}`);
+  console.log(`Audit report written to ${auditPath}`);
   console.log('======================================================');
 }
 

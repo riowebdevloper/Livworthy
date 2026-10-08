@@ -189,8 +189,8 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                   : 'text-[#60706D] hover:text-[#102A2E]'
               }`}
             >
-              <span className="hidden sm:inline">Year 1 (With Relocation Setup Costs)</span>
-              <span className="sm:hidden">Year 1 (With Relocation)</span>
+              <span className="hidden sm:inline">{`${dict.common.year} 1`}</span>
+              <span className="sm:hidden">{`${dict.common.year} 1`}</span>
             </button>
             <button
               id="btn-offer-year2"
@@ -202,13 +202,13 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                   : 'text-[#60706D] hover:text-[#102A2E]'
               }`}
             >
-              <span className="hidden sm:inline">Year 2+ (Steady-State Recurring)</span>
-              <span className="sm:hidden">Year 2+ (Steady-State)</span>
+              <span className="hidden sm:inline">{`${dict.common.year} 2+`}</span>
+              <span className="sm:hidden">{`${dict.common.year} 2+`}</span>
             </button>
           </div>
 
           <button onClick={onOpenEvidence} className="text-xs text-[#167D75] font-semibold hover:underline flex items-center self-start sm:self-center">
-            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> Verified Data
+            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> {dict.common.verifiedTaxBaseline}
           </button>
         </div>
       </div>
@@ -227,7 +227,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex items-center space-x-2 border-b border-[#F7F8F5] pb-3">
             <Briefcase className="w-4 h-4 text-[#167D75]" />
-            <h3 className="font-bold text-sm text-[#102A2E]">Job Offer A (Current / Baseline)</h3>
+            <h3 className="font-bold text-sm text-[#102A2E]">{dict.jobOffers.offerA}</h3>
           </div>
 
           <div className="space-y-3">
@@ -257,7 +257,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 </label>
                 <input
                   id="offer-a-base-salary"
-                  aria-label={`Base Salary (${cityA.currency})`}
+                  aria-label={`${dict.jobOffers.offerA} (${cityA.currency})`}
                   type="number"
                   value={offerABase}
                   onChange={(e) => setOfferABase(parseFloat(e.target.value) || 0)}
@@ -271,7 +271,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 </label>
                 <input
                   id="offer-a-bonus"
-                  aria-label={`Annual Cash Bonus (${cityA.currency})`}
+                  aria-label={`${dict.jobOffers.offerA} (${cityA.currency})`}
                   type="number"
                   value={offerABonus}
                   onChange={(e) => setOfferABonus(parseFloat(e.target.value) || 0)}
@@ -301,7 +301,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex items-center space-x-2 border-b border-[#F7F8F5] pb-3">
             <Building className="w-4 h-4 text-[#167D75]" />
-            <h3 className="font-bold text-sm text-[#102A2E]">Job Offer B (Target Opportunity)</h3>
+            <h3 className="font-bold text-sm text-[#102A2E]">{dict.jobOffers.offerB}</h3>
           </div>
 
           <div className="space-y-3">
@@ -331,7 +331,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 </label>
                 <input
                   id="offer-b-base-salary"
-                  aria-label={`Base Salary (${cityB.currency})`}
+                  aria-label={`${dict.jobOffers.offerB} (${cityB.currency})`}
                   type="number"
                   value={offerBBase}
                   onChange={(e) => setOfferBBase(parseFloat(e.target.value) || 0)}
@@ -345,7 +345,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 </label>
                 <input
                   id="offer-b-bonus"
-                  aria-label={`Annual Cash Bonus (${cityB.currency})`}
+                  aria-label={`${dict.jobOffers.offerB} (${cityB.currency})`}
                   type="number"
                   value={offerBBonus}
                   onChange={(e) => setOfferBBonus(parseFloat(e.target.value) || 0)}
@@ -388,7 +388,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 />
               </div>
               <div>
-                <span className="text-[#60706D] block">Temp Hotel</span>
+                <span className="text-[#60706D] block">{dict.costOfLiving.housingRent}</span>
                 <input
                   aria-label={dict.accessibility?.hotelRelocationAriaLabel}
                   type="number"
@@ -429,18 +429,18 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
           <div className="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-4 sm:p-6 shadow-xs space-y-4">
             <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
               <h4 className="font-bold text-base text-[#102A2E]">{cityA.name} Package Outcome</h4>
-              <span className="text-xs text-[#60706D]">Offer A</span>
+              <span className="text-xs text-[#60706D]">{dict.jobOffers.offerA}</span>
             </div>
 
             <div className="space-y-2 text-xs">
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Spendable Gross Pay:</span>
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">{dict.results.annualGross}:</span>
                 <span className="font-bold text-[#102A2E] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(comparison.outcomeA.grossAnnual, { hideDecimals: true })}
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Total Compensation Value:</span>
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">{dict.salaryNeeded.requiredGross}:</span>
                 <span className="font-bold text-[#102A2E] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(
                     createMoney(
@@ -452,7 +452,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Net Take-Home (After Tax & Social):</span>
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">{dict.salaryAfterTax.netTakeHome}:</span>
                 <span className="font-bold text-[#167D75] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
                     ? 'Under Verification'
@@ -460,14 +460,14 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Annual Living Costs:</span>
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">{dict.results.monthlyLivingCosts}:</span>
                 <span className="font-bold text-[#60706D] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   −{formatMoney(comparison.outcomeA.livingCostsAnnual, { hideDecimals: true })}
                 </span>
               </div>
 
               <div className="flex items-baseline justify-between gap-2 py-2 bg-[#DDF2EC]/40 border border-[#167D75]/20 px-3 rounded-lg mt-2">
-                <span className="font-bold text-[#102A2E] min-w-0 flex-1 pr-1">Net Money Remaining:</span>
+                <span className="font-bold text-[#102A2E] min-w-0 flex-1 pr-1">{dict.results.spendableSurplus}:</span>
                 <span className="font-extrabold text-[#102A2E] font-tabular tabular-nums text-sm shrink-0 whitespace-nowrap">
                   {comparison.outcomeA.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
                     ? 'Unavailable (Tax Pending)'
@@ -488,19 +488,19 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
             <div className="flex justify-between items-center pb-3 border-b border-[#F7F8F5]">
               <h4 className="font-bold text-base text-[#102A2E]">{cityB.name} Package Outcome</h4>
               <span className="text-xs text-[#167D75] font-bold bg-[#DDF2EC] px-2 py-0.5 rounded">
-                Offer B
+                {dict.jobOffers.offerB}
               </span>
             </div>
 
             <div className="space-y-2 text-xs">
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Spendable Gross Pay:</span>
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">{dict.results.annualGross}:</span>
                 <span className="font-bold text-[#102A2E] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(comparison.outcomeB.grossAnnual, { hideDecimals: true })}
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Total Compensation Value:</span>
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">{dict.salaryNeeded.requiredGross}:</span>
                 <span className="font-bold text-[#102A2E] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {formatMoney(
                     createMoney(
@@ -512,7 +512,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Net Take-Home (After Tax & Social):</span>
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">{dict.salaryAfterTax.netTakeHome}:</span>
                 <span className="font-bold text-[#167D75] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   {comparison.outcomeB.tax.status === 'TAX_CALCULATION_UNAVAILABLE'
                     ? 'Under Verification'
@@ -520,7 +520,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 py-1 border-b border-[#F7F8F5]">
-                <span className="text-[#60706D] min-w-0 flex-1 pr-1">Annual Living Costs:</span>
+                <span className="text-[#60706D] min-w-0 flex-1 pr-1">{dict.results.monthlyLivingCosts}:</span>
                 <span className="font-bold text-[#60706D] font-tabular tabular-nums shrink-0 whitespace-nowrap">
                   −{formatMoney(comparison.outcomeB.livingCostsAnnual, { hideDecimals: true })}
                 </span>

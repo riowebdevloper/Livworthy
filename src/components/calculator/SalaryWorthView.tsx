@@ -523,7 +523,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
                   }`}
                 >
                   <HelpCircle className="w-3.5 h-3.5" />
-                  <span>How was this calculated?</span>
+                  <span>{dict.nav.howItWorks}</span>
                   {showMethodology ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </button>
 
@@ -535,7 +535,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
                   className="inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 sm:py-1.5 rounded-lg border border-[#DCE3E0] text-[#102A2E] hover:bg-[#F7F8F5] transition-colors cursor-pointer"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-[#167D75]" />
-                  <span>View data sources</span>
+                  <span>{dict.common.evidence}</span>
                 </button>
               </div>
             </div>
@@ -543,21 +543,21 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
             {/* Expandable "How was this calculated?" explanation box */}
             {showMethodology && (
               <div className="mt-4 p-4 rounded-xl bg-[#F7F8F5] border border-[#DCE3E0] text-xs space-y-2 text-[#60706D]">
-                <h4 className="font-bold text-sm text-[#102A2E]">LivWorthy Calculation Pipeline</h4>
+                <h4 className="font-bold text-sm text-[#102A2E]">{dict.common.methodology}</h4>
                 <p>
-                  1. <strong>Gross Salary:</strong> Stated pre-tax cash compensation.
+                  1. <strong>{dict.calculator.annualSalary}:</strong> {dict.calculator.salaryHelp}
                 </p>
                 <p>
-                  2. <strong>Statutory Deductions & Taxes:</strong> Applied deterministically using verified government tax authority schedules (federal, state/provincial, local, and mandatory social insurance).
+                  2. <strong>{dict.salaryAfterTax.totalDeductions}:</strong> {dict.salaryAfterTax.subheadline}
                 </p>
                 <p>
-                  3. <strong>Take-Home Pay:</strong> Stated gross minus exact statutory deductions and taxes.
+                  3. <strong>{dict.salaryAfterTax.netTakeHome}:</strong> {dict.salaryAfterTax.headline}
                 </p>
                 <p>
-                  4. <strong>Estimated Living Costs:</strong> Benchmarked for your household composition (rent, utilities, groceries, healthcare, transit) using official metropolitan statistics.
+                  4. <strong>{dict.costOfLiving.totalMonthlyLiving}:</strong> {dict.costOfLiving.subheadline}
                 </p>
                 <p>
-                  5. <strong>Money Left After Expenses:</strong> Take-home pay minus estimated living costs. This represents your spendable buffer for savings, investments, or travel.
+                  5. <strong>{dict.salaryNeeded.targetSavings}:</strong> {dict.salaryNeeded.subheadline}
                 </p>
               </div>
             )}

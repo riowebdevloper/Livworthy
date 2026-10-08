@@ -79,9 +79,9 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
             </div>
             <div>
               <h2 id="correction-dialog-title" className="text-base font-bold text-[#102A2E]">
-                Report Data Correction or Feedback
+                {dict.common.diagnostics}
               </h2>
-              <p className="text-xs text-[#60706D]">Continuous data integrity & algorithmic accuracy</p>
+              <p className="text-xs text-[#60706D]">{dict.common.verifiedTaxBaseline}</p>
             </div>
           </div>
           <button
@@ -101,9 +101,9 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
                 <CheckCircle2 className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-sm font-bold text-[#102A2E]">Correction Report Logged</h3>
+                <h3 className="text-sm font-bold text-[#102A2E]">{dict.common.copied}</h3>
                 <p className="text-xs text-slate-600 max-w-sm mx-auto">
-                  Thank you for assisting LivWorthy’s financial integrity standards. Reports are reviewed against official statutory tables and statistical gazettes.
+                  {dict.accessibility.evidenceProvenanceDesc}
                 </p>
               </div>
               <button
@@ -111,7 +111,7 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
                 onClick={handleReset}
                 className="px-4 py-2 bg-[#167D75] hover:bg-[#0D524D] text-white font-semibold text-xs rounded-xl transition-colors cursor-pointer"
               >
-                Close & Return
+                {dict.common.close}
               </button>
             </div>
           ) : (
@@ -119,13 +119,13 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
               <div className="p-3 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0] flex items-start space-x-2 text-[11px] text-slate-700">
                 <AlertCircle className="w-4 h-4 text-[#167D75] shrink-0 mt-0.5" />
                 <span>
-                  All calculations operate under a strict <strong>Zero Data Fabrication Policy</strong>. If you observe an outdated tax bracket, statutory shift, or rent benchmark deviation, provide authoritative source references below.
+                  {dict.accessibility.evidenceStatutoryDisclaimer}
                 </span>
               </div>
 
               <div>
                 <label htmlFor="correction-topic" className="block font-semibold text-slate-900 mb-1">
-                  Report Category
+                  {dict.common.action}
                 </label>
                 <select
                   id="correction-topic"
@@ -133,11 +133,11 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
                   onChange={(e) => setTopic(e.target.value as any)}
                   className="w-full px-3 py-2 border border-[#DCE3E0] rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:border-[#167D75]"
                 >
-                  <option value="TAX_RULES">Statutory Income Tax Brackets or Deductions</option>
-                  <option value="HOUSING_COL">Housing Rent or Essential Living Costs</option>
-                  <option value="CURRENCY_FX">Currency, FX or Denomination Anomaly</option>
-                  <option value="CITY_METRIC">City Boundary or Metropolitan Classification</option>
-                  <option value="OTHER">General Calculation Feedback</option>
+                  <option value="TAX_RULES">{dict.salaryAfterTax.headline}</option>
+                  <option value="HOUSING_COL">{dict.costOfLiving.housingRent}</option>
+                  <option value="CURRENCY_FX">{dict.common.brand}</option>
+                  <option value="CITY_METRIC">{dict.calculator.chooseCity}</option>
+                  <option value="OTHER">{dict.common.action}</option>
                 </select>
               </div>
 
@@ -204,14 +204,14 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
                   onClick={onClose}
                   className="px-3.5 py-2 border border-[#DCE3E0] text-slate-700 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
                 >
-                  Cancel
+                  {dict.common.close}
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-[#167D75] hover:bg-[#0D524D] text-white font-semibold rounded-lg transition-colors flex items-center space-x-1.5 cursor-pointer shadow-xs"
                 >
                   <Send className="w-3.5 h-3.5" />
-                  <span>Submit Correction</span>
+                  <span>{dict.common.action}</span>
                 </button>
               </div>
             </form>

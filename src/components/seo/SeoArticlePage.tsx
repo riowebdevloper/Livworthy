@@ -203,7 +203,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
             type="button"
             onClick={() => handleCountryFilterSelect(country.id)}
             className="hover:text-[#167D75] font-medium transition-colors cursor-pointer px-1.5 py-0.5 rounded hover:bg-slate-100"
-            title={`Filter to all ${country.name} salary guides`}
+            title={country.name}
           >
             <span>{country.name}</span>
           </button>
@@ -221,7 +221,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
                   }
                 }}
                 className="hover:text-[#167D75] font-medium transition-colors cursor-pointer px-1.5 py-0.5 rounded hover:bg-slate-100"
-                title={`State / Region: ${region.name}`}
+                title={region.name}
               >
                 <span>{region.name}</span>
               </button>
@@ -234,7 +234,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
             type="button"
             onClick={() => onNavigateCity(city.id)}
             className="hover:text-[#167D75] font-medium transition-colors cursor-pointer px-1.5 py-0.5 rounded hover:bg-slate-100"
-            title={`Launch ${city.name} Calculator`}
+            title={city.name}
           >
             <span>{city.name}</span>
           </button>
@@ -252,7 +252,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
           onClick={() => onNavigateCity(city.id)}
           className="text-[11px] font-semibold text-[#167D75] hover:underline flex items-center shrink-0 cursor-pointer ml-auto"
         >
-          <span>Open in Calculator</span>
+          <span>{dict.common.calculate}</span>
           <ExternalLink className="w-3 h-3 ml-1" />
         </button>
       </nav>
@@ -266,7 +266,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
               Country & City Salary Intelligence Guides ({POPULAR_GUIDES_LIST.length} Articles)
             </h2>
           </div>
-          <span className="text-[11px] text-[#60706D]">Select a country or click any salary tier:</span>
+          <span className="text-[11px] text-[#60706D]">{dict.calculator.chooseCity}</span>
         </div>
 
         {/* Country Filter Pills */}
@@ -424,9 +424,9 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
       {/* 8. Action CTA Bar */}
       <div className="bg-[#102A2E] text-white p-6 sm:p-8 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-bold">Relocating or Evaluating an Offer?</h3>
+          <h3 className="text-lg font-bold">{dict.nav.relocation}</h3>
           <p className="text-xs text-slate-300 mt-1">
-            Compare what {formattedSalary} in {city.name} equals in other major cities like London, Dubai, or Singapore.
+            {dict.compare.subheadline}
           </p>
         </div>
         <button
@@ -437,7 +437,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
           }}
           className="inline-flex items-center space-x-2 bg-[#167D75] hover:bg-[#0D524D] text-white px-5 py-2.5 rounded-xl font-bold text-xs transition-colors shrink-0 cursor-pointer"
         >
-          <span>Compare With Another City</span>
+          <span>{dict.nav.compare}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

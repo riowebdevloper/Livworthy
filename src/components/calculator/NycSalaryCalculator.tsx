@@ -152,29 +152,29 @@ export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
 
         <div className="p-3.5 bg-[#F7F8F5] border border-[#DCE3E0] rounded-xl">
           <span className="text-[11px] font-bold uppercase tracking-wider text-[#60706D] block">
-            Biweekly Paycheck
+            {dict.results.monthlyTakeHome}
           </span>
           <span className="text-xl sm:text-2xl font-black text-[#102A2E] mt-1 block">
             ${result.netBiweeklyMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
-          <span className="text-[11px] text-[#60706D] mt-0.5 block">26 pay periods/yr</span>
+          <span className="text-[11px] text-[#60706D] mt-0.5 block">{`${dict.common.annual} / 26`}</span>
         </div>
 
         <div className="p-3.5 bg-[#F7F8F5] border border-[#DCE3E0] rounded-xl">
           <span className="text-[11px] font-bold uppercase tracking-wider text-[#60706D] block">
-            Effective Tax Rate
+            {dict.results.effectiveTaxRate}
           </span>
           <span className="text-xl sm:text-2xl font-black text-[#102A2E] mt-1 block">
             {result.effectiveRate.toFixed(1)}%
           </span>
           <span className="text-[11px] text-[#60706D] mt-0.5 block">
-            All 4 tax layers combined
+            {dict.salaryAfterTax.effectiveTaxNote}
           </span>
         </div>
 
         <div className="p-3.5 bg-rose-50/50 border border-rose-200 rounded-xl">
           <span className="text-[11px] font-bold uppercase tracking-wider text-rose-900 block">
-            Total Withholdings
+            {dict.salaryAfterTax.totalDeductions}
           </span>
           <span className="text-xl sm:text-2xl font-black text-rose-700 mt-1 block">
             ${result.totalTaxMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -190,59 +190,59 @@ export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
         <table className="w-full text-left text-xs border-collapse border border-[#DCE3E0] rounded-xl overflow-hidden">
           <thead>
             <tr className="bg-[#F7F8F5] text-[#102A2E] font-bold">
-              <th className="p-3 border-b border-[#DCE3E0]">Tax / Withholding Layer</th>
-              <th className="p-3 border-b border-[#DCE3E0]">Statutory Authority</th>
-              <th className="p-3 border-b border-[#DCE3E0]">Annual Amount</th>
-              <th className="p-3 border-b border-[#DCE3E0]">Monthly Amount</th>
-              <th className="p-3 border-b border-[#DCE3E0]">Effective Share</th>
+              <th className="p-3 border-b border-[#DCE3E0]">{dict.salaryAfterTax.totalDeductions}</th>
+              <th className="p-3 border-b border-[#DCE3E0]">{dict.common.evidence}</th>
+              <th className="p-3 border-b border-[#DCE3E0]">{dict.common.annual}</th>
+              <th className="p-3 border-b border-[#DCE3E0]">{dict.common.monthly}</th>
+              <th className="p-3 border-b border-[#DCE3E0]">{dict.results.effectiveTaxRate}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#DCE3E0] bg-white text-[#334D4A]">
-            <tr>
-              <td className="p-3 font-semibold text-[#102A2E]">Federal Income Tax</td>
-              <td className="p-3 text-[#60706D]">IRS Rev. Proc. 2025-32 ($16,100 std deduction)</td>
-              <td className="p-3 font-semibold text-[#102A2E]">${result.federalTaxMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">${(result.federalTaxMajor / 12).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">{result.grossMajor > 0 ? ((result.federalTaxMajor / result.grossMajor) * 100).toFixed(1) : '0.0'}%</td>
-            </tr>
-            <tr>
-              <td className="p-3 font-semibold text-[#102A2E]">Social Security (FICA)</td>
-              <td className="p-3 text-[#60706D]">6.2% on wages up to $184,500 wage base</td>
-              <td className="p-3 font-semibold text-[#102A2E]">${result.socialSecurityMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">${(result.socialSecurityMajor / 12).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">{result.grossMajor > 0 ? ((result.socialSecurityMajor / result.grossMajor) * 100).toFixed(1) : '0.0'}%</td>
-            </tr>
-            <tr>
-              <td className="p-3 font-semibold text-[#102A2E]">Medicare (FICA)</td>
-              <td className="p-3 text-[#60706D]">1.45% uncapped + 0.9% above $200k</td>
-              <td className="p-3 font-semibold text-[#102A2E]">${result.medicareMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">${(result.medicareMajor / 12).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">{result.grossMajor > 0 ? ((result.medicareMajor / result.grossMajor) * 100).toFixed(1) : '0.0'}%</td>
-            </tr>
-            <tr>
-              <td className="p-3 font-semibold text-[#102A2E]">New York State Income Tax</td>
-              <td className="p-3 text-[#60706D]">NYS Tax Law § 601 (3.90%–10.90% + IT-2105-I Worksheets)</td>
-              <td className="p-3 font-semibold text-[#102A2E]">${result.stateTaxMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">${(result.stateTaxMajor / 12).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">{result.grossMajor > 0 ? ((result.stateTaxMajor / result.grossMajor) * 100).toFixed(1) : '0.0'}%</td>
-            </tr>
-            <tr>
-              <td className="p-3 font-semibold text-[#102A2E]">NYC Resident Income Tax</td>
-              <td className="p-3 text-[#60706D]">NYC Admin Code § 11-1701 (3.078%–3.876%)</td>
-              <td className="p-3 font-semibold text-[#102A2E]">${result.localTaxMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">${(result.localTaxMajor / 12).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td className="p-3">{result.grossMajor > 0 ? ((result.localTaxMajor / result.grossMajor) * 100).toFixed(1) : '0.0'}%</td>
-            </tr>
+            {[
+              {
+                layer: dict.salaryAfterTax.federalTax,
+                statute: 'IRS Rev. Proc. 2025-32 ($16,100 std deduction)',
+                amount: result.federalTaxMajor,
+              },
+              {
+                layer: dict.salaryAfterTax.socialSecurity,
+                statute: '6.2% on wages up to $184,500 wage base',
+                amount: result.socialSecurityMajor,
+              },
+              {
+                layer: dict.salaryAfterTax.medicare,
+                statute: '1.45% uncapped + 0.9% above $200k',
+                amount: result.medicareMajor,
+              },
+              {
+                layer: `${dict.salaryAfterTax.stateLocalTax} (NYS)`,
+                statute: 'NYS Tax Law § 601 (3.90%–10.90% + IT-2105-I Worksheets)',
+                amount: result.stateTaxMajor,
+              },
+              {
+                layer: `${dict.salaryAfterTax.stateLocalTax} (NYC)`,
+                statute: 'NYC Admin Code § 11-1701 (3.078%–3.876%)',
+                amount: result.localTaxMajor,
+              },
+            ].map((row) => (
+              <tr key={row.statute}>
+                <td className="p-3 font-semibold text-[#102A2E]">{row.layer}</td>
+                <td className="p-3 text-[#60706D]">{row.statute}</td>
+                <td className="p-3 font-semibold text-[#102A2E]">${row.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td className="p-3">${(row.amount / 12).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td className="p-3">{result.grossMajor > 0 ? ((row.amount / result.grossMajor) * 100).toFixed(1) : '0.0'}%</td>
+              </tr>
+            ))}
             <tr className="bg-[#F7F8F5] font-bold text-[#102A2E]">
-              <td className="p-3">Total Taxes &amp; Deductions</td>
-              <td className="p-3 text-[#60706D]">All 4 statutory withholdings combined</td>
+              <td className="p-3">{dict.salaryAfterTax.totalDeductions}</td>
+              <td className="p-3 text-[#60706D]">{dict.salaryAfterTax.effectiveTaxNote}</td>
               <td className="p-3 text-rose-700">${result.totalTaxMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               <td className="p-3 text-rose-700">${(result.totalTaxMajor / 12).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               <td className="p-3 text-rose-700">{result.effectiveRate.toFixed(1)}%</td>
             </tr>
             <tr className="bg-teal-50/50 font-bold text-[#167D75]">
-              <td className="p-3">Net Take-Home Pay</td>
-              <td className="p-3 text-teal-800">Gross salary minus all statutory taxes</td>
+              <td className="p-3">{dict.salaryAfterTax.netTakeHome}</td>
+              <td className="p-3 text-teal-800">{dict.salaryAfterTax.subheadline}</td>
               <td className="p-3 text-xl">${result.netAnnualMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               <td className="p-3 text-xl">${result.netMonthlyMajor.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               <td className="p-3 text-teal-800">{(100 - result.effectiveRate).toFixed(1)}%</td>
@@ -255,7 +255,7 @@ export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
       <div className="mt-4 p-3 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0] text-[11px] text-[#60706D] flex items-start gap-2">
         <span className="text-[#167D75] font-bold text-xs mt-0.5">ℹ</span>
         <span>
-          <strong>Scope note:</strong> High-income recapture worksheets (Form IT-2105-I) are fully enacted for single filers. Married Filing Jointly and Head of Household schedules will be enabled upon completion of their separate statutory worksheet verification.
+          <strong>{dict.common.disclaimer}:</strong> High-income recapture worksheets (Form IT-2105-I) are fully enacted for single filers. Married Filing Jointly and Head of Household schedules will be enabled upon completion of their separate statutory worksheet verification.
         </span>
       </div>
     </div>

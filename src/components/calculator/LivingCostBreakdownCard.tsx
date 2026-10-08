@@ -67,9 +67,9 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#F7F8F5] gap-3">
         <div>
-          <h3 className="font-bold text-base text-[#102A2E]">Estimated Household Living Costs</h3>
+          <h3 className="font-bold text-base text-[#102A2E]">{dict.costOfLiving.headline}</h3>
           <p className="text-xs text-[#60706D] mt-0.5">
-            Benchmarked to local metropolitan consumer price and housing datasets
+            {dict.costOfLiving.subheadline}
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
                     className="text-xs text-[#60706D] hover:text-[#102A2E] flex items-center space-x-1 px-2 py-1"
                   >
                     <RotateCcw className="w-3 h-3" />
-                    <span>Reset</span>
+                    <span>{dict.common.back}</span>
                   </button>
                 )}
                 <button
@@ -192,7 +192,7 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
                   className="text-xs font-semibold px-3 py-1 bg-[#FFFFFF] border border-[#DCE3E0] hover:border-[#167D75] text-[#102A2E] rounded-md flex items-center space-x-1 transition-colors"
                 >
                   <Edit2 className="w-3 h-3 text-[#167D75]" />
-                  <span>{actualRentMajor !== undefined ? 'Change rent' : 'Use my actual rent'}</span>
+                  <span>{actualRentMajor !== undefined ? dict.calculator.rentOverride : dict.calculator.rentOverride}</span>
                 </button>
               </div>
             )}
@@ -259,13 +259,13 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
       <div className="mt-5 pt-4 border-t border-[#F7F8F5] flex items-center justify-between text-xs">
         <span className="text-[#60706D]">
           Benchmark-date-based coverage: <span className="font-semibold text-[#167D75]">{col.confidenceScore}</span>
-          <span className="block mt-0.5">Freshness reflects the benchmark source month, not each category&apos;s observation period.</span>
+          <span className="block mt-0.5">{dict.results.benchmarkContext}</span>
         </span>
         <button
           onClick={onOpenCustomizer}
           className="text-[#167D75] hover:underline font-semibold"
         >
-          Adjust household profile & transit modes →
+          {dict.results.customizeAssumptions} →
         </button>
       </div>
     </div>

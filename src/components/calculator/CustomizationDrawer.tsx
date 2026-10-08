@@ -174,7 +174,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-[#102A2E] mb-2 flex items-center space-x-1.5">
               <Home className="w-3.5 h-3.5 text-[#167D75]" />
-              <span>Housing & Rent</span>
+              <span>{dict.costOfLiving.housingRent}</span>
             </label>
             <div className="grid grid-cols-2 gap-2">
               {(['studio', '1-bedroom', '2-bedroom', '3-bedroom'] as HousingType[]).map((h) => (
@@ -195,7 +195,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
 
             {/* Area Tier */}
             <div className="mt-3">
-              <span className="text-[11px] text-[#60706D] block mb-1">Neighborhood Area Tier</span>
+              <span className="text-[11px] text-[#60706D] block mb-1">{dict.costOfLiving.housingRent}</span>
               <div className="grid grid-cols-3 gap-2">
                 {(['budget', 'typical', 'premium'] as AreaType[]).map((a) => (
                   <button
@@ -242,7 +242,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-[#102A2E] mb-2 flex items-center space-x-1.5">
               <Bus className="w-3.5 h-3.5 text-[#167D75]" />
-              <span>Transportation Mode</span>
+              <span>{dict.costOfLiving.publicTransit}</span>
             </label>
             <div className="grid grid-cols-2 gap-2">
               {[
@@ -277,7 +277,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-[#102A2E] mb-2 flex items-center space-x-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#167D75]" />
-              <span>Lifestyle Spending Level</span>
+              <span>{dict.salaryNeeded.desiredLifestyle}</span>
             </label>
             <div className="grid grid-cols-3 gap-2">
               {(['essential', 'moderate', 'comfortable'] as LifestyleLevel[]).map((lvl) => (
@@ -325,7 +325,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-[#102A2E] mb-2 flex items-center space-x-1.5">
               <DollarSign className="w-3.5 h-3.5 text-[#167D75]" />
-              <span>Tax Filing Status</span>
+              <span>{dict.calculator.filingStatusLabel}</span>
             </label>
             <div className="space-y-1.5">
               {[

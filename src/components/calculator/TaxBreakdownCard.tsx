@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, ShieldCheck, Info, AlertTriangle } from 'lucide-react';
 import { formatMoney } from '../../lib/money';
 import { TaxResult } from '../../types/tax';
+import { useI18n } from '../../context/I18nContext';
 
 interface TaxBreakdownCardProps {
   tax: TaxResult;
@@ -10,6 +11,7 @@ interface TaxBreakdownCardProps {
 
 export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenEvidence }) => {
   const [expanded, setExpanded] = useState(false);
+  const { t } = useI18n();
 
   if (tax.status === 'TAX_CALCULATION_UNAVAILABLE') {
     return (
@@ -17,14 +19,13 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
         <div className="flex items-start space-x-3">
           <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
           <div>
-            <h3 className="font-bold text-base text-[#102A2E]">Tax calculation not available yet</h3>
+            <h3 className="font-bold text-base text-[#102A2E]">{t('errors.TAX_CALCULATION_UNAVAILABLE')}</h3>
             <p className="text-xs text-[#60706D] mt-1 leading-relaxed">
-              {tax.unsupportedExplanation ||
-                'Official statutory tax schedules for this country are currently under verification against official tax authority tables. Living costs and currency conversions remain active.'}
+              {tax.unsupportedExplanation || t('common.disclaimer')}
             </p>
             <div className="mt-3 inline-flex items-center text-xs text-[#167D75] font-semibold">
               <ShieldCheck className="w-3.5 h-3.5 mr-1" />
-              LivWorthy Integrity Charter: We never substitute synthetic guesses for verified statutory tax schedules.
+              {t('common.tier1SourcesBadge')}
             </div>
           </div>
         </div>
@@ -42,13 +43,13 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
       )}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#F7F8F5] gap-2">
         <div>
-          <h3 className="font-bold text-base text-[#102A2E]">Tax & Statutory Contribution Breakdown</h3>
+          <h3 className="font-bold text-base text-[#102A2E]">{t('salaryAfterTax.headline')}</h3>
           <p className="text-xs text-[#60706D] mt-0.5">
             Rule Version: <span className="font-mono text-[#102A2E]">{tax.taxRuleVersion}</span>
           </p>
         </div>
         <div className="text-left sm:text-right">
-          <div className="text-xs font-semibold uppercase tracking-wider text-[#60706D]">Effective Tax Rate</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-[#60706D]">{t('salaryAfterTax.effectiveTaxNote')}</div>
           <div className="text-lg sm:text-xl font-bold text-[#102A2E] font-tabular">
             {(tax.effectiveTaxRate * 100).toFixed(2)}%
           </div>
@@ -58,25 +59,25 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
       {/* Summary Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 my-4">
         <div className="bg-[#F7F8F5] p-2.5 sm:p-3 rounded-xl min-w-0">
-          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Gross Income</span>
+          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">{t('calculator.annualSalary')}</span>
           <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block">
             {formatMoney(tax.grossIncome, { hideDecimals: true })}
           </span>
         </div>
         <div className="bg-[#F7F8F5] p-2.5 sm:p-3 rounded-xl min-w-0">
-          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Total Taxes & FICA</span>
+          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">{t('salaryAfterTax.totalDeductions')}</span>
           <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block">
             {formatMoney(tax.totalDeductionsAndTaxes, { hideDecimals: true })}
           </span>
         </div>
         <div className="bg-[#F7F8F5] p-2.5 sm:p-3 rounded-xl min-w-0">
-          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Annual Take-Home</span>
+          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">{t('salaryAfterTax.netTakeHome')}</span>
           <span className="text-xs sm:text-sm font-bold text-[#167D75] font-tabular tabular-nums tracking-tight block">
             {formatMoney(tax.netIncome, { hideDecimals: true })}
           </span>
         </div>
         <div className="bg-[#F7F8F5] p-2.5 sm:p-3 rounded-xl min-w-0">
-          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">Combined Marginal</span>
+          <span className="text-[11px] sm:text-xs text-[#60706D] block truncate">{t('salaryAfterTax.effectiveTaxNote')}</span>
           <span className="text-xs sm:text-sm font-bold text-[#102A2E] font-tabular tabular-nums tracking-tight block">
             {(tax.marginalTaxRate * 100).toFixed(2)}%
           </span>
@@ -111,7 +112,7 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
                   {formatMoney(item.amount)}
                 </div>
                 <div className="text-xs text-[#60706D]">
-                  {pctOfGross.toFixed(1)}% of gross
+                  {pctOfGross.toFixed(1)}%
                 </div>
               </div>
             </div>
@@ -126,7 +127,7 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
           onClick={() => setExpanded(!expanded)}
           className="w-full flex items-center justify-between text-xs font-semibold text-[#167D75] hover:text-[#102A2E] transition-colors"
         >
-          <span>{expanded ? 'Hide statutory standard deductions & schedules' : 'View statutory standard deductions & schedules'}</span>
+          <span>{t('accessibility.evidenceActiveRuleLabel')}</span>
           {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </button>
 
@@ -135,14 +136,8 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
             <div className="flex items-start space-x-2">
               <Info className="w-4 h-4 text-[#167D75] shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-[#102A2E]">Deterministic Rules & Standard Deductions:</p>
-                <ul className="list-disc list-inside mt-1 space-y-1">
-                  <li>Federal Standard Deduction: $14,600 (Single) / $29,200 (MFJ) per IRS Rev. Proc. 2023-34.</li>
-                  <li>New York State Standard Deduction: $8,000 (Single) / $16,050 (MFJ) per NYS IT-201-I.</li>
-                  <li>Social Security (OASDI): 6.2% on wages up to $168,600 wage base per Social Security Administration.</li>
-                  <li>Medicare Tax: 1.45% uncapped + 0.9% Additional Medicare tax on earnings exceeding $200,000.</li>
-                  <li>New York City Resident Personal Income Tax: Progressive rates (3.078% to 3.876%) under NYC Admin Code § 11-1701.</li>
-                </ul>
+                <p className="font-semibold text-[#102A2E]">{t('common.verifiedTaxBaseline')}</p>
+                <p className="mt-1">{t('accessibility.evidenceStatutoryDisclaimer')}</p>
               </div>
             </div>
             <div className="pt-2 text-right">
@@ -150,7 +145,7 @@ export const TaxBreakdownCard: React.FC<TaxBreakdownCardProps> = ({ tax, onOpenE
                 onClick={onOpenEvidence}
                 className="text-[#167D75] hover:underline font-semibold text-xs inline-flex items-center"
               >
-                <ShieldCheck className="w-3.5 h-3.5 mr-1" /> View Official Source Records
+                <ShieldCheck className="w-3.5 h-3.5 mr-1" /> {t('common.evidence')}
               </button>
             </div>
           </div>
