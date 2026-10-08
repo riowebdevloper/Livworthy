@@ -94,5 +94,17 @@
       "Dubai relocation breakdown",
       "LivWorthy"
     ]
+  },
+  {
+    "platform": "alternativeto.net",
+    "articleTitle": "LivWorthy Software Listing & Alternatives Directory",
+    "publicationUrl": "https://alternativeto.net/software/livworthy/",
+    "targetPage": "https://www.livworthy.com",
+    "publishedAt": "2026-10-09T00:10:00Z",
+    "status": "SUBMITTED_IN_REVIEW",
+    "canonicalUrl": "https://www.livworthy.com",
+    "anchors": [
+      "https://www.livworthy.com"
+    ]
   }
 ]
