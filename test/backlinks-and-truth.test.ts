@@ -210,7 +210,7 @@ console.log('\n▶ Test Suite 3: Outreach Lifecycle State Machine Consistency');
 }
 
 // ============================================================================
-// PART 1-6: BACKLINK OPPORTUNITIES INTEGRITY
+// PART 1-10: BACKLINK OPPORTUNITIES INTEGRITY & TRUTH RULES
 // ============================================================================
 
 console.log('\n▶ Test Suite 4: Backlink Opportunities Truth & Evidence Verification');
@@ -223,7 +223,31 @@ console.log('\n▶ Test Suite 4: Backlink Opportunities Truth & Evidence Verific
   assert.ok(Array.isArray(oppsList), 'opportunities array exists');
   assert.equal(oppsList.length, 25, '25 opportunities verified and tracked');
 
-  const validPricing = ['FREE_VERIFIED', 'PAID_ONLY', 'FREE_OR_PAID', 'UNKNOWN', 'NEEDS_VERIFICATION'];
+  // Rule C & D: Pricing model semantics
+  const validPricing = [
+    'FREE_GUEST_POST_CONFIRMED',
+    'OUTREACH_FREE',
+    'FREE_OR_PAID',
+    'PAID_ONLY',
+    'UNKNOWN',
+    'NEEDS_VERIFICATION',
+  ];
+  const validPricingEvidence = [
+    'CONTRIBUTOR_POLICY',
+    'PRESS_CONTACT',
+    'EDITORIAL_CONTACT',
+    'COMMUNITY_PLATFORM',
+    'MARKETPLACE',
+    'UNKNOWN',
+  ];
+  const validStatuses = [
+    'DISCOVERED',
+    'NEEDS_VERIFICATION',
+    'VERIFIED_ELIGIBLE',
+    'INVALID',
+    'PAID_ONLY',
+  ];
+  const validPolicyStatuses = ['VERIFIED', 'NEEDS_VERIFICATION', 'UNVERIFIED', 'UNKNOWN'];
   const validLinkTypes = ['FOLLOW', 'NOFOLLOW', 'UGC', 'SPONSORED', 'UNKNOWN'];
   const validContactStatus = ['PUBLIC_VERIFIED', 'UNVERIFIED', 'BOUNCED', 'UNKNOWN'];
 
@@ -232,11 +256,68 @@ console.log('\n▶ Test Suite 4: Backlink Opportunities Truth & Evidence Verific
     assert.equal(opp.authorityMetric, null, `${opp.domain} must not have unsourced authority metric`);
     assert.equal(opp.authorityMetricVerified, false, `${opp.domain} authority metric must be false`);
 
-    // Pricing status check
+    // Rule C: Reject obsolete FREE_VERIFIED
+    assert.notEqual(
+      opp.pricing,
+      'FREE_VERIFIED',
+      `Rule C: ${opp.domain} contains obsolete pricing value FREE_VERIFIED`
+    );
+
+    // Rule D: Validate strict pricing semantics
     assert.ok(
       validPricing.includes(opp.pricing),
-      `${opp.domain} invalid pricing: ${opp.pricing}`
+      `Rule D: ${opp.domain} invalid pricing: ${opp.pricing}`
     );
+
+    // Validate pricing evidence type
+    assert.ok(
+      validPricingEvidence.includes(opp.pricingEvidenceType),
+      `${opp.domain} invalid pricingEvidenceType: ${opp.pricingEvidenceType}`
+    );
+
+    // Validate status values
+    assert.ok(
+      validStatuses.includes(opp.status),
+      `${opp.domain} invalid status: ${opp.status}`
+    );
+
+    // Validate policyStatus values
+    assert.ok(
+      validPolicyStatuses.includes(opp.policyStatus),
+      `${opp.domain} invalid policyStatus: ${opp.policyStatus}`
+    );
+
+    // Rule A: policyStatus = NEEDS_VERIFICATION -> status must NOT be VERIFIED_ELIGIBLE
+    if (opp.policyStatus === 'NEEDS_VERIFICATION' || opp.policyStatus !== 'VERIFIED') {
+      assert.notEqual(
+        opp.status,
+        'VERIFIED_ELIGIBLE',
+        `Rule A Violation: ${opp.domain} has unverified policyStatus (${opp.policyStatus}) but status = VERIFIED_ELIGIBLE`
+      );
+    }
+
+    // VERIFIED_ELIGIBLE strictly requires policyStatus = VERIFIED
+    if (opp.status === 'VERIFIED_ELIGIBLE') {
+      assert.equal(
+        opp.policyStatus,
+        'VERIFIED',
+        `Status State Machine Violation: ${opp.domain} status is VERIFIED_ELIGIBLE but policyStatus is not VERIFIED`
+      );
+    }
+
+    // Rule B: policyStatus != VERIFIED -> authorBioAllowed and contextualLinkAllowed must be null
+    if (opp.policyStatus !== 'VERIFIED') {
+      assert.equal(
+        opp.authorBioAllowed,
+        null,
+        `Rule B Violation: ${opp.domain} has unverified policy (${opp.policyStatus}) but authorBioAllowed is not null (${opp.authorBioAllowed})`
+      );
+      assert.equal(
+        opp.contextualLinkAllowed,
+        null,
+        `Rule B Violation: ${opp.domain} has unverified policy (${opp.policyStatus}) but contextualLinkAllowed is not null (${opp.contextualLinkAllowed})`
+      );
+    }
 
     // Link type check
     assert.ok(
@@ -250,7 +331,7 @@ console.log('\n▶ Test Suite 4: Backlink Opportunities Truth & Evidence Verific
       `${opp.domain} invalid contactStatus: ${opp.contactStatus}`
     );
   }
-  console.log('  ✔ 25 backlink opportunities audited: no unsourced DA/DR metrics, strict pricing and link types');
+  console.log('  ✔ 25 backlink opportunities audited: Rule A, B, C, D verified (zero policy/status contradictions, null capability for unverified, valid pricing evidence types)');
 }
 
 // ============================================================================
