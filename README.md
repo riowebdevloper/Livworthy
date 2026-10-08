@@ -1,5 +1,9 @@
 # LivWorthy
 
+[![Production Site](https://img.shields.io/badge/Production-livworthy.com-00C49F?style=for-the-badge&logo=vercel&logoColor=white)](https://www.livworthy.com)
+
+**Live Production Site**: [https://www.livworthy.com](https://www.livworthy.com)
+
 LivWorthy is a production-oriented salary, tax and cost-of-living decision platform. It compares take-home pay, local living costs, savings capacity, relocation economics and competing job offers with explicit evidence and tax-rule versioning.
 
 ## Core product
