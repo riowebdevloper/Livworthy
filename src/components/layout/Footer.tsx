@@ -51,7 +51,8 @@ export const Footer: React.FC<FooterProps> = ({
                 scrollToTop();
               }}
               className="text-left group cursor-pointer"
-              title="LivWorthy Home"
+              title={dict.accessibility?.footerHomeTitle || 'LivWorthy Home'}
+              aria-label={dict.accessibility?.footerHomeTitle || 'LivWorthy Home'}
             >
               <LivWorthLogo size="sm" showTagline={true} />
             </button>
@@ -87,7 +88,6 @@ export const Footer: React.FC<FooterProps> = ({
                 scrollToTop();
               }}
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group cursor-pointer"
-              title="Click to view all calculators"
             >
               <span>{dict.footer.calculatorsTitle}</span>
               <ChevronRight className="w-3 h-3 ml-1 text-[#167D75] opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -223,7 +223,6 @@ export const Footer: React.FC<FooterProps> = ({
                 scrollToTop();
               }}
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group"
-              title="Click to view all country & city salary guides"
             >
               <span>{dict.footer.intelligenceTitle}</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
@@ -272,7 +271,6 @@ export const Footer: React.FC<FooterProps> = ({
               type="button"
               onClick={onOpenMethodology}
               className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3 hover:text-[#167D75] transition-colors flex items-center group cursor-pointer"
-              title="Click to view Calculation Methodology and Standards"
             >
               <span>{dict.footer.institutionalTitle}</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
@@ -369,7 +367,6 @@ export const Footer: React.FC<FooterProps> = ({
                 scrollToTop();
               }}
               className="font-bold text-xs tracking-wider text-[#102A2E] hover:text-[#167D75] transition-colors cursor-pointer flex items-center group shrink-0"
-              title="Click to view city salary calculators"
             >
               <span>{dict.footer.popularCityIncomeHubs}</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />

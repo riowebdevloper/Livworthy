@@ -112,7 +112,7 @@ export const SalaryNeededView: React.FC<SalaryNeededViewProps> = ({
             </label>
             <select
               id="target-location-select"
-              aria-label="Target Location"
+              aria-label={dict.accessibility?.targetLocationAriaLabel || 'Target Location'}
               value={selectedCityId}
               onChange={(e) => setSelectedCityId(e.target.value)}
               className="block w-full rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] px-3 py-3 text-base font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"

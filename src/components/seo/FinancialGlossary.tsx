@@ -21,7 +21,7 @@ export const FinancialGlossary: React.FC<FinancialGlossaryProps> = ({
 
   return (
     <section
-      aria-label="Financial Glossary"
+      aria-label={title}
       className="bg-white border border-[#DCE3E0] rounded-2xl p-6 shadow-xs space-y-4"
     >
       <div className="flex items-center justify-between cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>

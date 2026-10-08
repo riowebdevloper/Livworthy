@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Home, Utensils, Zap, Bus, HeartPulse, Baby, Sparkles, Edit2, Check, RotateCcw, AlertTriangle } from 'lucide-react';
 import { createMoney, formatMoney, toMajor } from '../../lib/money';
 import { CostCategorySummary, CostOfLivingResult } from '../../types/col';
+import { useI18n } from '../../context/I18nContext';
 
 interface LivingCostBreakdownCardProps {
   col: CostOfLivingResult;
@@ -26,6 +27,7 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
   onOverrideRent,
   onOpenCustomizer,
 }) => {
+  const { dict } = useI18n();
   const [rentInput, setRentInput] = useState<string>(
     actualRentMajor !== undefined && isFinite(actualRentMajor) ? actualRentMajor.toString() : ''
   );
@@ -152,7 +154,7 @@ export const LivingCostBreakdownCard: React.FC<LivingCostBreakdownCardProps> = (
                   <input
                     type="number"
                     value={rentInput}
-                    placeholder="e.g. 2400"
+                    placeholder={dict.calculator?.rentOverridePlaceholder || '2400'}
                     onChange={(e) => setRentInput(e.target.value)}
                     className="w-24 text-xs font-bold text-[#102A2E] focus:outline-hidden bg-transparent font-tabular"
                   />

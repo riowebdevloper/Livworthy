@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, BookOpen, ShieldCheck, Cpu, Database, CheckCircle2 } from 'lucide-react';
+import { useI18n } from '../../context/I18nContext';
 
 interface MethodologyModalProps {
   isOpen: boolean;
@@ -12,6 +13,8 @@ export const MethodologyModal: React.FC<MethodologyModalProps> = ({
   onClose,
   onOpenEvidence,
 }) => {
+  const { dict } = useI18n();
+
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -26,7 +29,7 @@ export const MethodologyModal: React.FC<MethodologyModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Calculation Methodology" className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div role="dialog" aria-modal="true" aria-label={dict.accessibility?.methodologyDialogAriaLabel || 'Calculation Methodology'} className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-[#102A2E]/50 backdrop-blur-xs transition-opacity"
@@ -48,7 +51,7 @@ export const MethodologyModal: React.FC<MethodologyModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            aria-label="Close methodology modal"
+            aria-label={dict.accessibility?.methodologyCloseAriaLabel || 'Close methodology modal'}
             className="p-1.5 rounded-lg text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors"
           >
             <X className="w-5 h-5" />
@@ -59,7 +62,7 @@ export const MethodologyModal: React.FC<MethodologyModalProps> = ({
         <div
           tabIndex={0}
           role="region"
-          aria-label="Methodology details"
+          aria-label={dict.accessibility?.methodologyDetailsAriaLabel || 'Methodology details'}
           className="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs leading-relaxed text-[#60706D] focus:outline-hidden"
         >
           {/* Section 1: Non-Negotiable Financial Rule */}

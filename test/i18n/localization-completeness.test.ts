@@ -67,6 +67,7 @@ const requiredNamespaces = [
   'footer',
   'languageSelector',
   'reports',
+  'accessibility',
 ] as const;
 
 const englishDict = DICTIONARIES.en;

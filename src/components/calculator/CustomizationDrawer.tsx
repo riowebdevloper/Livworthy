@@ -61,7 +61,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
           </div>
           <button
             onClick={onClose}
-            aria-label="Close customization drawer"
+            aria-label={dict.accessibility?.customizationDrawerCloseAriaLabel || 'Close customization drawer'}
             className="p-1.5 rounded-lg text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors"
           >
             <X className="w-5 h-5" />
@@ -226,7 +226,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
                 <span className="absolute left-3 top-2 text-xs text-[#60706D] font-bold">$</span>
                 <input
                   type="number"
-                  placeholder="e.g. 2750"
+                  placeholder={dict.calculator?.rentOverridePlaceholder || '2500'}
                   value={actualRentMajor || ''}
                   onChange={(e) => {
                     const v = parseFloat(e.target.value);

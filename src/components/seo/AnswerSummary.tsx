@@ -2,6 +2,7 @@ import React from 'react';
 import { ShieldCheck, Calendar, Info, Building2, CheckCircle2, HelpCircle } from 'lucide-react';
 import { LivWorthCalculationOutcome } from '../../types/scenario';
 import { formatMoney } from '../../lib/money';
+import { useI18n } from '../../context/I18nContext';
 
 interface AnswerSummaryProps {
   question: string;
@@ -32,6 +33,8 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
   onOpenEvidence,
   onReportCorrection,
 }) => {
+  const { dict } = useI18n();
+
   if (!outcome) {
     return (
       <section className="p-6 bg-white border border-[#DCE3E0] rounded-2xl animate-pulse">
@@ -77,7 +80,7 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
 
   return (
     <section
-      aria-label="Direct Financial Answer & Fact Summary"
+      aria-label={dict.accessibility?.directAnswerAriaLabel || 'Direct Financial Answer & Fact Summary'}
       className="p-6 sm:p-7 bg-white border-l-4 border-l-[#167D75] border border-[#DCE3E0] rounded-2xl shadow-xs space-y-5"
     >
       {/* 1. Clear Question Anchor */}

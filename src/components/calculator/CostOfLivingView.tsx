@@ -110,7 +110,7 @@ export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
             </label>
             <select
               id="col-city-select"
-              aria-label="Select City"
+              aria-label={dict.accessibility?.selectCityAriaLabel || 'Select City'}
               value={selectedCityId}
               onChange={(e) => {
                 setSelectedCityId(e.target.value);

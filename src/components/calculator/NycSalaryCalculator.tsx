@@ -1,6 +1,7 @@
 import React, { useState, useId, useMemo } from 'react';
 import { TaxRegistry } from '../../engines/tax/tax-registry';
 import { createMoney, formatMoney, toMajor } from '../../lib/money';
+import { useI18n } from '../../context/I18nContext';
 
 export interface NycSalaryCalculatorProps {
   initialSalary?: number;
@@ -9,6 +10,7 @@ export interface NycSalaryCalculatorProps {
 export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
   initialSalary = 100000,
 }) => {
+  const { dict } = useI18n();
   const salaryInputId = useId();
   const [salary, setSalary] = useState<number>(initialSalary);
 
@@ -71,7 +73,7 @@ export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
 
   return (
     <div
-      aria-label="Interactive NYC Salary Calculator"
+      aria-label={dict.accessibility?.nycCalculatorAriaLabel || 'Interactive NYC Salary Calculator'}
       className="p-5 sm:p-7 bg-white border border-[#DCE3E0] rounded-2xl shadow-xs"
     >
       {/* Scope and Authority Header */}

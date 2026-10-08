@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, AlertCircle, CheckCircle2, ShieldAlert, Send } from 'lucide-react';
+import { useI18n } from '../../context/I18nContext';
 
 interface DataCorrectionModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
   onClose,
   defaultJurisdiction = '',
 }) => {
+  const { dict } = useI18n();
   const [topic, setTopic] = useState<'TAX_RULES' | 'HOUSING_COL' | 'CURRENCY_FX' | 'CITY_METRIC' | 'OTHER'>('TAX_RULES');
   const [jurisdiction, setJurisdiction] = useState<string>(defaultJurisdiction);
   const [description, setDescription] = useState<string>('');
@@ -84,7 +86,7 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            aria-label="Close dialog"
+            aria-label={dict.accessibility?.closeCorrectionDialogAriaLabel || 'Close dialog'}
             className="p-1.5 rounded-lg text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
@@ -146,7 +148,7 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
                 <input
                   id="correction-jurisdiction"
                   type="text"
-                  placeholder="e.g., United States (New York City) or UK"
+                  placeholder="US, UK, DE, FR, JP..."
                   value={jurisdiction}
                   onChange={(e) => setJurisdiction(e.target.value)}
                   className="w-full px-3 py-2 border border-[#DCE3E0] rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:border-[#167D75]"
@@ -161,7 +163,7 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
                   id="correction-description"
                   rows={3}
                   required
-                  placeholder="Describe the discrepancy, affected bracket or value, and expected figure..."
+                  placeholder={dict.accessibility?.correctionDescriptionPlaceholder || 'Describe the discrepancy, affected bracket or value, and expected figure...'}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className="w-full px-3 py-2 border border-[#DCE3E0] rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:border-[#167D75]"
@@ -175,7 +177,7 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
                 <input
                   id="correction-source"
                   type="url"
-                  placeholder="e.g., https://www.irs.gov/... or https://www.gov.uk/..."
+                  placeholder="https://..."
                   value={sourceUrl}
                   onChange={(e) => setSourceUrl(e.target.value)}
                   className="w-full px-3 py-2 border border-[#DCE3E0] rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:border-[#167D75]"

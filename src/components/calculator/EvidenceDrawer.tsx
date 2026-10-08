@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, ShieldCheck, ExternalLink, Calendar, CheckCircle2, AlertCircle } from 'lucide-react';
 import { EVIDENCE_SOURCES } from '../../data/evidence-registry';
+import { SupportedLocale, getDictionary } from '../../lib/i18n';
 
 interface EvidenceDrawerProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface EvidenceDrawerProps {
     taxRuleVersion?: string;
     colDate?: string;
   };
+  locale?: SupportedLocale;
 }
 
 export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
@@ -17,7 +19,9 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
   onClose,
   sourceIds,
   ruleVersions,
+  locale = 'en',
 }) => {
+  const dict = getDictionary(locale);
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -40,7 +44,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
     .filter(Boolean);
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Data Provenance & Evidence" className="fixed inset-0 z-50 flex justify-end">
+    <div role="dialog" aria-modal="true" aria-label={dict.accessibility?.evidenceDrawerAriaLabel || 'Data Provenance & Evidence'} className="fixed inset-0 z-50 flex justify-end">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-[#102A2E]/40 backdrop-blur-xs transition-opacity"
@@ -56,13 +60,13 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#102A2E]">Data Provenance & Evidence</h2>
-              <p className="text-xs text-[#60706D]">Audit trail of statutory sources and datasets</p>
+              <h2 className="text-base font-bold text-[#102A2E]">{dict.accessibility?.evidenceDrawerAriaLabel || 'Data Provenance & Evidence'}</h2>
+              <p className="text-xs text-[#60706D]">{dict.accessibility?.evidenceProvenanceDesc || 'Audit trail of statutory sources and datasets'}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            aria-label="Close data provenance drawer"
+            aria-label={dict.accessibility?.evidenceDrawerCloseAriaLabel || 'Close data provenance drawer'}
             className="p-1.5 rounded-lg text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors"
           >
             <X className="w-5 h-5" />
@@ -74,28 +78,28 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
           {/* Version banner */}
           <div className="p-3.5 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0] space-y-1">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-[#102A2E]">Active Rule System:</span>
+              <span className="font-bold text-[#102A2E]">{dict.accessibility?.evidenceActiveRuleLabel || 'Active Rule System:'}</span>
               <span className="font-mono text-[11px] font-semibold text-[#167D75] bg-white px-2 py-0.5 rounded border border-[#DCE3E0]">
                 {ruleVersions?.taxRuleVersion || 'No Verified Tax Schedule Active'}
               </span>
             </div>
             <p className="text-[11px] text-[#60706D]">
-              All calculations run deterministically against validated statutory schedules. We never estimate or interpolate tax brackets with LLMs or crowdsourced guessing.
+              {dict.accessibility?.evidenceStatutoryDisclaimer || 'All calculations run deterministically against validated statutory schedules. We never estimate or interpolate tax brackets with LLMs or crowdsourced guessing.'}
             </p>
           </div>
 
           {/* Sources List */}
           <div>
             <h3 className="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">
-              Authoritative Reference Sources ({sources.length})
+              {dict.accessibility?.evidenceSourcesHeading || 'Authoritative Reference Sources'} ({sources.length})
             </h3>
 
             {sources.length === 0 ? (
               <div className="p-4 rounded-xl border border-dashed border-[#DCE3E0] text-center text-[#60706D] space-y-1">
                 <AlertCircle className="w-5 h-5 mx-auto text-[#60706D]" />
-                <p className="font-semibold text-xs text-[#102A2E]">No Active Sources Loaded</p>
+                <p className="font-semibold text-xs text-[#102A2E]">{dict.accessibility?.evidenceNoSourcesTitle || 'No Active Sources Loaded'}</p>
                 <p className="text-[11px]">
-                  Provenance records are loaded dynamically upon authoritative calculation. For jurisdictions without a dedicated adapter, statutory tax evidence is never fabricated.
+                  {dict.accessibility?.evidenceNoSourcesDesc || 'Provenance records are loaded dynamically upon authoritative calculation. For jurisdictions without a dedicated adapter, statutory tax evidence is never fabricated.'}
                 </p>
               </div>
             ) : (
@@ -145,7 +149,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
                           rel="noreferrer"
                           className="text-[#167D75] hover:underline flex items-center"
                         >
-                          <span>Official Bulletin</span>
+                          <span>{dict.accessibility?.evidenceOfficialBulletin || 'Official Bulletin'}</span>
                           <ExternalLink className="w-3 h-3 ml-1" />
                         </a>
                       )}
@@ -160,10 +164,10 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
           <div className="p-4 rounded-xl bg-[#DDF2EC]/40 border border-[#167D75]/30 space-y-1.5">
             <div className="flex items-center space-x-1.5 text-[#0D625B] font-bold text-xs">
               <CheckCircle2 className="w-4 h-4" />
-              <span>LivWorthy Provenance Guarantee</span>
+              <span>{dict.accessibility?.evidenceProvenanceTitle || 'LivWorthy Provenance Guarantee'}</span>
             </div>
             <p className="text-[11px] text-[#102A2E] leading-relaxed">
-              Every tax bracket, standard deduction, FICA cap, and median rent benchmark is linked to a government publication record. No financial formula is generated dynamically by an AI model.
+              {dict.accessibility?.evidenceProvenanceDesc || 'Every tax bracket, standard deduction, FICA cap, and median rent benchmark is linked to a government publication record. No financial formula is generated dynamically by an AI model.'}
             </p>
           </div>
         </div>
@@ -175,7 +179,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
             onClick={onClose}
             className="w-full py-2 px-4 rounded-xl bg-[#102A2E] text-white text-xs font-bold hover:bg-[#167D75] transition-colors"
           >
-            Close Provenance View
+            {dict.accessibility?.evidenceDrawerCloseBtn || 'Close Provenance View'}
           </button>
         </div>
       </div>

@@ -13,6 +13,8 @@ import {
   Lock,
 } from 'lucide-react';
 
+import { useI18n } from '../../context/I18nContext';
+
 interface SystemDiagnosticsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,6 +24,7 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { dict } = useI18n();
   const [diagnostics, setDiagnostics] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
@@ -93,7 +96,7 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({
       id="system-diagnostics-modal"
       role="dialog"
       aria-modal="true"
-      aria-label="System Diagnostics"
+      aria-label={dict.accessibility?.systemDiagnosticsAriaLabel || 'System Diagnostics'}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -126,13 +129,13 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({
               onClick={() => setRefreshTrigger((prev) => prev + 1)}
               disabled={loading}
               className="p-1.5 text-[#60706D] hover:text-[#102A2E] hover:bg-[#DCE3E0]/50 rounded transition-colors"
-              title="Refresh diagnostics"
+              title={dict.accessibility?.refreshDiagnosticsTitle || 'Refresh diagnostics'}
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              aria-label="Close diagnostics dialog"
+              aria-label={dict.accessibility?.closeDiagnosticsAriaLabel || 'Close diagnostics dialog'}
               className="p-1.5 text-[#60706D] hover:text-[#102A2E] hover:bg-[#DCE3E0]/50 rounded transition-colors"
             >
               <X className="w-5 h-5" />

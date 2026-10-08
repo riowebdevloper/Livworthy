@@ -272,7 +272,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
             <div className="relative">
               <select
                 id="hero-location-select"
-                aria-label="Location"
+                aria-label={dict.accessibility?.locationSelectAriaLabel || 'Location'}
                 value={currentCity.id}
                 onChange={(e) => handleCityChange(e.target.value)}
                 className="block w-full rounded-xl border border-[#DCE3E0] bg-[#FFFFFF] px-3.5 py-3 text-base sm:text-lg font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"

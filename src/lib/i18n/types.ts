@@ -294,6 +294,82 @@ export interface I18nFooterTranslations {
   legalNavigationLabel: string;
 }
 
+export interface I18nAccessibilityTranslations {
+  // Header
+  logoHomeAriaLabel: string;
+  logoHomeTitle: string;
+  siteNavigationAriaLabel: string;
+  navHowItWorksAriaLabel: string;
+  navSourcesAriaLabel: string;
+  navCoverageAriaLabel: string;
+  navRelocationAriaLabel: string;
+  calculatorTabsAriaLabel: string;
+  // Footer
+  footerHomeTitle: string;
+  footerCalculatorsTitle: string;
+  footerGuidesTitle: string;
+  footerMethodologyTitle: string;
+  footerCityCalculatorsTitle: string;
+  // EvidenceDrawer
+  evidenceDrawerAriaLabel: string;
+  evidenceDrawerCloseAriaLabel: string;
+  evidenceDrawerCloseBtn: string;
+  evidenceActiveRuleLabel: string;
+  evidenceSourcesHeading: string;
+  evidenceNoSourcesTitle: string;
+  evidenceNoSourcesDesc: string;
+  evidenceProvenanceTitle: string;
+  evidenceProvenanceDesc: string;
+  evidenceOfficialBulletin: string;
+  evidenceStatutoryDisclaimer: string;
+  // ResultSummaryCard
+  viewAnnualAriaLabel: string;
+  viewMonthlyAriaLabel: string;
+  // CustomizationDrawer
+  customizationDrawerCloseAriaLabel: string;
+  // CompareView
+  selectCityAAriaLabel: string;
+  selectCityBAriaLabel: string;
+  compareTableAriaLabel: string;
+  // JobOfferCompareView
+  locationAAriaLabel: string;
+  locationBAriaLabel: string;
+  housingAllowanceAriaLabel: string;
+  flightsRelocationAriaLabel: string;
+  hotelRelocationAriaLabel: string;
+  depositRelocationAriaLabel: string;
+  shippingRelocationAriaLabel: string;
+  // SalaryWorthView
+  locationSelectAriaLabel: string;
+  // CostOfLivingView
+  selectCityAriaLabel: string;
+  // SalaryAfterTaxView
+  locationJurisdictionAriaLabel: string;
+  taxYearSelectAriaLabel: string;
+  filingStatusSelectAriaLabel: string;
+  // SalaryNeededView
+  targetLocationAriaLabel: string;
+  // LanguageSuggestionBanner
+  languageSuggestionAriaLabel: string;
+  dismissLanguageSuggestionAriaLabel: string;
+  // NycSalaryCalculator
+  nycCalculatorAriaLabel: string;
+  // SEO Components
+  directAnswerAriaLabel: string;
+  breadcrumbAriaLabel: string;
+  navigateHomeTitle: string;
+  methodologyDialogAriaLabel: string;
+  methodologyCloseAriaLabel: string;
+  methodologyDetailsAriaLabel: string;
+  // DataCorrectionModal
+  closeCorrectionDialogAriaLabel: string;
+  correctionDescriptionPlaceholder: string;
+  // SystemDiagnosticsModal
+  systemDiagnosticsAriaLabel: string;
+  refreshDiagnosticsTitle: string;
+  closeDiagnosticsAriaLabel: string;
+}
+
 export interface I18nLanguageSelectorTranslations {
   title: string;
   searchPlaceholder: string;
@@ -336,6 +412,7 @@ export interface I18nDictionary {
   footer: I18nFooterTranslations;
   languageSelector: I18nLanguageSelectorTranslations;
   reports: I18nReportsTranslations;
+  accessibility: I18nAccessibilityTranslations;
 }
 
 export type ContentTranslationStatus =
