@@ -66,6 +66,15 @@ function AppContent() {
 
   const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
     if (typeof window !== 'undefined') {
+      const pathname = window.location.pathname;
+      if (pathname.includes('/salary-after-tax')) return 'salary-after-tax';
+      if (pathname.includes('/salary-needed')) return 'salary-needed';
+      if (pathname.includes('/cost-of-living')) return 'cost-of-living';
+      if (pathname.includes('/compare')) return 'compare';
+      if (pathname.includes('/job-offers')) return 'job-offers';
+      if (pathname.includes('/salary-worth')) return 'salary-worth';
+      if (pathname.includes('/guides/')) return 'nyc-100k-guide';
+
       const params = new URLSearchParams(window.location.search);
       const tabParam = params.get('tab') as ActiveTab | null;
       if (
@@ -160,9 +169,29 @@ function AppContent() {
       if (langParam && TRANSLATIONS[langParam]) {
         setLocale(langParam);
         setStoredLocale(langParam);
+      } else {
+        const pathname = window.location.pathname;
+        const pathSegments = pathname.split('/').filter(Boolean);
+        if (pathSegments.length > 0 && TRANSLATIONS[pathSegments[0] as SupportedLocale]) {
+          setLocale(pathSegments[0] as SupportedLocale);
+          setStoredLocale(pathSegments[0] as SupportedLocale);
+        }
       }
 
-      if (
+      const pathname = window.location.pathname;
+      if (pathname.includes('/salary-after-tax')) {
+        setActiveTab('salary-after-tax');
+      } else if (pathname.includes('/salary-needed')) {
+        setActiveTab('salary-needed');
+      } else if (pathname.includes('/cost-of-living')) {
+        setActiveTab('cost-of-living');
+      } else if (pathname.includes('/compare')) {
+        setActiveTab('compare');
+      } else if (pathname.includes('/job-offers')) {
+        setActiveTab('job-offers');
+      } else if (pathname.includes('/salary-worth')) {
+        setActiveTab('salary-worth');
+      } else if (
         tabParam &&
         [
           'salary-worth',
@@ -245,17 +274,24 @@ function AppContent() {
 
     try {
       if (typeof window === 'undefined') return;
-      const params = new URLSearchParams();
+      const params = new URLSearchParams(window.location.search);
       params.set('city', scenario.location.id);
       params.set('salary', toMajor(scenario.compensation.baseSalary).toString());
-      params.set('tab', activeTab);
       if (activeTab === 'nyc-100k-guide' && selectedGuideSlug) {
         params.set('guide', selectedGuideSlug);
       }
       if (actualRentMajor !== undefined && isFinite(actualRentMajor)) {
         params.set('rent', actualRentMajor.toString());
       }
-      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      const cleanTabs = ['salary-worth', 'salary-needed', 'salary-after-tax', 'cost-of-living', 'compare', 'job-offers'];
+      const isCleanRoute = cleanTabs.some((t) => window.location.pathname.endsWith(`/${t}`));
+      if (!isCleanRoute) {
+        params.set('tab', activeTab);
+      } else {
+        params.delete('tab');
+      }
+      const q = params.toString();
+      const newUrl = q ? `${window.location.pathname}?${q}` : window.location.pathname;
       window.history.replaceState(null, '', newUrl);
     } catch {
       // Ignore in strict iframes
@@ -267,10 +303,28 @@ function AppContent() {
     setActiveTab(tab);
     try {
       if (typeof window === 'undefined') return;
-      const params = new URLSearchParams(window.location.search);
-      params.set('tab', tab);
-      const newUrl = `${window.location.pathname}?${params.toString()}`;
-      window.history.pushState(null, '', newUrl);
+      const cleanTabs = ['salary-worth', 'salary-needed', 'salary-after-tax', 'cost-of-living', 'compare', 'job-offers'];
+      const isCleanRoute = cleanTabs.some((t) => window.location.pathname.endsWith(`/${t}`));
+      if (isCleanRoute) {
+        let targetPath = '/';
+        if (tab === 'salary-worth') {
+          targetPath = locale === 'en' ? '/' : `/${locale}`;
+        } else if (tab === 'nyc-100k-guide') {
+          targetPath = locale === 'en' ? `/guides/${selectedGuideSlug}` : `/${locale}/guides/${selectedGuideSlug}`;
+        } else {
+          targetPath = locale === 'en' ? `/${tab}` : `/${locale}/${tab}`;
+        }
+        const params = new URLSearchParams(window.location.search);
+        params.delete('tab');
+        const q = params.toString();
+        const newUrl = q ? `${targetPath}?${q}` : targetPath;
+        window.history.pushState(null, '', newUrl);
+      } else {
+        const params = new URLSearchParams(window.location.search);
+        params.set('tab', tab);
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.pushState(null, '', newUrl);
+      }
     } catch {}
   };
 

@@ -841,22 +841,22 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
               </nav>
             </div>
             <nav aria-label="Calculator tabs" class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none border-t border-[#F7F8F5] bg-white">
-              <a href="/${loc}?tab=salary-worth" id="tab-salary-worth" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-[#102A2E] text-white shadow-sm">
+              <a href="/${loc}" id="tab-salary-worth" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-[#102A2E] text-white shadow-sm">
                 <span>${escapeHtml(t.tabSalaryWorth)}</span>
               </a>
-              <a href="/${loc}?tab=salary-needed" id="tab-salary-needed" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <a href="/${loc}/salary-needed" id="tab-salary-needed" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
                 <span>${escapeHtml(t.tabSalaryNeeded)}</span>
               </a>
-              <a href="/${loc}?tab=salary-after-tax" id="tab-salary-after-tax" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <a href="/${loc}/salary-after-tax" id="tab-salary-after-tax" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
                 <span>${escapeHtml(t.tabSalaryAfterTax)}</span>
               </a>
-              <a href="/${loc}?tab=cost-of-living" id="tab-cost-of-living" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <a href="/${loc}/cost-of-living" id="tab-cost-of-living" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
                 <span>${escapeHtml(t.tabCostOfLiving)}</span>
               </a>
-              <a href="/${loc}?tab=compare" id="tab-compare" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <a href="/${loc}/compare" id="tab-compare" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
                 <span>${escapeHtml(t.tabCompare)}</span>
               </a>
-              <a href="/${loc}?tab=job-offers" id="tab-job-offers" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+              <a href="/${loc}/job-offers" id="tab-job-offers" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
                 <span>${escapeHtml(t.tabJobOffers)}</span>
               </a>
             </nav>

@@ -223,7 +223,7 @@ export class MultilingualContentGapEngine {
       highDemandQuestions,
       recommendations: [
         `Ensure ${locale} metadata answers the primary search intent directly within the top 150 words.`,
-        `Reinforce internal linking to /${locale}?tab=salary-worth and relevant regional research assets.`,
+        `Reinforce internal linking to /${locale}/salary-worth and relevant regional research assets.`,
         `Maintain zero English leakage across titles, descriptions, and interactive elements.`,
       ],
     };

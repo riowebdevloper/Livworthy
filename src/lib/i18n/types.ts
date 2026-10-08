@@ -282,6 +282,16 @@ export interface I18nFooterTranslations {
   terms: string;
   privacy: string;
   copyright: string;
+  tier1DataPriority: string;
+  countriesDirectory: string;
+  citiesDirectory: string;
+  popularCityIncomeHubs: string;
+  cityHubDescription: string;
+  systemArchitectureDiagnostics: string;
+  aboutLivworthy: string;
+  exploreAllGuides: string;
+  guideCountLabel: string;
+  legalNavigationLabel: string;
 }
 
 export interface I18nLanguageSelectorTranslations {

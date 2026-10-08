@@ -4,6 +4,11 @@ import { LivWorthLogo } from '../ui/LivWorthBrand';
 import { ActiveTab } from './Header';
 import { POPULAR_GUIDE_LINKS, TOTAL_GUIDES_COUNT } from '../../data/salary-guides-links';
 import { useI18n } from '../../context/I18nContext';
+import {
+  FEATURED_CITIES,
+  getLocalizedCityDisplayName,
+  getLocalizedCountryDisplayName,
+} from '../../lib/i18n/locations';
 
 interface FooterProps {
   onOpenEvidence: () => void;
@@ -15,21 +20,6 @@ interface FooterProps {
   onSelectCity?: (cityId: string) => void;
 }
 
-const FEATURED_CITIES = [
-  { id: 'nyc', name: 'New York City', country: 'US' },
-  { id: 'sf', name: 'San Francisco', country: 'US' },
-  { id: 'london', name: 'London', country: 'UK' },
-  { id: 'dubai', name: 'Dubai', country: 'UAE' },
-  { id: 'toronto', name: 'Toronto', country: 'Canada' },
-  { id: 'sydney', name: 'Sydney', country: 'Australia' },
-  { id: 'berlin', name: 'Berlin', country: 'Germany' },
-  { id: 'singapore', name: 'Singapore', country: 'Singapore' },
-  { id: 'tokyo', name: 'Tokyo', country: 'Japan' },
-  { id: 'zurich', name: 'Zurich', country: 'Switzerland' },
-  { id: 'dublin', name: 'Dublin', country: 'Ireland' },
-  { id: 'mumbai', name: 'Mumbai', country: 'India' },
-];
-
 export const Footer: React.FC<FooterProps> = ({
   onOpenEvidence,
   onOpenMethodology,
@@ -39,7 +29,7 @@ export const Footer: React.FC<FooterProps> = ({
   onSelectGuide,
   onSelectCity,
 }) => {
-  const { dict, isRtl } = useI18n();
+  const { locale, dict, isRtl } = useI18n();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -75,7 +65,7 @@ export const Footer: React.FC<FooterProps> = ({
                 className="flex items-center text-[#167D75] hover:text-[#0D524D] font-medium transition-colors"
               >
                 <ShieldCheck className="w-3.5 h-3.5 mr-1.5 shrink-0" />
-                <span>Tier 1 Statutory Data Priority</span>
+                <span>{dict.footer.tier1DataPriority}</span>
               </button>
               <button
                 type="button"
@@ -193,7 +183,7 @@ export const Footer: React.FC<FooterProps> = ({
                   href="/countries"
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
                 >
-                  Countries Directory
+                  {dict.footer.countriesDirectory}
                 </a>
               </li>
               <li>
@@ -201,7 +191,7 @@ export const Footer: React.FC<FooterProps> = ({
                   href="/cities"
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] text-left transition-colors"
                 >
-                  Cities Directory
+                  {dict.footer.citiesDirectory}
                 </a>
               </li>
               <li>
@@ -263,13 +253,14 @@ export const Footer: React.FC<FooterProps> = ({
                 <a
                   href="/guides"
                   onClick={(e) => {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey) return;
                     e.preventDefault();
                     onSelectTab?.('nyc-100k-guide');
                     scrollToTop();
                   }}
                   className="text-xs font-bold text-[#167D75] hover:underline min-h-[24px] py-1 flex items-center"
                 >
-                  <span>Explore All {TOTAL_GUIDES_COUNT}+ Country & City Guides →</span>
+                  <span>{dict.footer.exploreAllGuides.replace('{count}', String(TOTAL_GUIDES_COUNT))}</span>
                 </a>
               </li>
             </ul>
@@ -327,7 +318,7 @@ export const Footer: React.FC<FooterProps> = ({
                     onClick={onOpenDiagnostics}
                     className="w-full min-h-[24px] py-1 flex items-center text-slate-700 hover:text-[#102A2E] hover:underline text-left transition-colors cursor-pointer"
                   >
-                    System Architecture & Diagnostics
+                    {dict.footer.systemArchitectureDiagnostics}
                   </button>
                 </li>
               )}
@@ -336,7 +327,7 @@ export const Footer: React.FC<FooterProps> = ({
                   href="/about"
                   className="w-full min-h-[24px] py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors"
                 >
-                  About LivWorthy
+                  {dict.footer.aboutLivworthy}
                 </a>
               </li>
               <li>
@@ -380,41 +371,47 @@ export const Footer: React.FC<FooterProps> = ({
               className="font-bold text-xs tracking-wider text-[#102A2E] hover:text-[#167D75] transition-colors cursor-pointer flex items-center group shrink-0"
               title="Click to view city salary calculators"
             >
-              <span>Popular City Income Hubs</span>
+              <span>{dict.footer.popularCityIncomeHubs}</span>
               <ChevronRight className="w-3.5 h-3.5 ml-1 text-[#167D75] transition-transform group-hover:translate-x-0.5" />
             </button>
             <span className="text-xs text-[#60706D] font-medium sm:border-l sm:border-[#DCE3E0] sm:pl-3">
-              Click any city to switch calculator benchmarks
+              {dict.footer.cityHubDescription}
             </span>
           </div>
           <div className="flex flex-wrap gap-2 text-xs">
-            {FEATURED_CITIES.map((c) => (
-              <a
-                key={c.id}
-                href={`/cities/${c.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onSelectCity) {
-                    onSelectCity(c.id);
-                  } else {
-                    onSelectTab?.('salary-worth');
-                  }
-                  scrollToTop();
-                }}
-                className="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 transition-colors flex items-center"
-                title={`Explore ${c.name}, ${c.country}`}
-              >
-                {c.name} ({c.country})
-              </a>
-            ))}
+            {FEATURED_CITIES.map((c) => {
+              const cityName = getLocalizedCityDisplayName(c.id, locale);
+              const countryName = getLocalizedCountryDisplayName(c.countryId, locale);
+              return (
+                <a
+                  key={c.id}
+                  href={`/cities/${c.id}`}
+                  onClick={(e) => {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+                    e.preventDefault();
+                    if (onSelectCity) {
+                      onSelectCity(c.id);
+                    } else {
+                      onSelectTab?.('salary-worth');
+                    }
+                    scrollToTop();
+                  }}
+                  className="px-2.5 py-1.5 min-h-[36px] sm:min-h-0 bg-slate-50 hover:bg-[#DDF2EC] hover:text-[#0D524D] rounded border border-slate-200 text-slate-700 transition-colors flex items-center"
+                  title={`${cityName}, ${countryName}`}
+                >
+                  <span>{cityName}</span>
+                  <span className="text-[11px] text-[#60706D] ml-1">({countryName})</span>
+                </a>
+              );
+            })}
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="border-t border-[#F7F8F5] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#60706D] gap-3">
-          <p>© {new Date().getFullYear()} LivWorthy. {dict.footer.copyright}</p>
-          <nav aria-label="Legal and policy links" className="flex flex-wrap items-center justify-center sm:justify-end gap-x-2 sm:gap-x-3 gap-y-2 text-xs">
-            <a href="/about" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">About</a>
+          <p>© {new Date().getFullYear()} {dict.footer.copyright}</p>
+          <nav aria-label={dict.footer.legalNavigationLabel} className="flex flex-wrap items-center justify-center sm:justify-end gap-x-2 sm:gap-x-3 gap-y-2 text-xs">
+            <a href="/about" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.aboutLivworthy}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
             <a href="/methodology" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.nav.howItWorks}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>

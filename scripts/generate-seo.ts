@@ -13,6 +13,7 @@ import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
 import { createLocalizedLongFormPages } from './localized-long-form-pages';
+import { createLocalizedToolPages } from './localized-tool-pages';
 import { LONG_FORM_LOCALES } from '../src/lib/i18n/long-form';
 import {
   createRelocationPages,
@@ -204,22 +205,22 @@ export function runSeoGenerator() {
             </nav>
           </div>
           <nav aria-label="Calculator tabs" class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none border-t border-[#F7F8F5] bg-white">
-            <a href="/?tab=salary-worth" id="tab-salary-worth" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-[#102A2E] text-white shadow-sm">
+            <a href="/salary-worth" id="tab-salary-worth" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-[#102A2E] text-white shadow-sm">
               <span>Is My Salary Enough?</span>
             </a>
-            <a href="/?tab=salary-needed" id="tab-salary-needed" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+            <a href="/salary-needed" id="tab-salary-needed" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
               <span>How Much Should I Earn?</span>
             </a>
-            <a href="/?tab=salary-after-tax" id="tab-salary-after-tax" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+            <a href="/salary-after-tax" id="tab-salary-after-tax" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
               <span>Salary After Tax</span>
             </a>
-            <a href="/?tab=cost-of-living" id="tab-cost-of-living" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+            <a href="/cost-of-living" id="tab-cost-of-living" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
               <span>Cost of Living</span>
             </a>
-            <a href="/?tab=compare" id="tab-compare" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+            <a href="/compare" id="tab-compare" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
               <span>Compare Cities</span>
             </a>
-            <a href="/?tab=job-offers" id="tab-job-offers" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
+            <a href="/job-offers" id="tab-job-offers" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#334D4A] hover:text-[#102A2E] hover:bg-[#F7F8F5]">
               <span>Compare Job Offers</span>
             </a>
             <a href="/guides/nyc-100k" id="tab-guides" class="px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center space-x-1.5 bg-white text-[#167D75] font-semibold hover:text-[#102A2E] hover:bg-[#F7F8F5]">
@@ -461,12 +462,12 @@ export function runSeoGenerator() {
             <div>
               <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">Calculators & Directories</div>
               <ul class="space-y-2 text-xs">
-                <li><a href="/?tab=salary-worth" class="hover:text-[#102A2E]">Is My Salary Enough?</a></li>
-                <li><a href="/?tab=salary-needed" class="hover:text-[#102A2E]">How Much Should I Earn?</a></li>
-                <li><a href="/?tab=salary-after-tax" class="hover:text-[#102A2E]">Salary After Tax</a></li>
-                <li><a href="/?tab=cost-of-living" class="hover:text-[#102A2E]">Cost of Living</a></li>
-                <li><a href="/?tab=compare" class="hover:text-[#102A2E]">Compare Cities</a></li>
-                <li><a href="/?tab=job-offers" class="hover:text-[#102A2E]">Compare Job Offers</a></li>
+                <li><a href="/salary-worth" class="hover:text-[#102A2E]">Is My Salary Enough?</a></li>
+                <li><a href="/salary-needed" class="hover:text-[#102A2E]">How Much Should I Earn?</a></li>
+                <li><a href="/salary-after-tax" class="hover:text-[#102A2E]">Salary After Tax</a></li>
+                <li><a href="/cost-of-living" class="hover:text-[#102A2E]">Cost of Living</a></li>
+                <li><a href="/compare" class="hover:text-[#102A2E]">Compare Cities</a></li>
+                <li><a href="/job-offers" class="hover:text-[#102A2E]">Compare Job Offers</a></li>
                 <li><a href="/reports" class="hover:text-[#102A2E] text-[#167D75] font-semibold">Empirical Research Reports →</a></li>
                 <li><a href="/countries" class="hover:text-[#102A2E]">Countries Directory</a></li>
                 <li><a href="/cities" class="hover:text-[#102A2E]">Cities Directory</a></li>
@@ -524,7 +525,7 @@ export function runSeoGenerator() {
           </div>
 
           <div class="border-t border-[#F7F8F5] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#60706D] gap-3">
-            <p>© ${new Date().getFullYear()} LivWorthy. Know what your income is really worth.</p>
+            <p>© ${new Date().getFullYear()} LivWorthy Inc. All rights reserved.</p>
             <nav aria-label="Legal and policy links" class="flex flex-wrap items-center justify-center sm:justify-end gap-x-2 sm:gap-x-3 gap-y-2 text-xs">
               <a href="/about" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">About</a>
               <span class="hidden sm:inline" aria-hidden="true">·</span>
@@ -592,6 +593,9 @@ export function runSeoGenerator() {
 
   // Full localized long-form authority routes.
   pages.push(...createLocalizedLongFormPages(BASE_URL));
+
+  // Localized clean public tool routes (/es/salary-after-tax, /de/salary-needed, etc.)
+  pages.push(...createLocalizedToolPages(BASE_URL));
 
   // 3. Country Hub Pages
   for (const country of Object.values(COUNTRIES)) {
@@ -1939,7 +1943,9 @@ function generateSitemaps(distDir: string, publicDir: string, pages: SeoPage[]) 
     (p) =>
       p.relativePath.startsWith('salary-after-tax/') ||
       p.relativePath.startsWith('salary-needed/') ||
-      p.relativePath.startsWith('cost-of-living/')
+      p.relativePath.startsWith('cost-of-living/') ||
+      p.relativePath.startsWith('salary-worth/') ||
+      p.relativePath.startsWith('job-offers/')
   ).map((p) => ({
     canonicalUrl: p.canonicalUrl,
     changefreq: p.changefreq,
@@ -1981,7 +1987,8 @@ ${items
     { canonicalUrl: `${BASE_URL}/privacy`, changefreq: 'monthly', priority: 0.6 },
   ];
 
-  const mainXml = buildUrlSet(mainUrls);
+  const uniqueMainUrls = Array.from(new Map(mainUrls.map((u) => [u.canonicalUrl, u])).values());
+  const mainXml = buildUrlSet(uniqueMainUrls);
   const countriesXml = buildUrlSet(countryPages);
   const citiesXml = buildUrlSet(cityPages);
   const comparisonsXml = buildUrlSet(comparisonPages);

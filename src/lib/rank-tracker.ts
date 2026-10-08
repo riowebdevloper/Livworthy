@@ -167,7 +167,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: 'calcular sueldo neto en estados unidos',
-    targetUrl: 'https://www.livworthy.com/es?tab=salary-after-tax',
+    targetUrl: 'https://www.livworthy.com/es/salary-after-tax',
     locale: 'es',
     country: 'US',
     device: 'desktop',
@@ -189,7 +189,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: 'كم راتب يكفي للعيش في دبي لعائلة',
-    targetUrl: 'https://www.livworthy.com/ar?tab=salary-needed',
+    targetUrl: 'https://www.livworthy.com/ar/salary-needed',
     locale: 'ar',
     country: 'AE',
     device: 'desktop',
@@ -200,7 +200,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: 'calculer salaire net après impôt sur le revenu',
-    targetUrl: 'https://www.livworthy.com/fr?tab=salary-after-tax',
+    targetUrl: 'https://www.livworthy.com/fr/salary-after-tax',
     locale: 'fr',
     country: 'FR',
     device: 'desktop',
@@ -211,7 +211,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: 'gehalt nach steuern berechnen netto rechner',
-    targetUrl: 'https://www.livworthy.com/de?tab=salary-after-tax',
+    targetUrl: 'https://www.livworthy.com/de/salary-after-tax',
     locale: 'de',
     country: 'DE',
     device: 'desktop',
@@ -222,7 +222,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: 'calculadora de salário líquido após impostos',
-    targetUrl: 'https://www.livworthy.com/pt?tab=salary-after-tax',
+    targetUrl: 'https://www.livworthy.com/pt/salary-after-tax',
     locale: 'pt',
     country: 'BR',
     device: 'desktop',
@@ -233,7 +233,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: 'Dubai me rehne ke liye kitni salary chahiye',
-    targetUrl: 'https://www.livworthy.com/hi?tab=salary-needed',
+    targetUrl: 'https://www.livworthy.com/hi/salary-needed',
     locale: 'hi',
     country: 'IN',
     device: 'mobile',
@@ -244,7 +244,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: 'Dubai mein rehne ka kharcha aur kitni salary chahiye',
-    targetUrl: 'https://www.livworthy.com/ur?tab=salary-needed',
+    targetUrl: 'https://www.livworthy.com/ur/salary-needed',
     locale: 'ur',
     country: 'PK',
     device: 'mobile',
@@ -255,7 +255,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: '纽约生活成本一个月多少钱',
-    targetUrl: 'https://www.livworthy.com/zh?tab=cost-of-living',
+    targetUrl: 'https://www.livworthy.com/zh/cost-of-living',
     locale: 'zh',
     country: 'CN',
     device: 'mobile',
@@ -266,7 +266,7 @@ export const PRIORITY_KEYWORD_CLUSTERS: Omit<TrackedKeywordItem, 'id' | 'current
   },
   {
     keyword: '年収 手取り 計算 税引後給与',
-    targetUrl: 'https://www.livworthy.com/ja?tab=salary-after-tax',
+    targetUrl: 'https://www.livworthy.com/ja/salary-after-tax',
     locale: 'ja',
     country: 'JP',
     device: 'desktop',

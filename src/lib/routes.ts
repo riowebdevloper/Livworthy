@@ -47,3 +47,8 @@ export function buildSalaryNeededPath(cityId: string): string {
 export function buildCostOfLivingPath(cityId: string): string {
   return `/cost-of-living/${cityId.toLowerCase()}`;
 }
+
+export function buildToolPath(locale: string = 'en', tool: string): string {
+  const cleanTool = tool.replace(/^\//, '');
+  return locale === 'en' ? `/${cleanTool}` : `/${locale}/${cleanTool}`;
+}

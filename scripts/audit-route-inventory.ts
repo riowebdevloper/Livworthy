@@ -89,6 +89,12 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
     { path: '/salary-needed/new-york', type: 'core' as const },
     { path: '/salary-needed/london', type: 'core' as const },
     { path: '/cost-of-living/new-york', type: 'core' as const },
+    // Clean public tool routes (English root)
+    { path: '/salary-after-tax', type: 'core' as const },
+    { path: '/salary-needed', type: 'core' as const },
+    { path: '/cost-of-living', type: 'core' as const },
+    { path: '/salary-worth', type: 'core' as const },
+    { path: '/job-offers', type: 'core' as const },
   ];
 
   for (const page of corePages) {
@@ -104,7 +110,7 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
     });
   }
 
-  // Interactive English tabs (non-indexable client state)
+  // Interactive English tabs and localized en routes
   const englishTabs = [
     'salary-worth',
     'salary-needed',
@@ -114,6 +120,16 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
     'job-offers',
   ];
   for (const tab of englishTabs) {
+    routes.push({
+      path: `/en/${tab}`,
+      url: `${baseUrl}/en/${tab}`,
+      type: 'core',
+      locale: 'en',
+      tier: 'tier1',
+      lifecycleStatus: 'INDEXABLE',
+      isIndexable: true,
+      robots: 'index, follow',
+    });
     routes.push({
       path: `/?tab=${tab}`,
       url: `${baseUrl}/?tab=${tab}`,
@@ -231,7 +247,21 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
       robots: isIndexable ? 'index, follow' : 'noindex, follow',
     });
 
-    // Localized tabs
+    // Localized clean tool routes
+    for (const tab of interactiveTabs) {
+      routes.push({
+        path: `/${code}/${tab}`,
+        url: `${baseUrl}/${code}/${tab}`,
+        type: 'localized_tab',
+        locale: code,
+        tier,
+        lifecycleStatus: cfg.lifecycleStatus,
+        isIndexable,
+        robots: isIndexable ? 'index, follow' : 'noindex, follow',
+      });
+    }
+
+    // Localized query-state tabs (non-indexable)
     for (const tab of interactiveTabs) {
       routes.push({
         path: `/${code}?tab=${tab}`,

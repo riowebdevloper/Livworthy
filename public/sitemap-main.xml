@@ -41,6 +41,31 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://www.livworthy.com/salary-worth</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.livworthy.com/salary-needed</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.livworthy.com/salary-after-tax</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.livworthy.com/cost-of-living</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.livworthy.com/job-offers</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://www.livworthy.com/salary-after-tax/new-york</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
