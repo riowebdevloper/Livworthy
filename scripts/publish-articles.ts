@@ -2,12 +2,41 @@
  * Automated Guest Post Publisher for Dev.to & Medium
  *
  * Usage:
- *   DEVTO_API_KEY="your_devto_key" npm run publish:devto
+ *   DEVTO_API_KEY="your_devto_key" npx tsx scripts/publish-articles.ts --platform=devto --article=all
+ *   DEVTO_API_KEY="your_devto_key" npx tsx scripts/publish-articles.ts --platform=devto --article=2
  *   MEDIUM_TOKEN="your_medium_token" npm run publish:medium
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
+
+interface ArticleMeta {
+  file: string;
+  title: string;
+  tags: string[];
+  canonicalUrl: string;
+}
+
+const ARTICLES: Record<number, ArticleMeta> = {
+  1: {
+    file: 'outreach/articles/article-1-tech-compensation-take-home.md',
+    title: 'Why Gross Salary Is Misleading: Take-Home Pay in Major US Tech Hubs (2026 Analysis)',
+    tags: ['finance', 'careers', 'productivity', 'discuss'],
+    canonicalUrl: 'https://www.livworthy.com/guides/nyc-100k',
+  },
+  2: {
+    file: 'outreach/articles/article-2-relocation-london-nyc-dubai.md',
+    title: 'London vs New York vs Dubai: The Real Relocation Math for Expat Professionals',
+    tags: ['finance', 'career', 'relocation', 'productivity'],
+    canonicalUrl: 'https://www.livworthy.com/compare/new-york-vs-london',
+  },
+  3: {
+    file: 'outreach/articles/article-3-compare-job-offers-framework.md',
+    title: 'How to Compare Two Job Offers in Different Cities: Beyond the Headline Salary',
+    tags: ['careers', 'management', 'discuss', 'productivity'],
+    canonicalUrl: 'https://www.livworthy.com/job-offers',
+  },
+};
 
 interface DevToPayload {
   article: {
@@ -19,32 +48,24 @@ interface DevToPayload {
   };
 }
 
-async function publishToDevTo() {
-  const apiKey = process.env.DEVTO_API_KEY;
-  if (!apiKey) {
-    console.error('❌ Error: DEVTO_API_KEY environment variable is missing.');
-    console.log('👉 To get your free API key in 10 seconds:');
-    console.log('   1. Log in to https://dev.to');
-    console.log('   2. Go to Settings -> Extensions -> DEV Community API Keys');
-    console.log('   3. Generate a key and run:');
-    console.log('      DEVTO_API_KEY="your-key" npx tsx scripts/publish-articles.ts --platform=devto\n');
-    process.exit(1);
-  }
+async function publishSingleToDevTo(num: number, apiKey: string) {
+  const meta = ARTICLES[num];
+  if (!meta) return;
 
-  const articlePath = path.resolve(process.cwd(), 'outreach/articles/article-1-tech-compensation-take-home.md');
+  const articlePath = path.resolve(process.cwd(), meta.file);
   const markdown = fs.readFileSync(articlePath, 'utf8');
 
   const payload: DevToPayload = {
     article: {
-      title: 'Why Gross Salary Is Misleading: Take-Home Pay in Major US Tech Hubs (2026 Analysis)',
+      title: meta.title,
       published: true,
       body_markdown: markdown,
-      tags: ['finance', 'careers', 'productivity', 'discuss'],
-      canonical_url: 'https://www.livworthy.com/guides/nyc-100k',
+      tags: meta.tags,
+      canonical_url: meta.canonicalUrl,
     },
   };
 
-  console.log('🚀 Publishing Article 1 to Dev.to via REST API...');
+  console.log(`🚀 Publishing Article ${num} ("${meta.title}") to Dev.to...`);
   const res = await fetch('https://dev.to/api/articles', {
     method: 'POST',
     headers: {
@@ -57,23 +78,37 @@ async function publishToDevTo() {
   if (!res.ok) {
     const errorText = await res.text();
     console.error(`❌ Dev.to API responded with status ${res.status}:`, errorText);
-    process.exit(1);
+    return;
   }
 
   const data = await res.json() as { url: string; id: number };
-  console.log('🎉 Successfully published to Dev.to!');
-  console.log(`🔗 Live Article URL: ${data.url}`);
+  console.log(`🎉 Successfully published Article ${num} to Dev.to!`);
+  console.log(`🔗 Live Article URL: ${data.url}\n`);
+}
+
+async function publishToDevTo(articleChoice: string) {
+  const apiKey = process.env.DEVTO_API_KEY;
+  if (!apiKey) {
+    console.error('❌ Error: DEVTO_API_KEY environment variable is missing.');
+    process.exit(1);
+  }
+
+  if (articleChoice === 'all') {
+    for (const num of [1, 2, 3]) {
+      await publishSingleToDevTo(num, apiKey);
+      // Wait 3 seconds between posts to avoid rate limits
+      await new Promise((r) => setTimeout(r, 3000));
+    }
+  } else {
+    const num = parseInt(articleChoice, 10) || 1;
+    await publishSingleToDevTo(num, apiKey);
+  }
 }
 
 async function publishToMedium() {
   const token = process.env.MEDIUM_TOKEN;
   if (!token) {
     console.error('❌ Error: MEDIUM_TOKEN environment variable is missing.');
-    console.log('👉 To get your Medium Integration Token:');
-    console.log('   1. Log in to https://medium.com');
-    console.log('   2. Go to Settings -> Security and apps -> Integration tokens');
-    console.log('   3. Generate a token and run:');
-    console.log('      MEDIUM_TOKEN="your-token" npx tsx scripts/publish-articles.ts --platform=medium\n');
     process.exit(1);
   }
 
@@ -127,9 +162,10 @@ async function publishToMedium() {
 async function main() {
   const args = process.argv.slice(2);
   const platform = args.find((a) => a.startsWith('--platform='))?.split('=')[1] || 'devto';
+  const articleChoice = args.find((a) => a.startsWith('--article='))?.split('=')[1] || '1';
 
   if (platform === 'devto') {
-    await publishToDevTo();
+    await publishToDevTo(articleChoice);
   } else if (platform === 'medium') {
     await publishToMedium();
   } else {
