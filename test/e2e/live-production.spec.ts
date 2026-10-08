@@ -120,12 +120,14 @@ test.describe('LivWorthy Live Production Verification Suite', () => {
     calculatePostCount = 0;
     const calcBtn = page.locator('#btn-calculate');
     await expect(calcBtn).toBeVisible();
-    await calcBtn.click();
 
-    await page.waitForResponse(
-      (res) => res.url().includes('/api/calculate') && res.request().method() === 'POST',
-      { timeout: 15000 }
-    );
+    await Promise.all([
+      page.waitForResponse(
+        (res) => res.url().includes('/api/calculate') && res.request().method() === 'POST',
+        { timeout: 15000 }
+      ),
+      calcBtn.click(),
+    ]);
     await page.waitForTimeout(400);
 
     // Assert: request returns 200, no 500/503

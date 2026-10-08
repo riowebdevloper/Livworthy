@@ -40,13 +40,15 @@ test.describe('LivWorthy Local Production Validation Suite', () => {
     // Reset counter right before clicking
     calculatePostCount = 0;
 
-    // Single click on Calculate
+    // Single click on Calculate with response listener registered in parallel
     const calcBtn = page.locator('#btn-calculate');
     await expect(calcBtn).toBeVisible();
-    await calcBtn.click();
 
-    // Wait for response and verify exactly one request was made
-    await page.waitForResponse((res) => res.url().includes('/api/calculate') && res.request().method() === 'POST');
+    await Promise.all([
+      page.waitForResponse((res) => res.url().includes('/api/calculate') && res.request().method() === 'POST'),
+      calcBtn.click(),
+    ]);
+
     // Allow brief grace period for any errant duplicate debounces
     await page.waitForTimeout(400);
 
@@ -68,9 +70,11 @@ test.describe('LivWorthy Local Production Validation Suite', () => {
     const calcBtn = page.locator('#btn-calculate');
     calculatePostCount = 0;
 
-    // Rapid double click
-    await calcBtn.click({ clickCount: 2, delay: 50 }).catch(() => {});
-    await page.waitForResponse((res) => res.url().includes('/api/calculate') && res.request().method() === 'POST');
+    // Rapid double click with response listener registered in parallel
+    await Promise.all([
+      page.waitForResponse((res) => res.url().includes('/api/calculate') && res.request().method() === 'POST'),
+      calcBtn.click({ clickCount: 2, delay: 50 }).catch(() => {}),
+    ]);
     await page.waitForTimeout(400);
 
     expect(calculatePostCount).toBe(1);
