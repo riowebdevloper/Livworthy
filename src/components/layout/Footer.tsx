@@ -1,5 +1,5 @@
-import React from 'react';
-import { ShieldCheck, Database, FileText, MapPin, Calculator, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShieldCheck, Database, FileText, MapPin, Calculator, ChevronRight, Check } from 'lucide-react';
 import { LivWorthLogo } from '../ui/LivWorthBrand';
 import { ActiveTab } from './Header';
 import { POPULAR_GUIDE_LINKS, TOTAL_GUIDES_COUNT } from '../../data/salary-guides-links';
@@ -30,6 +30,8 @@ export const Footer: React.FC<FooterProps> = ({
   onSelectCity,
 }) => {
   const { locale, dict, isRtl } = useI18n();
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -39,6 +41,57 @@ export const Footer: React.FC<FooterProps> = ({
     <footer id="livworthy-footer" data-testid="livworth-footer" className="bg-[#FFFFFF] border-t border-[#DCE3E0] mt-16 py-12 text-sm text-[#60706D]" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* 2027 Tax Release Alerts Banner */}
+        <div className="mb-10 p-6 rounded-2xl bg-[#F7F8F5] border border-[#DCE3E0] flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <div className="flex items-center space-x-2">
+              <span className="text-xs font-bold uppercase tracking-wider bg-[#DDF2EC] text-[#0D625B] px-2.5 py-0.5 rounded-full">
+                2027 Tax Radar
+              </span>
+              <h3 className="font-bold text-sm text-[#102A2E]">
+                Stay Informed on 2027 Statutory Tax Law Releases
+              </h3>
+            </div>
+            <p className="text-xs text-[#60706D] max-w-xl">
+              Receive verified notifications when official 2027 statutory withholding schedules (IRS, HMRC, CRA, ATO, FTA) are confirmed. Zero spam, unsubscribe anytime.
+            </p>
+          </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (newsletterEmail) {
+                setIsSubscribed(true);
+              }
+            }}
+            className="flex items-center gap-2 w-full md:w-auto"
+          >
+            {isSubscribed ? (
+              <div className="flex items-center space-x-2 text-xs font-semibold text-[#0D625B] bg-[#DDF2EC] px-4 py-2.5 rounded-xl border border-[#167D75]/20">
+                <Check className="w-4 h-4 text-[#167D75] shrink-0" />
+                <span>Subscribed! We will notify you when 2027 schedules are live.</span>
+              </div>
+            ) : (
+              <>
+                <input
+                  type="email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  aria-label="Email address for 2027 tax updates"
+                  className="bg-white border border-[#DCE3E0] rounded-xl px-3.5 py-2 text-xs text-[#102A2E] placeholder-[#94A3B8] focus:outline-none focus:border-[#167D75] w-full sm:w-64"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#102A2E] hover:bg-[#167D75] text-white text-xs font-semibold px-4 py-2 rounded-xl transition-colors shrink-0 cursor-pointer"
+                >
+                  Subscribe
+                </button>
+              </>
+            )}
+          </form>
+        </div>
+
         {/* Main 4-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           

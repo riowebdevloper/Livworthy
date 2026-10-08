@@ -90,6 +90,19 @@ const ALLOWED_LITERALS = new Set([
   'Year 1 Net Remaining',
   'Year 2+ Recurring Remaining:',
   'Year 2+ Recurring Remaining',
+  'Print / PDF',
+  'WhatsApp',
+  'LinkedIn',
+  'Twitter / X',
+  'Share Calculation',
+  'Subscribe',
+  'Subscribed!',
+  '2027 Tax Radar',
+  'Stay Informed on 2027 Statutory Tax Law Releases',
+  'Receive verified notifications when official 2027 statutory withholding schedules (IRS, HMRC, CRA, ATO, FTA) are confirmed. Zero spam, unsubscribe anytime.',
+  'Subscribed! We will notify you when 2027 schedules are live.',
+  'Print or save report as PDF',
+  'Email address for 2027 tax updates',
 ]);
 
 const TARGET_ATTRIBUTES = [

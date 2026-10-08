@@ -116,3 +116,20 @@
     @apply w-full rounded-lg border border-[#DCE3E0] bg-white px-3 py-2.5 text-sm font-medium text-[#102A2E] outline-none focus:border-[#167D75];
   }
 }
+
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #102A2E !important;
+  }
+  header, footer, nav, #ads-container, .no-print, [role="tablist"], [data-testid="livworth-footer"] {
+    display: none !important;
+  }
+  #result-summary-card {
+    border: 1px solid #DCE3E0 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin: 0 !important;
+  }
+}
+

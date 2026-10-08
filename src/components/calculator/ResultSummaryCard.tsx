@@ -10,6 +10,7 @@ import {
   Share2,
   Check,
   BarChart3,
+  Printer,
 } from 'lucide-react';
 import { formatMoney, toMajor } from '../../lib/money';
 import { LivWorthCalculationOutcome } from '../../types/scenario';
@@ -32,6 +33,13 @@ export const ResultSummaryCard: React.FC<ResultSummaryCardProps> = ({
   const { dict, isRtl } = useI18n();
   const [period, setPeriod] = useState<'annual' | 'monthly'>('annual');
   const [copied, setCopied] = useState(false);
+  const [showShareMenu, setShowShareMenu] = useState(false);
+
+  const shareText = `In ${outcome.scenario.location.name}, a gross salary of ${formatMoney(outcome.grossAnnual, { hideDecimals: true })} yields ${formatMoney(outcome.takeHomeAnnual, { hideDecimals: true })}/year net take-home pay. Calculated on LivWorthy:`;
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://www.livworthy.com';
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+  const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
 
   const isMonthly = period === 'monthly';
   const currency = outcome.scenario.location.currency;
@@ -380,19 +388,74 @@ Methodology: Deterministic statutory schedules (https://www.livworthy.com)`;
         </div>
 
         <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 w-full md:w-auto shrink-0">
+          {/* Print / PDF Button */}
           <button
-            id="btn-copy-assessment"
+            id="btn-print-assessment"
             type="button"
-            onClick={handleCopySummary}
-            className={`inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 min-h-[38px] rounded-lg border transition-colors cursor-pointer w-full sm:w-auto ${
-              copied
-                ? 'border-[#167D75] bg-[#DDF2EC] text-[#0D625B]'
-                : 'border-[#DCE3E0] text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
-            }`}
+            onClick={() => window.print()}
+            className="no-print inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 min-h-[38px] rounded-lg border border-[#DCE3E0] text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors cursor-pointer w-full sm:w-auto"
+            title="Print or save report as PDF"
+            aria-label="Print or save report as PDF"
           >
-            {copied ? <Check className="w-3.5 h-3.5 shrink-0" /> : <Share2 className="w-3.5 h-3.5 shrink-0" />}
-            <span className="whitespace-nowrap">{copied ? dict.common.copied : dict.common.share}</span>
+            <Printer className="w-3.5 h-3.5 shrink-0" />
+            <span className="whitespace-nowrap">Print / PDF</span>
           </button>
+
+          {/* Share Menu Toggle & Options */}
+          <div className="relative inline-block w-full sm:w-auto">
+            <button
+              id="btn-copy-assessment"
+              type="button"
+              onClick={() => setShowShareMenu(!showShareMenu)}
+              className={`inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 min-h-[38px] rounded-lg border transition-colors cursor-pointer w-full sm:w-auto ${
+                copied
+                  ? 'border-[#167D75] bg-[#DDF2EC] text-[#0D625B]'
+                  : 'border-[#DCE3E0] text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5]'
+              }`}
+            >
+              {copied ? <Check className="w-3.5 h-3.5 shrink-0" /> : <Share2 className="w-3.5 h-3.5 shrink-0" />}
+              <span className="whitespace-nowrap">{copied ? dict.common.copied : dict.common.share}</span>
+            </button>
+
+            {showShareMenu && (
+              <div className="absolute right-0 bottom-full mb-2 w-48 bg-white border border-[#DCE3E0] rounded-xl shadow-lg p-2 z-50 flex flex-col gap-1 text-xs no-print">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center px-2.5 py-1.5 rounded-lg hover:bg-[#DDF2EC] text-[#102A2E] font-medium transition-colors"
+                >
+                  <span className="mr-2">💬</span> WhatsApp
+                </a>
+                <a
+                  href={linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center px-2.5 py-1.5 rounded-lg hover:bg-[#DDF2EC] text-[#102A2E] font-medium transition-colors"
+                >
+                  <span className="mr-2">💼</span> LinkedIn
+                </a>
+                <a
+                  href={twitterUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center px-2.5 py-1.5 rounded-lg hover:bg-[#DDF2EC] text-[#102A2E] font-medium transition-colors"
+                >
+                  <span className="mr-2">✖️</span> Twitter / X
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleCopySummary();
+                    setShowShareMenu(false);
+                  }}
+                  className="flex items-center w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-[#DDF2EC] text-[#102A2E] font-medium transition-colors cursor-pointer border-t border-[#DCE3E0]/50 pt-1.5 mt-0.5"
+                >
+                  <span className="mr-2">{copied ? '✓' : '📋'}</span> {dict.common.copied}
+                </button>
+              </div>
+            )}
+          </div>
           <button
             id="btn-result-customize"
             type="button"
