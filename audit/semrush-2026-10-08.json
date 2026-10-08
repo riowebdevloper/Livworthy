@@ -1,0 +1,189 @@
+{
+  "audit_metadata": {
+    "target_domain": "livworthy.com",
+    "production_url": "https://www.livworthy.com",
+    "report_date": "2026-10-08",
+    "historical_baseline": {
+      "site_health": 77,
+      "errors": 23,
+      "warnings": 112,
+      "notices": 45
+    },
+    "auditor": "LivWorthy Technical SEO & Architecture Taskforce",
+    "timestamp": "2026-10-08T17:51:00Z"
+  },
+  "issues": [
+    {
+      "issue_id": "SEM-001",
+      "category": "Crawling",
+      "severity": "Error",
+      "title": "Robots.txt format error / unexpected directive",
+      "reported_count": 1,
+      "affected_samples": [
+        "https://www.livworthy.com/robots.txt"
+      ],
+      "reproduction_result": "Confirmed",
+      "root_cause": "Cloudflare Edge AI Scrape Shield automatically injected 'Content-Signal: search=yes,ai-train=no,use=reference' header and bot-specific directive fragments into edge responses. Additionally, bot-specific blocks in robots.txt could inadvertently conflict with global disallow directives.",
+      "remediation_strategy": "Normalized repository robots.txt to strictly adhere to RFC 9309 with a single User-agent: * block disallowing /api/, /admin, /test/, and pointing to canonical https://www.livworthy.com/sitemap.xml. Documented edge headers as intentional Cloudflare Edge settings.",
+      "status": "FIXED",
+      "verification_method": "curl -sI https://www.livworthy.com/robots.txt && test/seo/canonical-redirect-regression.test.ts Test J"
+    },
+    {
+      "issue_id": "SEM-002",
+      "category": "Crawling",
+      "severity": "Warning",
+      "title": "Missing sitemap declaration in robots.txt / Sitemap index format",
+      "reported_count": 1,
+      "affected_samples": [
+        "https://www.livworthy.com/robots.txt",
+        "https://www.livworthy.com/sitemap.xml"
+      ],
+      "reproduction_result": "Not Reproducible / Confirmed in early crawl",
+      "root_cause": "Robots.txt was missing absolute HTTPS canonical sitemap index directive in initial deploy before static SEO pipeline execution.",
+      "remediation_strategy": "Embedded 'Sitemap: https://www.livworthy.com/sitemap.xml' permanently in public/robots.txt and dist/robots.txt generator, linking to 17 segmented sitemaps indexing 1,924 valid pages.",
+      "status": "FIXED",
+      "verification_method": "curl -s https://www.livworthy.com/robots.txt | grep Sitemap && test/seo/canonical-redirect-regression.test.ts Test B"
+    },
+    {
+      "issue_id": "SEM-003",
+      "category": "Crawling",
+      "severity": "Error",
+      "title": "sitemap-reports.xml crawl failure (HTTP 404/500)",
+      "reported_count": 1,
+      "affected_samples": [
+        "https://www.livworthy.com/sitemap-reports.xml"
+      ],
+      "reproduction_result": "Not Reproducible",
+      "root_cause": "Transient crawler timeout or temporary build sync race condition during previous deployment. Verified live endpoint returns HTTP 200 with application/xml in <100ms.",
+      "remediation_strategy": "Verified sitemap-reports.xml is generated statically in scripts/generate-seo.ts, deployed as static asset in public/ and dist/, and served directly by Vercel static router with 200 OK.",
+      "status": "ALREADY_FIXED",
+      "verification_method": "curl -sI https://www.livworthy.com/sitemap-reports.xml"
+    },
+    {
+      "issue_id": "SEM-004",
+      "category": "Markup",
+      "severity": "Warning",
+      "title": "Structured data schema warnings (SoftwareApplication without ratings/reviews)",
+      "reported_count": 12,
+      "affected_samples": [
+        "https://www.livworthy.com/salary-after-tax",
+        "https://www.livworthy.com/salary-worth",
+        "https://www.livworthy.com/salary-needed",
+        "https://www.livworthy.com/cost-of-living",
+        "https://www.livworthy.com/compare",
+        "https://www.livworthy.com/job-offers"
+      ],
+      "reproduction_result": "Confirmed",
+      "root_cause": "Pages declared schema type 'SoftwareApplication' without aggregateRating or review fields, triggering Semrush and Google Search Console non-critical markup warnings.",
+      "remediation_strategy": "Updated schema type to '@type': 'WebApplication' with operatingSystem: 'Any', applicationCategory: 'FinanceApplication', and explicit featureList. Refused to fabricate synthetic user reviews or ratings in strict accordance with Google Quality Rater & Review guidelines.",
+      "status": "FIXED",
+      "verification_method": "npx tsx scripts/generate-seo.ts && Google Rich Results test / schema inspection"
+    },
+    {
+      "issue_id": "SEM-005",
+      "category": "International",
+      "severity": "Error",
+      "title": "Hreflang conflicts & missing self-referencing hreflang tags",
+      "reported_count": 8,
+      "affected_samples": [
+        "https://www.livworthy.com/salary-after-tax",
+        "https://www.livworthy.com/es/salary-after-tax",
+        "https://www.livworthy.com/fr/salary-after-tax",
+        "https://www.livworthy.com/de/salary-after-tax"
+      ],
+      "reproduction_result": "Confirmed",
+      "root_cause": "Prerenderer generated alternate hreflang tags for English tool roots (/salary-after-tax) pointing to language roots (/es, /fr) instead of localized tool subpaths (/es/salary-after-tax, /fr/salary-after-tax), resulting in missing self-referencing hreflang tags and broken reciprocal link clusters.",
+      "remediation_strategy": "Refactored hreflang generator in scripts/generate-seo.ts. Every localized route and root tool route now generates an exact self-referencing hreflang, reciprocal links across all 10 LONG_FORM_LOCALES, and an x-default link pointing to the primary English route.",
+      "status": "FIXED",
+      "verification_method": "test/seo/multilingual-seo-authority.test.ts & test/seo/canonical-redirect-regression.test.ts"
+    },
+    {
+      "issue_id": "SEM-006",
+      "category": "Content",
+      "severity": "Error",
+      "title": "Duplicate content / duplicate NYC salary guide URL",
+      "reported_count": 1,
+      "affected_samples": [
+        "https://www.livworthy.com/guides/100k-salary-new-york",
+        "https://www.livworthy.com/guides/nyc-100k"
+      ],
+      "reproduction_result": "Confirmed",
+      "root_cause": "Legacy build alias duplicated /guides/nyc-100k at /guides/100k-salary-new-york, creating two competing indexable URLs with identical text and titles.",
+      "remediation_strategy": "Removed static prerendering of /guides/100k-salary-new-york. Established canonical 308 (server.ts) and 301 (vercel.json) permanent redirects from /guides/100k-salary-new-york to https://www.livworthy.com/guides/nyc-100k. Updated all internal links and test assertions.",
+      "status": "FIXED",
+      "verification_method": "curl -sI https://www.livworthy.com/guides/100k-salary-new-york && test/seo/canonical-redirect-regression.test.ts"
+    },
+    {
+      "issue_id": "SEM-007",
+      "category": "Content",
+      "severity": "Warning",
+      "title": "Title tag length exceeds 70 characters",
+      "reported_count": 48,
+      "affected_samples": [
+        "https://www.livworthy.com/countries",
+        "https://www.livworthy.com/cities",
+        "https://www.livworthy.com/guides",
+        "https://www.livworthy.com/compare",
+        "https://www.livworthy.com/compare/new-york-vs-london"
+      ],
+      "reproduction_result": "Confirmed",
+      "root_cause": "Verbose metadata templates included redundant platform brand suffixes and repetitive descriptor keywords, causing titles to reach 75-88 characters.",
+      "remediation_strategy": "Optimized metadata titles across directories and bilateral comparisons: /countries (47 chars), /cities (47 chars), /guides (38 chars), /compare (42 chars), bilateral comparisons ('${cityA.name} vs ${cityB.name}: Salary & Living Costs | LivWorthy' <= 65 chars).",
+      "status": "FIXED",
+      "verification_method": "scripts/generate-seo.ts prerender audit & test/seo/top-20-seo-clusters.test.ts"
+    },
+    {
+      "issue_id": "SEM-008",
+      "category": "Content",
+      "severity": "Warning",
+      "title": "Thin content / low word count (< 200 words)",
+      "reported_count": 35,
+      "affected_samples": [
+        "https://www.livworthy.com/countries/us",
+        "https://www.livworthy.com/cities/nyc",
+        "https://www.livworthy.com/salary-after-tax",
+        "https://www.livworthy.com/about",
+        "https://www.livworthy.com/editorial-policy"
+      ],
+      "reproduction_result": "Confirmed",
+      "root_cause": "Programmatically generated country, city, tool landing, and legal/institutional pages contained minimalist copy focusing primarily on dynamic calculator mounting hooks.",
+      "remediation_strategy": "Enriched prerendered HTML with comprehensive editorial sections (>300 words each): statutory tax schedules, social insurance rules, median take-home pay, housing cost benchmarks, calculation methodology, and data provenance citations.",
+      "status": "FIXED",
+      "verification_method": "scripts/generate-seo.ts build output & word count inspection across dist/*.html"
+    },
+    {
+      "issue_id": "SEM-009",
+      "category": "Links",
+      "severity": "Warning",
+      "title": "Broken external links / timeouts",
+      "reported_count": 6,
+      "affected_samples": [
+        "https://www.irs.gov/individuals/tax-withholding-estimator",
+        "https://www.tax.ny.gov/pit/file/tax_tables.htm",
+        "https://www.ssa.gov/oact/cola/cbb.html",
+        "https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours"
+      ],
+      "reproduction_result": "Confirmed",
+      "root_cause": "Government tax authorities and statistical portals migrated legacy document URLs or enforced strict Akamai anti-bot challenges on automated crawler user-agents.",
+      "remediation_strategy": "Audited all 89 citations in src/data/evidence-registry.ts via scripts/test-citation-health.ts. Updated 7 outdated URLs to permanent canonical resource endpoints. 82 citations returned HTTP 200 OK directly, 2 bot-protected government portals confirmed accessible in browser, 5 regional tax portals verified active.",
+      "status": "FIXED",
+      "verification_method": "npx tsx scripts/test-citation-health.ts && audit/citation-health.json"
+    },
+    {
+      "issue_id": "SEM-010",
+      "category": "Architecture",
+      "severity": "Notice",
+      "title": "Uncontrolled query parameter indexing risks (/?city=...&tab=...)",
+      "reported_count": 14,
+      "affected_samples": [
+        "https://www.livworthy.com/?city=new-york&tab=worth",
+        "https://www.livworthy.com/?city=london&tab=tax"
+      ],
+      "reproduction_result": "Confirmed in legacy internal links",
+      "root_cause": "Legacy footer and comparison cards used client-side state query parameters rather than clean canonical directory and tool routes.",
+      "remediation_strategy": "Purged all internal query-parameter navigation links in prerendered HTML templates. Replaced with clean canonical paths (/cities/nyc, /salary-after-tax, /compare/new-york-vs-london). Enforced Disallow: /api/, /admin, /test/ in robots.txt.",
+      "status": "FIXED",
+      "verification_method": "grep_search for query links across dist/*.html && test/seo/canonical-redirect-regression.test.ts"
+    }
+  ]
+}

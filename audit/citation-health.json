@@ -1,0 +1,709 @@
+[
+  {
+    "id": "us-irs-tax-2024",
+    "url": "https://www.irs.gov/pub/irs-drop/rp-23-34.pdf",
+    "organization": "Internal Revenue Service (IRS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.irs.gov/pub/irs-drop/rp-23-34.pdf"
+  },
+  {
+    "id": "us-ssa-fica-2024",
+    "url": "https://www.ssa.gov/oact/cola/cbb.html",
+    "organization": "Social Security Administration (SSA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ssa.gov/oact/cola/cbb.html"
+  },
+  {
+    "id": "us-nys-tax-2024",
+    "url": "https://www.tax.ny.gov/forms/income_cur_forms.htm",
+    "organization": "New York State Department of Taxation and Finance",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.tax.ny.gov/forms/income_cur_forms.htm"
+  },
+  {
+    "id": "us-nyc-tax-2024",
+    "url": "https://www.tax.ny.gov/forms/income_cur_forms.htm",
+    "organization": "New York City Department of Finance",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.tax.ny.gov/forms/income_cur_forms.htm"
+  },
+  {
+    "id": "us-irs-tax-2025",
+    "url": "https://www.irs.gov/pub/irs-drop/rp-24-40.pdf",
+    "organization": "Internal Revenue Service (IRS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.irs.gov/pub/irs-drop/rp-24-40.pdf"
+  },
+  {
+    "id": "us-ssa-fica-2025",
+    "url": "https://www.ssa.gov/oact/cola/cbb.html",
+    "organization": "Social Security Administration (SSA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ssa.gov/oact/cola/cbb.html"
+  },
+  {
+    "id": "us-nys-tax-2025",
+    "url": "https://www.tax.ny.gov/forms/income_cur_forms.htm",
+    "organization": "New York State Department of Taxation and Finance",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.tax.ny.gov/forms/income_cur_forms.htm"
+  },
+  {
+    "id": "us-nyc-tax-2025",
+    "url": "https://www.tax.ny.gov/forms/income_cur_forms.htm",
+    "organization": "New York City Department of Finance",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.tax.ny.gov/forms/income_cur_forms.htm"
+  },
+  {
+    "id": "us-hud-nyc-fmr-2026",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-nyc-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-sf-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-la-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-seattle-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-austin-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-chicago-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-miami-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-boston-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-hud-dc-fmr-2024",
+    "url": "https://www.huduser.gov/portal/datasets/fmr.html",
+    "organization": "U.S. Department of Housing and Urban Development (HUD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.huduser.gov/portal/datasets/fmr.html"
+  },
+  {
+    "id": "us-bls-cex-nyc-2026",
+    "url": "https://www.bls.gov/regions/new-york-new-jersey/news-release/consumerexpenditures_newyork.htm",
+    "organization": "U.S. Bureau of Labor Statistics (BLS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.bls.gov/regions/northeast/news-release/consumerexpenditures_newyork.htm"
+  },
+  {
+    "id": "us-bls-cpi-nyc-2024",
+    "url": "https://www.bls.gov/regions/new-york-new-jersey/news-release/consumerpriceindex_newyork.htm",
+    "organization": "U.S. Bureau of Labor Statistics (BLS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.bls.gov/regions/northeast/news-release/consumerpriceindex_newyork.htm"
+  },
+  {
+    "id": "us-mta-nyc-transit-2026",
+    "url": "https://new.mta.info/fares",
+    "organization": "Metropolitan Transportation Authority (MTA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.mta.info/fares-tolls"
+  },
+  {
+    "id": "us-nyc-childcare-benchmark",
+    "url": "https://ocfs.ny.gov/programs/childcare/plans/market-rates.php",
+    "organization": "LivWorthy Planning Benchmarks informed by NYS OCFS Market Rate Survey",
+    "status": "fetch failed",
+    "verdict": "BROKEN"
+  },
+  {
+    "id": "us-mta-nyc-transit-2024",
+    "url": "https://new.mta.info/fares",
+    "organization": "Metropolitan Transportation Authority (MTA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.mta.info/fares-tolls"
+  },
+  {
+    "id": "uk-hmrc-tax-2024",
+    "url": "https://www.gov.uk/income-tax-rates",
+    "organization": "HM Revenue & Customs (HMRC)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.gov.uk/income-tax-rates"
+  },
+  {
+    "id": "uk-ons-london-2024",
+    "url": "https://www.ons.gov.uk/economy/inflationandpriceindices",
+    "organization": "Office for National Statistics (ONS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ons.gov.uk/economy/inflationandpriceindices"
+  },
+  {
+    "id": "uk-ons-col-2024",
+    "url": "https://www.ons.gov.uk/economy/inflationandpriceindices",
+    "organization": "Office for National Statistics (ONS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ons.gov.uk/economy/inflationandpriceindices"
+  },
+  {
+    "id": "uae-fta-2024",
+    "url": "https://tax.gov.ae/en/",
+    "organization": "Federal Tax Authority (FTA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://tax.gov.ae/en/"
+  },
+  {
+    "id": "ae-dsc-col-2024",
+    "url": "https://www.dsc.gov.ae/",
+    "organization": "Dubai Statistics Center (DSC) & RERA",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://data.dubai/services"
+  },
+  {
+    "id": "ae-scad-col-2024",
+    "url": "https://www.scad.gov.ae/",
+    "organization": "Statistics Centre Abu Dhabi (SCAD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.scad.gov.ae/"
+  },
+  {
+    "id": "cra-income-tax-2024",
+    "url": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html",
+    "organization": "Canada Revenue Agency (CRA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets.html"
+  },
+  {
+    "id": "cra-cpp-2024",
+    "url": "https://www.canada.ca/en/revenue-agency/news/newsroom/tax-tips/tax-tips-2023/canada-revenue-agency-announces-maximum-pensionable-earnings-2024.html",
+    "organization": "Canada Revenue Agency (CRA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.canada.ca/errors/404.html"
+  },
+  {
+    "id": "cra-ei-2024",
+    "url": "https://www.canada.ca/en/employment-social-development/programs/ei/ei-list/reports/premium/rates2024.html",
+    "organization": "Employment and Social Development Canada (ESDC)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.canada.ca/errors/404.html"
+  },
+  {
+    "id": "ca-statcan-toronto-2024",
+    "url": "https://www.statcan.gc.ca/",
+    "organization": "Statistics Canada & CMHC",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.statcan.gc.ca/"
+  },
+  {
+    "id": "ca-statcan-vancouver-2024",
+    "url": "https://www.statcan.gc.ca/",
+    "organization": "Statistics Canada & CMHC",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.statcan.gc.ca/"
+  },
+  {
+    "id": "ca-statcan-calgary-2024",
+    "url": "https://www.statcan.gc.ca/",
+    "organization": "Statistics Canada & CMHC",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.statcan.gc.ca/"
+  },
+  {
+    "id": "ato-individual-rates-2024",
+    "url": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
+    "organization": "Australian Taxation Office (ATO)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents"
+  },
+  {
+    "id": "ato-medicare-levy-2024",
+    "url": "https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy",
+    "organization": "Australian Taxation Office (ATO)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy"
+  },
+  {
+    "id": "au-abs-sydney-2024",
+    "url": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia",
+    "organization": "Australian Bureau of Statistics (ABS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia"
+  },
+  {
+    "id": "au-abs-melbourne-2024",
+    "url": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia",
+    "organization": "Australian Bureau of Statistics (ABS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia"
+  },
+  {
+    "id": "bzst-lohnsteuer-2024",
+    "url": "https://www.bmf-steuerrechner.de/",
+    "organization": "Bundeszentralamt für Steuern (BZSt) & BMF",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.bmf-steuerrechner.de/"
+  },
+  {
+    "id": "gkv-beitragssaetze-2024",
+    "url": "https://www.gkv-spitzenverband.de/",
+    "organization": "GKV-Spitzenverband & Deutsche Rentenversicherung",
+    "status": "TIMEOUT",
+    "verdict": "BROKEN"
+  },
+  {
+    "id": "de-destatis-berlin-2024",
+    "url": "https://www.destatis.de/",
+    "organization": "Statistisches Bundesamt (Destatis) & Berlin Mietspiegel",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.destatis.de/DE/Home/_inhalt.html"
+  },
+  {
+    "id": "de-destatis-munich-2024",
+    "url": "https://www.destatis.de/",
+    "organization": "Statistisches Bundesamt (Destatis) & München Mietspiegel",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.destatis.de/DE/Home/_inhalt.html"
+  },
+  {
+    "id": "iras-tax-rates-2024",
+    "url": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates",
+    "organization": "Inland Revenue Authority of Singapore (IRAS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates"
+  },
+  {
+    "id": "sg-singstat-2024",
+    "url": "https://www.singstat.gov.sg/",
+    "organization": "Singapore Department of Statistics (SingStat) & URA",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.singstat.gov.sg/"
+  },
+  {
+    "id": "revenue-paye-rates-2024",
+    "url": "https://www.revenue.ie/en/personal-tax-credits-reliefs-and-exemptions/tax-relief-charts/index.aspx",
+    "organization": "Office of the Revenue Commissioners (Revenue)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.revenue.ie/en/personal-tax-credits-reliefs-and-exemptions/tax-relief-charts/index.aspx"
+  },
+  {
+    "id": "revenue-usc-rates-2024",
+    "url": "https://www.revenue.ie/en/jobs-and-pensions/usc/index.aspx",
+    "organization": "Office of the Revenue Commissioners (Revenue)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.revenue.ie/en/jobs-and-pensions/usc/index.aspx"
+  },
+  {
+    "id": "dsp-prsi-rates-2024",
+    "url": "https://www.revenue.ie/en/jobs-and-pensions/prsi/index.aspx",
+    "organization": "Department of Social Protection (DSP)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.revenue.ie/en/jobs-and-pensions/prsi/index.aspx"
+  },
+  {
+    "id": "ie-cso-dublin-2024",
+    "url": "https://www.cso.ie/",
+    "organization": "Central Statistics Office (CSO) & RTB",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.cso.ie/en/index.html"
+  },
+  {
+    "id": "ird-tax-rates-2024-2026",
+    "url": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals",
+    "organization": "Inland Revenue Department (IRD)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals"
+  },
+  {
+    "id": "acc-earners-levy-2024",
+    "url": "https://www.acc.co.nz/for-business/levy-rates/",
+    "organization": "Accident Compensation Corporation (ACC)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.acc.co.nz/for-business/levy-rates/"
+  },
+  {
+    "id": "nz-stats-auckland-2024",
+    "url": "https://www.stats.govt.nz/",
+    "organization": "Stats NZ (Tatauranga Aotearoa) & Tenancy Services",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.stats.govt.nz/"
+  },
+  {
+    "id": "ch-bfs-zurich-2024",
+    "url": "https://www.bfs.admin.ch/",
+    "organization": "Bundesamt für Statistik (BFS) & Statistisches Amt Zürich",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.bfs.admin.ch/bfs/de/home.html"
+  },
+  {
+    "id": "qatar-income-tax-law-2018",
+    "url": "https://www.gta.gov.qa/",
+    "organization": "General Tax Authority (GTA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.gta.gov.qa/ar"
+  },
+  {
+    "id": "qa-psa-doha-2024",
+    "url": "https://www.psa.gov.qa/",
+    "organization": "Planning and Statistics Authority (PSA)",
+    "status": "TIMEOUT",
+    "verdict": "BROKEN"
+  },
+  {
+    "id": "gulf-zero-income-tax-statute",
+    "url": "https://zatca.gov.sa/",
+    "organization": "Zakat, Tax and Customs Authority (ZATCA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://zatca.gov.sa/ar/Pages/default.aspx"
+  },
+  {
+    "id": "sa-gastat-riyadh-2024",
+    "url": "https://www.stats.gov.sa/",
+    "organization": "General Authority for Statistics (GASTAT)",
+    "status": "TIMEOUT",
+    "verdict": "BROKEN"
+  },
+  {
+    "id": "sa-gastat-jeddah-2024",
+    "url": "https://www.stats.gov.sa/",
+    "organization": "General Authority for Statistics (GASTAT)",
+    "status": "TIMEOUT",
+    "verdict": "BROKEN"
+  },
+  {
+    "id": "belastingdienst-box1-2024",
+    "url": "https://www.belastingdienst.nl/wps/wcm/connect/nl/werk-en-inkomen/content/hoeveel-inkomstenbelasting-betalen",
+    "organization": "Belastingdienst (Dutch Tax and Customs Administration)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.belastingdienst.nl/wps/wcm/connect/nl/werk-en-inkomen/content/hoeveel-inkomstenbelasting-betalen"
+  },
+  {
+    "id": "belastingdienst-premies-2024",
+    "url": "https://www.belastingdienst.nl/",
+    "organization": "Sociale Verzekeringsbank (SVB) & Belastingdienst",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.belastingdienst.nl/wps/wcm/connect/nl/home/home"
+  },
+  {
+    "id": "nl-cbs-amsterdam-2024",
+    "url": "https://www.cbs.nl/",
+    "organization": "Centraal Bureau voor de Statistiek (CBS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.cbs.nl/"
+  },
+  {
+    "id": "nl-cbs-rotterdam-2024",
+    "url": "https://www.cbs.nl/",
+    "organization": "Centraal Bureau voor de Statistiek (CBS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.cbs.nl/"
+  },
+  {
+    "id": "dgfip-bareme-ir-2024",
+    "url": "https://www.economie.gouv.fr/particuliers/bareme-impot-revenu",
+    "organization": "Direction Générale des Finances Publiques (DGFiP)",
+    "status": 403,
+    "verdict": "BOT_PROTECTED",
+    "finalUrl": "https://www.economie.gouv.fr/particuliers/bareme-impot-revenu"
+  },
+  {
+    "id": "urssaf-taux-cotisations-2024",
+    "url": "https://www.urssaf.fr/",
+    "organization": "URSSAF",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.urssaf.fr/accueil.html"
+  },
+  {
+    "id": "fr-insee-paris-2024",
+    "url": "https://www.insee.fr/",
+    "organization": "Institut National de la Statistique et des Études Économiques (INSEE) & OLAP",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.insee.fr/fr/accueil"
+  },
+  {
+    "id": "fr-insee-lyon-2024",
+    "url": "https://www.insee.fr/",
+    "organization": "INSEE & Observatoire Local des Loyers Lyon",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.insee.fr/fr/accueil"
+  },
+  {
+    "id": "aeat-tramos-irpf-2024",
+    "url": "https://sede.agenciatributaria.gob.es/",
+    "organization": "Agencia Estatal de Administración Tributaria (AEAT)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://sede.agenciatributaria.gob.es/"
+  },
+  {
+    "id": "tgss-bases-cotizacion-2024",
+    "url": "https://www.seg-social.es/",
+    "organization": "Tesorería General de la Seguridad Social (TGSS)",
+    "status": 403,
+    "verdict": "BOT_PROTECTED",
+    "finalUrl": "https://www.seg-social.es/"
+  },
+  {
+    "id": "es-ine-madrid-2024",
+    "url": "https://www.ine.es/",
+    "organization": "Instituto Nacional de Estadística (INE) & MITMA",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ine.es/"
+  },
+  {
+    "id": "es-ine-barcelona-2024",
+    "url": "https://www.ine.es/",
+    "organization": "INE & Generalitat de Catalunya (Incasòl)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ine.es/"
+  },
+  {
+    "id": "es-ine-valencia-2024",
+    "url": "https://www.ine.es/",
+    "organization": "INE & Observatori de l’Habitatge Comunitat Valenciana",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ine.es/"
+  },
+  {
+    "id": "us-irs-tax-2026",
+    "url": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+    "organization": "Internal Revenue Service (IRS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf"
+  },
+  {
+    "id": "us-ssa-fica-2026",
+    "url": "https://www.ssa.gov/oact/cola/cbb.html",
+    "organization": "Social Security Administration (SSA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ssa.gov/oact/cola/cbb.html"
+  },
+  {
+    "id": "us-nys-tax-2026",
+    "url": "https://www.tax.ny.gov/forms/income_cur_forms.htm",
+    "organization": "New York State Department of Taxation and Finance",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.tax.ny.gov/forms/income_cur_forms.htm"
+  },
+  {
+    "id": "us-nyc-tax-2026",
+    "url": "https://www.tax.ny.gov/forms/income_cur_forms.htm",
+    "organization": "New York City Department of Finance",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.tax.ny.gov/forms/income_cur_forms.htm"
+  },
+  {
+    "id": "uk-hmrc-tax-2026",
+    "url": "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027",
+    "organization": "HM Revenue & Customs (HMRC)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027"
+  },
+  {
+    "id": "uae-fta-2026",
+    "url": "https://tax.gov.ae",
+    "organization": "Federal Tax Authority (FTA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://tax.gov.ae/ar/default.aspx"
+  },
+  {
+    "id": "ca-cra-tax-2026",
+    "url": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html",
+    "organization": "Canada Revenue Agency (CRA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.canada.ca/errors/404.html"
+  },
+  {
+    "id": "au-ato-tax-2026",
+    "url": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
+    "organization": "Australian Taxation Office (ATO)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents"
+  },
+  {
+    "id": "de-bmf-tax-2026",
+    "url": "https://www.bundesfinanzministerium.de",
+    "organization": "Bundesministerium der Finanzen (BMF)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.bundesfinanzministerium.de/Web/DE/Home/home.html"
+  },
+  {
+    "id": "sg-iras-tax-2026",
+    "url": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates",
+    "organization": "Inland Revenue Authority of Singapore (IRAS)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates"
+  },
+  {
+    "id": "qa-gta-tax-2026",
+    "url": "https://www.gta.gov.qa",
+    "organization": "General Tax Authority (GTA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.gta.gov.qa/ar"
+  },
+  {
+    "id": "sa-zatca-tax-2026",
+    "url": "https://zatca.gov.sa",
+    "organization": "Zakat, Tax and Customs Authority (ZATCA)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://zatca.gov.sa/ar/Pages/default.aspx"
+  },
+  {
+    "id": "nz-ird-tax-2026",
+    "url": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals",
+    "organization": "Inland Revenue Department (Te Tari Taake)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals"
+  },
+  {
+    "id": "fr-dgfip-tax-2026",
+    "url": "https://www.impots.gouv.fr",
+    "organization": "Direction Générale des Finances Publiques (DGFiP)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.impots.gouv.fr/accueil"
+  },
+  {
+    "id": "es-aeat-tax-2026",
+    "url": "https://sede.agenciatributaria.gob.es",
+    "organization": "Agencia Estatal de Administración Tributaria (AEAT)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://sede.agenciatributaria.gob.es/"
+  },
+  {
+    "id": "nl-belasting-tax-2026",
+    "url": "https://www.belastingdienst.nl",
+    "organization": "Belastingdienst",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.belastingdienst.nl/wps/wcm/connect/nl/home/home"
+  },
+  {
+    "id": "ie-revenue-tax-2026",
+    "url": "https://www.revenue.ie/en/corporate/press-office/budget-information/2026/index.aspx",
+    "organization": "Office of the Revenue Commissioners",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.revenue.ie/en/corporate/press-office/budget-information/2026/index.aspx"
+  },
+  {
+    "id": "ch-estv-tax-2026",
+    "url": "https://www.estv.admin.ch",
+    "organization": "Eidgenössische Steuerverwaltung (ESTV)",
+    "status": 200,
+    "verdict": "OK",
+    "finalUrl": "https://www.estv.admin.ch/de"
+  }
+]

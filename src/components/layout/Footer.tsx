@@ -51,8 +51,8 @@ export const Footer: React.FC<FooterProps> = ({
                 scrollToTop();
               }}
               className="text-left group cursor-pointer"
-              title={dict.accessibility?.footerHomeTitle || 'LivWorthy Home'}
-              aria-label={dict.accessibility?.footerHomeTitle || 'LivWorthy Home'}
+              title={dict.accessibility.footerHomeTitle}
+              aria-label={dict.accessibility.footerHomeTitle}
             >
               <LivWorthLogo size="sm" showTagline={true} />
             </button>

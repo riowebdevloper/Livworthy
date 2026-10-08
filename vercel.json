@@ -116,6 +116,16 @@
   ],
   "redirects": [
     {
+      "source": "/guides/100k-salary-new-york",
+      "destination": "https://www.livworthy.com/guides/nyc-100k",
+      "permanent": true
+    },
+    {
+      "source": "/guides/100k-salary-new-york/",
+      "destination": "https://www.livworthy.com/guides/nyc-100k",
+      "permanent": true
+    },
+    {
       "source": "/guides/london-60k",
       "destination": "https://www.livworthy.com/guides/london-75k",
       "permanent": true

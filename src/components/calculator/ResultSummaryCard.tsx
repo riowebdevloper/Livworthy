@@ -130,7 +130,7 @@ Methodology: Deterministic statutory schedules (https://www.livworthy.com)`;
             <button
               id="period-annual-btn"
               type="button"
-              aria-label={dict.accessibility?.viewAnnualAriaLabel || 'View annual figures'}
+              aria-label={dict.accessibility.viewAnnualAriaLabel}
               aria-pressed={period === 'annual'}
               onClick={() => setPeriod('annual')}
               className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
@@ -144,7 +144,7 @@ Methodology: Deterministic statutory schedules (https://www.livworthy.com)`;
             <button
               id="period-monthly-btn"
               type="button"
-              aria-label={dict.accessibility?.viewMonthlyAriaLabel || 'View monthly figures'}
+              aria-label={dict.accessibility.viewMonthlyAriaLabel}
               aria-pressed={period === 'monthly'}
               onClick={() => setPeriod('monthly')}
               className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors cursor-pointer ${

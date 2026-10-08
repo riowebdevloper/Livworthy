@@ -96,6 +96,7 @@ function configureApp() {
     }
 
     const LEGACY_GUIDE_REDIRECTS: Record<string, string> = {
+      '/guides/100k-salary-new-york': '/guides/nyc-100k',
       '/guides/london-60k': '/guides/london-75k',
       '/guides/toronto-90k': '/guides/toronto-100k',
       '/guides/dubai-30k': '/guides/dubai-300k',

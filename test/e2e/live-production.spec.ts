@@ -37,7 +37,7 @@ test.describe('LivWorthy Live Production Verification Suite', () => {
       '/ar',
       '/hi',
       '/cities/nyc',
-      '/guides/100k-salary-new-york',
+      '/guides/nyc-100k',
     ];
 
     for (const route of keyRoutes) {

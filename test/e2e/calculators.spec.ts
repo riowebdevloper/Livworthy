@@ -788,7 +788,7 @@ test.describe('Generated SEO Pages — Vercel Does Not Serve SPA', () => {
     { path: '/cities/london',             h1: /London/i,             category: 'city' },
     { path: '/compare/new-york-vs-london', h1: /New York.*London/i,  category: 'comparison' },
     { path: '/compare/london-vs-dubai',   h1: /London.*Dubai/i,      category: 'comparison' },
-    { path: '/guides/100k-salary-new-york', h1: /\$100K.*New York/i, category: 'guide' },
+    { path: '/guides/nyc-100k',           h1: /\$100K.*New York/i, category: 'guide' },
     { path: '/guides/austin-100k',        h1: /Austin/i,             category: 'guide' },
   ] as const;
 

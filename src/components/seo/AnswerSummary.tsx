@@ -80,7 +80,7 @@ export const AnswerSummary: React.FC<AnswerSummaryProps> = ({
 
   return (
     <section
-      aria-label={dict.accessibility?.directAnswerAriaLabel || 'Direct Financial Answer & Fact Summary'}
+      aria-label={dict.accessibility.directAnswerAriaLabel}
       className="p-6 sm:p-7 bg-white border-l-4 border-l-[#167D75] border border-[#DCE3E0] rounded-2xl shadow-xs space-y-5"
     >
       {/* 1. Clear Question Anchor */}

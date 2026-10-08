@@ -73,7 +73,7 @@ export const NycSalaryCalculator: React.FC<NycSalaryCalculatorProps> = ({
 
   return (
     <div
-      aria-label={dict.accessibility?.nycCalculatorAriaLabel || 'Interactive NYC Salary Calculator'}
+      aria-label={dict.accessibility.nycCalculatorAriaLabel}
       className="p-5 sm:p-7 bg-white border border-[#DCE3E0] rounded-2xl shadow-xs"
     >
       {/* Scope and Authority Header */}

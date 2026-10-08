@@ -21,7 +21,7 @@ export const LanguageSuggestionBanner: React.FC = () => {
 
   return (
     <aside
-      aria-label={dict.accessibility?.languageSuggestionAriaLabel || 'Language Suggestion'}
+      aria-label={dict.accessibility.languageSuggestionAriaLabel}
       className="bg-[#102A2E] text-white px-4 py-2.5 text-xs border-b border-[#2B4744] shadow-sm transition-all animate-in slide-in-from-top-2 duration-200"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
@@ -42,7 +42,7 @@ export const LanguageSuggestionBanner: React.FC = () => {
             type="button"
             onClick={dismissSuggestion}
             className="p-1 rounded text-[#A3B8B5] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#44BBA4]"
-            aria-label={dict.accessibility?.dismissLanguageSuggestionAriaLabel || 'Dismiss language suggestion'}
+            aria-label={dict.accessibility.dismissLanguageSuggestionAriaLabel}
           >
             <X className="w-4 h-4" />
           </button>

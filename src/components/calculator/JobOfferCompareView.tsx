@@ -237,7 +237,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               </label>
               <select
                 id="offer-a-location-select"
-                aria-label={dict.accessibility?.locationAAriaLabel || 'Location A'}
+                aria-label={dict.accessibility.locationAAriaLabel}
                 value={offerACityId}
                 onChange={(e) => setOfferACityId(e.target.value)}
                 className="w-full text-xs font-bold rounded-lg border border-[#DCE3E0] p-2 bg-white"
@@ -286,7 +286,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               </label>
               <input
                 id="offer-a-housing"
-                aria-label={dict.accessibility?.housingAllowanceAriaLabel || 'Housing Allowance / Relocation Stipend (Annual)'}
+                aria-label={dict.accessibility.housingAllowanceAriaLabel}
                 type="number"
                 value={offerAHousingAllowance}
                 onChange={(e) => setOfferAHousingAllowance(parseFloat(e.target.value) || 0)}
@@ -311,7 +311,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               </label>
               <select
                 id="offer-b-location-select"
-                aria-label={dict.accessibility?.locationBAriaLabel || 'Location B'}
+                aria-label={dict.accessibility.locationBAriaLabel}
                 value={offerBCityId}
                 onChange={(e) => setOfferBCityId(e.target.value)}
                 className="w-full text-xs font-bold rounded-lg border border-[#DCE3E0] p-2 bg-white"
@@ -360,7 +360,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               </label>
               <input
                 id="offer-b-housing"
-                aria-label={dict.accessibility?.housingAllowanceAriaLabel || 'Housing Allowance / Relocation Stipend (Annual)'}
+                aria-label={dict.accessibility?.housingAllowanceAriaLabel}
                 type="number"
                 value={offerBHousingAllowance}
                 onChange={(e) => setOfferBHousingAllowance(parseFloat(e.target.value) || 0)}
@@ -380,7 +380,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               <div>
                 <span className="text-[#60706D] block">Flights</span>
                 <input
-                  aria-label={dict.accessibility?.flightsRelocationAriaLabel || 'Flights relocation cost'}
+                  aria-label={dict.accessibility?.flightsRelocationAriaLabel}
                   type="number"
                   value={relocFlights}
                   onChange={(e) => setRelocFlights(parseFloat(e.target.value) || 0)}
@@ -390,7 +390,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               <div>
                 <span className="text-[#60706D] block">Temp Hotel</span>
                 <input
-                  aria-label={dict.accessibility?.hotelRelocationAriaLabel || 'Temp hotel relocation cost'}
+                  aria-label={dict.accessibility?.hotelRelocationAriaLabel}
                   type="number"
                   value={relocTempHousing}
                   onChange={(e) => setRelocTempHousing(parseFloat(e.target.value) || 0)}
@@ -400,7 +400,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               <div>
                 <span className="text-[#60706D] block">Deposit</span>
                 <input
-                  aria-label={dict.accessibility?.depositRelocationAriaLabel || 'Deposit relocation cost'}
+                  aria-label={dict.accessibility.depositRelocationAriaLabel}
                   type="number"
                   value={relocDeposit}
                   onChange={(e) => setRelocDeposit(parseFloat(e.target.value) || 0)}
@@ -410,7 +410,7 @@ export const JobOfferCompareView: React.FC<JobOfferCompareViewProps> = ({
               <div>
                 <span className="text-[#60706D] block">Shipping</span>
                 <input
-                  aria-label={dict.accessibility?.shippingRelocationAriaLabel || 'Shipping relocation cost'}
+                  aria-label={dict.accessibility.shippingRelocationAriaLabel}
                   type="number"
                   value={relocShipping}
                   onChange={(e) => setRelocShipping(parseFloat(e.target.value) || 0)}

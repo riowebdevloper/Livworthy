@@ -44,7 +44,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
     .filter(Boolean);
 
   return (
-    <div role="dialog" aria-modal="true" aria-label={dict.accessibility?.evidenceDrawerAriaLabel || 'Data Provenance & Evidence'} className="fixed inset-0 z-50 flex justify-end">
+    <div role="dialog" aria-modal="true" aria-label={dict.accessibility?.evidenceDrawerAriaLabel} className="fixed inset-0 z-50 flex justify-end">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-[#102A2E]/40 backdrop-blur-xs transition-opacity"
@@ -60,13 +60,13 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#102A2E]">{dict.accessibility?.evidenceDrawerAriaLabel || 'Data Provenance & Evidence'}</h2>
-              <p className="text-xs text-[#60706D]">{dict.accessibility?.evidenceProvenanceDesc || 'Audit trail of statutory sources and datasets'}</p>
+              <h2 className="text-base font-bold text-[#102A2E]">{dict.accessibility?.evidenceDrawerAriaLabel}</h2>
+              <p className="text-xs text-[#60706D]">{dict.accessibility?.evidenceProvenanceDesc}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            aria-label={dict.accessibility?.evidenceDrawerCloseAriaLabel || 'Close data provenance drawer'}
+            aria-label={dict.accessibility?.evidenceDrawerCloseAriaLabel}
             className="p-1.5 rounded-lg text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors"
           >
             <X className="w-5 h-5" />

@@ -347,11 +347,19 @@ async function runRegressionSuite() {
     assert(rApexAbout.statusCode === 308, `livworthy.com /about must return 308 (got ${rApexAbout.statusCode})`);
     assert(rApexAbout.headers.location === 'https://www.livworthy.com/about', `livworthy.com /about location must be https://www.livworthy.com/about (got ${rApexAbout.headers.location})`);
 
-    const rApexQuery = await testRequest('livworthy.com', '/guides/100k-salary-new-york?x=1');
+    const rApexQuery = await testRequest('livworthy.com', '/guides/nyc-100k?x=1');
     assert(rApexQuery.statusCode === 308, `livworthy.com with query must return 308 (got ${rApexQuery.statusCode})`);
     assert(
-      rApexQuery.headers.location === 'https://www.livworthy.com/guides/100k-salary-new-york?x=1',
+      rApexQuery.headers.location === 'https://www.livworthy.com/guides/nyc-100k?x=1',
       `Apex query string must be preserved (got ${rApexQuery.headers.location})`
+    );
+
+    // Verify consolidated legacy guide redirect with query preservation
+    const rLegacyGuide = await testRequest('livworthy.com', '/guides/100k-salary-new-york?x=1');
+    assert(rLegacyGuide.statusCode === 308, `Legacy guide must return 308 (got ${rLegacyGuide.statusCode})`);
+    assert(
+      rLegacyGuide.headers.location === 'https://www.livworthy.com/guides/nyc-100k?x=1',
+      `Legacy guide must redirect to canonical nyc-100k with query preserved (got ${rLegacyGuide.headers.location})`
     );
 
     // Apex with trailing slash -> directly redirects to www without trailing slash in a SINGLE hop!

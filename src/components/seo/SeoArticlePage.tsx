@@ -183,7 +183,7 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
       
       {/* 1. Fully Clickable Interactive Interlinked Breadcrumbs */}
       <nav
-        aria-label={dict.accessibility?.breadcrumbAriaLabel || 'Breadcrumb'}
+        aria-label={dict.accessibility.breadcrumbAriaLabel}
         className="flex flex-wrap items-center justify-between gap-2 text-xs text-[#60706D] bg-white p-3.5 rounded-xl border border-[#DCE3E0] shadow-2xs"
       >
         <div className="flex flex-wrap items-center gap-1.5">
@@ -191,10 +191,10 @@ export const SeoArticlePage: React.FC<SeoArticlePageProps> = ({
             type="button"
             onClick={onNavigateHome}
             className="hover:text-[#167D75] font-medium transition-colors cursor-pointer flex items-center px-1.5 py-0.5 rounded hover:bg-slate-100"
-            title={dict.accessibility?.navigateHomeTitle || 'Navigate to Home Calculator'}
+            title={dict.accessibility.navigateHomeTitle}
           >
             <Home className="w-3.5 h-3.5 mr-1 text-[#167D75]" />
-            <span>{dict.common?.home || 'Home'}</span>
+            <span>{dict.common.home}</span>
           </button>
           
           <ChevronRight className="w-3 h-3 text-[#60706D]" />

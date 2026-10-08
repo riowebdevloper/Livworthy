@@ -86,7 +86,7 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            aria-label={dict.accessibility?.closeCorrectionDialogAriaLabel || 'Close dialog'}
+            aria-label={dict.accessibility.closeCorrectionDialogAriaLabel}
             className="p-1.5 rounded-lg text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
@@ -163,7 +163,7 @@ export const DataCorrectionModal: React.FC<DataCorrectionModalProps> = ({
                   id="correction-description"
                   rows={3}
                   required
-                  placeholder={dict.accessibility?.correctionDescriptionPlaceholder || 'Describe the discrepancy, affected bracket or value, and expected figure...'}
+                  placeholder={dict.accessibility.correctionDescriptionPlaceholder}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className="w-full px-3 py-2 border border-[#DCE3E0] rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:border-[#167D75]"

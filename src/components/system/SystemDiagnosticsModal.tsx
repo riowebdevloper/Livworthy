@@ -96,7 +96,7 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({
       id="system-diagnostics-modal"
       role="dialog"
       aria-modal="true"
-      aria-label={dict.accessibility?.systemDiagnosticsAriaLabel || 'System Diagnostics'}
+      aria-label={dict.accessibility.systemDiagnosticsAriaLabel}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -129,13 +129,13 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({
               onClick={() => setRefreshTrigger((prev) => prev + 1)}
               disabled={loading}
               className="p-1.5 text-[#60706D] hover:text-[#102A2E] hover:bg-[#DCE3E0]/50 rounded transition-colors"
-              title={dict.accessibility?.refreshDiagnosticsTitle || 'Refresh diagnostics'}
+              title={dict.accessibility.refreshDiagnosticsTitle}
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              aria-label={dict.accessibility?.closeDiagnosticsAriaLabel || 'Close diagnostics dialog'}
+              aria-label={dict.accessibility.closeDiagnosticsAriaLabel}
               className="p-1.5 text-[#60706D] hover:text-[#102A2E] hover:bg-[#DCE3E0]/50 rounded transition-colors"
             >
               <X className="w-5 h-5" />

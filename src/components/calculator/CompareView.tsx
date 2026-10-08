@@ -190,7 +190,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
               </label>
               <select
                 id="compare-city-a-select"
-                aria-label={dict.accessibility?.selectCityAAriaLabel || 'Select City A'}
+                aria-label={dict.accessibility?.selectCityAAriaLabel}
                 value={cityAId}
                 onChange={(e) => setCityAId(e.target.value)}
                 className="w-full text-base font-bold rounded-lg border border-[#DCE3E0] p-2.5 bg-white text-[#102A2E]"
@@ -231,7 +231,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
               </label>
               <select
                 id="compare-city-b-select"
-                aria-label={dict.accessibility?.selectCityBAriaLabel || 'Select City B'}
+                aria-label={dict.accessibility?.selectCityBAriaLabel}
                 value={cityBId}
                 onChange={(e) => setCityBId(e.target.value)}
                 className="w-full text-base font-bold rounded-lg border border-[#DCE3E0] p-2.5 bg-white text-[#102A2E]"
@@ -307,7 +307,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
             className="overflow-x-auto [scrollbar-width:thin] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded-lg"
             tabIndex={0}
             role="region"
-            aria-label={dict.accessibility?.compareTableAriaLabel || 'City financial comparison table'}
+            aria-label={dict.accessibility?.compareTableAriaLabel}
           >
             <table className="w-full min-w-[480px] sm:min-w-0 text-xs text-left">
               <thead>

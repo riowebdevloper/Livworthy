@@ -61,7 +61,7 @@ export const CustomizationDrawer: React.FC<CustomizationDrawerProps> = ({
           </div>
           <button
             onClick={onClose}
-            aria-label={dict.accessibility?.customizationDrawerCloseAriaLabel || 'Close customization drawer'}
+            aria-label={dict.accessibility.customizationDrawerCloseAriaLabel}
             className="p-1.5 rounded-lg text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors"
           >
             <X className="w-5 h-5" />

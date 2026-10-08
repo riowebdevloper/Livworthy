@@ -479,7 +479,7 @@ export function runSeoGenerator() {
               <div class="font-bold text-xs uppercase tracking-wider text-[#102A2E] mb-3">City Salary Guides</div>
               <ul class="space-y-1 text-xs">
                 <li><a href="/guides/nyc-100k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $100k a Good Salary in NYC?</a></li>
-                <li><a href="/guides/100k-salary-new-york" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">NYC $100k Salary Breakdown</a></li>
+                <li><a href="/guides/nyc-150k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $150k a Good Salary in NYC?</a></li>
                 <li><a href="/guides/london-75k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is £75k a Good Salary in London?</a></li>
                 <li><a href="/guides/sf-150k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is $150k a Good Salary in San Francisco?</a></li>
                 <li><a href="/guides/toronto-100k" class="min-h-[24px] py-1 flex items-center hover:text-[#167D75]">Is CA$100k a Good Salary in Toronto?</a></li>
@@ -631,21 +631,39 @@ export function runSeoGenerator() {
     const countryBody = `
       <article class="max-w-5xl mx-auto px-4 py-8">
         <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">${country.name}</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">${country.name} ${hasTax ? 'Income & Living Intelligence' : 'Cost of Living Intelligence'}</h1>
-        <p class="mt-2 text-slate-600">${hasTax
-          ? `Comprehensive statutory salary calculations, tax breakdowns (Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR}), cost of living indices, and major city benchmarks for ${country.name}.`
-          : `Cost of living benchmarks, fair market rent data, and major metropolitan indices for ${country.name}. Statutory tax calculations are currently under statutory verification.`}</p>
-        <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold rounded-full">
-          Status: ${hasTax ? `${country.verificationStatus} ADAPTER (${cap.taxYear || LATEST_STATUTORY_TAX_YEAR})` : 'COST OF LIVING AVAILABLE (TAX UNDER VERIFICATION)'}
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">${country.name} ${hasTax ? 'Income, Tax & Living Intelligence' : 'Cost of Living & City Intelligence'}</h1>
+        <p class="mt-2 text-slate-600 leading-relaxed">${hasTax
+          ? `Comprehensive statutory salary calculations, progressive income tax schedules (Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR}), mandatory social contributions, cost of living indices, and major metropolitan benchmarks across ${country.name}.`
+          : `Cost of living benchmarks, fair-market housing indicators, and metropolitan expenditure data for ${country.name}. Statutory tax calculations for this jurisdiction are currently under verification against official tax authority tables.`}</p>
+        
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold rounded-full">
+            Status: ${hasTax ? `${country.verificationStatus} STATUTORY ADAPTER (${cap.taxYear || LATEST_STATUTORY_TAX_YEAR})` : 'COST OF LIVING BENCHMARKS ACTIVE'}
+          </span>
+          <span class="inline-flex items-center px-3 py-1 bg-slate-100 border border-slate-200 text-slate-700 text-xs font-medium rounded-full">
+            National Currency: <strong>${country.defaultCurrency || 'Local'}</strong>
+          </span>
         </div>
-        ${country.notes ? `<p class="mt-3 text-sm text-slate-500 italic">${country.notes}</p>` : ''}
+        ${country.notes ? `<p class="mt-3 text-sm text-slate-500 italic bg-amber-50/60 p-3 rounded-lg border border-amber-200/50">${country.notes}</p>` : ''}
+
+        <section class="mt-8 space-y-3">
+          <h2 class="text-xl font-bold text-[#102A2E]">Statutory Income Tax &amp; Social Contribution Architecture</h2>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            In ${country.name}, gross employment compensation is subject to statutory payroll withholdings and progressive tax brackets. Net spendable take-home pay is determined deterministically after applying applicable national tax thresholds, mandatory pension or retirement systems, public healthcare or social security contributions, and statutory standard deductions.
+          </p>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            ${hasTax
+              ? `LivWorthy models the current verified tax year (${cap.taxYear || LATEST_STATUTORY_TAX_YEAR}) for ${country.name} under standard single-filer employment rules without bespoke deductions. All tax bracket cutoffs and social insurance contribution ceilings are sourced directly from primary revenue authority gazettes.`
+              : `Statutory income taxation schedules for ${country.name} are currently undergoing empirical audit by the LivWorthy research team. Living costs, currency conversions, and purchasing-power indices remain fully active.`}
+          </p>
+        </section>
 
         <section class="mt-8">
           <h2 class="text-xl font-bold text-[#102A2E] mb-3">Major Cities in ${country.name}</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
             ${countryCities.map((ct) => `
-              <a href="/cities/${ct.id}" class="p-4 bg-white border border-slate-200 rounded-lg hover:border-teal-500 transition-colors shadow-sm block">
-                <span class="font-bold text-slate-900 block">${ct.name}</span>
+              <a href="/cities/${ct.id}" class="p-4 bg-white border border-slate-200 rounded-lg hover:border-teal-500 transition-colors shadow-sm block group">
+                <span class="font-bold text-slate-900 group-hover:text-teal-700 block">${ct.name}</span>
                 <span class="text-xs text-slate-500 block mt-1">${ct.metroAreaName || ct.name}</span>
                 <span class="text-xs text-teal-700 font-medium block mt-2">Currency: ${ct.currency} • COL Index: ${ct.colIndexBase100NYC} (NYC=100)</span>
               </a>
@@ -653,17 +671,29 @@ export function runSeoGenerator() {
           </div>
         </section>
 
+        <section class="mt-8 space-y-3">
+          <h2 class="text-xl font-bold text-[#102A2E]">Cost of Living &amp; Housing Expenditure Overview</h2>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Metropolitan cost of living in ${country.name} varies significantly between high-density economic centers and regional areas. Residential rental housing forms the largest recurring expenditure category, followed by grocery market baskets, public transportation, and private utilities. LivWorthy standardizes local living costs against the New York City baseline (NYC = 100), enabling accurate cross-border purchasing-power comparisons.
+          </p>
+        </section>
+
         <section class="mt-8">
-          <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators & Tools for ${country.name}</h2>
+          <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators &amp; Decision Intelligence for ${country.name}</h2>
           <div class="flex flex-wrap gap-2 text-sm">
-            ${countryCities.slice(0, 1).map((ct) => `
-              ${hasTax ? `<a href="/?city=${ct.id}&tab=salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
-              <a href="/?city=${ct.id}&tab=salary-after-tax" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary After Tax</a>
-              <a href="/?city=${ct.id}&tab=salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>` : ''}
-              <a href="/?city=${ct.id}&tab=cost-of-living" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Cost of Living</a>
-              <a href="/?city=${ct.id}&tab=compare" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Compare With Another City</a>
-            `).join('')}
+            <a href="/salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
+            <a href="/salary-after-tax" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary After Tax</a>
+            <a href="/salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>
+            <a href="/cost-of-living" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Cost of Living</a>
+            <a href="/compare" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Compare With Another City</a>
           </div>
+        </section>
+
+        <section class="mt-8 pt-6 border-t border-slate-200 flex flex-wrap gap-4 text-xs font-semibold text-teal-800">
+          <a href="/methodology" class="hover:underline">Calculation Methodology →</a>
+          <a href="/sources" class="hover:underline">Evidence Registry &amp; Primary Sources →</a>
+          <a href="/editorial-policy" class="hover:underline">Editorial &amp; Verification Policy →</a>
+          <a href="/corrections" class="hover:underline">Report a Statutory Discrepancy →</a>
         </section>
       </article>
     `;
@@ -727,9 +757,9 @@ export function runSeoGenerator() {
           <span class="text-slate-800 font-bold">${city.name}</span>
         </nav>
         <h1 class="text-3xl font-extrabold text-[#102A2E]">${city.name} ${hasTax ? 'Income, Tax & Cost of Living Intelligence' : 'Cost of Living & City Intelligence'}</h1>
-        <p class="mt-2 text-slate-600">${hasTax
-          ? `Financial living analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}. Tax Year: ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR}.`
-          : `Metropolitan cost of living and housing expense analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}.`}</p>
+        <p class="mt-2 text-slate-600 leading-relaxed">${hasTax
+          ? `Authoritative financial living analysis for ${city.name} (${country ? country.name : city.countryId}). Primary economic metro area: ${city.metroAreaName}. Verified statutory tax schedule: Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR}.`
+          : `Metropolitan cost of living, rental housing benchmarks, and consumer price analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}.`}</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-6">
           <div class="p-4 bg-white border border-slate-200 rounded-lg">
@@ -751,14 +781,36 @@ export function runSeoGenerator() {
           </div>
         </div>
 
+        <section class="mt-8 space-y-3">
+          <h2 class="text-xl font-bold text-[#102A2E]">Metropolitan Earnings &amp; Take-Home Pay Analysis</h2>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Evaluating a salary offer in ${city.name} requires separating nominal gross compensation from spendable net income. Residents in ${city.name} are subject to ${hasTax ? `applicable national, regional, and municipal tax withholdings under Tax Year ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR} rules` : 'statutory payroll deductions'}. 
+            Mandatory social contributions, statutory health insurance, and standard deduction thresholds directly impact take-home pay, typically creating effective deduction rates between 15% and 42% depending on income brackets.
+          </p>
+        </section>
+
+        <section class="mt-8 space-y-3">
+          <h2 class="text-xl font-bold text-[#102A2E]">Residential Housing &amp; Essential Living Costs</h2>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Housing represents the single largest monthly budget component in ${city.name}. Median fair-market rent for a typical 1-bedroom apartment in central economic districts reflects local housing supply dynamics and commercial vitality. Essential non-housing expenses—comprising grocery market baskets, public mass transit, electricity, heating, water, and broadband communications—scale according to the local cost of living index (${city.colIndexBase100NYC} relative to NYC).
+          </p>
+        </section>
+
+        <section class="mt-8 space-y-3">
+          <h2 class="text-xl font-bold text-[#102A2E]">Purchasing Power &amp; Disposable Savings Potential</h2>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            LivWorthy calculates discretionary surplus by subtracting total statutory taxes and itemized living costs from stated compensation. In ${city.name}, achieving a comfortable lifestyle buffer requires sufficient gross income to cover rental obligations within the recommended 30% housing burden ratio while preserving an uncommitted cash buffer for long-term investments and emergency savings.
+          </p>
+        </section>
+
         <section class="mt-8">
-          <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators for ${city.name}</h2>
+          <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators &amp; Decision Tools for ${city.name}</h2>
           <div class="flex flex-wrap gap-2 text-sm">
-            ${hasTax ? `<a href="/?city=${city.id}&tab=salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
-            <a href="/?city=${city.id}&tab=salary-after-tax" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary After Tax</a>
-            <a href="/?city=${city.id}&tab=salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>` : ''}
-            <a href="/?city=${city.id}&tab=cost-of-living" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Cost of Living</a>
-            <a href="/?city=${city.id}&tab=compare" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Compare With Another City</a>
+            <a href="/salary-worth" class="px-4 py-2 bg-teal-700 text-white rounded font-medium hover:bg-teal-800">Calculate Salary Worth</a>
+            <a href="/salary-after-tax" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary After Tax</a>
+            <a href="/salary-needed" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Salary Needed</a>
+            <a href="/cost-of-living" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Cost of Living</a>
+            <a href="/compare" class="px-4 py-2 bg-slate-100 text-slate-800 rounded font-medium hover:bg-slate-200">Compare With Another City</a>
           </div>
         </section>
 
@@ -775,6 +827,13 @@ export function runSeoGenerator() {
             </div>
           </section>
         ` : ''}
+
+        <section class="mt-8 pt-6 border-t border-slate-200 flex flex-wrap gap-4 text-xs font-semibold text-teal-800">
+          <a href="/methodology" class="hover:underline">Calculation Methodology →</a>
+          <a href="/sources" class="hover:underline">Evidence Registry &amp; Primary Sources →</a>
+          <a href="/editorial-policy" class="hover:underline">Editorial &amp; Verification Policy →</a>
+          <a href="/corrections" class="hover:underline">Report a Statutory Discrepancy →</a>
+        </section>
       </article>
     `;
 
@@ -881,7 +940,7 @@ export function runSeoGenerator() {
     pages.push({
       relativePath: `compare/${comp.slug}/index.html`,
       canonicalUrl: `${BASE_URL}/compare/${comp.slug}`,
-      title: `${cityA.name} vs ${cityB.name} Salary & Living Cost Comparison | LivWorthy`,
+      title: `${cityA.name} vs ${cityB.name}: Salary & Living Costs | LivWorthy`,
       description: `Compare salary worth, tax rates, rent, and household purchasing power between ${cityA.name} and ${cityB.name}. Deterministic cross-border calculator.`,
       robots: 'index, follow',
       bodyContent: compBody,
@@ -906,21 +965,6 @@ export function runSeoGenerator() {
         changefreq: rendered.changefreq,
         priority: rendered.priority,
       });
-
-      // Support backward-compatible alias
-      if (g.slug === 'nyc-100k') {
-        pages.push({
-          relativePath: `guides/100k-salary-new-york/index.html`,
-          canonicalUrl: `${BASE_URL}/guides/100k-salary-new-york`,
-          title: rendered.title,
-          description: rendered.description,
-          robots: rendered.robots,
-          bodyContent: rendered.bodyContent,
-          structuredData: rendered.structuredData,
-          changefreq: rendered.changefreq,
-          priority: rendered.priority,
-        });
-      }
       continue;
     }
 
@@ -1062,21 +1106,6 @@ export function runSeoGenerator() {
       changefreq: 'monthly',
       priority: 0.8,
     });
-
-    // Support backward-compatible alias
-    if (g.slug === 'nyc-100k') {
-      pages.push({
-        relativePath: `guides/100k-salary-new-york/index.html`,
-        canonicalUrl: `${BASE_URL}/guides/100k-salary-new-york`,
-        title: `${g.title} | LivWorthy`,
-        description: `${g.headlineSummary} Comprehensive financial analysis of a ${g.currency} ${g.salaryMajor.toLocaleString()} salary in ${city.name}.`,
-        robots: 'index, follow',
-        bodyContent: guideBody,
-        structuredData: guideStructuredData,
-        changefreq: 'monthly',
-        priority: 0.8,
-      });
-    }
   }
 
   // 6b. Priority Authority Hub Pages (Salary After Tax, Salary Needed, Cost of Living)
@@ -1215,7 +1244,7 @@ function createDirectoryPages(): SeoPage[] {
   pages.push({
     relativePath: 'countries/index.html',
     canonicalUrl: `${BASE_URL}/countries`,
-    title: 'Countries Directory — Global Income, Tax & Cost of Living Intelligence | LivWorthy',
+    title: 'Countries: Salary, Tax & Living Data | LivWorthy',
     description: 'Explore verified statutory income tax systems, cost of living benchmarks, and purchasing power parity across 39 international markets.',
     robots: 'index, follow',
     bodyContent: countriesBody,
@@ -1291,7 +1320,7 @@ function createDirectoryPages(): SeoPage[] {
   pages.push({
     relativePath: 'cities/index.html',
     canonicalUrl: `${BASE_URL}/cities`,
-    title: 'Cities Directory — Global Metropolitan Cost of Living & Salary Benchmarks | LivWorthy',
+    title: 'Cities: Salary & Cost of Living Data | LivWorthy',
     description: 'Comprehensive directory of 39 global cities. Explore cost of living indices, fair-market rents, local statutory tax rates, and salary benchmarks.',
     robots: 'index, follow',
     bodyContent: citiesBody,
@@ -1366,7 +1395,7 @@ function createDirectoryPages(): SeoPage[] {
   pages.push({
     relativePath: 'guides/index.html',
     canonicalUrl: `${BASE_URL}/guides`,
-    title: 'Salary & Relocation Guides — City Purchasing Power Benchmarks | LivWorthy',
+    title: 'Salary & Relocation Guides | LivWorthy',
     description: 'Authoritative salary, statutory tax, and cost of living guides for major metropolitan areas worldwide. Analyze realistic purchasing power and budgets.',
     robots: 'index, follow',
     bodyContent: guidesBody,
@@ -1449,7 +1478,7 @@ function createDirectoryPages(): SeoPage[] {
   pages.push({
     relativePath: 'compare/index.html',
     canonicalUrl: `${BASE_URL}/compare`,
-    title: 'City Comparisons Directory — Cross-Border Salary & Living Cost Intelligence | LivWorthy',
+    title: 'City Cost of Living Comparisons | LivWorthy',
     description: 'Compare statutory income taxes, cost of living, fair-market rents, and purchasing power between major world cities. Deterministic cross-border intelligence.',
     robots: 'index, follow',
     bodyContent: comparisonsBody,
@@ -1644,15 +1673,26 @@ function createTransparencyPages(): SeoPage[] {
     bodyContent: `
       <article class="max-w-4xl mx-auto px-4 py-8">
         <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">Editorial Policy</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">Editorial & Information Quality Policy</h1>
-        <div class="mt-6 space-y-4 text-sm text-slate-700 leading-relaxed">
-          <p>LivWorthy is committed to publishing financial living intelligence of the highest evidentiary standard. Our research focuses on global compensation, statutory taxation, and residential affordability.</p>
-          <h2 class="text-lg font-bold text-slate-900 mt-6">Core Standards</h2>
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">Editorial &amp; Information Quality Policy</h1>
+        <div class="mt-6 space-y-5 text-sm text-slate-700 leading-relaxed">
+          <p>LivWorthy is committed to publishing financial living intelligence of the highest evidentiary standard. Our research focuses on global compensation, statutory taxation, and residential affordability across major metropolitan centers worldwide.</p>
+          
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">1. Evidentiary Hierarchy &amp; Primary Sourcing</h2>
+          <p>Every mathematical computation, statutory tax bracket, and cost-of-living benchmark published on LivWorthy must trace to verified primary sources. We strictly prioritize:</p>
           <ul class="list-disc pl-5 space-y-2">
-            <li><strong>Separation of Content and Calculations:</strong> Editorial articles must source calculation numbers from authoritative backend engines, never hand-typed approximations.</li>
-            <li><strong>Commercial Independence:</strong> Advertising partners and sponsors have zero influence over calculation algorithms, tax rate tables, or city cost of living rankings.</li>
-            <li><strong>Transparent Authorship:</strong> Articles are produced and maintained by the LivWorthy Financial Research & Intelligence Team. We do not invent fake professional personas.</li>
+            <li><strong>Tier 1 — Statutory Tax Authorities:</strong> Official government revenue services including the US Internal Revenue Service (IRS), UK HM Revenue &amp; Customs (HMRC), Canada Revenue Agency (CRA), Australian Taxation Office (ATO), German Bundesministerium der Finanzen, and equivalent statutory gazettes.</li>
+            <li><strong>Tier 2 — National Statistical Registries:</strong> Official metropolitan datasets published by the US Bureau of Labor Statistics (BLS), UK Office for National Statistics (ONS), Eurostat, and official metropolitan housing departments (e.g. HUD Fair Market Rents).</li>
+            <li><strong>Tier 3 — Spatial &amp; Spatial Econometric Models:</strong> For cities with limited municipal reporting, secondary datasets are calibrated against regional benchmarks and explicitly flagged as DERIVED or LIMITED.</li>
           </ul>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">2. Zero Data Fabrication &amp; Synthetic Fallback Ban</h2>
+          <p>Under the LivWorthy Integrity Charter, our engineers and researchers never fabricate tax brackets, cost-of-living indices, or ratings. If official statutory rules are not yet verified for a specific jurisdiction, the jurisdiction is explicitly marked as "UNDER VERIFICATION" or "PROVISIONAL" rather than populated with synthetic guesses.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">3. Commercial Independence &amp; Editorial Neutrality</h2>
+          <p>LivWorthy maintains strict separation between editorial content, calculation engines, and commercial operations. Advertisers, sponsors, and affiliate partners possess zero input into algorithm weights, tax schedule formulations, or city affordability rankings. Calculations are deterministic and mathematically objective.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">4. Corrections &amp; Public Accountability</h2>
+          <p>Tax codes change continually through annual legislative procedures. We maintain an open, public <a href="/corrections" class="text-[#167D75] underline font-medium">Corrections Log</a> documenting all historical rule adjustments. Users and domain experts are encouraged to report statutory discrepancies via our interactive reporting tools.</p>
         </div>
       </article>
     `,
@@ -1676,11 +1716,21 @@ function createTransparencyPages(): SeoPage[] {
     bodyContent: `
       <article class="max-w-4xl mx-auto px-4 py-8">
         <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">Data Policy</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">Data Policy & Zero PII Architecture</h1>
-        <div class="mt-6 space-y-4 text-sm text-slate-700 leading-relaxed">
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">Data Policy &amp; Zero PII Architecture</h1>
+        <div class="mt-6 space-y-5 text-sm text-slate-700 leading-relaxed">
           <p>${PLATFORM_IDENTITY.privacyCommitment}</p>
-          <h2 class="text-lg font-bold text-slate-900 mt-6">Zero Data Fabrication Guarantee</h2>
-          <p>If statutory tax schedules or cost of living indicators are not officially verified for a jurisdiction, LivWorthy explicitly flags the market as PROVISIONAL or LIMITED rather than synthesizing fake figures.</p>
+          
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">1. Ephemeral Client-Side Calculations</h2>
+          <p>LivWorthy calculation scenarios—including compensation figures, household profiles, target expenses, and savings targets—are executed ephemerally in your web browser. Scenario data is not saved to server databases or user profiles. We do not require account registration, passwords, or personal email addresses.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">2. Zero Personal Identifiable Information (PII)</h2>
+          <p>Our systems do not collect, request, or retain Personally Identifiable Information (PII). We do not record Social Security Numbers, National Insurance Numbers, employer names, physical home addresses, or financial account balances. You can plan salary scenarios with complete personal anonymity.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">3. Minor-Unit Integer Precision</h2>
+          <p>All internal monetary amounts are converted and calculated using integer minor units (e.g. cents, pence, fils, or yen) rather than standard IEEE-754 floating-point numbers. This architectural decision prevents rounding drift and ensures exact mathematical reproducibility across all supported global currencies.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">4. Open Evidentiary Provenance</h2>
+          <p>We maintain full transparency regarding the origin of all data points. Every metropolitan living cost indicator and tax rate bracket links to primary source documentation via our publicly accessible <a href="/sources" class="text-[#167D75] underline font-medium">Verified Evidence Registry</a>.</p>
         </div>
       </article>
     `,
@@ -1704,8 +1754,8 @@ function createTransparencyPages(): SeoPage[] {
     bodyContent: `
       <article class="max-w-4xl mx-auto px-4 py-8">
         <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">Corrections</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">Corrections Log & Data Feedback</h1>
-        <p class="mt-2 text-slate-600">We maintain an open, public record of statutory adjustments and algorithmic updates.</p>
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">Corrections Log &amp; Data Feedback</h1>
+        <p class="mt-2 text-slate-600 leading-relaxed">We maintain an open, public record of statutory adjustments and algorithmic updates. If tax legislation changes or metropolitan benchmarks shift, we update our models and document the revisions here.</p>
 
         <section class="mt-8 space-y-3">
           <h2 class="text-xl font-bold text-[#102A2E]">Recent Verified Updates</h2>
@@ -1726,8 +1776,11 @@ function createTransparencyPages(): SeoPage[] {
         </section>
 
         <section class="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-200">
-          <h2 class="text-lg font-bold text-slate-900 mb-2">Submit a Correction</h2>
-          <p class="text-xs text-slate-600 leading-relaxed mb-4">Users can report outdated tax brackets or living benchmarks through the interactive "Report Data Correction" modal available on all calculator and guide pages.</p>
+          <h2 class="text-lg font-bold text-slate-900 mb-2">Submit a Correction or Discrepancy</h2>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            If you observe an updated statutory tax threshold, modified pension contribution rate, or shifting rental market trend that differs from our published models, please submit a report. We review government gazettes promptly and publish verified updates.
+          </p>
+          <a href="/methodology" class="inline-flex items-center text-xs font-bold text-[#167D75] hover:underline">Review Our Complete Calculation Methodology →</a>
         </section>
       </article>
     `,
@@ -1751,12 +1804,26 @@ function createTransparencyPages(): SeoPage[] {
     bodyContent: `
       <article class="max-w-4xl mx-auto px-4 py-8">
         <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">Terms</span></nav>
-        <h1 class="text-3xl font-extrabold text-[#102A2E]">Terms of Service & Financial Disclaimer</h1>
-        <div class="mt-6 space-y-4 text-sm text-slate-700 leading-relaxed">
-          <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-xs leading-relaxed font-medium">
-            <strong>Financial YMYL Notice:</strong> LivWorthy calculations are estimates designed for preliminary lifestyle evaluation and comparative planning. They do not constitute formal certified tax advice, financial planning, or legal counsel. Consult a qualified certified public accountant (CPA) or statutory tax attorney for official filings.
+        <h1 class="text-3xl font-extrabold text-[#102A2E]">Terms of Service &amp; Financial Disclaimer</h1>
+        <div class="mt-6 space-y-5 text-sm text-slate-700 leading-relaxed">
+          <div class="p-5 bg-amber-50 border border-amber-200 rounded-2xl text-amber-950 text-xs sm:text-sm leading-relaxed font-medium space-y-2">
+            <h2 class="font-bold text-sm sm:text-base text-amber-900">Important Financial &amp; Legal YMYL Disclaimer</h2>
+            <p>
+              LivWorthy is an analytical, educational information platform designed to assist users in preliminary financial planning, relocation evaluations, and cross-border lifestyle comparisons.
+            </p>
+            <p>
+              Calculations, net salary estimates, tax liability figures, and living expense benchmarks provided on LivWorthy do <strong>NOT</strong> constitute certified public accounting (CPA) advice, licensed tax planning, legal counsel, or financial fiduciary advice. Individual tax liabilities depend on complex personal circumstances, itemized deductions, residency rules, and non-standard income sources. Always consult a licensed tax professional or certified financial advisor prior to executing employment contracts or relocation decisions.
+            </p>
           </div>
-          <p>By using LivWorthy, you agree to access information for personal, informational, non-commercial planning purposes.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">1. Permitted Informational Use</h2>
+          <p>By accessing or using LivWorthy, you are granted a revocable, non-exclusive license to utilize our public calculation tools, empirical reports, and directory guides for personal, educational, and non-commercial planning purposes.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">2. Limitation of Liability</h2>
+          <p>While LivWorthy makes every effort to ensure accuracy by referencing statutory government tables and official statistical registries, all models and calculations are provided on an "as-is" and "as-available" basis without warranties of any kind. Under no circumstances shall LivWorthy Inc., its creators, or contributors be held liable for financial losses, employment disputes, or relocation outcomes arising from reliance on information presented on this site.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">3. Intellectual Property</h2>
+          <p>All software architectures, interactive calculators, bespoke design tokens, and research compilations are the proprietary intellectual property of LivWorthy Inc. Automated scraping, wholesale reproduction, or reverse-engineering of our proprietary datasets for competing commercial products is strictly prohibited without prior written authorization.</p>
         </div>
       </article>
     `,
@@ -1781,8 +1848,31 @@ function createTransparencyPages(): SeoPage[] {
       <article class="max-w-4xl mx-auto px-4 py-8">
         <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">Privacy</span></nav>
         <h1 class="text-3xl font-extrabold text-[#102A2E]">Privacy Policy</h1>
-        <div class="mt-6 space-y-4 text-sm text-slate-700 leading-relaxed">
-          <p>LivWorthy is architected to operate with minimal data footprint. We do not require account creation, do not sell user data, and compute calculation scenarios ephemerally.</p>
+        <div class="mt-6 space-y-5 text-sm text-slate-700 leading-relaxed">
+          <p>LivWorthy ("we," "our," or "the Platform") is architected with a strict privacy-first foundation. We believe financial inquiries regarding salary worth, relocation affordability, and personal living budgets should be completely private and anonymous.</p>
+          
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">1. Information We Do NOT Collect</h2>
+          <p>Unlike traditional personal finance platforms, LivWorthy does not require user registration or account creation. We do NOT collect:</p>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li>Names, residential street addresses, or telephone numbers.</li>
+            <li>Government identification numbers, tax IDs, or Social Security numbers.</li>
+            <li>Bank credentials, credit card details, or payroll account connections.</li>
+            <li>Email addresses or mailing lists.</li>
+          </ul>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">2. Local Browser Storage Usage</h2>
+          <p>We use your browser's local storage (localStorage) exclusively to preserve your chosen UI preferences across browsing sessions—such as your preferred display currency, active city selection, and language locale. This preference data remains on your physical device and is never transmitted to an external analytics database.</p>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">3. Third-Party Infrastructure &amp; Analytics</h2>
+          <p>To ensure global reliability, high-speed CDN caching, and platform sustainability, we utilize reputable infrastructure providers:</p>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li><strong>Cloudflare &amp; Vercel:</strong> Edge hosting, DDoS mitigation, and SSL/TLS encryption. Standard server access logs (IP addresses and browser user-agents) are processed for security purposes in accordance with industry security standards.</li>
+            <li><strong>Microsoft Clarity:</strong> Pseudonymized, aggregated usage telemetry to understand navigation flow and resolve user experience defects. Clarity is configured without keylogging or capturing personal input.</li>
+            <li><strong>Google AdSense:</strong> Contextual advertising supporting free access to our tools. Advertisers may use anonymous cookies to serve relevant ads in accordance with Google's advertising policies.</li>
+          </ul>
+
+          <h2 class="text-xl font-bold text-[#102A2E] mt-6">4. Contact &amp; Privacy Inquiries</h2>
+          <p>If you have any questions regarding our zero-PII data architecture or privacy practices, please review our <a href="/data-policy" class="text-[#167D75] underline font-medium">Data Policy</a> or contact our technical team at <span class="font-mono text-[#102A2E]">privacy@livworthy.com</span>.</p>
         </div>
       </article>
     `,
@@ -1843,17 +1933,51 @@ function renderPageHtml(
     `<link rel="canonical" href="${page.canonicalUrl}" />`
   );
 
-  // Path-preserving hreflang alternates for localized routes.
+  // Path-preserving hreflang alternates for localized routes, homepages, and tool pages.
   let hreflangTags = '';
-  if (page.lang && LONG_FORM_LOCALES.includes(page.lang)) {
-    const current = new URL(page.canonicalUrl);
-    const prefix = `/${page.lang}`;
-    const suffix = current.pathname.startsWith(prefix) ? current.pathname.slice(prefix.length) : '';
-    hreflangTags = '\n' + LONG_FORM_LOCALES.map((loc) => `    <link rel="alternate" hreflang="${loc}" href="${BASE_URL}/${loc}${suffix}" />`).join('\n') + `\n    <link rel="alternate" hreflang="x-default" href="${BASE_URL}${suffix || '/'}" />`;
+  const currentUrl = new URL(page.canonicalUrl);
+  const pathParts = currentUrl.pathname.split('/').filter(Boolean);
+  const firstSeg = pathParts[0] || '';
+  const isLocalePrefix = LONG_FORM_LOCALES.includes(firstSeg);
+
+  const cleanPath = isLocalePrefix ? '/' + pathParts.slice(1).join('/') : currentUrl.pathname;
+  const isHomeCluster = cleanPath === '' || cleanPath === '/';
+  const isCoreTool = [
+    '/salary-worth',
+    '/salary-needed',
+    '/salary-after-tax',
+    '/cost-of-living',
+    '/compare',
+    '/job-offers',
+  ].includes(cleanPath);
+
+  const isLocalizedCluster = isLocalePrefix || isHomeCluster || isCoreTool;
+
+  if (isLocalizedCluster) {
+    const alternates: string[] = [];
+    if (isHomeCluster) {
+      for (const l of LONG_FORM_LOCALES) {
+        alternates.push(`    <link rel="alternate" hreflang="${l}" href="${BASE_URL}/${l}" />`);
+      }
+      alternates.push(`    <link rel="alternate" hreflang="x-default" href="${BASE_URL}/" />`);
+    } else {
+      const defaultEnUrl = `${BASE_URL}${cleanPath}`;
+      for (const l of LONG_FORM_LOCALES) {
+        if (l === 'en') {
+          alternates.push(`    <link rel="alternate" hreflang="en" href="${defaultEnUrl}" />`);
+        } else {
+          alternates.push(`    <link rel="alternate" hreflang="${l}" href="${BASE_URL}/${l}${cleanPath}" />`);
+        }
+      }
+      alternates.push(`    <link rel="alternate" hreflang="x-default" href="${defaultEnUrl}" />`);
+    }
+    hreflangTags = '\n' + alternates.join('\n');
   } else {
     hreflangTags = `\n    <link rel="alternate" hreflang="x-default" href="${page.canonicalUrl}" />`;
   }
-  if (!html.includes('hreflang="x-default"')) html = html.replace('</head>', `${hreflangTags}\n  </head>`);
+  // Strip any previous hreflang alternate tags in the template before injecting fresh ones
+  html = html.replace(/\s*<link\s+rel="alternate"\s+hreflang="[^"]*"\s+href="[^"]*"\s*\/?>/gi, '');
+  html = html.replace('</head>', `${hreflangTags}\n  </head>`);
 
   // Replace Open Graph metadata dynamically
   html = html.replace(

@@ -29,7 +29,7 @@ export const MethodologyModal: React.FC<MethodologyModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div role="dialog" aria-modal="true" aria-label={dict.accessibility?.methodologyDialogAriaLabel || 'Calculation Methodology'} className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div role="dialog" aria-modal="true" aria-label={dict.accessibility.methodologyDialogAriaLabel} className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-[#102A2E]/50 backdrop-blur-xs transition-opacity"
@@ -45,13 +45,13 @@ export const MethodologyModal: React.FC<MethodologyModalProps> = ({
               <BookOpen className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#102A2E]">LivWorthy Calculation Methodology</h2>
-              <p className="text-xs text-[#60706D]">Deterministic living intelligence architecture</p>
+              <h2 className="text-base font-bold text-[#102A2E]">LivWorthy {dict.common.methodology}</h2>
+              <p className="text-xs text-[#60706D]">{dict.common.livingIntelligence}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            aria-label={dict.accessibility?.methodologyCloseAriaLabel || 'Close methodology modal'}
+            aria-label={dict.accessibility.methodologyCloseAriaLabel}
             className="p-1.5 rounded-lg text-[#60706D] hover:text-[#102A2E] hover:bg-[#F7F8F5] transition-colors"
           >
             <X className="w-5 h-5" />
@@ -62,7 +62,7 @@ export const MethodologyModal: React.FC<MethodologyModalProps> = ({
         <div
           tabIndex={0}
           role="region"
-          aria-label={dict.accessibility?.methodologyDetailsAriaLabel || 'Methodology details'}
+          aria-label={dict.accessibility.methodologyDetailsAriaLabel}
           className="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs leading-relaxed text-[#60706D] focus:outline-hidden"
         >
           {/* Section 1: Non-Negotiable Financial Rule */}

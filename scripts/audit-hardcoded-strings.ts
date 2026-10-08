@@ -105,7 +105,7 @@ export class HardcodedStringAuditor {
     const lines = fileContent.split('\n');
 
     lines.forEach((line, index) => {
-      // Check for target attributes with static string literals: attr="..."
+      // 1. Check for target attributes with static string literals: attr="..."
       for (const attr of TARGET_ATTRIBUTES) {
         const regex = new RegExp(`${attr}="([^"]+)"`, 'g');
         let match: RegExpExecArray | null;
@@ -117,6 +117,43 @@ export class HardcodedStringAuditor {
               line: index + 1,
               kind: 'attribute',
               identifier: attr,
+              value: val,
+            });
+          }
+        }
+
+        // 2. Check for dynamic fallback attributes: attr={... || '...'} or attr={... ?? '...'}
+        const fallbackRegex = new RegExp(`${attr}=\\{[^}]*(?:\\|\\||\\?\\?)\\s*['"]([^'"]+)['"]`, 'g');
+        let fbMatch: RegExpExecArray | null;
+        while ((fbMatch = fallbackRegex.exec(line)) !== null) {
+          const val = fbMatch[1].trim();
+          if (this.isSuspiciousString(val)) {
+            this.findings.push({
+              filePath: path.relative(process.cwd(), filePath),
+              line: index + 1,
+              kind: 'attribute',
+              identifier: `${attr} (fallback)`,
+              value: val,
+            });
+          }
+        }
+      }
+
+      // 3. Check for raw JSX text nodes in universal public shell views (layout)
+      const isPublicLocalizedView = filePath.includes('/components/layout/');
+
+      if (isPublicLocalizedView) {
+        const textNodeRegex = />([^<>{}\n\r]+)</g;
+        let textMatch: RegExpExecArray | null;
+        while ((textMatch = textNodeRegex.exec(line)) !== null) {
+          const val = textMatch[1].trim();
+          // Ignore lines containing script, comments, or short tokens
+          if (val && !line.includes('//') && !line.includes('/*') && this.isSuspiciousString(val)) {
+            this.findings.push({
+              filePath: path.relative(process.cwd(), filePath),
+              line: index + 1,
+              kind: 'text',
+              identifier: 'JSX Text',
               value: val,
             });
           }

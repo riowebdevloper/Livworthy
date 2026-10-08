@@ -87,19 +87,19 @@ export const Header: React.FC<HeaderProps> = ({
             href="/"
             id="header-logo-link"
             className="flex items-center space-x-1 sm:space-x-3 group py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] focus-visible:ring-offset-2 rounded shrink-0"
-            aria-label={dict.accessibility?.logoHomeAriaLabel || 'LivWorthy — Home'}
-            title={dict.accessibility?.logoHomeTitle || 'LivWorthy - Home'}
+            aria-label={dict.accessibility.logoHomeAriaLabel}
+            title={dict.accessibility.logoHomeTitle}
           >
             <LivWorthLogo size="sm" className="[&_img]:h-6 [&_img]:sm:h-8" />
           </a>
 
           {/* Public navigation: How It Works, Sources, Coverage, Relocation, Language Selector */}
-          <nav aria-label={dict.accessibility?.siteNavigationAriaLabel || 'Site navigation'} className="flex items-center space-x-1 sm:space-x-2 shrink-0">
+          <nav aria-label={dict.accessibility.siteNavigationAriaLabel} className="flex items-center space-x-1 sm:space-x-2 shrink-0">
             <a
               id="nav-how-it-works"
               href="/methodology"
               className="inline-flex items-center space-x-0.5 min-[360px]:space-x-1 sm:space-x-1.5 text-[11px] min-[360px]:text-xs sm:text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-1.5 min-[360px]:px-2 sm:px-2.5 py-1 min-[360px]:py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] shrink-0"
-              aria-label={dict.accessibility?.navHowItWorksAriaLabel || 'How It Works — Methodology'}
+              aria-label={dict.accessibility.navHowItWorksAriaLabel}
             >
               <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" aria-hidden="true" />
               <span>{t.navHowItWorks}</span>
@@ -108,7 +108,7 @@ export const Header: React.FC<HeaderProps> = ({
               id="nav-sources"
               href="/sources"
               className="inline-flex items-center space-x-0.5 min-[360px]:space-x-1 sm:space-x-1.5 text-[11px] min-[360px]:text-xs sm:text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-1.5 min-[360px]:px-2 sm:px-2.5 py-1 min-[360px]:py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] shrink-0"
-              aria-label={dict.accessibility?.navSourcesAriaLabel || 'Sources — Data & Evidence Registry'}
+              aria-label={dict.accessibility.navSourcesAriaLabel}
             >
               <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#167D75] shrink-0" aria-hidden="true" />
               <span>{t.navSources}</span>
@@ -117,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({
               id="nav-coverage"
               href="/coverage"
               className="hidden md:inline-flex items-center space-x-1 sm:space-x-1.5 text-xs sm:text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-2 sm:px-2.5 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
-              aria-label={dict.accessibility?.navCoverageAriaLabel || 'Global Market & Tax Coverage'}
+              aria-label={dict.accessibility.navCoverageAriaLabel}
             >
               <CheckCircle2 className="w-3.5 h-3.5 text-[#167D75] shrink-0" aria-hidden="true" />
               <span>{t.navCoverage}</span>
@@ -126,7 +126,7 @@ export const Header: React.FC<HeaderProps> = ({
               id="nav-relocation"
               href="/relocation"
               className="hidden lg:inline-flex items-center space-x-1 sm:space-x-1.5 text-xs sm:text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-2 sm:px-2.5 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
-              aria-label={dict.accessibility?.navRelocationAriaLabel || 'Relocation Intelligence Hub'}
+              aria-label={dict.accessibility.navRelocationAriaLabel}
             >
               <Compass className="w-3.5 h-3.5 text-[#167D75] shrink-0" aria-hidden="true" />
               <span>{t.navRelocation}</span>
@@ -187,7 +187,7 @@ export const Header: React.FC<HeaderProps> = ({
                       }}
                       className="w-full text-left px-3 py-1.5 text-xs text-[#167D75] font-semibold hover:bg-[#F7F8F5] transition-colors flex items-center justify-between"
                     >
-                      <span>Search all languages...</span>
+                      <span>{dict.languageSelector.allLanguages}</span>
                       <span>→</span>
                     </button>
                   </div>
@@ -226,7 +226,7 @@ export const Header: React.FC<HeaderProps> = ({
           <nav
             ref={navRef}
             onScroll={checkScroll}
-            aria-label={dict.accessibility?.calculatorTabsAriaLabel || 'Calculator modes'}
+            aria-label={dict.accessibility.calculatorTabsAriaLabel}
             className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 overscroll-x-contain touch-pan-x [scrollbar-width:thin] [scrollbar-color:#DCE3E0_transparent] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#DCE3E0] hover:[&::-webkit-scrollbar-thumb]:bg-[#167D75]"
           >
             <button
@@ -315,7 +315,7 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'border-dashed border-[#DCE3E0] bg-white text-[#167D75] hover:bg-[#F7F8F5]'
               }`}
             >
-              <span>$100K in NYC Guide</span>
+              <span>{t.tabGuides}</span>
             </button>
           </nav>
         </div>

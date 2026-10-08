@@ -165,7 +165,7 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
             </label>
             <select
               id="tax-location-select"
-              aria-label={dict.accessibility?.locationJurisdictionAriaLabel || 'Location & Jurisdiction'}
+              aria-label={dict.accessibility.locationJurisdictionAriaLabel}
               value={selectedCityId}
               onChange={(e) => {
                 const nextCityId = e.target.value;
@@ -187,11 +187,11 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
           <div>
             <label htmlFor="tax-year-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              {dict.calculator?.taxYearLabel || 'Tax Year'}
+              {dict.calculator.taxYearLabel}
             </label>
             <select
               id="tax-year-select"
-              aria-label={dict.accessibility?.taxYearSelectAriaLabel || 'Tax Year'}
+              aria-label={dict.accessibility.taxYearSelectAriaLabel}
               value={taxYear}
               onChange={(e) => setTaxYear(Number(e.target.value))}
               className="block w-full rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] px-3 py-3 text-base font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"
@@ -206,18 +206,18 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
 
           <div>
             <label htmlFor="tax-filing-status-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
-              {dict.calculator?.filingStatusLabel || 'Filing Status'}
+              {dict.calculator.filingStatusLabel}
             </label>
             <select
               id="tax-filing-status-select"
-              aria-label={dict.accessibility?.filingStatusSelectAriaLabel || 'Filing Status'}
+              aria-label={dict.accessibility.filingStatusSelectAriaLabel}
               value={filingStatus}
               onChange={(e) => setFilingStatus(e.target.value as FilingStatus)}
               className="block w-full rounded-lg border border-[#DCE3E0] bg-[#FFFFFF] px-3 py-3 text-base font-bold text-[#102A2E] focus:border-[#167D75] focus:outline-hidden"
             >
-              <option value="single">{dict.common?.singleAdult || 'Single Filer'}</option>
-              <option value="married_filing_jointly">{dict.common?.couple || 'Married Filing Jointly'}</option>
-              <option value="head_of_household">{dict.common?.family || 'Head of Household'}</option>
+              <option value="single">{dict.common.singleAdult}</option>
+              <option value="married_filing_jointly">{dict.common.couple}</option>
+              <option value="head_of_household">{dict.common.family}</option>
             </select>
           </div>
         </div>

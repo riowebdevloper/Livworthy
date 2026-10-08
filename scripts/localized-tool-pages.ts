@@ -540,7 +540,7 @@ export function createLocalizedToolPages(baseUrl: string): ToolSeoPage[] {
             },
           },
           {
-            '@type': 'SoftwareApplication',
+            '@type': 'WebApplication',
             '@id': `${baseUrl}/${loc}/${tool}#app`,
             name: meta.h1,
             applicationCategory: 'FinanceApplication',
@@ -669,7 +669,10 @@ export function createLocalizedToolPages(baseUrl: string): ToolSeoPage[] {
                 <p class="text-sm text-[#60706D] leading-relaxed mb-4">
                   ${escapeHtml(dict.common.disclaimer)}
                 </p>
-                <div class="flex flex-wrap gap-2 text-xs">
+
+                ${loc === 'en' ? getToolEducationalHtml(tool) : ''}
+
+                <div class="mt-8 pt-6 border-t border-[#DCE3E0] flex flex-wrap gap-2 text-xs">
                   <a href="/methodology" class="inline-flex items-center px-3 py-1.5 rounded-lg border border-[#DCE3E0] hover:bg-[#F7F8F5] text-[#102A2E] font-medium">
                     ${escapeHtml(dict.common.methodology)} →
                   </a>
@@ -753,5 +756,111 @@ function getTabNavKey(tool: CoreToolSlug): keyof import('../src/lib/i18n').I18nN
       return 'tabCompare';
     case 'job-offers':
       return 'tabJobOffers';
+  }
+}
+
+function getToolEducationalHtml(tool: CoreToolSlug): string {
+  switch (tool) {
+    case 'salary-worth':
+      return `
+        <div class="mt-8 space-y-4 pt-6 border-t border-[#DCE3E0] text-sm text-[#334D4A] leading-relaxed">
+          <h3 class="text-lg font-bold text-[#102A2E]">How the Salary Worth Engine Evaluates Your Real Income</h3>
+          <p>
+            Nominal gross salary is deceptive. A compensation package that sounds substantial in one market can yield minimal disposable savings in another once statutory deductions, local income taxes, mandatory social insurance, and fair-market rent are accounted for.
+          </p>
+          <p>
+            LivWorthy evaluates income across three deterministic stages:
+          </p>
+          <ol class="list-decimal pl-5 space-y-1.5">
+            <li><strong>Statutory Withholding Layer:</strong> Calculates federal, state or provincial, and municipal income taxes plus mandatory social contributions (such as FICA or National Insurance) using current verified tax authority tables.</li>
+            <li><strong>Metropolitan Cost of Living Layer:</strong> Benchmarks non-discretionary expenses—including typical 1-bedroom fair market rent, utilities, transit passes, groceries, and healthcare—scaled to your household composition.</li>
+            <li><strong>Discretionary Cash Flow &amp; Savings Capacity:</strong> Subtracts total living costs and taxes from gross salary to reveal actual discretionary buffer and savings potential.</li>
+          </ol>
+        </div>
+      `;
+    case 'salary-after-tax':
+      return `
+        <div class="mt-8 space-y-4 pt-6 border-t border-[#DCE3E0] text-sm text-[#334D4A] leading-relaxed">
+          <h3 class="text-lg font-bold text-[#102A2E]">Understanding Statutory Net Take-Home Pay</h3>
+          <p>
+            The Salary After Tax calculator computes exact net earnings by deterministically evaluating progressive tax brackets and mandatory statutory levies across national, state, and local jurisdictions.
+          </p>
+          <p>
+            Key components evaluated in each calculation:
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li><strong>Progressive National Income Taxes:</strong> Applied to taxable earnings after standard deductions per official revenue schedules (IRS, HMRC, CRA, ATO, EStG, etc.).</li>
+            <li><strong>Regional &amp; Local Levies:</strong> State, provincial, and municipal resident taxes (e.g. California State Tax, New York State &amp; NYC Local Tax).</li>
+            <li><strong>Mandatory Social Insurance:</strong> Social security, retirement pensions, public healthcare, and unemployment insurance contributions.</li>
+          </ul>
+        </div>
+      `;
+    case 'salary-needed':
+      return `
+        <div class="mt-8 space-y-4 pt-6 border-t border-[#DCE3E0] text-sm text-[#334D4A] leading-relaxed">
+          <h3 class="text-lg font-bold text-[#102A2E]">Determining Your Required Gross Compensation</h3>
+          <p>
+            Instead of calculating net income from gross pay, the Salary Needed calculator uses an inverse mathematical solver. It determines the exact pre-tax gross salary needed to comfortably cover living essentials, fair-market housing, and meet specific monthly savings targets.
+          </p>
+          <p>
+            When to use this solver:
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li><strong>Relocation Planning:</strong> Identify what compensation offer you must negotiate when moving to a more expensive metropolitan area.</li>
+            <li><strong>Budget Planning:</strong> Determine the income threshold required to support single living, a couple, or a family with dependents.</li>
+            <li><strong>Target Savings Goals:</strong> Calculate the salary needed to maintain a specific monthly savings buffer (such as $1,000 or $2,500/month).</li>
+          </ul>
+        </div>
+      `;
+    case 'cost-of-living':
+      return `
+        <div class="mt-8 space-y-4 pt-6 border-t border-[#DCE3E0] text-sm text-[#334D4A] leading-relaxed">
+          <h3 class="text-lg font-bold text-[#102A2E]">Metropolitan Cost of Living &amp; Expense Benchmarking</h3>
+          <p>
+            Cost of living is measured by tracking consumer price baskets and residential fair market rent across 39 major economic hubs, normalized against New York City (NYC = 100).
+          </p>
+          <p>
+            Itemized categories evaluated:
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li><strong>Residential Housing &amp; Rent:</strong> Central and peripheral fair market rents for 1-bedroom and 3-bedroom residences.</li>
+            <li><strong>Consumer Necessities:</strong> Grocery market baskets, restaurant dining, residential utilities (electricity, water, heating), and high-speed broadband.</li>
+            <li><strong>Urban Transit &amp; Mobility:</strong> Monthly public mass transportation passes and personal commute estimates.</li>
+          </ul>
+        </div>
+      `;
+    case 'compare':
+      return `
+        <div class="mt-8 space-y-4 pt-6 border-t border-[#DCE3E0] text-sm text-[#334D4A] leading-relaxed">
+          <h3 class="text-lg font-bold text-[#102A2E]">Bilateral City Equivalent Compensation Modeling</h3>
+          <p>
+            When evaluating a move between two cities, comparing gross salaries directly is misleading. Different jurisdictions apply vastly different tax rates and have substantially different housing cost realities.
+          </p>
+          <p>
+            Our bilateral comparison engine solves for Purchasing Power Parity (PPP) and lifestyle equivalence by:
+          </p>
+          <ol class="list-decimal pl-5 space-y-1.5">
+            <li>Computing net take-home pay under City A's statutory tax system.</li>
+            <li>Measuring the relative living expense differential between City A and City B.</li>
+            <li>Inversely solving for the gross salary required in City B to achieve the exact same discretionary surplus after local taxes and housing.</li>
+          </ol>
+        </div>
+      `;
+    case 'job-offers':
+      return `
+        <div class="mt-8 space-y-4 pt-6 border-t border-[#DCE3E0] text-sm text-[#334D4A] leading-relaxed">
+          <h3 class="text-lg font-bold text-[#102A2E]">Total Compensation &amp; Relocation Offer Evaluation</h3>
+          <p>
+            Evaluating competing job offers across different cities requires separating one-time transition allowances from permanent recurring cash flow.
+          </p>
+          <p>
+            Framework components:
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li><strong>Year 1 Transition Analysis:</strong> Factors one-time moving allowances, temporary housing, flights, and security deposits against one-time transition expenses.</li>
+            <li><strong>Year 2+ Steady-State Cash Flow:</strong> Evaluates recurring annual take-home pay, destination living costs, and sustainable long-term wealth accumulation.</li>
+          </ul>
+        </div>
+      `;
   }
 }
