@@ -26,5 +26,33 @@
       "New York vs London living cost comparison",
       "LivWorthy"
     ]
+  },
+  {
+    "platform": "dev.to",
+    "articleTitle": "How to Compare Two Job Offers in Different Cities: Beyond the Headline Salary",
+    "publicationUrl": "https://dev.to/riowebdevloper/how-to-compare-two-job-offers-in-different-cities-beyond-the-headline-salary-27b3",
+    "targetPage": "https://www.livworthy.com/job-offers",
+    "publishedAt": "2026-10-08T22:20:36Z",
+    "status": "LIVE_VERIFIED",
+    "canonicalUrl": "https://www.livworthy.com/job-offers",
+    "anchors": [
+      "job offer comparison tool",
+      "global salary-to-rent index",
+      "LivWorthy"
+    ]
+  },
+  {
+    "platform": "medium.com",
+    "articleTitle": "Why Gross Salary Is Misleading: Take-Home Pay in Major US Tech Hubs (2026 Analysis)",
+    "publicationUrl": "https://medium.com/@humanrealityofficial/why-gross-salary-is-misleading-take-home-pay-in-major-us-tech-hubs-2026-analysis-b6092ca67442",
+    "targetPage": "https://www.livworthy.com/guides/nyc-100k",
+    "publishedAt": "2026-10-08T22:16:11Z",
+    "status": "LIVE_VERIFIED",
+    "canonicalUrl": "https://www.livworthy.com/guides/nyc-100k",
+    "anchors": [
+      "LivWorthy NYC salary breakdown",
+      "salary after tax calculator",
+      "LivWorthy"
+    ]
   }
 ]
