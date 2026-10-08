@@ -20,6 +20,18 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     }
   });
 
+  const closeEvidenceDrawer = async (page: any) => {
+    await page.keyboard.press('Escape');
+    const drawer = page.locator('text=Data Provenance & Evidence');
+    if (await drawer.isVisible().catch(() => false)) {
+      const closeBtn = page.locator('button[aria-label="Close data provenance drawer"], button[aria-label="Close evidence drawer"]');
+      if (await closeBtn.isVisible().catch(() => false)) {
+        await closeBtn.click();
+      }
+    }
+    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible({ timeout: 5000 });
+  };
+
   test('1. Homepage loads official branding, title, and interactive navigation tabs', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/LivWorthy/);
@@ -60,8 +72,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(page.locator('text=Office for National Statistics (ONS)').first()).toBeVisible();
     await expect(page.locator('text=New York State Department of Taxation').first()).not.toBeVisible();
 
-    await page.keyboard.press('Escape');
-    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
+    await closeEvidenceDrawer(page);
   });
 
   test('3. SALARY NEEDED: Reverse solver calculates gross salary and transfers correctly to Salary Worth', async ({ page }) => {
@@ -150,8 +161,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await page.click('#btn-open-evidence');
     await expect(page.locator('text=Internal Revenue Service (IRS)').first()).toBeVisible();
     await expect(page.locator('text=Social Security Administration (SSA)').first()).toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
+    await closeEvidenceDrawer(page);
 
     const locSelect = page.locator('#hero-location-select');
     await locSelect.selectOption('london');
@@ -160,8 +170,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(page.locator('text=HM Revenue & Customs (HMRC)').first()).toBeVisible();
     await expect(page.locator('text=Office for National Statistics (ONS)').first()).toBeVisible();
     await expect(page.locator('text=Internal Revenue Service (IRS)')).not.toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
+    await closeEvidenceDrawer(page);
 
     await locSelect.selectOption('dubai');
     await page.waitForTimeout(300);
@@ -169,8 +178,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(page.locator('text=Federal Tax Authority (FTA)').first()).toBeVisible();
     await expect(page.locator('text=Dubai Statistics Center (DSC)').first()).toBeVisible();
     await expect(page.locator('text=Internal Revenue Service (IRS)')).not.toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
+    await closeEvidenceDrawer(page);
   });
 
   test('9. URL STATE & NAVIGATION: Deep link restoration, Back, Forward, and reload persistence', async ({ page }) => {
@@ -246,13 +254,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     await expect(evidenceBtn).toBeVisible({ timeout: 10000 });
     await evidenceBtn.click();
     await expect(page.locator('text=Data Provenance & Evidence').first()).toBeVisible({ timeout: 10000 });
-    await page.keyboard.press('Escape');
-    const evidenceDrawer = page.locator('text=Data Provenance & Evidence');
-    if (await evidenceDrawer.isVisible()) {
-      const closeBtn = page.locator('button[aria-label="Close data provenance drawer"], button[aria-label="Close evidence drawer"]');
-      if (await closeBtn.isVisible()) await closeBtn.click();
-    }
-    await expect(page.locator('text=Data Provenance & Evidence')).not.toBeVisible();
+    await closeEvidenceDrawer(page);
   });
 
   test('11. BACKEND API INTEGRITY: Health, readiness, and statutory adapter registry contracts', async ({ request }) => {
@@ -412,7 +414,7 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
 
     await page.click('#btn-open-evidence');
     await expect(page.locator('text=No Verified Tax Schedule Active').first()).toBeVisible();
-    await page.keyboard.press('Escape');
+    await closeEvidenceDrawer(page);
 
     await page.goto('/?city=tokyo&tab=salary-needed');
     await expect(page.locator('#salary-needed-view')).toBeVisible();

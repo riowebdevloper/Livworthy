@@ -26,7 +26,11 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
       }
     };
     window.addEventListener('keydown', handleKeyDown, true);
-    return () => window.removeEventListener('keydown', handleKeyDown, true);
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true);
+      document.removeEventListener('keydown', handleKeyDown, true);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
