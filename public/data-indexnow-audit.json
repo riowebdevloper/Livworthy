@@ -1,5 +1,46 @@
 [
   {
+    "submittedAt": "2026-10-08T18:43:13.784Z",
+    "trigger": "manual_cli",
+    "dryRun": false,
+    "success": true,
+    "validUrlsCount": 141,
+    "batches": [
+      {
+        "batchIndex": 0,
+        "urlCount": 100,
+        "statusCode": 200,
+        "statusText": "OK",
+        "success": true
+      },
+      {
+        "batchIndex": 1,
+        "urlCount": 41,
+        "statusCode": 200,
+        "statusText": "OK",
+        "success": true
+      }
+    ],
+    "message": "Successfully submitted 141 canonical URLs across 2 batch(es) to IndexNow."
+  },
+  {
+    "submittedAt": "2026-10-08T18:43:07.190Z",
+    "trigger": "manual_cli",
+    "dryRun": false,
+    "success": true,
+    "validUrlsCount": 10,
+    "batches": [
+      {
+        "batchIndex": 0,
+        "urlCount": 10,
+        "statusCode": 202,
+        "statusText": "Accepted",
+        "success": true
+      }
+    ],
+    "message": "Successfully submitted 10 canonical URLs across 1 batch(es) to IndexNow."
+  },
+  {
     "submittedAt": "2026-10-06T13:42:19.344Z",
     "trigger": "new_empirical_reports",
     "dryRun": false,
