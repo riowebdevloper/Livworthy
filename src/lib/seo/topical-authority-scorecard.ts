@@ -21,6 +21,7 @@ import { TranslationAuditor } from '../i18n/audit';
 import { MULTILINGUAL_KEYWORD_DATABASE } from './multilingual-keywords';
 import { MultilingualContentGapEngine } from './content-gap-engine';
 import { SearchConsoleConnector, DashboardMetricStatus } from './search-console-connector';
+import { parseSitemaps } from './sitemap-parser';
 
 export interface LocaleCompletenessScore {
   locale: string;
@@ -173,6 +174,12 @@ export class TopicalAuthorityScorecard {
       (qw) => qw.keyword.locale === locale && qw.opportunityClassification === 'QUICK_WIN'
     );
 
+    const sitemapData = parseSitemaps();
+    const locSitemapUrls = sitemapData.urlsByFile[`sitemap-${locale}.xml`] || [];
+    const dynamicSubmittedPages = locale === 'en'
+      ? (sitemapData.urlsByFile['sitemap-main.xml']?.length || 23)
+      : (locSitemapUrls.length > 0 ? locSitemapUrls.length : (isIndexable ? 6 : 1));
+
     return {
       locale,
       languageName: config.name,
@@ -187,7 +194,7 @@ export class TopicalAuthorityScorecard {
       backlinkCoveragePct,
       overallScorecardGrade,
       trackedKeywordsCount: keywords.length,
-      submittedPagesCount: isIndexable ? 6 : 1, // Landing + 5 tabs
+      submittedPagesCount: dynamicSubmittedPages,
       indexedPagesCount: null, // Null without Search Console API evidence
       quickWinsCount: quickWins.length,
       missingTopicsCount: gaps.missingSubtopics.length,
@@ -202,6 +209,7 @@ export class TopicalAuthorityScorecard {
   public static generateAllDashboardMetrics(): LocaleDashboardMetrics[] {
     const metrics: LocaleDashboardMetrics[] = [];
     const hasGscCreds = SearchConsoleConnector.hasValidCredentials();
+    const sitemapData = parseSitemaps();
 
     for (const loc of TIER_1_LOCALES) {
       const cfg = SUPPORTED_LOCALES[loc];
@@ -213,12 +221,17 @@ export class TopicalAuthorityScorecard {
         (qw) => qw.keyword.locale === loc && qw.opportunityClassification === 'QUICK_WIN'
       );
 
+      const locSitemapUrls = sitemapData.urlsByFile[`sitemap-${loc}.xml`] || [];
+      const dynamicSubmitted = loc === 'en'
+        ? (sitemapData.urlsByFile['sitemap-main.xml']?.length || 23)
+        : (locSitemapUrls.length > 0 ? locSitemapUrls.length : 6);
+
       metrics.push({
         locale: loc,
         languageName: cfg.name,
-        pagesCount: 6, // Dedicated locale landing page + 5 interactive tab routes
+        pagesCount: dynamicSubmitted,
         keywordsTracked: keywords.length,
-        submittedPages: 6,
+        submittedPages: dynamicSubmitted,
         indexedPages: null, // Honest null until Search Console API confirms
         impressions: hasGscCreds ? 0 : null,
         clicks: hasGscCreds ? 0 : null,

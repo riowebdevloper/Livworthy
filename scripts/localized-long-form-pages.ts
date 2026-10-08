@@ -20,9 +20,11 @@ export function createLocalizedLongFormPages(baseUrl:string):LocalizedSeoPage[]{
   for(const loc of LONG_FORM_LOCALES){
     const cfg=SUPPORTED_LOCALES[loc],copy=LONG_FORM_COPY[loc]; if(!cfg||!copy)continue;
     const t=getDictionary(loc), intl=cfg.intlLocale||loc, dir=cfg.dir;
+    const isTier1 = tier1.has(loc);
+    const robotsDirective: 'index, follow' | 'noindex, follow' = isTier1 ? 'index, follow' : 'noindex, follow';
     const add=(path:string,title:string,desc:string,body:string,type='WebPage',freq:'daily'|'weekly'|'monthly'='weekly',priority=.8)=>{
       const canonical=`${baseUrl}/${loc}${path?`/${path}`:''}`;
-      pages.push({relativePath:`${loc}${path?`/${path}`:''}/index.html`,canonicalUrl:canonical,title:`${title} | LivWorthy`,description:desc,robots:'index, follow',lang:loc,dir,changefreq:freq,priority,structuredData:{'@context':'https://schema.org','@type':type,name:title,url:canonical,inLanguage:intl},bodyContent:`<article class=\"max-w-5xl mx-auto px-4 py-10\" dir=\"${dir}\">${body}</article>`});
+      pages.push({relativePath:`${loc}${path?`/${path}`:''}/index.html`,canonicalUrl:canonical,title:`${title} | LivWorthy`,description:desc,robots:robotsDirective,lang:loc,dir,changefreq:freq,priority,structuredData:{'@context':'https://schema.org','@type':type,name:title,url:canonical,inLanguage:intl},bodyContent:`<article class=\"max-w-5xl mx-auto px-4 py-10\" dir=\"${dir}\">${body}</article>`});
     };
     const grid=(items:string[])=>`<div class=\"mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3\">${items.join('')}</div>`;
     const link=(href:string,text:string)=>`<a class=\"p-3 border rounded-lg bg-white\" href=\"${href}\">${esc(text)}</a>`;

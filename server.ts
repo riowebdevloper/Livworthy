@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import crypto from 'crypto';
 import fs from 'fs';
+import { z } from 'zod';
 import { validateEnv } from './src/lib/env';
 import { LATEST_VERIFIED_TAX_YEAR, parseTaxYear, resolveTaxYear } from './src/lib/tax-year-policy';
 import { dbService } from './src/db/client';
@@ -57,6 +58,20 @@ export async function ensureDatabaseReady(): Promise<void> {
 export const app = express();
 
 function configureApp() {
+  // Vercel Serverless Path Normalization:
+  // When running behind Vercel serverless rewrites, ensure nested paths preserve Express routing
+  app.use((req, res, next) => {
+    const rawForwarded = (req.headers['x-forwarded-url'] as string) || (req.headers['x-vercel-sc-path'] as string);
+    if (rawForwarded && (req.url === '/api' || req.url === '/api/' || req.url === '/api/index.js')) {
+      req.url = rawForwarded;
+    } else if (req.url.startsWith('/api/index.js/')) {
+      req.url = req.url.replace('/api/index.js/', '/api/');
+    } else if (req.url === '/api/index.js') {
+      req.url = '/api';
+    }
+    next();
+  });
+
   // Canonical Host & Trailing Slash Redirection:
   // 1. Permanently redirect non-www livworthy.com to https://www.livworthy.com
   // 2. Permanently redirect trailing-slash requests (e.g. /about/) to non-trailing slash (/about), except root /
@@ -372,16 +387,16 @@ function configureApp() {
     });
   });
 
-  // SERVERLESS DATABASE INITIALIZATION GATE
-  // Vercel does not call startServer(), so production API requests must explicitly
-  // await migrations/seeding on each cold start. The promise is memoized per instance.
-  app.use('/api', async (req, res, next) => {
+  // EXPLICIT DEPENDENCY MIDDLEWARE ARCHITECTURE
+  // Stateless calculations are never blocked by database unreadiness.
+  // Database, Redis, and FX dependencies are enforced strictly per-route.
+  const requireDatabaseReady = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       await ensureDatabaseReady();
       if (process.env.NODE_ENV === 'production' && (!dbInitialized || dbService.mode !== 'PRODUCTION_POSTGRES')) {
         return res.status(503).json({
           error: 'DATABASE_NOT_READY',
-          message: 'Production database is not ready.',
+          message: 'Production database is not ready or not configured.',
         });
       }
       next();
@@ -391,34 +406,173 @@ function configureApp() {
         message: 'Production data services are temporarily unavailable.',
       });
     }
+  };
+
+  const requireRedisWhenSecuritySensitive = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (process.env.NODE_ENV === 'production' && !cacheService.isRedisConnected) {
+      return res.status(503).json({
+        error: 'SECURITY_RATE_LIMITER_UNAVAILABLE',
+        message: 'Distributed security service unavailable.',
+      });
+    }
+    next();
+  };
+
+  const requireFxWhenCrossCurrencyRequired = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    try {
+      const fxSnapshot = await FxEngine.getLatestSnapshot();
+      if (!fxSnapshot || fxSnapshot.status === 'UNAVAILABLE') {
+        return res.status(503).json({
+          error: 'FX_SERVICE_UNAVAILABLE',
+          message: 'Foreign exchange rate service is temporarily unavailable.',
+        });
+      }
+      next();
+    } catch {
+      return res.status(503).json({
+        error: 'FX_SERVICE_UNAVAILABLE',
+        message: 'Foreign exchange rate service is temporarily unavailable.',
+      });
+    }
+  };
+
+  // Mount DB readiness gate only on routes that strictly require database persistence
+  app.use('/api/admin', requireDatabaseReady);
+  app.use('/api/content', requireDatabaseReady);
+  app.use('/api/reviews', requireDatabaseReady);
+
+  // 2. CORE FINANCIAL & TAX ENGINE APIS (STATELESS MATHEMATICAL ENDPOINTS)
+  const CalculatePayloadSchema = z.object({
+    location: z.object({
+      id: z.string().min(1).optional(),
+      cityId: z.string().min(1).optional(),
+      countryId: z.string().min(1),
+      currency: z.string().min(1).optional(),
+    }).passthrough().refine((loc) => Boolean(loc.id || loc.cityId), {
+      message: 'City identifier (id or cityId) is required.',
+    }),
+    compensation: z.object({
+      baseSalary: z.union([
+        z.object({
+          amountMinor: z.number().nonnegative(),
+          currency: z.string().min(1).optional(),
+        }).passthrough(),
+        z.number().nonnegative(),
+      ]).optional(),
+    }).passthrough().optional(),
+    financials: z.object({
+      baseSalary: z.number().nonnegative().optional(),
+    }).passthrough().optional(),
+    baseSalary: z.number().nonnegative().optional(),
+    household: z.record(z.string(), z.any()).optional(),
+    taxProfile: z.record(z.string(), z.any()).optional(),
+    taxAssumptions: z.record(z.string(), z.any()).optional(),
+    overrides: z.record(z.string(), z.any()).optional(),
+  }).passthrough().refine((data) => {
+    return Boolean(
+      (data.compensation?.baseSalary && (typeof data.compensation.baseSalary === 'number' || (data.compensation.baseSalary as any).amountMinor !== undefined)) ||
+      data.financials?.baseSalary !== undefined ||
+      typeof data.baseSalary === 'number'
+    );
+  }, {
+    message: 'Valid base salary compensation is required.',
   });
 
-  // 2. CORE FINANCIAL & TAX ENGINE APIS
   app.post('/api/calculate', rateLimit(60, 60), async (req, res) => {
     try {
-      const scenario = req.body;
-      if (!scenario || !scenario.location || !scenario.compensation) {
-        return res.status(400).json({ error: 'INVALID_PAYLOAD', message: 'Location and compensation are required.' });
+      const parseResult = CalculatePayloadSchema.safeParse(req.body);
+      if (!parseResult.success) {
+        return res.status(400).json({
+          error: 'INVALID_PAYLOAD',
+          message: 'Location and valid base salary compensation are required.',
+          details: parseResult.error.issues.map((i) => i.message),
+        });
       }
 
+      const body = parseResult.data as any;
+      const cityId = body.location.id || body.location.cityId!;
+      const currency = body.location.currency || (body.compensation?.baseSalary?.currency) || 'USD';
+
+      let baseSalaryMinor = 0;
+      if (body.compensation?.baseSalary?.amountMinor !== undefined) {
+        baseSalaryMinor = body.compensation.baseSalary.amountMinor;
+      } else if (typeof body.compensation?.baseSalary === 'number') {
+        baseSalaryMinor = Math.round(body.compensation.baseSalary * 100);
+      } else if (typeof body.financials?.baseSalary === 'number') {
+        baseSalaryMinor = Math.round(body.financials.baseSalary * 100);
+      } else if (typeof body.baseSalary === 'number') {
+        baseSalaryMinor = Math.round(body.baseSalary * 100);
+      }
+
+      const scenario = {
+        ...body,
+        location: {
+          ...body.location,
+          id: cityId,
+          cityId,
+          currency,
+        },
+        compensation: {
+          ...body.compensation,
+          baseSalary: {
+            amountMinor: baseSalaryMinor,
+            currency,
+            ...(typeof body.compensation?.baseSalary === 'object' ? body.compensation.baseSalary : {}),
+          },
+        },
+        taxProfile: body.taxProfile || body.taxAssumptions || {
+          taxYear: LATEST_VERIFIED_TAX_YEAR,
+          filingStatus: 'single',
+          dependentsCount: 0,
+        },
+        household: {
+          adults: 1,
+          children: 0,
+          housingType: '1-bedroom',
+          areaType: 'typical',
+          transportMode: 'public_transit',
+          carsCount: 0,
+          lifestyleLevel: 'moderate',
+          preset: 'single',
+          ...(body.household || {}),
+        },
+        displayCurrency: currency,
+        calculationDate: body.calculationDate || new Date().toISOString(),
+      };
+
+      // Stateless calculation execution
       const result = SalaryWorthCalculator.calculate(scenario);
 
-      // Asynchronously persist calculation to DB
-      const { scenarioId, resultId } = await dbService.persistCalculation(scenario, result);
+      // Attempt optional persistence without failing the stateless calculation
+      let persistenceStatus: 'SAVED' | 'NOT_SAVED' = 'NOT_SAVED';
+      let scenarioId: string | null = null;
+      let resultId: string | null = null;
+
+      try {
+        const persistResult = await dbService.persistCalculation(scenario, result);
+        if (persistResult && persistResult.success) {
+          persistenceStatus = 'SAVED';
+          scenarioId = persistResult.scenarioId;
+          resultId = persistResult.resultId;
+        }
+      } catch (persistErr) {
+        console.warn('[Calculation] Persistence fallback notice:', persistErr);
+      }
 
       res.json({
         success: true,
+        persistenceStatus,
         scenarioId,
         resultId,
         data: result,
       });
     } catch (err: any) {
       console.error('Calculation error:', err);
-      res.status(500).json({ error: 'CALCULATION_ERROR', message: err.message });
+      res.status(500).json({ error: 'CALCULATION_ERROR', message: 'Unable to complete this calculation.' });
     }
   });
 
-  app.get('/api/calculation/:id', rateLimit(120, 60), async (req, res) => {
+  app.get('/api/calculation/:id', requireDatabaseReady, rateLimit(120, 60), async (req, res) => {
     try {
       const calculation = await dbService.getCalculation(req.params.id);
       if (!calculation) {
@@ -426,7 +580,8 @@ function configureApp() {
       }
       res.json({ success: true, calculation });
     } catch (err: any) {
-      res.status(500).json({ error: 'SERVER_ERROR', message: err.message });
+      console.error('Calculation fetch error:', err);
+      res.status(500).json({ error: 'SERVER_ERROR', message: 'Unable to retrieve calculation scenario.' });
     }
   });
 
@@ -1000,6 +1155,9 @@ function configureApp() {
     if (res.headersSent) return;
     if (!session) {
       return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Admin authentication required.' });
+    }
+    if (!AuthService.hasPermission(session.role, 'manage_seo')) {
+      return res.status(403).json({ error: 'FORBIDDEN', message: 'SEO management permission required.' });
     }
     const { startDate, endDate } = req.body || {};
     const result = await SearchConsoleConnector.ingestAndPersistAnalytics(startDate, endDate);

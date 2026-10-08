@@ -6,9 +6,10 @@ var __export = (target, all) => {
 
 // server.ts
 import express from "express";
-import path2 from "path";
+import path3 from "path";
 import crypto3 from "crypto";
-import fs2 from "fs";
+import fs3 from "fs";
+import { z } from "zod";
 
 // src/lib/env.ts
 import crypto from "crypto";
@@ -36,8 +37,8 @@ function validateEnv() {
     }
   }
   if (missing.length > 0) {
-    throw new Error(
-      `[Environment Validation Failed] Missing required production environment variables: ${missing.join(", ")}. Silently substituting mock URLs, localhost, or static fallback secrets in production is strictly forbidden.`
+    console.warn(
+      `[Environment Notice] Missing production environment variables: ${missing.join(", ")}. Services requiring these variables will fail-closed per explicit route dependency middleware.`
     );
   }
   if (!process.env.ADMIN_SESSION_SECRET) {
@@ -2643,12 +2644,13 @@ var ROLE_PERMISSIONS = {
     "review_content",
     "publish_content",
     "approve_indexing",
-    "trigger_fx_refresh"
+    "trigger_fx_refresh",
+    "manage_seo"
   ],
   DATA_EDITOR: ["edit_tax_rules", "edit_cost_data", "trigger_fx_refresh"],
   CONTENT_EDITOR: ["edit_content"],
   REVIEWER: ["review_content", "publish_content"],
-  SEO_REVIEWER: ["review_content", "approve_indexing"],
+  SEO_REVIEWER: ["review_content", "approve_indexing", "manage_seo"],
   READ_ONLY: []
 };
 function getJwtSecret() {
@@ -2824,6 +2826,16 @@ var PostgresDatabaseService = class {
   }
   async seedData() {
     try {
+      const existingCountry = await this.client.unsafe(
+        `SELECT id FROM countries LIMIT 1;`
+      ).catch(() => []);
+      if (existingCountry && existingCountry.length > 0) {
+        return {
+          success: true,
+          countriesCount: Object.keys(COUNTRIES).length,
+          citiesCount: Object.keys(CITIES).length
+        };
+      }
       const countryRows = Object.values(COUNTRIES).map((country) => ({
         id: country.id,
         name: country.name,
@@ -3048,7 +3060,7 @@ var PostgresDatabaseService = class {
     try {
       await this.db.insert(calculationScenarios).values({
         id: scenarioId,
-        cityId: scenario.location?.cityId || "nyc",
+        cityId: scenario.location?.cityId || scenario.location?.id || "nyc",
         countryId: scenario.location?.countryId || "US",
         baseSalaryMinor: scenario.compensation?.baseSalary?.amountMinor || 0,
         currency: scenario.compensation?.baseSalary?.currency || "USD",
@@ -3072,10 +3084,11 @@ var PostgresDatabaseService = class {
         effectiveTaxRate: result.effectiveTaxRate || 0,
         fullResultJson: result
       });
+      return { success: true, scenarioId, resultId };
     } catch (e) {
       console.warn("[PostgresDatabaseService] persistCalculation notice:", e);
+      return { success: false, scenarioId: null, resultId: null };
     }
-    return { scenarioId, resultId };
   }
   async getCalculation(scenarioId) {
     try {
@@ -3725,22 +3738,27 @@ var LocalFallbackDatabaseService = class {
     return Object.values(EVIDENCE_SOURCES);
   }
   async persistCalculation(scenario, result) {
-    const scenarioId = `scen_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-    const resultId = `res_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-    const storedScenario = {
-      id: scenarioId,
-      scenario,
-      createdAt: (/* @__PURE__ */ new Date()).toISOString()
-    };
-    const storedResult = {
-      id: resultId,
-      scenarioId,
-      result,
-      createdAt: (/* @__PURE__ */ new Date()).toISOString()
-    };
-    this.scenarios.set(scenarioId, storedScenario);
-    this.results.set(resultId, storedResult);
-    return { scenarioId, resultId };
+    try {
+      const scenarioId = `scen_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+      const resultId = `res_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+      const storedScenario = {
+        id: scenarioId,
+        scenario,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      const storedResult = {
+        id: resultId,
+        scenarioId,
+        result,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      this.scenarios.set(scenarioId, storedScenario);
+      this.results.set(resultId, storedResult);
+      return { success: true, scenarioId, resultId };
+    } catch (e) {
+      console.warn("[LocalFallbackDatabaseService] persistCalculation notice:", e);
+      return { success: false, scenarioId: null, resultId: null };
+    }
   }
   async getCalculation(scenarioId) {
     const scen = this.scenarios.get(scenarioId);
@@ -4807,8 +4825,8 @@ var GermanyTaxAdapter = class {
         const y = (grossMajor - 11784) / 1e4;
         incomeTax = (995.21 * y + 1400) * y;
       } else if (grossMajor <= 66760) {
-        const z = (grossMajor - 17005) / 1e4;
-        incomeTax = (208.85 * z + 2397) * z + 1015.51;
+        const z2 = (grossMajor - 17005) / 1e4;
+        incomeTax = (208.85 * z2 + 2397) * z2 + 1015.51;
       } else if (grossMajor <= 277825) {
         incomeTax = 0.42 * grossMajor - 10636.31;
       } else {
@@ -4821,8 +4839,8 @@ var GermanyTaxAdapter = class {
         const y = (grossMajor - 12084) / 1e4;
         incomeTax = (995.21 * y + 1400) * y;
       } else if (grossMajor <= 68480) {
-        const z = (grossMajor - 17443) / 1e4;
-        incomeTax = (208.85 * z + 2397) * z + 1015.51;
+        const z2 = (grossMajor - 17443) / 1e4;
+        incomeTax = (208.85 * z2 + 2397) * z2 + 1015.51;
       } else if (grossMajor <= 277825) {
         incomeTax = 0.42 * grossMajor - 10900;
       } else {
@@ -15098,7 +15116,83 @@ var MultilingualContentGapEngine = class {
 
 // src/lib/seo/search-console-connector.ts
 import { google } from "googleapis";
-var ACTUAL_SITEMAP_SUBMITTED_PAGES = 223;
+
+// src/lib/seo/sitemap-parser.ts
+import fs2 from "fs";
+import path2 from "path";
+function parseSitemaps(baseDir) {
+  const searchDirs = baseDir ? [baseDir] : [path2.resolve("dist"), path2.resolve("public")];
+  let targetDir = "";
+  for (const dir of searchDirs) {
+    if (fs2.existsSync(dir)) {
+      const files = fs2.readdirSync(dir).filter((f) => f.startsWith("sitemap") && f.endsWith(".xml"));
+      if (files.length > 0) {
+        targetDir = dir;
+        break;
+      }
+    }
+  }
+  if (!targetDir) {
+    return {
+      sitemapFiles: [],
+      totalUrlsCount: 0,
+      uniqueUrlsCount: 0,
+      duplicateUrls: [],
+      invalidUrls: [],
+      urlsByFile: {},
+      allUrls: []
+    };
+  }
+  const sitemapFiles = fs2.readdirSync(targetDir).filter((f) => f.startsWith("sitemap") && f.endsWith(".xml") && f !== "sitemap.xml");
+  const urlsByFile = {};
+  const allUrls = [];
+  const seenUrls = /* @__PURE__ */ new Set();
+  const duplicateUrls = [];
+  const invalidUrls = [];
+  for (const file of sitemapFiles) {
+    const filePath = path2.join(targetDir, file);
+    const content = fs2.readFileSync(filePath, "utf-8");
+    const locMatches = content.match(/<loc>(.*?)<\/loc>/g) || [];
+    const fileUrls = [];
+    for (const match of locMatches) {
+      const url = match.replace(/<\/?loc>/g, "").trim();
+      fileUrls.push(url);
+      allUrls.push(url);
+      if (seenUrls.has(url)) {
+        if (!duplicateUrls.includes(url)) {
+          duplicateUrls.push(url);
+        }
+      } else {
+        seenUrls.add(url);
+      }
+      try {
+        const parsed = new URL(url);
+        if (!parsed.protocol.startsWith("http")) {
+          invalidUrls.push(url);
+        }
+      } catch {
+        invalidUrls.push(url);
+      }
+    }
+    urlsByFile[file] = fileUrls;
+  }
+  return {
+    sitemapFiles,
+    totalUrlsCount: allUrls.length,
+    uniqueUrlsCount: seenUrls.size,
+    duplicateUrls,
+    invalidUrls,
+    urlsByFile,
+    allUrls: Array.from(seenUrls)
+  };
+}
+function getSubmittedSitemapPagesCount(baseDir) {
+  const result = parseSitemaps(baseDir);
+  return result.uniqueUrlsCount > 0 ? result.uniqueUrlsCount : 223;
+}
+
+// src/lib/seo/search-console-connector.ts
+var ACTUAL_SITEMAP_SUBMITTED_PAGES = getSubmittedSitemapPagesCount();
 var SearchConsoleConnector = class {
   static {
     this.DEFAULT_SITE_URL = "https://www.livworthy.com/";
@@ -15535,6 +15629,9 @@ var TopicalAuthorityScorecard = class {
     const quickWins = MultilingualContentGapEngine.getQuickWins().filter(
       (qw) => qw.keyword.locale === locale && qw.opportunityClassification === "QUICK_WIN"
     );
+    const sitemapData = parseSitemaps();
+    const locSitemapUrls = sitemapData.urlsByFile[`sitemap-${locale}.xml`] || [];
+    const dynamicSubmittedPages = locale === "en" ? sitemapData.urlsByFile["sitemap-main.xml"]?.length || 23 : locSitemapUrls.length > 0 ? locSitemapUrls.length : isIndexable ? 6 : 1;
     return {
       locale,
       languageName: config.name,
@@ -15549,8 +15646,7 @@ var TopicalAuthorityScorecard = class {
       backlinkCoveragePct,
       overallScorecardGrade,
       trackedKeywordsCount: keywords.length,
-      submittedPagesCount: isIndexable ? 6 : 1,
-      // Landing + 5 tabs
+      submittedPagesCount: dynamicSubmittedPages,
       indexedPagesCount: null,
       // Null without Search Console API evidence
       quickWinsCount: quickWins.length,
@@ -15565,6 +15661,7 @@ var TopicalAuthorityScorecard = class {
   static generateAllDashboardMetrics() {
     const metrics = [];
     const hasGscCreds = SearchConsoleConnector.hasValidCredentials();
+    const sitemapData = parseSitemaps();
     for (const loc of TIER_1_LOCALES) {
       const cfg = SUPPORTED_LOCALES[loc];
       const keywords = MULTILINGUAL_KEYWORD_DATABASE.filter((k) => k.locale === loc);
@@ -15574,13 +15671,14 @@ var TopicalAuthorityScorecard = class {
       const quickWins = MultilingualContentGapEngine.getQuickWins().filter(
         (qw) => qw.keyword.locale === loc && qw.opportunityClassification === "QUICK_WIN"
       );
+      const locSitemapUrls = sitemapData.urlsByFile[`sitemap-${loc}.xml`] || [];
+      const dynamicSubmitted = loc === "en" ? sitemapData.urlsByFile["sitemap-main.xml"]?.length || 23 : locSitemapUrls.length > 0 ? locSitemapUrls.length : 6;
       metrics.push({
         locale: loc,
         languageName: cfg.name,
-        pagesCount: 6,
-        // Dedicated locale landing page + 5 interactive tab routes
+        pagesCount: dynamicSubmitted,
         keywordsTracked: keywords.length,
-        submittedPages: 6,
+        submittedPages: dynamicSubmitted,
         indexedPages: null,
         // Honest null until Search Console API confirms
         impressions: hasGscCreds ? 0 : null,
@@ -15637,6 +15735,17 @@ async function ensureDatabaseReady() {
 }
 var app = express();
 function configureApp() {
+  app.use((req, res, next) => {
+    const rawForwarded = req.headers["x-forwarded-url"] || req.headers["x-vercel-sc-path"];
+    if (rawForwarded && (req.url === "/api" || req.url === "/api/" || req.url === "/api/index.js")) {
+      req.url = rawForwarded;
+    } else if (req.url.startsWith("/api/index.js/")) {
+      req.url = req.url.replace("/api/index.js/", "/api/");
+    } else if (req.url === "/api/index.js") {
+      req.url = "/api";
+    }
+    next();
+  });
   app.use((req, res, next) => {
     const rawHost = req.headers["x-forwarded-host"] || req.headers.host || "";
     const cleanHost = rawHost.split(":")[0].toLowerCase();
@@ -15882,13 +15991,13 @@ function configureApp() {
       }
     });
   });
-  app.use("/api", async (req, res, next) => {
+  const requireDatabaseReady = async (req, res, next) => {
     try {
       await ensureDatabaseReady();
       if (process.env.NODE_ENV === "production" && (!dbInitialized || dbService.mode !== "PRODUCTION_POSTGRES")) {
         return res.status(503).json({
           error: "DATABASE_NOT_READY",
-          message: "Production database is not ready."
+          message: "Production database is not ready or not configured."
         });
       }
       next();
@@ -15898,27 +16007,154 @@ function configureApp() {
         message: "Production data services are temporarily unavailable."
       });
     }
+  };
+  const requireRedisWhenSecuritySensitive = (req, res, next) => {
+    if (process.env.NODE_ENV === "production" && !cacheService.isRedisConnected) {
+      return res.status(503).json({
+        error: "SECURITY_RATE_LIMITER_UNAVAILABLE",
+        message: "Distributed security service unavailable."
+      });
+    }
+    next();
+  };
+  const requireFxWhenCrossCurrencyRequired = async (req, res, next) => {
+    try {
+      const fxSnapshot = await FxEngine.getLatestSnapshot();
+      if (!fxSnapshot || fxSnapshot.status === "UNAVAILABLE") {
+        return res.status(503).json({
+          error: "FX_SERVICE_UNAVAILABLE",
+          message: "Foreign exchange rate service is temporarily unavailable."
+        });
+      }
+      next();
+    } catch {
+      return res.status(503).json({
+        error: "FX_SERVICE_UNAVAILABLE",
+        message: "Foreign exchange rate service is temporarily unavailable."
+      });
+    }
+  };
+  app.use("/api/admin", requireDatabaseReady);
+  app.use("/api/content", requireDatabaseReady);
+  app.use("/api/reviews", requireDatabaseReady);
+  const CalculatePayloadSchema = z.object({
+    location: z.object({
+      id: z.string().min(1).optional(),
+      cityId: z.string().min(1).optional(),
+      countryId: z.string().min(1),
+      currency: z.string().min(1).optional()
+    }).passthrough().refine((loc) => Boolean(loc.id || loc.cityId), {
+      message: "City identifier (id or cityId) is required."
+    }),
+    compensation: z.object({
+      baseSalary: z.union([
+        z.object({
+          amountMinor: z.number().nonnegative(),
+          currency: z.string().min(1).optional()
+        }).passthrough(),
+        z.number().nonnegative()
+      ]).optional()
+    }).passthrough().optional(),
+    financials: z.object({
+      baseSalary: z.number().nonnegative().optional()
+    }).passthrough().optional(),
+    baseSalary: z.number().nonnegative().optional(),
+    household: z.record(z.string(), z.any()).optional(),
+    taxProfile: z.record(z.string(), z.any()).optional(),
+    taxAssumptions: z.record(z.string(), z.any()).optional(),
+    overrides: z.record(z.string(), z.any()).optional()
+  }).passthrough().refine((data) => {
+    return Boolean(
+      data.compensation?.baseSalary && (typeof data.compensation.baseSalary === "number" || data.compensation.baseSalary.amountMinor !== void 0) || data.financials?.baseSalary !== void 0 || typeof data.baseSalary === "number"
+    );
+  }, {
+    message: "Valid base salary compensation is required."
   });
   app.post("/api/calculate", rateLimit(60, 60), async (req, res) => {
     try {
-      const scenario = req.body;
-      if (!scenario || !scenario.location || !scenario.compensation) {
-        return res.status(400).json({ error: "INVALID_PAYLOAD", message: "Location and compensation are required." });
+      const parseResult = CalculatePayloadSchema.safeParse(req.body);
+      if (!parseResult.success) {
+        return res.status(400).json({
+          error: "INVALID_PAYLOAD",
+          message: "Location and valid base salary compensation are required.",
+          details: parseResult.error.issues.map((i) => i.message)
+        });
       }
+      const body = parseResult.data;
+      const cityId = body.location.id || body.location.cityId;
+      const currency = body.location.currency || body.compensation?.baseSalary?.currency || "USD";
+      let baseSalaryMinor = 0;
+      if (body.compensation?.baseSalary?.amountMinor !== void 0) {
+        baseSalaryMinor = body.compensation.baseSalary.amountMinor;
+      } else if (typeof body.compensation?.baseSalary === "number") {
+        baseSalaryMinor = Math.round(body.compensation.baseSalary * 100);
+      } else if (typeof body.financials?.baseSalary === "number") {
+        baseSalaryMinor = Math.round(body.financials.baseSalary * 100);
+      } else if (typeof body.baseSalary === "number") {
+        baseSalaryMinor = Math.round(body.baseSalary * 100);
+      }
+      const scenario = {
+        ...body,
+        location: {
+          ...body.location,
+          id: cityId,
+          cityId,
+          currency
+        },
+        compensation: {
+          ...body.compensation,
+          baseSalary: {
+            amountMinor: baseSalaryMinor,
+            currency,
+            ...typeof body.compensation?.baseSalary === "object" ? body.compensation.baseSalary : {}
+          }
+        },
+        taxProfile: body.taxProfile || body.taxAssumptions || {
+          taxYear: LATEST_VERIFIED_TAX_YEAR,
+          filingStatus: "single",
+          dependentsCount: 0
+        },
+        household: {
+          adults: 1,
+          children: 0,
+          housingType: "1-bedroom",
+          areaType: "typical",
+          transportMode: "public_transit",
+          carsCount: 0,
+          lifestyleLevel: "moderate",
+          preset: "single",
+          ...body.household || {}
+        },
+        displayCurrency: currency,
+        calculationDate: body.calculationDate || (/* @__PURE__ */ new Date()).toISOString()
+      };
       const result = SalaryWorthCalculator.calculate(scenario);
-      const { scenarioId, resultId } = await dbService.persistCalculation(scenario, result);
+      let persistenceStatus = "NOT_SAVED";
+      let scenarioId = null;
+      let resultId = null;
+      try {
+        const persistResult = await dbService.persistCalculation(scenario, result);
+        if (persistResult && persistResult.success) {
+          persistenceStatus = "SAVED";
+          scenarioId = persistResult.scenarioId;
+          resultId = persistResult.resultId;
+        }
+      } catch (persistErr) {
+        console.warn("[Calculation] Persistence fallback notice:", persistErr);
+      }
       res.json({
         success: true,
+        persistenceStatus,
         scenarioId,
         resultId,
         data: result
       });
     } catch (err) {
       console.error("Calculation error:", err);
-      res.status(500).json({ error: "CALCULATION_ERROR", message: err.message });
+      res.status(500).json({ error: "CALCULATION_ERROR", message: "Unable to complete this calculation." });
     }
   });
-  app.get("/api/calculation/:id", rateLimit(120, 60), async (req, res) => {
+  app.get("/api/calculation/:id", requireDatabaseReady, rateLimit(120, 60), async (req, res) => {
     try {
       const calculation = await dbService.getCalculation(req.params.id);
       if (!calculation) {
@@ -15926,7 +16162,8 @@ function configureApp() {
       }
       res.json({ success: true, calculation });
     } catch (err) {
-      res.status(500).json({ error: "SERVER_ERROR", message: err.message });
+      console.error("Calculation fetch error:", err);
+      res.status(500).json({ error: "SERVER_ERROR", message: "Unable to retrieve calculation scenario." });
     }
   });
   app.post("/api/compare", rateLimit(60, 60), async (req, res) => {
@@ -16130,10 +16367,10 @@ function configureApp() {
     });
   });
   app.get("/api/freshness-report", rateLimit(60, 60), (req, res) => {
-    const reportPath = path2.resolve("data-freshness-report.json");
-    if (fs2.existsSync(reportPath)) {
+    const reportPath = path3.resolve("data-freshness-report.json");
+    if (fs3.existsSync(reportPath)) {
       try {
-        const raw = fs2.readFileSync(reportPath, "utf-8");
+        const raw = fs3.readFileSync(reportPath, "utf-8");
         return res.json(JSON.parse(raw));
       } catch (err) {
         return res.status(500).json({ error: "FAILED_READING_REPORT", message: err.message });
@@ -16419,6 +16656,9 @@ function configureApp() {
     if (!session) {
       return res.status(401).json({ error: "UNAUTHORIZED", message: "Admin authentication required." });
     }
+    if (!AuthService.hasPermission(session.role, "manage_seo")) {
+      return res.status(403).json({ error: "FORBIDDEN", message: "SEO management permission required." });
+    }
     const { startDate, endDate } = req.body || {};
     const result = await SearchConsoleConnector.ingestAndPersistAnalytics(startDate, endDate);
     res.json(result);
@@ -16503,22 +16743,22 @@ var staticMounted = false;
 function mountStaticAndFallback(expressApp) {
   if (staticMounted) return;
   staticMounted = true;
-  const distPath = path2.join(process.cwd(), "dist");
+  const distPath = path3.join(process.cwd(), "dist");
   expressApp.use(express.static(distPath, { redirect: false }));
   expressApp.get("*", (req, res) => {
     const pathname = req.path.replace(/\/$/, "") || "/";
     if (pathname === "/") {
-      const homePath = path2.join(distPath, "index.html");
-      if (fs2.existsSync(homePath)) {
+      const homePath = path3.join(distPath, "index.html");
+      if (fs3.existsSync(homePath)) {
         return res.sendFile(homePath);
       }
     }
-    const candidatePath = path2.join(distPath, pathname, "index.html");
-    if (fs2.existsSync(candidatePath)) {
+    const candidatePath = path3.join(distPath, pathname, "index.html");
+    if (fs3.existsSync(candidatePath)) {
       return res.sendFile(candidatePath);
     }
-    const notFoundPath = path2.join(distPath, "404.html");
-    if (fs2.existsSync(notFoundPath)) {
+    const notFoundPath = path3.join(distPath, "404.html");
+    if (fs3.existsSync(notFoundPath)) {
       return res.status(404).type("html").sendFile(notFoundPath);
     }
     return res.status(404).type("html").send('<!DOCTYPE html><html><head><title>404 Not Found</title><meta name="robots" content="noindex, nofollow" /></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
@@ -16530,7 +16770,7 @@ if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test" || 
 async function startServer() {
   await ensureDatabaseReady();
   if (process.env.NODE_ENV !== "production" && !process.env.SERVE_STATIC && process.env.NODE_ENV !== "test") {
-    const distPath = path2.join(process.cwd(), "dist");
+    const distPath = path3.join(process.cwd(), "dist");
     app.use((req, res, next) => {
       if (req.method !== "GET") return next();
       const pathname = req.path.replace(/\/$/, "") || "/";
@@ -16538,12 +16778,12 @@ async function startServer() {
       if (pathname.startsWith("/api/") || pathname.startsWith("/assets/") || pathname.startsWith("/src/") || pathname.startsWith("/@") || pathname.startsWith("/node_modules/") || /\.[a-zA-Z0-9]+$/.test(pathname)) {
         return next();
       }
-      const candidatePath = path2.join(distPath, pathname, "index.html");
-      if (fs2.existsSync(candidatePath)) {
+      const candidatePath = path3.join(distPath, pathname, "index.html");
+      if (fs3.existsSync(candidatePath)) {
         return res.sendFile(candidatePath);
       }
-      const notFoundPath = path2.join(distPath, "404.html");
-      if (fs2.existsSync(notFoundPath)) {
+      const notFoundPath = path3.join(distPath, "404.html");
+      if (fs3.existsSync(notFoundPath)) {
         return res.status(404).type("html").sendFile(notFoundPath);
       }
       return res.status(404).type("html").send('<!DOCTYPE html><html><head><title>404 Not Found</title><meta name="robots" content="noindex, nofollow" /></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');

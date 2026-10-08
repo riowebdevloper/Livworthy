@@ -33,7 +33,7 @@ export interface IDatabaseService {
   getHousingDatasets(cityId?: string): Promise<any[]>;
   getSalaryDatasets(cityId?: string): Promise<any[]>;
   getEvidenceSources(): Promise<any[]>;
-  persistCalculation(scenario: any, result: any): Promise<{ scenarioId: string; resultId: string }>;
+  persistCalculation(scenario: any, result: any): Promise<{ success: boolean; scenarioId: string | null; resultId: string | null }>;
   getCalculation(scenarioId: string): Promise<any | null>;
   saveFxSnapshot(snapshot: any): Promise<void>;
   getLatestFxSnapshot(baseCurrency: string): Promise<any | null>;
@@ -182,6 +182,18 @@ class PostgresDatabaseService implements IDatabaseService {
 
   async seedData() {
     try {
+      // 0. Quick check if database is already populated
+      const existingCountry = await this.client.unsafe(
+        `SELECT id FROM countries LIMIT 1;`
+      ).catch(() => []);
+      if (existingCountry && existingCountry.length > 0) {
+        return {
+          success: true,
+          countriesCount: Object.keys(COUNTRIES).length,
+          citiesCount: Object.keys(CITIES).length,
+        };
+      }
+
       // 1. Seed Countries (batched)
       const countryRows = Object.values(COUNTRIES).map((country) => ({
         id: country.id,
@@ -454,13 +466,13 @@ class PostgresDatabaseService implements IDatabaseService {
     return await this.db.select().from(schema.evidenceSources);
   }
 
-  async persistCalculation(scenario: any, result: any) {
+  async persistCalculation(scenario: any, result: any): Promise<{ success: boolean; scenarioId: string | null; resultId: string | null }> {
     const scenarioId = `scen_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const resultId = `res_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     try {
       await this.db.insert(schema.calculationScenarios).values({
         id: scenarioId,
-        cityId: scenario.location?.cityId || 'nyc',
+        cityId: scenario.location?.cityId || scenario.location?.id || 'nyc',
         countryId: scenario.location?.countryId || 'US',
         baseSalaryMinor: scenario.compensation?.baseSalary?.amountMinor || 0,
         currency: scenario.compensation?.baseSalary?.currency || 'USD',
@@ -485,10 +497,11 @@ class PostgresDatabaseService implements IDatabaseService {
         effectiveTaxRate: result.effectiveTaxRate || 0,
         fullResultJson: result,
       });
+      return { success: true, scenarioId, resultId };
     } catch (e) {
       console.warn('[PostgresDatabaseService] persistCalculation notice:', e);
+      return { success: false, scenarioId: null, resultId: null };
     }
-    return { scenarioId, resultId };
   }
 
   async getCalculation(scenarioId: string) {
@@ -1192,25 +1205,30 @@ class LocalFallbackDatabaseService implements IDatabaseService {
     return Object.values(EVIDENCE_SOURCES);
   }
 
-  async persistCalculation(scenario: any, result: any) {
-    const scenarioId = `scen_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-    const resultId = `res_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+  async persistCalculation(scenario: any, result: any): Promise<{ success: boolean; scenarioId: string | null; resultId: string | null }> {
+    try {
+      const scenarioId = `scen_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+      const resultId = `res_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
-    const storedScenario = {
-      id: scenarioId,
-      scenario,
-      createdAt: new Date().toISOString(),
-    };
-    const storedResult = {
-      id: resultId,
-      scenarioId,
-      result,
-      createdAt: new Date().toISOString(),
-    };
+      const storedScenario = {
+        id: scenarioId,
+        scenario,
+        createdAt: new Date().toISOString(),
+      };
+      const storedResult = {
+        id: resultId,
+        scenarioId,
+        result,
+        createdAt: new Date().toISOString(),
+      };
 
-    this.scenarios.set(scenarioId, storedScenario);
-    this.results.set(resultId, storedResult);
-    return { scenarioId, resultId };
+      this.scenarios.set(scenarioId, storedScenario);
+      this.results.set(resultId, storedResult);
+      return { success: true, scenarioId, resultId };
+    } catch (e) {
+      console.warn('[LocalFallbackDatabaseService] persistCalculation notice:', e);
+      return { success: false, scenarioId: null, resultId: null };
+    }
   }
 
   async getCalculation(scenarioId: string) {

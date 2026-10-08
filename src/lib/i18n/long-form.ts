@@ -427,8 +427,8 @@ export const LONG_FORM_COPY: Record<string, LongFormCopy> = {
     reportNames: reportNames(['ดัชนีมูลค่าเงินเดือนโลก 2026','รายงานกำลังซื้อของเมือง 2026','ดัชนีเงินเดือนต่อค่าเช่า 2026','รายงานส่วนต่างเงินเดือนเมื่อย้ายเมือง 2026','ดัชนีเงินเดือนสุทธิทั่วโลก 2026']),
   },
   tl: {
-    rootTitle: 'Pandaigdigang salary at cost-of-living intelligence',
-    rootIntro: 'Suriin ang tunay na halaga ng sahod, buwis, gastos sa pamumuhay, paghahambing ng lungsod at relocation gamit ang malinaw na sources.',
+    rootTitle: 'Pandaigdigang kaalaman sa sahod at gastos sa pamumuhay',
+    rootIntro: 'Suriin ang tunay na halaga ng sahod, buwis, gastos sa pamumuhay, paghahambing ng lungsod at paglipat gamit ang malinaw na sources.',
     countryTitle: 'Sahod at gastos sa pamumuhay sa {country}',
     countryIntro: 'Tingnan ang currency, tax coverage at pangunahing city benchmarks para sa {country}.',
     cityTitle: 'Sahod at gastos sa pamumuhay sa {city}',

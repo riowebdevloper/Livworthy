@@ -727,7 +727,7 @@ export function runSeoGenerator() {
           ? `Financial living analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}. Tax Year: ${cap.taxYear || LATEST_STATUTORY_TAX_YEAR}.`
           : `Metropolitan cost of living and housing expense analysis for ${city.name} (${country ? country.name : city.countryId}). Metro area: ${city.metroAreaName}.`}</p>
         
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-6">
           <div class="p-4 bg-white border border-slate-200 rounded-lg">
             <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Currency</span>
             <div class="text-xl font-bold text-slate-900 mt-1">${city.currency}</div>
@@ -738,7 +738,12 @@ export function runSeoGenerator() {
           </div>
           <div class="p-4 bg-white border border-slate-200 rounded-lg">
             <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Verification Status</span>
-            <div class="text-xl font-bold text-teal-700 mt-1">${hasTax ? city.verificationStatus : 'COST OF LIVING AVAILABLE'}</div>
+            <div class="text-xl font-bold text-teal-700 mt-1">${hasTax ? city.verificationStatus : 'COL AVAILABLE'}</div>
+          </div>
+          <div class="p-4 bg-white border border-slate-200 rounded-lg">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Data Provenance</span>
+            <div class="text-xl font-bold ${city.id === 'nyc' ? 'text-teal-700' : isProvisional ? 'text-amber-700' : 'text-slate-800'} mt-1">${city.id === 'nyc' ? 'OBSERVED' : isProvisional ? 'LIMITED' : 'DERIVED'}</div>
+            <span class="text-[10px] text-slate-500">${city.id === 'nyc' ? 'Statutory & Observed Baseline' : isProvisional ? 'Provisional / Limited Data' : 'Spatial Benchmark Model'}</span>
           </div>
         </div>
 
@@ -1958,16 +1963,6 @@ ${items
 
   const mainUrls = [
     { canonicalUrl: `${BASE_URL}/`, changefreq: 'daily', priority: 1.0 },
-    { canonicalUrl: `${BASE_URL}/en`, changefreq: 'daily', priority: 0.95 },
-    { canonicalUrl: `${BASE_URL}/es`, changefreq: 'daily', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/fr`, changefreq: 'daily', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/ar`, changefreq: 'daily', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/de`, changefreq: 'daily', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/pt`, changefreq: 'daily', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/hi`, changefreq: 'daily', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/ur`, changefreq: 'daily', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/zh`, changefreq: 'daily', priority: 0.9 },
-    { canonicalUrl: `${BASE_URL}/ja`, changefreq: 'daily', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/coverage`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/relocation`, changefreq: 'weekly', priority: 0.9 },
     { canonicalUrl: `${BASE_URL}/job-offer-comparison`, changefreq: 'weekly', priority: 0.9 },
@@ -1994,9 +1989,10 @@ ${items
   const relocationXml = buildUrlSet(relocationPages);
   const reportsXml = buildUrlSet(reportsPages);
 
-  // Segmented multilingual sitemaps contain only real canonical localized routes.
+  // Segmented multilingual sitemaps contain only real canonical localized routes for verified Tier-1 locales.
+  const tier1Locales = ['en', 'es', 'fr', 'ar', 'de', 'pt', 'hi', 'ur', 'zh', 'ja'];
   const localeSitemaps: { name: string; content: string }[] = [];
-  for (const loc of LONG_FORM_LOCALES) {
+  for (const loc of tier1Locales) {
     const locPages = indexablePages.filter((p) => p.relativePath === `${loc}/index.html` || p.relativePath.startsWith(`${loc}/`)).map((p) => ({ canonicalUrl: p.canonicalUrl, changefreq: p.changefreq, priority: p.priority }));
     localeSitemaps.push({ name: `sitemap-${loc}.xml`, content: buildUrlSet(locPages) });
   }
@@ -2024,7 +2020,7 @@ ${items
   <sitemap>
     <loc>${BASE_URL}/sitemap-reports.xml</loc>
   </sitemap>
-${LONG_FORM_LOCALES.map(loc => `  <sitemap>
+${tier1Locales.map(loc => `  <sitemap>
     <loc>${BASE_URL}/sitemap-${loc}.xml</loc>
   </sitemap>`).join('\n')}
 </sitemapindex>`;
@@ -2041,12 +2037,26 @@ ${LONG_FORM_LOCALES.map(loc => `  <sitemap>
     ...localeSitemaps,
   ];
 
+  const allowedFileNames = new Set(filesToWrite.map((f) => f.name));
+
+  // Clean up any stale or unapproved sitemap files
+  for (const dir of [distDir, publicDir]) {
+    if (fs.existsSync(dir)) {
+      const existing = fs.readdirSync(dir);
+      for (const file of existing) {
+        if (file.startsWith('sitemap') && file.endsWith('.xml') && !allowedFileNames.has(file)) {
+          fs.unlinkSync(path.join(dir, file));
+        }
+      }
+    }
+  }
+
   for (const f of filesToWrite) {
     fs.writeFileSync(path.join(distDir, f.name), f.content);
     fs.writeFileSync(path.join(publicDir, f.name), f.content);
   }
 
-  console.log(`[SEO Generator] Generated sitemap index + 6 segmented sitemaps (${indexablePages.length + mainUrls.length} total URLs).`);
+  console.log(`[SEO Generator] Generated sitemap index + ${localeSitemaps.length + 7} segmented sitemaps (${indexablePages.length + mainUrls.length} total URLs).`);
 }
 
 function writeStaticFiles(distDir: string, publicDir: string) {

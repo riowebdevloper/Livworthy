@@ -125,4 +125,17 @@ export class LongFormContentAuditor {
     }
     return results;
   }
+
+  /**
+   * Calculates overall long-form coverage percentage dynamically across locales.
+   * Eliminates hardcoded coverage percentages.
+   */
+  public static getOverallCoverage(locales?: string[]): number {
+    const targetLocales = locales || ['en', 'es', 'fr', 'ar', 'de', 'pt', 'hi', 'ur', 'zh', 'ja'];
+    const audits = Object.values(this.auditAllLocales(targetLocales));
+    if (audits.length === 0) return 0;
+    const totalRequired = audits.reduce((sum, a) => sum + a.totalRequiredFields, 0);
+    const totalTranslated = audits.reduce((sum, a) => sum + a.translatedFields, 0);
+    return totalRequired > 0 ? Math.round((totalTranslated / totalRequired) * 100) : 0;
+  }
 }

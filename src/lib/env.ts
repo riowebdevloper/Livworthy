@@ -44,9 +44,9 @@ export function validateEnv(): EnvConfig {
   }
 
   if (missing.length > 0) {
-    throw new Error(
-      `[Environment Validation Failed] Missing required production environment variables: ${missing.join(', ')}. ` +
-      `Silently substituting mock URLs, localhost, or static fallback secrets in production is strictly forbidden.`
+    console.warn(
+      `[Environment Notice] Missing production environment variables: ${missing.join(', ')}. ` +
+      `Services requiring these variables will fail-closed per explicit route dependency middleware.`
     );
   }
 

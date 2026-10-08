@@ -7,6 +7,8 @@
  * - Reports leakage counts per locale with clear diagnostic locations
  */
 
+import fs from 'fs';
+import path from 'path';
 import { DICTIONARIES, TIER_1_LOCALES, TIER_2_LOCALES, SupportedLocale } from '../src/lib/i18n';
 import { LOCALIZED_CITIES } from '../src/lib/i18n/content/cities';
 import { LOCALIZED_COUNTRIES } from '../src/lib/i18n/content/countries';
@@ -158,6 +160,38 @@ export class EnglishLeakageAuditor {
       }
     }
 
+    // Also scan rendered HTML in dist for this locale if dist exists
+    const distDir = path.resolve('dist');
+    const locDir = path.join(distDir, locale);
+    if (fs.existsSync(locDir)) {
+      const htmlFiles = findHtmlFiles(locDir);
+      for (const htmlFile of htmlFiles) {
+        totalChecked++;
+        const raw = fs.readFileSync(htmlFile, 'utf-8');
+        const clean = raw
+          .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ')
+          .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ')
+          .replace(/<[^>]+>/g, ' ')
+          .replace(/\s+/g, ' ');
+
+        const sentences = clean.split(/[.!?]+/).map((s) => s.trim()).filter((s) => s.length > 25);
+        for (const sentence of sentences) {
+          const words = sentence.toLowerCase().split(/\W+/);
+          const matchedWords = words.filter((w) => SUSPICIOUS_ENGLISH_WORDS.includes(w));
+          if (matchedWords.length >= 4) {
+            findings.push({
+              locale,
+              location: `HTML:${path.relative(distDir, htmlFile)}`,
+              key: 'visible_text',
+              suspiciousText: sentence.length > 80 ? sentence.substring(0, 77) + '...' : sentence,
+              matchedWords,
+            });
+            break; // One per file is sufficient to flag the file
+          }
+        }
+      }
+    }
+
     return {
       locale,
       totalChecked,
@@ -167,9 +201,25 @@ export class EnglishLeakageAuditor {
   }
 }
 
+function findHtmlFiles(dir: string): string[] {
+  let results: string[] = [];
+  if (!fs.existsSync(dir)) return results;
+  const list = fs.readdirSync(dir);
+  for (const file of list) {
+    const fullPath = path.join(dir, file);
+    const stat = fs.statSync(fullPath);
+    if (stat.isDirectory()) {
+      results = results.concat(findHtmlFiles(fullPath));
+    } else if (file.endsWith('.html')) {
+      results.push(fullPath);
+    }
+  }
+  return results;
+}
+
 async function run() {
   console.log('======================================================');
-  console.log('🔍 LivWorthy Automated English Leakage Audit');
+  console.log('🔍 LivWorthy Automated English Leakage & HTML Audit');
   console.log('======================================================\n');
 
   const localesToAudit = [...TIER_1_LOCALES, ...TIER_2_LOCALES].filter((l) => l !== 'en');
@@ -178,7 +228,7 @@ async function run() {
   for (const loc of localesToAudit) {
     const report = EnglishLeakageAuditor.auditLocale(loc);
     if (report.leakageCount === 0) {
-      console.log(`✅ [${loc}] Clean — 0 English leakage incidents across ${report.totalChecked} inspected strings.`);
+      console.log(`✅ [${loc}] Clean — 0 English leakage incidents across ${report.totalChecked} inspected items.`);
     } else {
       console.warn(`⚠️ [${loc}] ${report.leakageCount} suspicious English strings detected:`);
       for (const finding of report.findings.slice(0, 3)) {

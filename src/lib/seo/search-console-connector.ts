@@ -50,7 +50,9 @@ export interface GscIndexCoverageSummary {
   diagnosticNotice: string;
 }
 
-export const ACTUAL_SITEMAP_SUBMITTED_PAGES = 223;
+import { getSubmittedSitemapPagesCount } from './sitemap-parser';
+
+export const ACTUAL_SITEMAP_SUBMITTED_PAGES = getSubmittedSitemapPagesCount();
 
 export interface GscAnalyticsResult {
   success: boolean;

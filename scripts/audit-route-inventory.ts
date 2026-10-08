@@ -16,6 +16,13 @@ import {
   TIER_3_LOCALES,
   getIndexableLocales,
 } from '../src/lib/i18n';
+import { LongFormContentAuditor } from '../src/lib/i18n/content';
+import {
+  buildCountryPath,
+  buildCityPath,
+  buildGuidePath,
+  buildRelocationPath,
+} from '../src/lib/routes';
 import { CITIES, COUNTRIES } from '../src/data/locations';
 import { SALARY_GUIDES } from '../src/data/salary-guides';
 import { RELOCATION_CORRIDORS } from '../src/data/relocation-corridors';
@@ -57,27 +64,38 @@ export interface RouteInventoryReport {
 export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.com'): RouteInventoryReport {
   const routes: RouteEntry[] = [];
 
-  // Core application routes (English baseline)
-  const coreTabs = [
-    { slug: '', type: 'core' as const },
-    { slug: 'salary-worth', type: 'core' as const },
-    { slug: 'salary-needed', type: 'core' as const },
-    { slug: 'salary-after-tax', type: 'core' as const },
-    { slug: 'cost-of-living', type: 'core' as const },
-    { slug: 'compare', type: 'core' as const },
-    { slug: 'job-offers', type: 'core' as const },
-    { slug: 'methodology', type: 'core' as const },
-    { slug: 'sources', type: 'core' as const },
-    { slug: 'coverage', type: 'core' as const },
-    { slug: 'relocation', type: 'core' as const },
+  // Core application and hub pages (English baseline)
+  const corePages = [
+    { path: '/', type: 'core' as const },
+    { path: '/coverage', type: 'core' as const },
+    { path: '/relocation', type: 'core' as const },
+    { path: '/job-offer-comparison', type: 'core' as const },
+    { path: '/countries', type: 'core' as const },
+    { path: '/cities', type: 'core' as const },
+    { path: '/compare', type: 'core' as const },
+    { path: '/guides', type: 'core' as const },
+    { path: '/about', type: 'core' as const },
+    { path: '/methodology', type: 'core' as const },
+    { path: '/sources', type: 'core' as const },
+    { path: '/editorial-policy', type: 'core' as const },
+    { path: '/data-policy', type: 'core' as const },
+    { path: '/corrections', type: 'core' as const },
+    { path: '/terms', type: 'core' as const },
+    { path: '/privacy', type: 'core' as const },
+    // Programmatic city hub pages
+    { path: '/salary-after-tax/new-york', type: 'core' as const },
+    { path: '/salary-after-tax/london', type: 'core' as const },
+    { path: '/salary-after-tax/dubai', type: 'core' as const },
+    { path: '/salary-needed/new-york', type: 'core' as const },
+    { path: '/salary-needed/london', type: 'core' as const },
+    { path: '/cost-of-living/new-york', type: 'core' as const },
   ];
 
-  for (const tab of coreTabs) {
-    const routePath = tab.slug ? `/${tab.slug}` : '/';
+  for (const page of corePages) {
     routes.push({
-      path: routePath,
-      url: `${baseUrl}${routePath}`,
-      type: tab.type,
+      path: page.path,
+      url: `${baseUrl}${page.path === '/' ? '' : page.path}`,
+      type: page.type,
       locale: 'en',
       tier: 'tier1',
       lifecycleStatus: 'INDEXABLE',
@@ -86,9 +104,31 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
     });
   }
 
+  // Interactive English tabs (non-indexable client state)
+  const englishTabs = [
+    'salary-worth',
+    'salary-needed',
+    'salary-after-tax',
+    'cost-of-living',
+    'compare',
+    'job-offers',
+  ];
+  for (const tab of englishTabs) {
+    routes.push({
+      path: `/?tab=${tab}`,
+      url: `${baseUrl}/?tab=${tab}`,
+      type: 'core',
+      locale: 'en',
+      tier: 'tier1',
+      lifecycleStatus: 'INDEXABLE',
+      isIndexable: false,
+      robots: 'noindex, follow',
+    });
+  }
+
   // Country landing pages
   for (const countryId of Object.keys(COUNTRIES)) {
-    const routePath = `/country/${countryId.toLowerCase()}`;
+    const routePath = buildCountryPath('en', countryId);
     routes.push({
       path: routePath,
       url: `${baseUrl}${routePath}`,
@@ -103,7 +143,7 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
 
   // City landing pages
   for (const cityId of Object.keys(CITIES)) {
-    const routePath = `/city/${cityId.toLowerCase()}`;
+    const routePath = buildCityPath('en', cityId);
     routes.push({
       path: routePath,
       url: `${baseUrl}${routePath}`,
@@ -118,7 +158,7 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
 
   // Salary guide pages
   for (const slug of Object.keys(SALARY_GUIDES)) {
-    const routePath = `/guide/${slug}`;
+    const routePath = buildGuidePath('en', slug);
     routes.push({
       path: routePath,
       url: `${baseUrl}${routePath}`,
@@ -133,7 +173,7 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
 
   // Relocation corridor pages
   for (const slug of Object.keys(RELOCATION_CORRIDORS)) {
-    const routePath = `/relocation/${slug}`;
+    const routePath = buildRelocationPath('en', slug);
     routes.push({
       path: routePath,
       url: `${baseUrl}${routePath}`,
@@ -173,6 +213,7 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
 
   for (const [code, cfg] of Object.entries(SUPPORTED_LOCALES)) {
     if (code === 'en') continue; // English covered above
+    if (cfg.regionVariantOf) continue; // Regional dialect variants resolve to base language canonicals
 
     const isIndexable = cfg.isIndexable && cfg.lifecycleStatus === 'INDEXABLE';
     const tier: 'tier1' | 'tier2' | 'tier3' =
@@ -241,7 +282,7 @@ export function generateRouteInventory(baseUrl: string = 'https://www.livworthy.
       tier2Routes,
       tier3Routes,
       indexableCoveragePct: Math.round((indexableRoutes / routes.length) * 100),
-      longFormCoveragePct: 100, // Core indexable routes have complete prose
+      longFormCoveragePct: LongFormContentAuditor.getOverallCoverage(),
     },
     byLocale,
     routes,

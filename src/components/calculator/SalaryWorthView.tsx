@@ -82,58 +82,13 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   const isInitialMount = useRef<boolean>(true);
 
 
-  // Execute authoritative backend calculation whenever scenario changes
+  // Synchronous preview calculation for layout stability without sending duplicate backend network requests
   useEffect(() => {
-    // Immediately compute synchronous outcome to eliminate layout jumps
     try {
       const immediate = SalaryWorthCalculator.calculate(scenario);
       setOutcome(immediate);
       onCalculationOutcome?.(immediate);
     } catch {}
-
-    // On pristine initial mount, the scenario is already computed synchronously
-    // without needing a duplicate blocking network call.
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-
-    // Cancel any ongoing calculation in flight
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
-    setIsCalculating(true);
-    setCalcError(null);
-
-    const timer = setTimeout(async () => {
-      try {
-        const response = await calculateSalaryWorth(scenario, {
-          signal: controller.signal,
-        });
-
-        if (response.success && response.data) {
-          setOutcome(response.data);
-          onCalculationOutcome?.(response.data);
-        } else {
-          setCalcError('Failed to calculate income worth. Please verify inputs.');
-        }
-      } catch (err: any) {
-        if (err.errorCode === 'REQUEST_CANCELLED') {
-          return; // Ignore aborted requests
-        }
-        setCalcError(err.message || 'Unable to connect to calculation engine.');
-      } finally {
-        setIsCalculating(false);
-      }
-    }, 150); // Debounce to prevent race conditions during typing
-
-    return () => {
-      clearTimeout(timer);
-      controller.abort();
-    };
   }, [scenario, onCalculationOutcome]);
 
   const handleSalaryChange = (newMajor: number) => {
@@ -209,6 +164,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
   }, [actualRentMajor]);
 
   const handleTriggerCalculate = () => {
+    if (isCalculating) return; // Prevent duplicate rapid requests
     isInitialMount.current = false;
     const updated: LivWorthScenario = {
       ...scenario,
@@ -307,7 +263,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
           </div>
         </div>
 
-        {/* Primary Inputs Grid */}
+        {/* Primary Inputs Grid: 5 / 4 / 3 layout to prevent translation clipping */}
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 mt-6 pt-6 border-t border-[#F7F8F5]">
           <div className="sm:col-span-5">
             <label htmlFor="hero-location-select" className="block text-xs font-semibold text-[#102A2E] mb-1.5 uppercase tracking-wider">
@@ -333,7 +289,7 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
             </p>
           </div>
 
-          <div className="sm:col-span-5">
+          <div className="sm:col-span-4">
             <CurrencyInput
               id="hero-annual-salary-input"
               label={dict.calculator.annualSalary}
@@ -344,18 +300,47 @@ export const SalaryWorthView: React.FC<SalaryWorthViewProps> = ({
             />
           </div>
 
-          <div className="sm:col-span-2 flex flex-col">
+          <div className="sm:col-span-3 flex flex-col justify-end">
             <span className="hidden sm:block text-xs font-semibold mb-1.5 uppercase tracking-wider invisible select-none" aria-hidden="true">
               Action
             </span>
             <button
               id="btn-calculate"
               type="button"
+              disabled={isCalculating}
               onClick={handleTriggerCalculate}
-              className="w-full h-[52px] bg-[#102A2E] hover:bg-[#167D75] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center space-x-1.5 cursor-pointer"
+              className={`
+                w-full
+                min-h-[52px]
+                h-auto
+                px-3
+                py-2.5
+                bg-[#102A2E]
+                hover:bg-[#167D75]
+                text-white
+                font-bold
+                rounded-xl
+                transition-all
+                shadow-xs
+                flex
+                items-center
+                justify-center
+                gap-2
+                ${isCalculating ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}
+              `}
             >
-              <Calculator className="w-4 h-4" />
-              <span>{dict.calculator.btnCalculate}</span>
+              <Calculator className="w-4 h-4 shrink-0" />
+              <span className="
+                min-w-0
+                text-xs
+                sm:text-sm
+                leading-tight
+                text-center
+                whitespace-normal
+                break-words
+              ">
+                {dict.calculator.btnCalculate}
+              </span>
             </button>
           </div>
         </div>

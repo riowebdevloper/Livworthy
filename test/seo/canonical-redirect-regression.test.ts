@@ -451,8 +451,57 @@ async function runRegressionSuite() {
 
   console.log('PASS: Architecture hygiene verified. Vercel authority established. Cloudflare conflicts eliminated.');
 
+  // =========================================================================
+  // TEST K: SITEMAP QUALITY & AUDIT CONSISTENCY INVARIANT
+  // 1. All sitemap URLs must be: non-redirect, indexable, self-canonical, not noindex, zero duplicates
+  // 2. Route inventory indexable paths must correspond to real generated HTML files in dist/
+  // =========================================================================
+  console.log('\n[TEST K] Verifying sitemap quality and route audit consistency...');
+  const sitemapXmlFiles = fs.readdirSync(distDir).filter((f) => f.startsWith('sitemap-') && f.endsWith('.xml'));
+  const visitedUrls = new Set<string>();
+
+  for (const smFile of sitemapXmlFiles) {
+    const smContent = fs.readFileSync(path.join(distDir, smFile), 'utf-8');
+    const urls = [...smContent.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
+
+    for (const url of urls) {
+      assert(!visitedUrls.has(url), `Duplicate sitemap URL detected across sitemaps: ${url}`);
+      visitedUrls.add(url);
+
+      const parsed = new URL(url);
+      const subpath = parsed.pathname.replace(/^\//, '').replace(/\/$/, '');
+      const htmlFile = subpath === '' ? path.join(distDir, 'index.html') : path.join(distDir, subpath, 'index.html');
+
+      assert(fs.existsSync(htmlFile), `Sitemap URL ${url} must exist in dist/ as ${path.relative(distDir, htmlFile)}`);
+      const html = fs.readFileSync(htmlFile, 'utf-8');
+
+      // Must NOT have noindex
+      assert(!html.includes('content="noindex'), `Sitemap URL ${url} must not declare noindex`);
+
+      // Must have self-canonical
+      const canMatch = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i);
+      assert(Boolean(canMatch), `Sitemap URL ${url} must have canonical link tag`);
+      assert(canMatch![1] === url, `Sitemap URL ${url} must be self-canonical (got ${canMatch![1]})`);
+    }
+  }
+
+  // Audit consistency check
+  const { generateRouteInventory } = await import('../../scripts/audit-route-inventory');
+  const inventory = generateRouteInventory();
+  for (const entry of inventory.routes) {
+    if (entry.isIndexable) {
+      const subpath = entry.path.replace(/^\//, '').replace(/\/$/, '');
+      const htmlFile = subpath === '' ? path.join(distDir, 'index.html') : path.join(distDir, subpath, 'index.html');
+      assert(
+        fs.existsSync(htmlFile),
+        `Audit route ${entry.path} marked as indexable must exist in dist/ (${path.relative(distDir, htmlFile)})`
+      );
+    }
+  }
+  console.log(`PASS: Verified ${visitedUrls.size} sitemap URLs are self-canonical, indexable, and 100% consistent with route inventory.`);
+
   console.log('\n======================================================');
-  console.log('ALL SEO & ROUTING TECHNICAL INVARIANTS (A-J) PASSED!');
+  console.log('ALL SEO & ROUTING TECHNICAL INVARIANTS (A-K) PASSED!');
   console.log('======================================================\n');
 }
 

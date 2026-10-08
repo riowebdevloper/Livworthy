@@ -18,7 +18,8 @@ export type Permission =
   | 'review_content'
   | 'publish_content'
   | 'approve_indexing'
-  | 'trigger_fx_refresh';
+  | 'trigger_fx_refresh'
+  | 'manage_seo';
 
 export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   ADMIN: [
@@ -31,11 +32,12 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'publish_content',
     'approve_indexing',
     'trigger_fx_refresh',
+    'manage_seo',
   ],
   DATA_EDITOR: ['edit_tax_rules', 'edit_cost_data', 'trigger_fx_refresh'],
   CONTENT_EDITOR: ['edit_content'],
   REVIEWER: ['review_content', 'publish_content'],
-  SEO_REVIEWER: ['review_content', 'approve_indexing'],
+  SEO_REVIEWER: ['review_content', 'approve_indexing', 'manage_seo'],
   READ_ONLY: [],
 };
 

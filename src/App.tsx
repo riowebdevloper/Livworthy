@@ -44,6 +44,7 @@ const SeoArticlePage = React.lazy(() =>
 );
 import { CITIES } from './data/locations';
 import { DEFAULT_NYC_100K_SCENARIO } from './data/presets';
+import { SalaryWorthCalculator } from './engines/calculator-core/salary-worth';
 import { VALID_GUIDE_SLUGS } from './data/salary-guides-links';
 import { createMoney, getDefaultSalaryForCurrency, toMajor } from './lib/money';
 import { HouseholdProfile, CostOfLivingResult } from './types/col';
@@ -94,22 +95,46 @@ function AppContent() {
   const [calculationMetadata, setCalculationMetadata] = useState<{
     evidenceSourceIds: string[];
     ruleVersions: { taxRuleVersion?: string; colDate?: string };
-  }>({
-    evidenceSourceIds: [],
-    ruleVersions: {},
+  }>(() => {
+    try {
+      const initialOutcome = SalaryWorthCalculator.calculate(DEFAULT_NYC_100K_SCENARIO);
+      return {
+        evidenceSourceIds: initialOutcome.evidenceSourceIds,
+        ruleVersions: {
+          taxRuleVersion: initialOutcome.taxRuleVersion,
+          colDate: initialOutcome.colDate,
+        },
+      };
+    } catch {
+      return { evidenceSourceIds: [], ruleVersions: {} };
+    }
   });
 
-  // Invalidate metadata immediately when calculation-defining inputs change to prevent stale cross-jurisdiction evidence
+  // Keep calculation metadata aligned when scenario location changes
   const lastLocationIdRef = useRef<string>(scenario.location.id);
   useEffect(() => {
     if (lastLocationIdRef.current !== scenario.location.id) {
       lastLocationIdRef.current = scenario.location.id;
-      setCalculationMetadata({
-        evidenceSourceIds: [],
-        ruleVersions: {},
-      });
+      try {
+        const outcome = SalaryWorthCalculator.calculate(scenario);
+        const isTaxUnavailable = outcome.tax?.status === 'TAX_CALCULATION_UNAVAILABLE';
+        setCalculationMetadata({
+          evidenceSourceIds: isTaxUnavailable
+            ? (outcome.costOfLiving?.evidenceSourceIds || [])
+            : outcome.evidenceSourceIds,
+          ruleVersions: {
+            taxRuleVersion: isTaxUnavailable ? undefined : (outcome.taxRuleVersion || outcome.tax?.taxRuleVersion),
+            colDate: outcome.colDate || outcome.costOfLiving?.datasetVersion,
+          },
+        });
+      } catch {
+        setCalculationMetadata({
+          evidenceSourceIds: [],
+          ruleVersions: {},
+        });
+      }
     }
-  }, [scenario.location.id]);
+  }, [scenario]);
 
   // Modals & Drawers state
   const [isCustomizerOpen, setIsCustomizerOpen] = useState<boolean>(false);
@@ -441,6 +466,23 @@ function AppContent() {
     }
   };
 
+  const handleUpdateScenario = useCallback((nextScenario: LivWorthScenario) => {
+    setScenario(nextScenario);
+    try {
+      const outcome = SalaryWorthCalculator.calculate(nextScenario);
+      const isTaxUnavailable = outcome.tax?.status === 'TAX_CALCULATION_UNAVAILABLE';
+      setCalculationMetadata({
+        evidenceSourceIds: isTaxUnavailable
+          ? (outcome.costOfLiving?.evidenceSourceIds || [])
+          : outcome.evidenceSourceIds,
+        ruleVersions: {
+          taxRuleVersion: isTaxUnavailable ? undefined : (outcome.taxRuleVersion || outcome.tax?.taxRuleVersion),
+          colDate: outcome.colDate || outcome.costOfLiving?.datasetVersion,
+        },
+      });
+    } catch {}
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F8F5]">
       {/* Persistent Global Header with brand and live navigation */}
@@ -459,7 +501,7 @@ function AppContent() {
         {activeTab === 'salary-worth' && (
           <SalaryWorthView
             scenario={scenario}
-            onUpdateScenario={setScenario}
+            onUpdateScenario={handleUpdateScenario}
             actualRentMajor={actualRentMajor}
             onUpdateRentOverride={handleUpdateRentOverride}
             onOpenCustomizer={() => setIsCustomizerOpen(true)}
