@@ -54,5 +54,29 @@
       "salary after tax calculator",
       "LivWorthy"
     ]
+  },
+  {
+    "platform": "linkedin.com",
+    "articleTitle": "Why a $150K Salary in NYC Leaves You with Less Savings Than $120K in Texas",
+    "publicationUrl": "https://lnkd.in/p/gHNDiDiM",
+    "targetPage": "https://www.livworthy.com/guides/nyc-100k",
+    "publishedAt": "2026-10-08T23:03:00Z",
+    "status": "LIVE_VERIFIED",
+    "canonicalUrl": "https://www.livworthy.com/guides/nyc-100k",
+    "anchors": [
+      "https://www.livworthy.com/guides/nyc-100k"
+    ]
+  },
+  {
+    "platform": "quora.com",
+    "articleTitle": "Is $100,000 a good salary to live in New York City?",
+    "publicationUrl": "https://qr.ae/pFxBNq",
+    "targetPage": "https://www.livworthy.com/guides/nyc-100k",
+    "publishedAt": "2026-10-08T23:03:00Z",
+    "status": "LIVE_VERIFIED",
+    "canonicalUrl": "https://www.livworthy.com/guides/nyc-100k",
+    "anchors": [
+      "https://www.livworthy.com/guides/nyc-100k"
+    ]
   }
 ]
