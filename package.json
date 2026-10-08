@@ -17,7 +17,9 @@
     "audit:routes": "tsx scripts/audit-route-inventory.ts",
     "audit:leakage": "tsx scripts/audit-english-leakage.ts",
     "audit:indexability": "tsx scripts/audit-indexability.ts",
-    "audit:hardcoded": "tsx scripts/audit-hardcoded-strings.ts"
+    "audit:hardcoded": "tsx scripts/audit-hardcoded-strings.ts",
+    "publish:devto": "tsx scripts/publish-articles.ts --platform=devto",
+    "publish:medium": "tsx scripts/publish-articles.ts --platform=medium"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
