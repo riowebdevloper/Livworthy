@@ -22,9 +22,12 @@ export function createLocalizedLongFormPages(baseUrl:string):LocalizedSeoPage[]{
     const t=getDictionary(loc), intl=cfg.intlLocale||loc, dir=cfg.dir;
     const isTier1 = tier1.has(loc);
     const robotsDirective: 'index, follow' | 'noindex, follow' = isTier1 ? 'index, follow' : 'noindex, follow';
-    const add=(path:string,title:string,desc:string,body:string,type='WebPage',freq:'daily'|'weekly'|'monthly'='weekly',priority=.8)=>{
+    const verifiedHubCities = new Set(['nyc', 'london', 'dubai', 'toronto', 'sf', 'austin', 'sydney', 'berlin', 'singapore']);
+    const verifiedCountries = new Set(['US', 'GB', 'CA', 'AU', 'DE', 'AE', 'SG']);
+
+    const add=(path:string,title:string,desc:string,body:string,type='WebPage',freq:'daily'|'weekly'|'monthly'='weekly',priority=.8,customRobots?: 'index, follow' | 'noindex, follow')=>{
       const canonical=`${baseUrl}/${loc}${path?`/${path}`:''}`;
-      pages.push({relativePath:`${loc}${path?`/${path}`:''}/index.html`,canonicalUrl:canonical,title:`${title} | LivWorthy`,description:desc,robots:robotsDirective,lang:loc,dir,changefreq:freq,priority,structuredData:{'@context':'https://schema.org','@type':type,name:title,url:canonical,inLanguage:intl},bodyContent:`<article class=\"max-w-5xl mx-auto px-4 py-10\" dir=\"${dir}\">${body}</article>`});
+      pages.push({relativePath:`${loc}${path?`/${path}`:''}/index.html`,canonicalUrl:canonical,title:`${title} | LivWorthy`,description:desc,robots:customRobots || robotsDirective,lang:loc,dir,changefreq:freq,priority,structuredData:{'@context':'https://schema.org','@type':type,name:title,url:canonical,inLanguage:intl},bodyContent:`<article class=\"max-w-5xl mx-auto px-4 py-10\" dir=\"${dir}\">${body}</article>`});
     };
     const grid=(items:string[])=>`<div class=\"mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3\">${items.join('')}</div>`;
     const link=(href:string,text:string)=>`<a class=\"p-3 border rounded-lg bg-white\" href=\"${href}\">${esc(text)}</a>`;
@@ -40,11 +43,15 @@ export function createLocalizedLongFormPages(baseUrl:string):LocalizedSeoPage[]{
     for(const c of Object.values(COUNTRIES)){
       const name=region(loc,c.id,c.name),title=formatLongForm(copy.countryTitle,{country:name}),intro=formatLongForm(copy.countryIntro,{country:name});
       const cities=Object.values(CITIES).filter(x=>x.countryId===c.id);
-      add(`countries/${c.id.toLowerCase()}`,title,intro,`<h1 class=\"text-3xl font-extrabold\">${esc(title)}</h1><p class=\"mt-3\">${esc(intro)}</p><div class=\"mt-6 flex gap-3\"><span class=\"p-3 border rounded-xl\">${esc(c.id)}</span><span class=\"p-3 border rounded-xl\">${esc(c.defaultCurrency)}</span></div><h2 class=\"mt-8 text-xl font-bold\">${esc(copy.majorCitiesHeading)}</h2>${grid(cities.map(x=>link(`/${loc}/cities/${x.id}`,x.name)))}<p class=\"mt-8 text-sm\">${esc(copy.evidenceNote)}</p>`);
+      const isVerified = verifiedCountries.has(c.id);
+      const countryRobots = isTier1 && isVerified ? 'index, follow' : 'noindex, follow';
+      add(`countries/${c.id.toLowerCase()}`,title,intro,`<h1 class=\"text-3xl font-extrabold\">${esc(title)}</h1><p class=\"mt-3\">${esc(intro)}</p><div class=\"mt-6 flex gap-3\"><span class=\"p-3 border rounded-xl\">${esc(c.id)}</span><span class=\"p-3 border rounded-xl\">${esc(c.defaultCurrency)}</span></div><h2 class=\"mt-8 text-xl font-bold\">${esc(copy.majorCitiesHeading)}</h2>${grid(cities.map(x=>link(`/${loc}/cities/${x.id}`,x.name)))}<p class=\"mt-8 text-sm\">${esc(copy.evidenceNote)}</p>`,'WebPage','weekly',.8,countryRobots);
     }
     for(const c of Object.values(CITIES)){
       const country=region(loc,c.countryId,COUNTRIES[c.countryId]?.name||c.countryId),title=formatLongForm(copy.cityTitle,{city:c.name,country}),intro=formatLongForm(copy.cityIntro,{city:c.name,country});
-      add(`cities/${c.id}`,title,intro,`<h1 class=\"text-3xl font-extrabold\">${esc(title)}</h1><p class=\"mt-3\">${esc(intro)}</p><div class=\"mt-6 flex flex-wrap gap-3\"><span class=\"p-3 border rounded-xl\">${esc(country)}</span><span class=\"p-3 border rounded-xl\">${esc(c.currency)}</span><span class=\"p-3 border rounded-xl\">${esc(c.colIndexBase100NYC)}</span></div><h2 class=\"mt-8 text-xl font-bold\">${esc(copy.toolsHeading)}</h2>${grid([link(`/${loc}/salary-worth`,t.nav.tabSalaryWorth),link(`/${loc}/cost-of-living`,t.nav.tabCostOfLiving),link(`/${loc}/compare`,t.nav.tabCompare)])}<p class=\"mt-8 text-sm\">${esc(copy.evidenceNote)}</p>`);
+      const isVerified = verifiedHubCities.has(c.id);
+      const cityRobots = isTier1 && isVerified ? 'index, follow' : 'noindex, follow';
+      add(`cities/${c.id}`,title,intro,`<h1 class=\"text-3xl font-extrabold\">${esc(title)}</h1><p class=\"mt-3\">${esc(intro)}</p><div class=\"mt-6 flex flex-wrap gap-3\"><span class=\"p-3 border rounded-xl\">${esc(country)}</span><span class=\"p-3 border rounded-xl\">${esc(c.currency)}</span><span class=\"p-3 border rounded-xl\">${esc(c.colIndexBase100NYC)}</span></div><h2 class=\"mt-8 text-xl font-bold\">${esc(copy.toolsHeading)}</h2>${grid([link(`/${loc}/salary-worth`,t.nav.tabSalaryWorth),link(`/${loc}/cost-of-living`,t.nav.tabCostOfLiving),link(`/${loc}/compare`,t.nav.tabCompare)])}<p class=\"mt-8 text-sm\">${esc(copy.evidenceNote)}</p>`,'WebPage','weekly',.8,cityRobots);
     }
     for(const g of POPULAR_GUIDES_LIST){
       const c=CITIES[g.cityId]; if(!c)continue; const salary=new Intl.NumberFormat(intl,{style:'currency',currency:g.currency,maximumFractionDigits:0}).format(g.salaryMajor);

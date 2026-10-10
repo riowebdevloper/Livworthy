@@ -18,6 +18,7 @@
     "audit:leakage": "tsx scripts/audit-english-leakage.ts",
     "audit:indexability": "tsx scripts/audit-indexability.ts",
     "audit:hardcoded": "tsx scripts/audit-hardcoded-strings.ts",
+    "audit:content": "tsx scripts/audit-content-value.ts",
     "publish:devto": "tsx scripts/publish-articles.ts --platform=devto",
     "publish:medium": "tsx scripts/publish-articles.ts --platform=medium"
   },

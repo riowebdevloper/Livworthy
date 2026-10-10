@@ -26,26 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.livworthy.com/countries/fr</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/countries/nl</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/countries/ch</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/countries/ie</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://www.livworthy.com/countries/ae</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -54,25 +34,5 @@
     <loc>https://www.livworthy.com/countries/sg</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/countries/nz</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/countries/sa</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/countries/qa</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/countries/es</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
   </url>
 </urlset>

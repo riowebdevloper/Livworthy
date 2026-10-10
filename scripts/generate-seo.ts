@@ -22,6 +22,8 @@ import {
   createLocalizedPages,
   createEmpiricalReportsPages,
 } from './seo-generators-content';
+import { VERIFIED_CITY_EDITORIAL, renderCityEditorialHtml } from '../src/data/city-editorial';
+import { VERIFIED_COUNTRY_EDITORIAL, renderCountryEditorialHtml } from '../src/data/country-editorial';
 
 const BASE_URL = 'https://www.livworthy.com';
 
@@ -601,6 +603,7 @@ export function runSeoGenerator() {
   for (const country of Object.values(COUNTRIES)) {
     const cap = CapabilityResolver.resolve(country.id);
     const hasTax = cap.hasDedicatedTaxAdapter;
+    const hasBespokeCountry = Boolean(VERIFIED_COUNTRY_EDITORIAL[country.id]);
     const isProvisional = country.verificationStatus === 'PROVISIONAL' || country.verificationStatus === 'UNSUPPORTED' || !hasTax;
     const countryCities = Object.values(CITIES).filter((c) => c.countryId === country.id);
 
@@ -646,6 +649,7 @@ export function runSeoGenerator() {
         </div>
         ${country.notes ? `<p class="mt-3 text-sm text-slate-500 italic bg-amber-50/60 p-3 rounded-lg border border-amber-200/50">${country.notes}</p>` : ''}
 
+        ${hasBespokeCountry ? renderCountryEditorialHtml(country.id) : `
         <section class="mt-8 space-y-3">
           <h2 class="text-xl font-bold text-[#102A2E]">Statutory Income Tax &amp; Social Contribution Architecture</h2>
           <p class="text-sm text-slate-700 leading-relaxed">
@@ -657,6 +661,7 @@ export function runSeoGenerator() {
               : `Statutory income taxation schedules for ${country.name} are currently undergoing empirical audit by the LivWorthy research team. Living costs, currency conversions, and purchasing-power indices remain fully active.`}
           </p>
         </section>
+        `}
 
         <section class="mt-8">
           <h2 class="text-xl font-bold text-[#102A2E] mb-3">Major Cities in ${country.name}</h2>
@@ -671,12 +676,14 @@ export function runSeoGenerator() {
           </div>
         </section>
 
+        ${!hasBespokeCountry ? `
         <section class="mt-8 space-y-3">
           <h2 class="text-xl font-bold text-[#102A2E]">Cost of Living &amp; Housing Expenditure Overview</h2>
           <p class="text-sm text-slate-700 leading-relaxed">
             Metropolitan cost of living in ${country.name} varies significantly between high-density economic centers and regional areas. Residential rental housing forms the largest recurring expenditure category, followed by grocery market baskets, public transportation, and private utilities. LivWorthy standardizes local living costs against the New York City baseline (NYC = 100), enabling accurate cross-border purchasing-power comparisons.
           </p>
         </section>
+        ` : ''}
 
         <section class="mt-8">
           <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators &amp; Decision Intelligence for ${country.name}</h2>
@@ -707,7 +714,7 @@ export function runSeoGenerator() {
       description: hasTax
         ? `Authoritative statutory salary, tax (${cap.taxYear || LATEST_STATUTORY_TAX_YEAR}), and cost-of-living intelligence for ${country.name}. Compute net income and living benchmarks.`
         : `Cost of living indices, fair market rent benchmarks, and metropolitan expenditure data for ${country.name}.`,
-      robots: isProvisional ? 'noindex, follow' : 'index, follow',
+      robots: (hasBespokeCountry && !isProvisional) ? 'index, follow' : 'noindex, follow',
       bodyContent: countryBody,
       structuredData: countryStructuredData,
       changefreq: 'weekly',
@@ -721,6 +728,7 @@ export function runSeoGenerator() {
     const region = city.regionId ? REGIONS[city.regionId] : undefined;
     const cap = CapabilityResolver.resolve(city.countryId);
     const hasTax = cap.hasDedicatedTaxAdapter;
+    const hasBespokeCity = Boolean(VERIFIED_CITY_EDITORIAL[city.id]);
     const isProvisional = city.verificationStatus === 'PROVISIONAL' || city.verificationStatus === 'UNSUPPORTED' || !hasTax || (country && country.verificationStatus === 'UNSUPPORTED');
 
     const cityStructuredData = {
@@ -781,6 +789,7 @@ export function runSeoGenerator() {
           </div>
         </div>
 
+        ${hasBespokeCity ? renderCityEditorialHtml(city.id) : `
         <section class="mt-8 space-y-3">
           <h2 class="text-xl font-bold text-[#102A2E]">Metropolitan Earnings &amp; Take-Home Pay Analysis</h2>
           <p class="text-sm text-slate-700 leading-relaxed">
@@ -802,6 +811,7 @@ export function runSeoGenerator() {
             LivWorthy calculates discretionary surplus by subtracting total statutory taxes and itemized living costs from stated compensation. In ${city.name}, achieving a comfortable lifestyle buffer requires sufficient gross income to cover rental obligations within the recommended 30% housing burden ratio while preserving an uncommitted cash buffer for long-term investments and emergency savings.
           </p>
         </section>
+        `}
 
         <section class="mt-8">
           <h2 class="text-xl font-bold text-[#102A2E] mb-3">Calculators &amp; Decision Tools for ${city.name}</h2>
@@ -846,7 +856,7 @@ export function runSeoGenerator() {
       description: hasTax
         ? `Authoritative living costs, statutory income tax schedules (${cap.taxYear || LATEST_STATUTORY_TAX_YEAR}), and salary benchmarks for ${city.name} (${country ? country.name : city.countryId}).`
         : `Metropolitan living costs, fair-market rent benchmarks, and consumer expenditure indices for ${city.name} (${country ? country.name : city.countryId}).`,
-      robots: isProvisional ? 'noindex, follow' : 'index, follow',
+      robots: (hasBespokeCity && !isProvisional) ? 'index, follow' : 'noindex, follow',
       bodyContent: cityBody,
       structuredData: cityStructuredData,
       changefreq: 'weekly',
