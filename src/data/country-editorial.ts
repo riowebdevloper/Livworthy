@@ -27,19 +27,19 @@ export const VERIFIED_COUNTRY_EDITORIAL: Record<string, CountryEditorialProfile>
     countryName: 'United States',
     defaultCurrency: 'USD',
     salaryEnvironment:
-      'The United States maintains the largest and most dynamic single labor market in the developed world, with national median full-time wage at approximately $59,400 (US BLS). Compensation varies sharply by geographic region and economic sector: software engineering, investment banking, and specialized medicine command global apex salaries ($140,000 to $350,000+), while service and retail wages average $32,000 to $48,000.',
+      'The United States has the biggest and most volatile job market in the world. National median full-time wages sit right around $59,400 according to the BLS. But that national number hides wild swings. While retail and hospitality roles average $32,000 to $48,000, specialized fields like software engineering, private equity, and cardiology regularly pull $150,000 to $350,000+ base pay.',
     taxSystemOverview:
-      'Federal personal income tax is progressive, featuring seven statutory brackets (10%, 12%, 22%, 24%, 32%, 35%, and 37%), indexed annually by the Internal Revenue Service (IRS). Single filers benefit from a standard deduction ($14,600 for tax year 2024; projected adjustments for subsequent tax years). Capital gains enjoy preferential long-term rates (0%, 15%, 20%) when held over one year.',
+      'Federal income tax runs on seven progressive brackets: 10%, 12%, 22%, 24%, 32%, 35%, and 37%, indexed every year by the IRS. Most single earners take the standard deduction (around $14,600 for single filers, adjusted annually for inflation). Long-term capital gains held for more than a year get favorable rates (0%, 15%, or 20%) rather than standard wage tax rates.',
     socialContributions:
-      'Statutory payroll taxes (FICA) mandate 6.2% Social Security tax on earnings up to the annual statutory wage base ($168,600) and 1.45% Medicare tax with no earnings ceiling, plus a 0.9% Additional Medicare Tax on wages exceeding $200,000 for single filers. Employers match Social Security and Medicare dollar-for-dollar.',
+      'FICA payroll taxes take a steady cut: 6.2% for Social Security on earnings up to the annual wage cap ($168,600), plus 1.45% for Medicare with no earnings cap. If you earn over $200,000 as a single filer, an extra 0.9% Additional Medicare tax kicks in. Your employer matches Social Security and Medicare dollar-for-dollar.',
     subnationalTaxation:
-      'State and local income taxes create massive divergence in take-home pay across the nation. Nine states (including Texas, Florida, Washington, and Nevada) levy 0% state personal income tax. In contrast, states like California (up to 13.3%), New York (up to 10.9% plus NYC municipal tax up to 3.876%), and New Jersey (up to 10.75%) impose substantial progressive levies on wage earnings.',
+      'Where you live in the US makes a giant difference in your take-home pay. Nine states—including Texas, Florida, Washington, and Nevada—charge zero state personal income tax. At the other extreme, California tops out at 13.3%, and New York charges up to 10.9% (plus another 3.88% if you live in NYC). That alone creates a 10% to 14% swing in net pay on the exact same salary.',
     costOfLivingAndRegionalVariation:
-      'Purchasing power in the US exhibits extreme spatial variation. A $100,000 income in coastal tier-1 metros (New York, San Francisco, Boston) delivers a modest, middle-class standard of living constrained by housing costs, whereas the same $100,000 in Dallas, Atlanta, or Columbus yields an upper-middle-class surplus with high discretionary savings.',
+      'Purchasing power in America depends heavily on your zip code. Making $100,000 in San Francisco or Manhattan feels like an ordinary middle-class existence once rent is paid. Take that exact same $100,000 to Dallas, Raleigh, or Columbus, and you’re living in a spacious home with money left over to invest every month.',
     housingAffordability:
-      'HUD Fair Market Rents document severe regional disparities: median 1-bedroom rents exceed $2,300 to $3,200/month in high-density innovation hubs, compared to $950 to $1,350/month across Midwestern and Southern secondary metropolitan areas. Homeownership rates hover around 65% nationally.',
+      'Housing is the primary dividing line. HUD Fair Market Rents show median 1-bedroom apartments exceeding $2,300 to $3,200 a month in coastal tech hubs, while comfortable 1-bedrooms throughout the Midwest and South rent for $950 to $1,350.',
     purchasingPowerContext:
-      'The US dollar serves as the primary global reserve currency. High nominal compensation combined with low consumer goods tariffs provides US earners with strong international purchasing power when traveling or shopping globally, offset domestically by private healthcare premiums and university tuition burdens.',
+      'Because the US dollar is the world’s reserve currency, Americans enjoy great purchasing power when traveling abroad or buying imported electronics. But high out-of-pocket health insurance deductibles and student loans can quickly eat into that advantage at home.',
     dataProvenance: 'OBSERVED',
     primarySources: ['Internal Revenue Service (IRS Rev. Proc.)', 'US Bureau of Labor Statistics (BLS OEWS & CEX)', 'US Department of Housing and Urban Development (HUD FMR)'],
     lastUpdated: 'October 2026',
@@ -49,19 +49,19 @@ export const VERIFIED_COUNTRY_EDITORIAL: Record<string, CountryEditorialProfile>
     countryName: 'United Kingdom',
     defaultCurrency: 'GBP',
     salaryEnvironment:
-      'The UK labor market exhibits strong centralization around London and the South East. According to the Office for National Statistics (ONS), the national median full-time gross salary is approximately £35,000, while London full-time earnings average £44,400. Regional earnings in Wales, Northern Ireland, and northern England average £31,000 to £34,000.',
+      'The UK job market is heavily concentrated around London and the South East. The ONS reports national median full-time pay at around £35,000, while London averages closer to £44,400. In Wales, Northern Ireland, and parts of northern England, median earnings drop to £31,000–£34,000.',
     taxSystemOverview:
-      'Her Majesty’s Revenue and Customs (HMRC) operates PAYE with a statutory Personal Allowance of £12,570. Income above this threshold is taxed at 20% (Basic Rate to £50,270), 40% (Higher Rate to £125,140), and 45% (Additional Rate). Crucially, the Personal Allowance tapers by £1 for every £2 of income above £100,000, creating an effective 60% marginal tax band between £100,000 and £125,140.',
+      'HMRC runs PAYE with a generous £12,570 tax-free Personal Allowance. Above that, you pay 20% Basic Rate up to £50,270, 40% Higher Rate up to £125,140, and 45% Additional Rate above that. Don’t forget: between £100,000 and £125,140, your tax-free allowance gets clawed back by £1 for every £2 earned, creating a brutal 60% marginal tax rate.',
     socialContributions:
-      'Class 1 Employee National Insurance contributions (NICs) stand at 8% on earnings between the primary threshold (£12,570) and the upper earnings limit (£50,270), and 2% on earnings above the limit. Employers pay 13.8% Secondary Class 1 NICs on earnings above £9,100.',
+      'Employees pay Class 1 National Insurance: 8% on earnings between £12,570 and £50,270, and 2% on earnings above that. Employers also pay 13.8% Secondary National Insurance on earnings over £9,100.',
     subnationalTaxation:
-      'Scotland exercises devolved tax powers, setting distinct Scottish Income Tax bands (Starter, Basic, Intermediate, Higher, Advanced, and Top rates) with a 21% intermediate rate starting at £26,562 and higher top rates than England, Wales, and Northern Ireland.',
+      'Scotland sets its own devolved income tax rates with six bands—including a 21% intermediate rate starting at £26,562 and higher top rates than the rest of the UK. Wales and Northern Ireland stick to English tax bands.',
     costOfLivingAndRegionalVariation:
-      'The UK exhibits stark North-South economic divides. Outside London and the commuter belt, housing costs drop substantially. Cities such as Manchester, Leeds, Glasgow, and Newcastle offer significantly lower rental burdens, allowing earners on £40,000 to £55,000 to achieve comfortable standards of living.',
+      'The North-South divide in the UK is very real. Outside London and its commuter belt, rents drop sharply. Cities like Manchester, Leeds, Newcastle, and Glasgow offer vibrant urban living where a salary of £45,000 to £60,000 goes much further.',
     housingAffordability:
-      'Housing pressure is acute in southern England. The nationwide median rent-to-income ratio exceeds 34%, rising to over 48% in London. In addition to rent, tenants are responsible for local Council Tax (averaging £1,400 to £2,400 per year per dwelling).',
+      'Rents in southern England put huge pressure on household budgets. Rent eats over 34% of median pay nationwide, and close to 50% in London. On top of rent, tenants must pay local Council Tax, which adds £120 to £200 a month to every home.',
     purchasingPowerContext:
-      'UK residents benefit from the National Health Service (NHS), providing comprehensive healthcare free at the point of delivery, eliminating private health insurance premiums common in North America. Supermarket grocery pricing is among the most competitive in Europe.',
+      'The NHS provides healthcare free at the point of use, saving UK residents from the steep monthly insurance premiums common in the US. Supermarket groceries are also very competitively priced compared to mainland Europe or North America.',
     dataProvenance: 'OBSERVED',
     primarySources: ['HM Revenue & Customs (HMRC Statutory Rates)', 'Office for National Statistics (ONS ASHE)', 'Ofgem Domestic Energy Price Cap Statistics'],
     lastUpdated: 'October 2026',
@@ -71,19 +71,19 @@ export const VERIFIED_COUNTRY_EDITORIAL: Record<string, CountryEditorialProfile>
     countryName: 'Canada',
     defaultCurrency: 'CAD',
     salaryEnvironment:
-      'Statistics Canada reports national median employment income for full-time workers at approximately CA$66,800. Key economic drivers include natural resources in Alberta, technology and finance in Ontario (Toronto/Waterloo corridor), and technology, entertainment, and forestry in British Columbia.',
+      'Canada’s economy is anchored by natural resources in Alberta, tech and banking in Ontario, and tech and forestry in British Columbia. Statistics Canada reports median full-time employment earnings around CA$66,800.',
     taxSystemOverview:
-      'Canada features integrated federal and provincial income taxes administered by the Canada Revenue Agency (CRA), except Quebec which collects separate provincial returns. Federal tax brackets range from 15% to 33%, with a federal basic personal amount indexed annually.',
+      'Personal taxes are split between federal and provincial governments, collected jointly by the CRA (except in Quebec, which runs Revenu Québec). Federal tax brackets start at 15% and climb to 33%, with an indexed federal basic personal amount.',
     socialContributions:
-      'Mandatory payroll levies include Canada Pension Plan (CPP, featuring a base 5.95% employee contribution plus the enhanced second-tier ceiling) and Employment Insurance (EI, 1.66% employee rate up to the maximum insurable earnings cap).',
+      'Mandatory payroll withholdings include the Canada Pension Plan (CPP, with a 5.95% base rate plus an enhanced second-tier ceiling) and Employment Insurance (EI, 1.66% up to maximum insurable earnings).',
     subnationalTaxation:
-      'Provincial income taxes vary widely: Alberta maintains a 10% to 15% progressive scale, British Columbia tops out at 20.5%, and Ontario applies progressive rates from 5.05% to 13.16% plus the Ontario Health Premium. Combined top marginal tax rates exceed 53% in Ontario and 54% in Nova Scotia.',
+      'Provincial taxes vary widely: Alberta has a flat-like 10% to 15% scale with no provincial sales tax. In contrast, Ontario charges 5.05% to 13.16% plus the Ontario Health Premium, pushing top combined marginal rates over 53.5%.',
     costOfLivingAndRegionalVariation:
-      'Vancouver and Toronto lead national living expenses, driven by steep residential property values. In contrast, Montreal, Calgary, Edmonton, and Ottawa provide significantly higher disposable income retention due to lower median housing costs.',
+      'Vancouver and Toronto are by far the most expensive cities in Canada, driven by sky-high home prices. In contrast, Calgary, Edmonton, Ottawa, and Montreal offer much better housing affordability and allow families to save significantly more.',
     housingAffordability:
-      'CMHC benchmarks demonstrate severe affordability strains in Southern Ontario and Greater Vancouver, where average home prices exceed 8 to 11 times local median household earnings. Provincial rent control legislation varies significantly between Ontario, BC, and Quebec.',
+      'CMHC data highlights major housing stress in Greater Vancouver and Southern Ontario, where average home prices are 8 to 11 times local median household earnings. Rent control rules vary: Ontario protects pre-November 2018 units, while newer builds have no rent caps.',
     purchasingPowerContext:
-      'Universal provincial healthcare (OHIP, MSP, RAMQ) eliminates baseline medical deductibles. The federal-provincial child care plan (CWELCC) has progressively lowered licensed childcare fees toward an average target of CA$10/day.',
+      'Provincial healthcare plans (OHIP, MSP) mean you don’t pay out of pocket for doctor visits or hospital stays. The national CA$10-a-day childcare program has also drastically lowered nursery bills for families across most provinces.',
     dataProvenance: 'OBSERVED',
     primarySources: ['Canada Revenue Agency (CRA Payroll Schedules)', 'Statistics Canada (Labour Force Survey & Consumer Prices)', 'Canada Mortgage and Housing Corporation (CMHC)'],
     lastUpdated: 'October 2026',
@@ -93,19 +93,19 @@ export const VERIFIED_COUNTRY_EDITORIAL: Record<string, CountryEditorialProfile>
     countryName: 'Australia',
     defaultCurrency: 'AUD',
     salaryEnvironment:
-      'The Australian Bureau of Statistics (ABS) reports national median full-time earnings at approximately A$85,000 per year. Australia maintains one of the highest statutory national minimum wages globally, resulting in strong baseline wage floors across regional and metropolitan markets.',
+      'ABS figures place national median full-time pay around A$85,000. Australia has one of the highest national minimum wages in the world, which keeps entry-level wages strong across all industries.',
     taxSystemOverview:
-      'All personal income taxation is collected at the federal level by the Australian Taxation Office (ATO)—individual states levy no personal income tax. The system features a tax-free threshold of A$18,200 followed by progressive marginal brackets, alongside the Stage 3 revised tax cuts.',
+      'All personal taxes are collected federally by the ATO—individual Australian states charge zero income tax. You get a tax-free threshold of A$18,200, followed by progressive brackets under the Stage 3 revised tax cuts.',
     socialContributions:
-      'Medicare is funded through a mandatory 2.0% Medicare levy on taxable income. Employers are mandated by law to pay an additional 11.5% Superannuation guarantee directly into employee retirement funds on top of base contractual earnings.',
+      'Medicare is funded through a 2.0% levy on taxable income. Employers are legally required to contribute an additional 11.5% Superannuation guarantee directly into your retirement account on top of your normal salary.',
     subnationalTaxation:
-      'Because Australian states levy no direct personal income tax, take-home pay on an identical gross salary is identical whether living in Sydney, Melbourne, Brisbane, or Perth, isolating geographic variance strictly to housing and living costs.',
+      'Because states don’t charge income tax, your take-home pay is identical whether you work in Sydney, Melbourne, Brisbane, or Perth. The difference in lifestyle comes down entirely to local rent and living costs.',
     costOfLivingAndRegionalVariation:
-      'Sydney and Melbourne carry the highest living and rental expenses, while Brisbane, Adelaide, and Perth offer moderate living cost profiles with strong regional employment in mining, healthcare, and education.',
+      'Sydney and Melbourne are the most expensive cities. Brisbane, Adelaide, and Perth offer somewhat lower living costs and strong local economies in healthcare, education, and resources.',
     housingAffordability:
-      'Australian rental markets quote prices weekly. Strong population growth and construction constraints have pushed nationwide residential rental vacancy rates below 1.5%, driving rapid rental inflation in Sydney, Brisbane, and Perth.',
+      'Australian rents are quoted weekly. Low vacancy rates (under 1.5% nationwide) have pushed rents up fast, making finding an apartment very competitive in Sydney and Brisbane.',
     purchasingPowerContext:
-      'Strong wage growth, mandatory superannuation wealth accumulation, and universal Medicare access underpin high living standards. The Australian dollar fluctuates with global commodity cycles, affecting overseas purchasing power.',
+      'High wages, mandatory superannuation, and Medicare give Australians strong financial security. The Australian dollar fluctuates with global commodity markets, which influences the cost of overseas holidays and imported goods.',
     dataProvenance: 'OBSERVED',
     primarySources: ['Australian Taxation Office (ATO Tax Tables)', 'Australian Bureau of Statistics (ABS Average Weekly Earnings)', 'Reserve Bank of Australia (RBA Economic Bulletins)'],
     lastUpdated: 'October 2026',
@@ -115,19 +115,19 @@ export const VERIFIED_COUNTRY_EDITORIAL: Record<string, CountryEditorialProfile>
     countryName: 'Germany',
     defaultCurrency: 'EUR',
     salaryEnvironment:
-      'Germany operates Europe’s largest industrial economy. Destatis data records the national median gross full-time salary at approximately €44,000. Southern economic powerhouses (Bavaria, Baden-Württemberg) and Frankfurt finance hubs command salaries 15% to 25% above eastern and rural regions.',
+      'Germany is Europe’s industrial heavyweight. Destatis records the median full-time gross salary at roughly €44,000. Pay in southern powerhouses (Bavaria, Baden-Württemberg) and Frankfurt runs 15% to 25% higher than in eastern and rural states.',
     taxSystemOverview:
-      'German income tax (Einkommensteuer) features a progressive formula rather than simple step-brackets, starting after the tax-free basic allowance (Grundfreibetrag) and scaling continuously from 14% to 42% (reaching top rate at ~€66,760 for single filers) and 45% for high fortunes (Reichensteuer above ~€277,826).',
+      'German income tax (Einkommensteuer) uses a continuous progressive mathematical formula rather than discrete steps. It starts after the tax-free allowance (Grundfreibetrag) and scales from 14% up to 42% (around €66,760 for singles), reaching 45% (Reichensteuer) only for top incomes over €277,826.',
     socialContributions:
-      'Statutory social insurance (Sozialversicherung) represents a comprehensive welfare net funded equally by employee and employer: Pension (18.6% total), Health (14.6% + individual insurer surcharge), Unemployment (2.6%), and Care (up to 4%).',
+      'Statutory social contributions (Sozialversicherung) cover four mandatory programs split 50/50 with your employer: pension (18.6%), health insurance (14.6% + surcharge), unemployment (2.6%), and long-term nursing care (up to 4%).',
     subnationalTaxation:
-      'German federal states (Bundesländer) apply uniform national income tax formulas, though local municipalities set business trade taxes (Gewerbesteuer). Church members pay 8% (Bavaria/Baden-Württemberg) or 9% (other states) Kirchensteuer.',
+      'Income tax formulas are uniform across all 16 federal states. If you’re a registered church member, you pay an extra 8% (Bavaria/Baden-Württemberg) or 9% (other states) Kirchensteuer.',
     costOfLivingAndRegionalVariation:
-      'Munich is Germany’s most expensive city, followed by Frankfurt, Stuttgart, and Berlin. Medium-sized university cities and eastern cities (Leipzig, Dresden) provide exceptionally high purchasing power on standard collective-agreement salaries.',
+      'Munich is the most expensive city in Germany by a wide margin, followed by Frankfurt, Stuttgart, and Berlin. Medium-sized university cities and eastern hubs like Leipzig provide very comfortable living on standard collective-bargaining salaries.',
     housingAffordability:
-      'Germany is traditionally a tenant-dominated society, with homeownership rates around 47%. The statutory rental brake (Mietpreisbremse) regulates rent increases on existing leases, though new construction and renovated units face commercial market pressures.',
+      'Germany is a nation of renters—homeownership is around 47%. The rental brake (Mietpreisbremse) limits rent increases on existing leases, though new construction and freshly renovated flats command open-market rates.',
     purchasingPowerContext:
-      'Generous social benefits (Kindergeld, parental leave Elterngeld), largely tuition-free tertiary education, and nationwide affordable transit (Deutschlandticket) offset high statutory payroll deduction rates.',
+      'State benefits like €250/month Kindergeld per child, parental leave benefits (Elterngeld), tuition-free universities, and the €49/month Deutschlandticket help balance out Germany’s high payroll deductions.',
     dataProvenance: 'OBSERVED',
     primarySources: ['Statistisches Bundesamt (Destatis Verdienste)', 'Bundesministerium der Finanzen (BMF Steuerberechnung)', 'Bundesagentur für Arbeit (Entgeltatlas)'],
     lastUpdated: 'October 2026',
@@ -137,19 +137,19 @@ export const VERIFIED_COUNTRY_EDITORIAL: Record<string, CountryEditorialProfile>
     countryName: 'United Arab Emirates',
     defaultCurrency: 'AED',
     salaryEnvironment:
-      'The UAE operates an expatriate-driven commercial talent market. Average salaries vary widely across hospitality, construction, technology, logistics, and sovereign wealth management. Professional multinational salaries typically range from 20,000 to 45,000 AED monthly (240,000 to 540,000 AED annually).',
+      'The UAE talent market is driven almost entirely by international expats. Professional multinational packages typically range from 20,000 to 45,000 AED a month (240,000 to 540,000 AED annually), while executive roles frequently exceed 50,000 AED a month.',
     taxSystemOverview:
-      'The UAE imposes 0% personal income tax, 0% capital gains tax, and 0% wealth tax on individual earnings. Foreign employees retain 100% of gross contractual wages without statutory payroll deductions.',
+      'The UAE levies 0% personal income tax, 0% capital gains tax, and 0% wealth tax on individual pay. What your contract says is what lands in your bank account—there are zero payroll tax withholdings.',
     socialContributions:
-      'Expatriate workers have no statutory social security or pension deductions. In lieu of pensions, employers must provide an End of Service Gratuity (EOSG) upon contract completion based on years of service.',
+      'Foreign expat employees don’t pay social security or pension contributions. Instead, UAE labor law requires employers to pay an End of Service Gratuity (EOSG) lump sum based on your tenure when your contract ends.',
     subnationalTaxation:
-      'Neither Dubai, Abu Dhabi, nor the northern emirates levy local personal income taxes. Municipal fees exist, such as Dubai’s 5% municipality housing fee added to utility invoices and tourism dirham fees.',
+      'Neither Dubai, Abu Dhabi, nor the other emirates charge personal income taxes. You do pay local municipal fees, like Dubai’s 5% housing fee on utility bills and 5% VAT on consumer purchases.',
     costOfLivingAndRegionalVariation:
-      'Dubai and Abu Dhabi command the highest living expenditures, whereas Sharjah, Ajman, and Ras Al Khaimah offer substantially lower rental housing and everyday cost profiles, making them popular for commuters.',
+      'Dubai and Abu Dhabi have the highest everyday costs and rents. Sharjah, Ajman, and Ras Al Khaimah offer much cheaper housing, making them popular for people willing to commute.',
     housingAffordability:
-      'The UAE rental market requires advance cheque payments (typically 1 to 4 cheques annually). Rents fluctuate with immigration and investment inflows, with strong tenant protections governed by local rental dispute centers and RERA rental indexes.',
+      'Rents are paid upfront in 1 to 4 cheques over the year. Landlord-tenant rules are strictly enforced by RERA and municipal rental dispute centers, which regulate annual rent increase caps.',
     purchasingPowerContext:
-      'The UAE Dirham is pegged to the US Dollar (3.6725 AED = 1 USD), providing absolute currency stability. The complete absence of income taxation allows aggressive capital accumulation, though private international school fees and healthcare must be factored in.',
+      'The UAE Dirham is pegged to the US Dollar (3.6725 AED = 1 USD), ensuring complete exchange rate stability. Skipping income tax allows expats to save rapidly, though you must budget for private international school tuition and family healthcare.',
     dataProvenance: 'OBSERVED',
     primarySources: ['UAE Federal Competitiveness and Statistics Centre (FCSC)', 'UAE Federal Tax Authority (FTA)', 'Central Bank of the UAE (Economic Reports)'],
     lastUpdated: 'October 2026',
@@ -159,19 +159,19 @@ export const VERIFIED_COUNTRY_EDITORIAL: Record<string, CountryEditorialProfile>
     countryName: 'Singapore',
     defaultCurrency: 'SGD',
     salaryEnvironment:
-      'Singapore represents Southeast Asia’s premier financial and technological headquarters hub. The Ministry of Manpower (MOM) reports median resident gross monthly income at approximately S$5,197 (~S$62,360 annually). Professional financial services, biotech, and regional tech leadership compensation regularly exceeds S$120,000 to S$250,000.',
+      'Singapore is Southeast Asia’s primary corporate and financial center. Ministry of Manpower (MOM) data puts median resident monthly pay at S$5,197 (around S$62,360 a year). In finance, tech, and regional management, salaries routinely run from S$120,000 to S$250,000+.',
     taxSystemOverview:
-      'The Inland Revenue Authority of Singapore (IRAS) administers a competitive progressive personal income tax structure: 0% up to S$20,000, 2% up to S$30,000, scaling progressively to 15% at S$160,000, 22% at S$320,000, and 24% for income exceeding S$1,000,000.',
+      'IRAS runs one of the most attractive progressive tax systems in the world: rates start at 0%, reach 15% at S$160,000, and top out at 24% for earnings over S$1,000,000.',
     socialContributions:
-      'Central Provident Fund (CPF) contributions are mandatory for Singapore Citizens and Permanent Residents (up to 20% employee, 17% employer, subject to statutory wage ceilings). Foreign Employment Pass holders are completely exempt from CPF contributions.',
+      'Central Provident Fund (CPF) contributions are mandatory for Singapore Citizens and Permanent Residents. Foreign expats on Employment Passes do not pay CPF, meaning they retain their gross salary minus only the modest annual income tax.',
     subnationalTaxation:
-      'Singapore operates as a unified city-state with zero provincial, state, or municipal taxes. Property tax is levied based on the Annual Value (AV) of real estate, with progressive owner-occupier rates.',
+      'Singapore is a unified city-state, so there are no provincial or city taxes. Property tax applies based on the Annual Value of your home, with lower rates for owner-occupiers.',
     costOfLivingAndRegionalVariation:
-      'Singapore is frequently ranked among the world’s most expensive cities, largely due to high private automobile costs (COE system) and private housing rents. However, public transit and local hawker dining remain universally affordable.',
+      'Singapore is often ranked among the world’s most expensive cities, driven by high private car prices (via the COE system) and private condo rents. On the other hand, public MRT transit and neighborhood hawker food are remarkably cheap.',
     housingAffordability:
-      'The Housing & Development Board (HDB) houses roughly 80% of resident citizens in subsidized public flats. Foreign expatriates predominantly rent private condominiums, where median 1-bedroom rents range from S$3,000 to S$4,200 per month.',
+      'Around 80% of citizens live in subsidized HDB flats. Expats mostly rent private condos with pools and gyms, where median 1-bedroom apartments cost S$3,000 to S$4,200 a month.',
     purchasingPowerContext:
-      'Low income tax rates, zero capital gains tax, zero dividend tax, and low crime rates make Singapore an exceptionally efficient jurisdiction for personal wealth preservation and capital accumulation.',
+      'Zero capital gains tax, zero dividend tax, and single-digit effective income tax rates make Singapore an unmatched jurisdiction for building personal wealth and investing.',
     dataProvenance: 'OBSERVED',
     primarySources: ['Ministry of Manpower Singapore (MOM Labour Force Reports)', 'Inland Revenue Authority of Singapore (IRAS Annual Reports)', 'Department of Statistics Singapore (SingStat)'],
     lastUpdated: 'October 2026',

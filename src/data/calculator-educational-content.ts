@@ -37,51 +37,51 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
     toolSlug: 'salary-worth',
     toolName: 'Salary Living Worth Calculator',
     whatItTellsYou:
-      'The Salary Worth Calculator tells you the real purchasing power and discretionary savings potential of a gross compensation package in a specific city. Rather than presenting abstract figures, it reveals exactly how much cash remains each month after paying statutory income taxes, mandatory social insurance levies, fair-market rental housing, and localized living essentials (food, transit, utilities, healthcare).',
+      'A big headline salary doesn’t guarantee an easy life. If you pull in $120k in Austin, you’re living comfortably. Take that same $120k to Manhattan, and suddenly you’re watching every restaurant bill. This calculator cuts through the noise. It works out what your salary is actually worth after taxes take their slice and everyday costs—rent, groceries, transit, heating, and health insurance—take the rest. The bottom line: what do you actually get to keep each month?',
     howItWorks:
-      'The engine operates across a deterministic three-stage pipeline: (1) It feeds gross salary into the statutory tax adapter for the selected jurisdiction, computing progressive income tax brackets, standard deductions, and social contributions down to net take-home pay. (2) It looks up the metropolitan Fair Market Rent (FMR) and itemized cost-of-living baseline for the chosen household profile. (3) It subtracts housing and living costs from net take-home pay to determine monthly uncommitted discretionary surplus.',
+      'We break the math down into three clean stages. First, we run your gross pay through local tax brackets—federal, state, and city—factoring in standard allowances and compulsory payroll deductions like FICA or National Insurance. That gives us your real net take-home pay. Next, we pull baseline living expenses for your chosen city, looking at median fair-market rents, local grocery baskets, and transit costs. Finally, we take those essentials off your net pay. What’s left over is your uncommitted monthly cash—the actual money you can save, invest, or spend on weekends.',
     inputsAffectingResult: [
-      'Gross Annual Compensation (stated in local market currency)',
-      'Target Metropolitan City (governs local tax jurisdiction and cost-of-living index)',
-      'Household Composition (single adult, dual-earner couple, or family with dependents)',
-      'Housing Preference (1-bedroom central apartment, outer borough unit, or shared living)',
-      'Savings Goal Target (monthly allocation for emergency fund, investments, or retirement)',
+      'Your gross annual or monthly pay (in local currency)',
+      'The metro area you’re living in (which sets both your tax rates and everyday prices)',
+      'Your household setup (flying solo, living as a couple, or supporting kids)',
+      'Your housing setup (central 1-bedroom, outer-neighborhood flat, or shared rental)',
+      'How much you want to tuck away in savings each month',
     ],
     taxTreatment:
-      'Taxes are evaluated deterministically using official government revenue schedules (such as IRS Rev. Proc., HMRC PAYE, CRA payroll tables, ATO schedules, and German BMF formulas). All calculations account for progressive rate brackets, standard statutory allowances, and mandatory social insurance contributions (e.g. FICA, National Insurance, CPP/EI, Social Security). The tool models standard single-filer employment rules without bespoke itemized write-offs.',
+      'Taxes aren’t a flat percentage anywhere. We apply real progressive tax schedules—IRS tables in the US, HMRC PAYE in the UK, CRA payroll brackets in Canada, and ATO tiers in Australia. We factor in standard personal allowances and mandatory payroll withholdings (like Medicare, Social Security, or Canadian EI/CPP). We model typical single or married employee returns without guessing at custom tax write-offs or private deductions.',
     colAdjustments:
-      'Living costs are calibrated against New York City as an empirical baseline (NYC = 100). Expenses scale based on localized consumer expenditure weights covering residential rent, grocery market baskets, public mass transit, residential heating/cooling/electricity, and basic healthcare, drawn from official census and statistical agencies.',
+      'Living costs change drastically from town to town. We anchor all city prices against New York City as an international benchmark (NYC = 100). Supermarket food, local power bills, monthly train passes, and median apartment rents update from municipal price indices and housing census figures.',
     whatItDoesNotMean:
-      'A positive salary worth score does not guarantee wealth accumulation or personalized financial security. It measures typical baseline living scenarios and does not reflect individual lifestyle inflation, luxury recreation, existing personal student loan or debt amortization, child private school tuition, or bespoke medical circumstances.',
+      'A green score here doesn’t mean you’re suddenly set for life. It measures whether standard living costs fit inside your paycheck. It doesn’t know if you’re carrying $800 a month in student loans, making heavy car payments, paying private school tuition, or ordering takeout every night. Lifestyle creep can break any budget.',
     exampleCalculation: {
-      scenarioTitle: 'Single Professional Earning $100,000 in New York City (2026 Baseline)',
-      grossInput: '$100,000 Gross Annual Salary ($8,333/month)',
-      location: 'New York City, New York (US-NY)',
+      scenarioTitle: 'Real Walkthrough: A Single Earner on $100,000 in New York City',
+      grossInput: '$100,000 gross per year ($8,333 a month on paper)',
+      location: 'New York City (Five Boroughs, single filer)',
       taxBreakdown:
-        'Federal Income Tax (~$13,850) + NY State Tax (~$4,930) + NYC Local Resident Tax (~$3,680) + FICA Social Security/Medicare ($7,650) = Total Deductions: ~$30,110/yr. Net Take-Home Pay: ~$69,890/yr (~$5,824/month).',
+        'Here’s where the paycheck shrinks: Federal tax takes about $13,850. New York State takes roughly $4,930. The NYC resident tax adds another $3,680. Then FICA (Social Security & Medicare) takes $7,650. That’s roughly $30,110 gone in payroll taxes alone. Your real take-home pay is around $69,890 a year—or roughly $5,824 a month in your checking account.',
       rentAndLiving:
-        'Median Fair Market 1-Bedroom Rent: ~$2,350/mo. Essential Groceries & Food: ~$580/mo. MTA 30-Day Transit Pass: $132/mo. Residential Electricity & Broadband: ~$220/mo. Baseline Living Total: ~$3,282/mo.',
+        'A typical 1-bedroom fair market apartment across the city runs about $2,350/mo. Add $580 for groceries, $132 for an unlimited MTA MetroCard, and roughly $220 for ConEd electricity and home broadband. Basic monthly overhead comes out to roughly $3,282.',
       finalTakeaway:
-        'Uncommitted Discretionary Cash Flow: ~$5,824 net - ~$3,282 baseline = ~$2,542/month available for voluntary 401(k) savings, emergency funds, dining out, and personal goals. Housing represents ~28.2% of gross income, within recommended guidelines.',
+        'Subtract $3,282 in living costs from your $5,824 take-home pay. You have roughly $2,542 left each month. That’s your breathing room for 401(k) retirement savings, emergency cash, dining out, and weekend trips. Rent eats about 28% of your gross pay—right within the classic 30% rule of thumb.',
     },
     howToInterpret:
-      'Focus on the monthly discretionary surplus rather than the gross annual salary. If your projected surplus is below 15% of net take-home pay, your budget has narrow tolerance for unexpected emergencies or rental increases. A surplus above 25% indicates strong financial resilience and active wealth-building capacity.',
+      'Keep your eyes on your monthly cash cushion, not the gross salary on your offer letter. If your leftover money after rent and groceries is under 15% of your take-home pay, one unexpected bill or rent bump will hurt. If your buffer is 25% or higher, you’re in a solid position to build wealth and handle surprises.',
     targetAudience: [
-      'Professionals evaluating new employment compensation packages or promotions',
-      'Job seekers deciding whether an offer in an unfamiliar city warrants relocation',
-      'Remote employees negotiating location-adjusted compensation differentials',
-      'Expatriates and international movers comparing cross-border offers in foreign currencies',
+      'Job seekers evaluating competing compensation letters',
+      'Professionals wondering if a promotion in a pricey metro is actually worth the move',
+      'Remote employees negotiating location-adjusted compensation with HR',
+      'Expats trying to figure out what a foreign salary means in real purchasing power',
     ],
     assumptions: [
-      'Standard employment relationship (W-2 / PAYE / employee contract) with regular statutory payroll withholding',
-      'Standard statutory deduction taken; no bespoke personal tax credits or itemized deductions modeled',
-      'Fair Market Rent based on independent 1-bedroom apartment lease signed at prevailing market rates',
-      'Zero pre-existing non-mortgage debt service (credit cards, personal loans, or vehicle financing)',
+      'Regular W-2, PAYE, or standard employment contract with automatic payroll withholding',
+      'Standard tax allowance; no itemized deductions or private tax write-offs',
+      'Market-rate lease on an independent 1-bedroom flat',
+      'Zero existing credit card debt, car notes, or student loan payments included in the base calculation',
     ],
     limitations: [
-      'Does not account for employer-sponsored 401(k) matching, pre-tax transit cards, or flexible spending accounts',
-      'Does not model non-statutory benefits like equity stock options (ISOs/NSOs) or discretionary annual bonuses',
-      'Rental markets fluctuate seasonally; actual vacant unit asking rents may diverge during peak leasing periods',
+      'Doesn’t factor in voluntary pre-tax deductions like 401(k) contributions, FSA accounts, or commuter checks',
+      'Doesn’t value equity grants, stock options, or performance bonuses until they turn into liquid cash',
+      'Rents fluctuate by neighborhood and season—what costs $2,300 in Astoria might cost $3,800 in SoHo',
     ],
     dataFreshness: 'October 2026 (Tax Year 2026 Statutory Schedules & 2026 Q3 Cost of Living Benchmarks)',
     primarySources: [
@@ -107,33 +107,33 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
     toolSlug: 'salary-after-tax',
     toolName: 'Salary After Tax Calculator',
     whatItTellsYou:
-      'The Salary After Tax Calculator determines your exact legal net take-home earnings by computing progressive income tax brackets and mandatory statutory payroll withholdings across federal, state/provincial, and municipal jurisdictions.',
+      'Ever opened a paycheck and wondered where all your money went? The Salary After Tax calculator cuts through payroll confusion. It takes your gross salary and works out your exact net take-home pay, showing you precisely what gets withheld for federal taxes, state or provincial taxes, city taxes, and mandatory social security contributions.',
     howItWorks:
-      'Gross salary is evaluated through statutory tax brackets sequentially: (1) Standard personal deductions and allowances are subtracted to establish taxable income. (2) Progressive marginal tax rates are applied to respective income slices. (3) Mandatory social security, retirement pensions, public healthcare, and unemployment levies are calculated using statutory caps. (4) Total tax liability is subtracted from gross salary to arrive at annual, monthly, bi-weekly, and hourly net pay.',
+      'We run your salary through your jurisdiction’s tax brackets step by step. First, we subtract your standard personal allowance or deduction to find your taxable base. Next, we apply progressive tax rates bracket by bracket—because you only pay higher rates on the dollars inside that higher band. Then we calculate compulsory payroll deductions like Social Security, Medicare, National Insurance, or Canadian CPP and EI. Finally, we subtract all of that from your gross pay to give you your exact net pay by year, month, or paycheck.',
     inputsAffectingResult: [
-      'Gross Annual, Monthly, or Hourly Pay',
-      'Tax Jurisdiction (Country, State/Province, and Municipal Resident Level)',
-      'Filing Status (Single earner baseline; married/joint filers where statutory schedules vary)',
-      'Tax Year (Models current verified statutory baseline; flags pending legislative updates)',
+      'Your gross salary (annual, monthly, or hourly)',
+      'Where you live and work (country, state or province, and city)',
+      'Filing status (single filer baseline, or married/joint where local laws differ)',
+      'The tax year (we track official current tax schedules and flag upcoming changes)',
     ],
     taxTreatment:
-      'Evaluates all compulsory statutory withholdings: National progressive income taxes (e.g. US Federal, UK Basic/Higher rate, German Einkommensteuer), Regional taxes (e.g. California FTB, Ontario Provincial Tax, Scottish Income Tax), Municipal taxes (e.g. New York City resident income tax), and Social Contributions (FICA Medicare/OASDI, National Insurance Class 1, CPP, EI, GKV/RV/AV).',
+      'We factor in every mandatory statutory withholding: national progressive taxes (like US Federal, UK Basic and Higher rates, or German Einkommensteuer), regional taxes (such as California FTB, Ontario Provincial Tax, or Scottish Income Tax), municipal resident taxes (like the New York City local tax), and social contributions (FICA, National Insurance Class 1, CPP, EI, and German social insurance).',
     colAdjustments:
-      'This tool focuses exclusively on tax and payroll withholding math. It does not deduct living expenses or rent, giving you an uncontaminated view of legal take-home pay.',
+      'This tool focuses purely on the tax math. We don’t deduct rent or living costs here—that way, you get an uncontaminated, legal view of what hits your bank account on payday.',
     whatItDoesNotMean:
-      'Calculated net pay does not represent final tax return liability if you have significant non-wage capital gains, freelance 1099/sole-trader income, foreign asset declarations, itemized charitable gifts, or bespoke tax shelter deductions.',
+      'Your estimated take-home pay isn’t the same as your final year-end tax return. If you have side-hustle freelance income, big capital gains from stock sales, rental income, or heavy itemized deductions, your final tax bill at filing time will look different.',
     exampleCalculation: {
-      scenarioTitle: 'Corporate Analyst Earning £65,000 in London (UK PAYE Tax Year 2026)',
-      grossInput: '£65,000 Annual Gross Salary (£5,417/month)',
-      location: 'London, United Kingdom (GB-ENG)',
+      scenarioTitle: 'Real Walkthrough: A Financial Analyst on £65,000 in London',
+      grossInput: '£65,000 gross per year (£5,417 a month before tax)',
+      location: 'London, United Kingdom (English tax rates)',
       taxBreakdown:
-        'Personal Allowance (£12,570 tax-free) → 20% Basic Rate on £37,700 (£7,540) → 40% Higher Rate on £14,730 (£5,892) = Total Income Tax: £13,432. Employee National Insurance (8% on £37,700 + 2% on £14,730): ~£3,310. Total Statutory Withholdings: £16,742.',
+        'You get your £12,570 tax-free Personal Allowance first. Next, you pay 20% Basic Rate on the next £37,700 (£7,540). Then you pay 40% Higher Rate on the remaining £14,730 (£5,892). Total income tax comes to £13,432. Add Class 1 National Insurance (8% up to the threshold plus 2% above it), which runs about £3,310. That makes total statutory deductions £16,742.',
       rentAndLiving: 'N/A (Tax Calculation Focus)',
       finalTakeaway:
-        'Net Take-Home Pay: £48,258 annually (£4,021.50/month). The earner pays an effective blended tax rate of ~25.8% while their top marginal tax rate is 42% (40% Higher Rate + 2% NI).',
+        'Your net take-home pay is £48,258 a year—or £4,021.50 hitting your bank account each month. Your effective overall tax rate is roughly 25.8%, even though your top marginal tax rate is 42% (40% income tax + 2% NI).',
     },
     howToInterpret:
-      'Distinguish clearly between your marginal tax rate and your effective tax rate. While your marginal rate indicates the tax paid on your next pound or dollar of income (critical when evaluating raises or bonuses), your effective rate reflects the actual percentage of your total income paid to the government.',
+      'Don’t confuse your marginal tax rate with your effective tax rate. Your marginal rate is what you pay on your next earned dollar—super important when evaluating a raise or bonus. Your effective rate is the actual percentage of your whole paycheck that went to taxes. A high top bracket doesn’t mean your entire salary gets taxed at that rate.',
     targetAudience: [
       'Employees reviewing written employment contracts or annual pay raises',
       'Job seekers comparing gross salary offers across different states or countries',
@@ -173,9 +173,9 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
     toolSlug: 'salary-needed',
     toolName: 'Salary Needed Calculator',
     whatItTellsYou:
-      'The Salary Needed Calculator operates as an inverse mathematical solver. Instead of computing take-home pay from a known salary, it solves backwards to tell you the exact gross annual salary required to afford living expenses, fair-market housing, and hit specific monthly savings targets in your destination city.',
+      'Most salary tools work forwards: you enter your pay, they tell you what’s left. The Salary Needed calculator flips that on its head. It solves backwards. You tell it the city you want to live in, the size of apartment you need, your family setup, and how much you want to save every month. It then calculates the exact gross pre-tax salary you must negotiate to make that life work.',
     howItWorks:
-      'Given your target metropolitan city, housing size, household dependents, and desired monthly savings buffer, the engine sums total target monthly cash requirements. It then performs an inverse root-finding iteration through non-linear progressive tax brackets, solving for the exact gross pre-tax salary that yields the necessary net cash after all statutory taxes and social contributions.',
+      'We start with your real-world target budget: rent for your chosen apartment size, local groceries, transit passes, utilities, and your desired monthly savings stash. We add those up to find your target net monthly cash. Then, our engine solves backwards through the destination city’s progressive tax brackets. Because tax rates step up as you earn more, it iteratively figures out exactly how much pre-tax income you need so that what’s left after all taxes and deductions matches your target budget.',
     inputsAffectingResult: [
       'Target Metropolitan City (dictates housing rents and necessity price levels)',
       'Housing Type (Studio, 1-Bedroom, 2-Bedroom, or 3-Bedroom residence)',
@@ -190,7 +190,7 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
     whatItDoesNotMean:
       'The required salary result is not a rigid minimum wage. Earners can live on less by compromising on housing (flatsharing, living in outer suburbs) or reducing savings goals. It represents the required income to live stably at the specified lifestyle baseline.',
     exampleCalculation: {
-      scenarioTitle: 'Salary Needed to Live Comfortably in Toronto (1-Bedroom Apartment + CA$800/mo Savings)',
+      scenarioTitle: 'Real Walkthrough: A Single Professional Moving to Toronto',
       grossInput: 'Target Net Requirements: CA$2,400 Rent + CA$1,100 Essentials + CA$800 Savings = CA$4,300/mo Net (CA$51,600/yr Net)',
       location: 'Toronto, Ontario, Canada (CA-ON)',
       taxBreakdown:
@@ -238,9 +238,9 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
     toolSlug: 'cost-of-living',
     toolName: 'Cost of Living Calculator & City Benchmarks',
     whatItTellsYou:
-      'The Cost of Living Calculator breaks down itemized monthly expenditures—including residential rent, groceries, transportation passes, household utilities, and healthcare—across major world metropolitan centers, benchmarking every destination against New York City (NYC = 100).',
+      'How much does it actually cost to live day-to-day in a different city? The Cost of Living calculator breaks down everyday monthly expenses—apartment rents, groceries, monthly train passes, power and internet bills, and healthcare—benchmarking every city against New York City (NYC = 100) so you can compare prices instantly.',
     howItWorks:
-      'Living costs are calculated by aggregating representative metropolitan market baskets: (1) Housing rent benchmarks for standard 1-bedroom and 3-bedroom residences. (2) Supermarket groceries based on standard nutritional consumption weights. (3) Urban mobility costs (monthly mass transit passes or vehicle operation averages). (4) Essential residential utilities (electricity, water, heating, broadband). All costs are converted to your preferred currency using real-time baseline conversion rates.',
+      'We tally up a representative metropolitan basket of goods: median rents for 1-bedroom and 3-bedroom apartments, a standard nutritional grocery cart, local public transit or car ownership costs, and basic residential utilities (electricity, water, heating, and home internet). We convert everything into your preferred currency using current exchange rates, keeping comparisons apples-to-apples.',
     inputsAffectingResult: [
       'Selected Metropolitan City or Region',
       'Housing Location (City Center vs Outside Center / Suburbs)',
@@ -252,7 +252,7 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
     colAdjustments:
       'All city price indices are normalized against New York City (NYC = 100). A city with an index of 75.0 is approximately 25% cheaper overall than NYC across equivalent consumer baskets.',
     whatItDoesNotMean:
-      'Cost of living indices do not reflect personal income tax burdens. A city with a low cost of living index might have high statutory income taxes (e.g. European cities), while a city with an average index might have zero income tax (e.g. Dubai). To evaluate net lifestyle, use the Salary Worth or Compare tools.',
+      'Cost of living indices do not reflect personal income tax burdens. A city with a low cost of living index might have high statutory income taxes (common in continental Europe), while a city with an average index might have zero income tax (like Dubai). To evaluate your net lifestyle, use the Salary Worth or Compare tools.',
     exampleCalculation: {
       scenarioTitle: 'Monthly Living Expenditure Breakdown: Berlin, Germany (Single Adult)',
       grossInput: 'Baseline City Index: 63.8 (NYC = 100)',
@@ -264,7 +264,7 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
         'Living in Berlin requires roughly €2,100 net per month for independent living, approximately 36% less than an equivalent standard of living in New York City or London.',
     },
     howToInterpret:
-      'Examine the relative share of housing versus non-housing costs. In cities like New York and London, housing dominates the budget (over 55% of total costs). In contrast, in cities like Tokyo or Berlin, housing is comparatively moderate while general consumer goods represent a higher relative portion of expenditures.',
+      'Check how your budget splits between rent and everyday goods. In cities like New York and London, rent swallows over 50% of monthly spending. In cities like Tokyo or Berlin, rent is much more reasonable, but imported consumer goods and dining out make up a larger slice of your expenses.',
     targetAudience: [
       'Digital nomads and remote workers choosing next international bases',
       'Expatriates planning international relocation budgets and cost allowances',
@@ -297,13 +297,13 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
       { name: 'Singapore', url: '/cities/singapore' },
     ],
   },
-  compare: {
+  'compare': {
     toolSlug: 'compare',
     toolName: 'City Cost of Living & Salary Comparison Tool',
     whatItTellsYou:
-      'The Compare Tool evaluates the bilateral purchasing power parity and lifestyle equivalence between two cities. It tells you exactly what salary you would need in City B to match the disposable cash flow, housing standard, and quality of life you currently maintain in City A.',
+      'If you move from London to New York, or from Chicago to Dubai, what salary do you actually need to keep the exact same lifestyle? The Compare tool runs a bilateral purchasing power comparison between any two cities. It tells you what pay package in City B gives you the exact same housing quality, disposable cash, and savings power you currently enjoy in City A.',
     howItWorks:
-      'The comparison engine performs a complete multi-variable bilateral calculation: (1) Computes net take-home pay in City A after City A’s statutory taxes. (2) Deducts City A’s baseline housing and living costs to determine baseline discretionary surplus. (3) Determines City B’s localized cost of living differential. (4) Solves inversely through City B’s statutory tax brackets to determine the exact gross salary in City B required to leave you with equivalent disposable surplus.',
+      'We don’t just multiply by the exchange rate—that leads to bad financial decisions. Instead, we run a full bilateral calculation. First, we calculate your net take-home pay in City A after City A’s taxes. Second, we subtract City A’s living costs to see your baseline discretionary savings. Third, we measure the cost-of-living gap in City B. Finally, we run an inverse tax calculation through City B’s tax code to pinpoint the exact gross salary in City B that leaves you with equivalent disposable cash.',
     inputsAffectingResult: [
       'Origin City (City A) and Gross Compensation in Origin Currency',
       'Destination City (City B)',
@@ -366,9 +366,9 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
     toolSlug: 'job-offers',
     toolName: 'Job Offer Comparison & Compensation Evaluator',
     whatItTellsYou:
-      'The Job Offer Comparison Calculator evaluates two competing employment packages across different locations, factoring in base pay, cash bonuses, relocation allowances, local income taxes, and destination cost of living to reveal which offer delivers superior real cash accumulation.',
+      'Comparing two job offers in different cities is tricky. A $165k offer in San Francisco might sound way better than $140k in Austin—until you factor in California state tax and Bay Area rent. The Job Offer Comparison calculator puts two offers head-to-head, accounting for base pay, performance bonuses, signing stipends, local income taxes, and rent, so you can see which offer actually builds your bank account faster.',
     howItWorks:
-      'The tool separates one-time transition allowances from permanent recurring cash flow: (1) Computes net annual take-home pay for Offer A and Offer B under their respective local tax codes. (2) Factors guaranteed vs discretionary bonus structures and equity vesting schedules. (3) Deducts localized destination living expenses and housing obligations. (4) Calculates Year 1 Net Cash (including moving allowances and upfront lease deposits) and Year 2+ Steady-State Annual Savings.',
+      'We separate one-time perks from steady recurring cash flow. First, we compute net take-home pay for Offer A and Offer B under their respective local tax codes. Second, we model bonuses and equity vesting schedules under supplemental wage withholding rules. Third, we subtract local rents and everyday living costs in each city. Finally, we show you two clear numbers: Year 1 cash in hand (including signing bonuses and moving costs) and Year 2+ steady-state annual savings.',
     inputsAffectingResult: [
       'Offer A & Offer B: Base Salary and Target Annual Bonus Percentage',
       'Offer Locations (City A vs City B)',
@@ -386,14 +386,14 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
       grossInput: 'Offer 1: $140,000 in Austin (0% State Tax). Offer 2: $165,000 in SF (California Tax).',
       location: 'Austin, Texas vs San Francisco, California',
       taxBreakdown:
-        'Austin Take-Home: ~$106,800/yr ($8,900/mo net). SF Take-Home: ~$112,500/yr ($9,375/mo net). Despite a $25,000 higher gross salary in SF, higher California state tax reduces the net cash difference to just $5,700/year.',
+        'Austin take-home pay is around $106,800/yr ($8,900/mo net). In SF, higher California state taxes leave you with around $112,500/yr ($9,375/mo net). Even with a $25,000 higher salary in SF, higher taxes shrink the take-home difference to just $5,700 a year.',
       rentAndLiving:
-        'Austin 1-Bed Rent & Living: ~$2,600/month. SF 1-Bed Rent & Living: ~$4,100/month. SF living costs exceed Austin by ~$1,500/month (~$18,000/year).',
+        'A 1-bedroom flat and living expenses in Austin run about $2,600/month. In San Francisco, that same baseline runs about $4,100/month—a $1,500/month ($18,000/year) penalty.',
       finalTakeaway:
-        'Austin Offer delivers ~$6,300/month in net savings capacity, compared to ~$5,275/month in SF. The Austin offer yields ~$12,300 MORE annual disposable cash despite the lower nominal salary.',
+        'The Austin offer leaves you with roughly $6,300/month in net savings capacity, compared to $5,275/month in SF. Austin puts roughly $12,300 MORE in your pocket every year, despite the lower headline salary.',
     },
     howToInterpret:
-      'Examine the Year 2+ Steady-State Cash Flow column. Signing bonuses and relocation stipends often mask lower long-term recurring savings. Make your ultimate decision based on sustainable annual surplus.',
+      'Always check the Year 2+ steady-state cash flow. A flashy signing bonus or moving allowance can disguise an offer that actually saves you less money over the long haul. Base your final career move on recurring annual surplus.',
     targetAudience: [
       'Professionals weighing multiple simultaneous job offers across different cities',
       'Tech and corporate candidates evaluating remote vs in-office compensation packages',
@@ -423,7 +423,6 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
       { name: 'Austin', url: '/cities/austin' },
       { name: 'New York City', url: '/cities/nyc' },
       { name: 'London', url: '/cities/london' },
-      { name: 'Seattle', url: '/cities/seattle' },
     ],
   },
 };
