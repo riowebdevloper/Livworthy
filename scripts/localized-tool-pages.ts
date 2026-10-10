@@ -707,12 +707,14 @@ export function createLocalizedToolPages(baseUrl: string): ToolSeoPage[] {
       `;
 
       // Standard localized route: /es/salary-after-tax/index.html
+      // Standard localized route: /es/salary-after-tax/index.html
+      // For English, root /<tool> is canonical and indexable; duplicate /en/<tool> must be noindex
       pages.push({
         relativePath: `${loc}/${tool}/index.html`,
         canonicalUrl: `${baseUrl}/${loc}/${tool}`,
         title: meta.title,
         description: meta.description,
-        robots: robotsDirective,
+        robots: loc === 'en' ? 'noindex, follow' : robotsDirective,
         bodyContent,
         structuredData,
         changefreq: 'weekly',

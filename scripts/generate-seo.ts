@@ -24,6 +24,12 @@ import {
 } from './seo-generators-content';
 import { VERIFIED_CITY_EDITORIAL, renderCityEditorialHtml } from '../src/data/city-editorial';
 import { VERIFIED_COUNTRY_EDITORIAL, renderCountryEditorialHtml } from '../src/data/country-editorial';
+import {
+  canBeIndexed,
+  extractMeaningfulHtmlText,
+  calculateEffectiveWordCount,
+  extractCleanText,
+} from '../src/lib/seo/page-quality-gate';
 
 const BASE_URL = 'https://www.livworthy.com';
 
@@ -1144,6 +1150,54 @@ export function runSeoGenerator() {
     });
   }
 
+  // 6c. Apply Deterministic Quality Gate across all generated pages
+  function determinePageTypeForGate(rel: string): string {
+    if (rel.includes('reports/')) return 'empirical-report';
+    if (rel === 'index.html' || /^[a-z]{2}\/index\.html$/.test(rel)) return 'homepage';
+    if (rel.includes('salary-worth')) return 'calculator-salary-worth';
+    if (rel.includes('salary-needed')) return 'calculator-salary-needed';
+    if (rel.includes('salary-after-tax')) return 'calculator-salary-after-tax';
+    if (rel.includes('cost-of-living')) return 'calculator-cost-of-living';
+    if (rel.includes('compare')) return 'calculator-compare';
+    if (rel.includes('job-offers') || rel.includes('job-offer-comparison')) return 'calculator-job-offers';
+    if (rel.includes('cities/')) return 'city-intelligence';
+    if (rel.includes('countries/')) return 'country-intelligence';
+    if (rel.includes('guides/')) return 'salary-guide';
+    if (rel.includes('relocation/')) return 'relocation-corridor';
+    if (['about/index.html', 'methodology/index.html', 'sources/index.html', 'editorial-policy/index.html', 'data-policy/index.html', 'corrections/index.html', 'terms/index.html', 'privacy/index.html', 'contact/index.html'].includes(rel)) return 'trust-policy';
+    return 'general-landing';
+  }
+
+  let qualityGateDemotions = 0;
+  for (const page of pages) {
+    if (page.robots === 'index, follow') {
+      const pType = determinePageTypeForGate(page.relativePath);
+      const meaningfulText = extractMeaningfulHtmlText(page.bodyContent);
+      const meaningfulWords = calculateEffectiveWordCount(meaningfulText);
+      const h1Match = page.bodyContent.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+      const h1Text = h1Match ? extractCleanText(h1Match[1]) : '';
+
+      const gate = canBeIndexed({
+        url: page.canonicalUrl,
+        relativePath: page.relativePath,
+        title: page.title,
+        description: page.description,
+        h1Text,
+        robots: page.robots,
+        meaningfulWords,
+        pageType: pType,
+      });
+
+      if (!gate.canBeIndexed) {
+        page.robots = 'noindex, follow';
+        qualityGateDemotions++;
+      }
+    }
+  }
+  if (qualityGateDemotions > 0) {
+    console.log(`[Quality Gate] Demoted ${qualityGateDemotions} thin/unverified pages to noindex, follow to protect publisher trust.`);
+  }
+
   // Write all static HTML files
   let generatedCount = 0;
   for (const page of pages) {
@@ -1966,9 +2020,15 @@ function createTransparencyPages(): SeoPage[] {
           </div>
         </div>
 
-        <section class="mt-10 p-6 bg-white rounded-2xl border border-slate-200 space-y-3 text-sm text-slate-700">
-          <h2 class="text-lg font-bold text-[#102A2E]">Response Time Commitment</h2>
-          <p>We review incoming messages regularly. For data corrections citing official government gazettes (IRS, HMRC, CRA, ATO, BMF, etc.), our data desk aims to audit and acknowledge submissions within 2 business days.</p>
+        <section class="mt-10 p-6 bg-white rounded-2xl border border-slate-200 space-y-4 text-sm text-slate-700">
+          <h2 class="text-lg font-bold text-[#102A2E]">Data Correction Protocol &amp; Editorial Response Commitment</h2>
+          <p>We review incoming technical and editorial communications systematically. When submitting data corrections, please include direct links or citations to primary statutory documentation (such as official national tax gazettes, IRS bulletins, HMRC guidelines, CRA announcements, ATO schedules, or HUD fair market rent datasets).</p>
+          <p>Our quantitative research desk verifies every submitted discrepancy against statutory legislative baselines and aims to acknowledge and audit submissions within 2 business days. Approved corrections are logged publicly on our corrections registry.</p>
+          <div class="pt-2 flex flex-wrap gap-4 text-xs text-slate-500 font-mono">
+            <span>Desk Hours: Mon–Fri 09:00–18:00 UTC</span>
+            <span>•</span>
+            <span>PGP Verification Available on Request</span>
+          </div>
         </section>
 
         <div class="mt-8 pt-6 border-t border-slate-200 flex flex-wrap gap-4 text-sm font-semibold text-teal-800">

@@ -939,7 +939,10 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
                 <div class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 shadow-xs space-y-4">
                   <h3 class="font-bold text-base text-[#102A2E]">${escapeHtml(t.livingIntelligence)}</h3>
                   <p class="text-xs text-[#60706D] leading-relaxed">${escapeHtml(t.coverageNotice)}</p>
+                  <p class="text-xs text-[#60706D] leading-relaxed">${escapeHtml(t.financialDisclaimer)}</p>
                   <div class="pt-2 border-t border-[#DCE3E0] flex flex-col space-y-2 text-xs font-semibold text-[#167D75]">
+                    <a href="/methodology" class="hover:underline">${escapeHtml(t.navHowItWorks)} →</a>
+                    <a href="/sources" class="hover:underline">${escapeHtml(t.navSources)} →</a>
                     <a href="/coverage" class="hover:underline">${escapeHtml(t.navCoverage)} →</a>
                     <a href="/relocation" class="hover:underline">${escapeHtml(t.navRelocation)} →</a>
                     <a href="/job-offer-comparison" class="hover:underline">${escapeHtml(t.navJobOfferComparison)} →</a>
@@ -947,6 +950,19 @@ export function createLocalizedPages(baseUrl: string, homeStructuredData: any): 
                 </div>
               </div>
             </div>
+
+            <!-- Transparency & Methodology Foundation -->
+            <section class="bg-[#FFFFFF] rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs space-y-4">
+              <h2 class="text-lg sm:text-xl font-bold text-[#102A2E]">${escapeHtml(t.livingIntelligence)} — ${escapeHtml(t.dataFreshnessBadge)}</h2>
+              <p class="text-xs sm:text-sm text-[#60706D] leading-relaxed">
+                ${escapeHtml(t.financialDisclaimer)} ${escapeHtml(t.heroSubheadline)} ${escapeHtml(t.heroSupporting)}
+              </p>
+              <div class="pt-4 border-t border-[#DCE3E0] flex flex-wrap gap-4 text-xs font-semibold text-[#167D75]">
+                <a href="/methodology" class="hover:underline">${escapeHtml(t.navHowItWorks)} →</a>
+                <a href="/sources" class="hover:underline">${escapeHtml(t.navSources)} →</a>
+                <a href="/coverage" class="hover:underline">${escapeHtml(t.navCoverage)} →</a>
+              </div>
+            </section>
           </div>
         </main>
       </div>
