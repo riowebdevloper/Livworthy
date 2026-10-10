@@ -1888,6 +1888,99 @@ function createTransparencyPages(): SeoPage[] {
     `,
   });
 
+  // /contact
+  pages.push({
+    relativePath: 'contact/index.html',
+    canonicalUrl: `${BASE_URL}/contact`,
+    title: 'Contact LivWorthy — Editorial, Technical & Data Inquiries',
+    description: 'Get in touch with the LivWorthy team. Contact our editorial desk, report data discrepancies, or submit inquiries.',
+    robots: 'index, follow',
+    priority: 0.7,
+    changefreq: 'monthly',
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'ContactPage',
+      name: 'Contact LivWorthy',
+      url: `${BASE_URL}/contact`,
+      description: 'Get in touch with the LivWorthy editorial and research team.',
+      mainEntity: {
+        '@type': 'Organization',
+        name: 'LivWorthy',
+        url: BASE_URL,
+        contactPoint: [
+          {
+            '@type': 'ContactPoint',
+            email: 'contact@livworthy.com',
+            contactType: 'customer support',
+          },
+          {
+            '@type': 'ContactPoint',
+            email: 'editorial@livworthy.com',
+            contactType: 'editorial',
+          },
+          {
+            '@type': 'ContactPoint',
+            email: 'corrections@livworthy.com',
+            contactType: 'data corrections',
+          },
+        ],
+      },
+    },
+    bodyContent: `
+      <article class="max-w-4xl mx-auto px-4 py-8">
+        <nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-teal-700">Home</a> / <span class="text-slate-800 font-bold">Contact</span></nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] tracking-tight">Contact LivWorthy</h1>
+        <p class="mt-3 text-lg text-slate-700 leading-relaxed font-medium">Have a question about our methodology, spotted a data update in your jurisdiction, or want to connect with our editorial desk? Here is how to reach our team.</p>
+
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+            <h2 class="text-lg font-bold text-[#102A2E]">General Inquiries &amp; Support</h2>
+            <p class="text-sm text-slate-600 leading-relaxed">For general questions about using the platform, partnerships, or platform feedback:</p>
+            <p class="text-sm font-mono font-semibold text-[#167D75]">
+              <a href="mailto:contact@livworthy.com" class="hover:underline">contact@livworthy.com</a>
+            </p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+            <h2 class="text-lg font-bold text-[#102A2E]">Data Corrections &amp; Source Updates</h2>
+            <p class="text-sm text-slate-600 leading-relaxed">If you notice an updated statutory tax table, revised rental market report, or census release:</p>
+            <p class="text-sm font-mono font-semibold text-[#167D75]">
+              <a href="mailto:corrections@livworthy.com" class="hover:underline">corrections@livworthy.com</a>
+            </p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+            <h2 class="text-lg font-bold text-[#102A2E]">Editorial &amp; Press</h2>
+            <p class="text-sm text-slate-600 leading-relaxed">For journalists, researchers, and media professionals seeking quotes or empirical data analysis:</p>
+            <p class="text-sm font-mono font-semibold text-[#167D75]">
+              <a href="mailto:editorial@livworthy.com" class="hover:underline">editorial@livworthy.com</a>
+            </p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+            <h2 class="text-lg font-bold text-[#102A2E]">Privacy &amp; Data Rights</h2>
+            <p class="text-sm text-slate-600 leading-relaxed">For inquiries regarding our zero-PII architecture, privacy standards, or technical governance:</p>
+            <p class="text-sm font-mono font-semibold text-[#167D75]">
+              <a href="mailto:privacy@livworthy.com" class="hover:underline">privacy@livworthy.com</a>
+            </p>
+          </div>
+        </div>
+
+        <section class="mt-10 p-6 bg-white rounded-2xl border border-slate-200 space-y-3 text-sm text-slate-700">
+          <h2 class="text-lg font-bold text-[#102A2E]">Response Time Commitment</h2>
+          <p>We review incoming messages regularly. For data corrections citing official government gazettes (IRS, HMRC, CRA, ATO, BMF, etc.), our data desk aims to audit and acknowledge submissions within 2 business days.</p>
+        </section>
+
+        <div class="mt-8 pt-6 border-t border-slate-200 flex flex-wrap gap-4 text-sm font-semibold text-teal-800">
+          <a href="/about" class="hover:underline">About LivWorthy →</a>
+          <a href="/methodology" class="hover:underline">Methodology →</a>
+          <a href="/editorial-policy" class="hover:underline">Editorial Policy →</a>
+          <a href="/corrections" class="hover:underline">Submit Data Correction →</a>
+        </div>
+      </article>
+    `,
+  });
+
   return pages;
 }
 
@@ -2119,6 +2212,7 @@ ${items
     { canonicalUrl: `${BASE_URL}/corrections`, changefreq: 'monthly', priority: 0.7 },
     { canonicalUrl: `${BASE_URL}/terms`, changefreq: 'monthly', priority: 0.6 },
     { canonicalUrl: `${BASE_URL}/privacy`, changefreq: 'monthly', priority: 0.6 },
+    { canonicalUrl: `${BASE_URL}/contact`, changefreq: 'monthly', priority: 0.7 },
   ];
 
   const uniqueMainUrls = Array.from(new Map(mainUrls.map((u) => [u.canonicalUrl, u])).values());

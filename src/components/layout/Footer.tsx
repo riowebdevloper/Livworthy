@@ -405,6 +405,14 @@ export const Footer: React.FC<FooterProps> = ({
                   {dict.footer.privacy}
                 </a>
               </li>
+              <li>
+                <a
+                  href="/contact"
+                  className="w-full min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] hover:underline text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded"
+                >
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -476,6 +484,8 @@ export const Footer: React.FC<FooterProps> = ({
             <a href="/terms" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.terms}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
             <a href="/privacy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.privacy}</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <a href="/contact" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Contact</a>
           </nav>
         </div>
       </div>

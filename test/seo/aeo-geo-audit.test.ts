@@ -49,6 +49,7 @@ function runAuditTests() {
     'corrections/index.html',
     'terms/index.html',
     'privacy/index.html',
+    'contact/index.html',
   ];
 
   for (const relPath of transparencyPaths) {
@@ -79,6 +80,7 @@ function runAuditTests() {
   assert(mainContent.includes('https://www.livworthy.com/corrections'), 'sitemap-main.xml includes /corrections');
   assert(mainContent.includes('https://www.livworthy.com/terms'), 'sitemap-main.xml includes /terms');
   assert(mainContent.includes('https://www.livworthy.com/privacy'), 'sitemap-main.xml includes /privacy');
+  assert(mainContent.includes('https://www.livworthy.com/contact'), 'sitemap-main.xml includes /contact');
   assert(mainContent.includes('https://www.livworthy.com/compare'), 'sitemap-main.xml includes /compare');
 
   // Test 5: Guide page with AEO block, Fact Table, and Article JSON-LD

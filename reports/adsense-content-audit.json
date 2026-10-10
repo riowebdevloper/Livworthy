@@ -1,19 +1,19 @@
 {
   "summary": {
-    "totalPublicPages": 4223,
+    "totalPublicPages": 4224,
     "indexableBefore": 1897,
-    "indexableAfter": 980,
+    "indexableAfter": 981,
     "highValueCount": 90,
     "needsImprovementCount": 636,
-    "thinCount": 181,
+    "thinCount": 182,
     "duplicativeCount": 5,
     "utilityOnlyCount": 68,
     "incompleteCount": 0,
     "noindexCount": 3243,
-    "removedFromSitemapCount": 917,
+    "removedFromSitemapCount": 916,
     "contentUpgradesCompleted": 41,
     "pagesStillBlocked": 0,
-    "sitemapUrlsCount": 980,
+    "sitemapUrlsCount": 981,
     "categoryScores": {
       "contentDepth": 62,
       "uniqueness": 99,
@@ -22,12 +22,12 @@
       "uxAndNavigation": 92,
       "technicalSeo": 98,
       "mobileQuality": 95,
-      "indexQuality": 82,
+      "indexQuality": 81,
       "localizationQuality": 92
     },
     "overallReadinessScore": 90,
     "assessmentDisclaimer": "Internal readiness assessment — not a prediction of AdSense approval.",
-    "auditTimestamp": "2026-10-10T04:46:44.483Z"
+    "auditTimestamp": "2026-10-10T04:54:06.819Z"
   },
   "samplePages": [
     {
