@@ -60,11 +60,11 @@ const TIER1_TOOL_METADATA: Record<string, Record<CoreToolSlug, ToolMetadataEntry
       passage: 'Inverse mathematical solver computing the gross income required to cover median housing, living costs, and meet healthy savings targets.',
     },
     'salary-after-tax': {
-      title: 'Salary After Tax Calculator — Net Take-Home Pay | LivWorthy',
-      description: 'Calculate accurate take-home pay after statutory federal, state, and local taxes across global jurisdictions.',
-      h1: 'Salary After Tax Calculator',
-      lead: 'Direct Tax Calculation',
-      passage: 'Calculates statutory personal income tax and social insurance deductions across official brackets to determine exact net take-home earnings.',
+      title: 'Take Home Pay Calculator | Salary After Tax & Paycheck Calculator | LivWorthy',
+      description: 'Free take home pay and salary after tax calculator. Calculate exact paycheck withholdings, federal, state, and local income taxes across official tax brackets.',
+      h1: 'Take Home Pay & Salary After Tax Calculator',
+      lead: 'Statutory Payroll Engine',
+      passage: 'Statutory take-home pay and paycheck calculator computing personal income tax, national insurance, FICA, and local withholdings to show your exact net cash earnings.',
     },
     'cost-of-living': {
       title: 'Cost of Living Calculator & City Benchmarks | LivWorthy',

@@ -105,27 +105,27 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
   },
   'salary-after-tax': {
     toolSlug: 'salary-after-tax',
-    toolName: 'Salary After Tax Calculator',
+    toolName: 'Take Home Pay & Salary After Tax Calculator',
     whatItTellsYou:
-      'Ever opened a paycheck and wondered where all your money went? The Salary After Tax calculator cuts through payroll confusion. It takes your gross salary and works out your exact net take-home pay, showing you precisely what gets withheld for federal taxes, state or provincial taxes, city taxes, and mandatory social security contributions.',
+      'Ever opened a paycheck and wondered where all your money went? The Take Home Pay and Salary After Tax calculator cuts through payroll confusion. Whether you earn an hourly wage, a biweekly paycheck, or an annual base salary, this tool calculates your exact net take-home pay. It maps your earnings against official government tax brackets, showing precisely what gets deducted for federal income taxes, state or provincial taxes, municipal payroll taxes, and mandatory social security contributions.',
     howItWorks:
-      'We run your salary through your jurisdiction’s tax brackets step by step. First, we subtract your standard personal allowance or deduction to find your taxable base. Next, we apply progressive tax rates bracket by bracket—because you only pay higher rates on the dollars inside that higher band. Then we calculate compulsory payroll deductions like Social Security, Medicare, National Insurance, or Canadian CPP and EI. Finally, we subtract all of that from your gross pay to give you your exact net pay by year, month, or paycheck.',
+      'We run your pay through official statutory tax brackets step by step. First, we deduct standard baseline allowances—such as the standard deduction in the United States or the tax-free Personal Allowance in the UK—to establish your taxable income base. Next, we apply progressive tax rates band by band. You only pay higher rates on the dollars inside each higher bracket, never on your whole income. Then we calculate mandatory payroll withholdings: US FICA (Social Security and Medicare), UK Class 1 National Insurance, Australian Medicare levy, Canadian CPP/EI, or Singapore CPF. Finally, we subtract all statutory withholdings to deliver your exact take-home pay per paycheck, per month, and per year.',
     inputsAffectingResult: [
-      'Your gross salary (annual, monthly, or hourly)',
-      'Where you live and work (country, state or province, and city)',
-      'Filing status (single filer baseline, or married/joint where local laws differ)',
-      'The tax year (we track official current tax schedules and flag upcoming changes)',
+      'Gross salary amount (annual compensation, monthly paycheck, or hourly wage rate)',
+      'Jurisdiction and physical work location (country, province/state, and municipal district)',
+      'Statutory filing status (single filer, married joint, or head of household where applicable)',
+      'Official tax year schedules (verified against current IRS, HMRC, ATO, and CRA statutory brackets)',
     ],
     taxTreatment:
-      'We factor in every mandatory statutory withholding: national progressive taxes (like US Federal, UK Basic and Higher rates, or German Einkommensteuer), regional taxes (such as California FTB, Ontario Provincial Tax, or Scottish Income Tax), municipal resident taxes (like the New York City local tax), and social contributions (FICA, National Insurance Class 1, CPP, EI, and German social insurance).',
+      'We calculate every mandatory statutory withholding: national progressive taxes (such as US Federal Income Tax, UK Basic and Higher PAYE rates, or German Einkommensteuer), regional and provincial taxes (such as California FTB, Ontario Provincial Tax, or Scottish Income Tax), municipal resident taxes (like New York City local tax), and mandatory payroll contributions (FICA Social Security and Medicare, UK National Insurance Class 1, Canadian CPP/EI, and German statutory social insurance).',
     colAdjustments:
       'This tool focuses purely on the tax math. We don’t deduct rent or living costs here—that way, you get an uncontaminated, legal view of what hits your bank account on payday.',
     whatItDoesNotMean:
-      'Your estimated take-home pay isn’t the same as your final year-end tax return. If you have side-hustle freelance income, big capital gains from stock sales, rental income, or heavy itemized deductions, your final tax bill at filing time will look different.',
+      'Your estimated take-home pay isn’t the same as your final year-end tax return. If you have freelance 1099 side income, capital gains from investments, rental property income, or heavy itemized deductions, your year-end reconciliation will differ from standard wage withholding.',
     exampleCalculation: {
       scenarioTitle: 'Real Walkthrough: A Financial Analyst on £65,000 in London',
-      grossInput: '£65,000 gross per year (£5,417 a month before tax)',
-      location: 'London, United Kingdom (English tax rates)',
+      grossInput: '£65,000 gross per year (£5,417 monthly paycheck before tax)',
+      location: 'London, United Kingdom (English PAYE tax rates)',
       taxBreakdown:
         'You get your £12,570 tax-free Personal Allowance first. Next, you pay 20% Basic Rate on the next £37,700 (£7,540). Then you pay 40% Higher Rate on the remaining £14,730 (£5,892). Total income tax comes to £13,432. Add Class 1 National Insurance (8% up to the threshold plus 2% above it), which runs about £3,310. That makes total statutory deductions £16,742.',
       rentAndLiving: 'N/A (Tax Calculation Focus)',
@@ -135,7 +135,8 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
     howToInterpret:
       'Don’t confuse your marginal tax rate with your effective tax rate. Your marginal rate is what you pay on your next earned dollar—super important when evaluating a raise or bonus. Your effective rate is the actual percentage of your whole paycheck that went to taxes. A high top bracket doesn’t mean your entire salary gets taxed at that rate.',
     targetAudience: [
-      'Employees reviewing written employment contracts or annual pay raises',
+      'Employees reviewing written employment contracts, offer letters, or annual pay raises',
+      'Workers converting hourly wages to annual or biweekly net take-home pay',
       'Job seekers comparing gross salary offers across different states or countries',
       'Budget planners determining exact monthly take-home cash for mortgage or rent underwriting',
     ],

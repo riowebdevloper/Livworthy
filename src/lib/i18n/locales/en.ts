@@ -110,9 +110,9 @@ export const enDictionary: I18nDictionary = {
     explorePlan: 'Explore Financial Plan',
   },
   salaryAfterTax: {
-    headline: 'Statutory Salary After Tax Calculator',
+    headline: 'Take Home Pay & Salary After Tax Calculator',
     subheadline:
-      'Transparent gross-to-net pay calculations using official government revenue schedules.',
+      'Calculate exact paycheck withholdings, statutory income taxes, and net take-home earnings with verified government schedules.',
     federalTax: 'Federal / National Income Tax',
     stateLocalTax: 'State / Regional / Local Tax',
     socialSecurity: 'Social Security & Pension Contributions',

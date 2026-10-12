@@ -300,10 +300,10 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       'NYC net salary',
       'NYC salary after tax 2026',
     ],
-    seoTitle: 'NYC Salary After Tax Calculator 2026 | LivWorthy',
-    h1: 'NYC Salary After Tax Calculator 2026',
+    seoTitle: 'NYC Take Home Pay & Salary After Tax Calculator 2026 | LivWorthy',
+    h1: 'NYC Take Home Pay & Salary After Tax Calculator 2026',
     metaDescription:
-      'Calculate your NYC take-home pay after federal tax, New York State tax, NYC resident tax and payroll taxes, with current rule-version evidence.',
+      'Calculate your exact NYC take-home pay, paycheck withholdings, and net salary after federal, NY State, and NYC resident income taxes.',
     directAnswer:
       'For a single filer earning a $100,000 gross salary in 2026, estimated annual net take-home pay is $70,879 ($5,907/month, $2,726 biweekly), with a combined effective tax rate of 29.1% across federal income tax, New York State tax, NYC resident tax, and mandatory FICA payroll contributions (Social Security and Medicare).',
     sections: [
@@ -956,10 +956,10 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       'London salary after tax 2026',
       'London paycheck calculator',
     ],
-    seoTitle: 'London Salary After Tax Calculator 2026 | LivWorthy',
-    h1: 'London Salary After Tax',
+    seoTitle: 'London Take Home Pay & UK PAYE Salary After Tax Calculator 2026 | LivWorthy',
+    h1: 'London Take Home Pay & PAYE Salary After Tax Calculator',
     metaDescription:
-      'Calculate your London take-home pay after PAYE income tax, National Insurance and Personal Allowance, with authoritative UK statutory rules.',
+      'Calculate your exact London take-home pay, PAYE income tax, and National Insurance with authoritative HMRC statutory brackets.',
     directAnswer:
       'In the United Kingdom, personal employment income is subject to HMRC Income Tax (Pay As You Earn / PAYE) and Class 1 employee National Insurance contributions. For example, a £75,000 gross salary in London results in approximately £54,060 in annual take-home pay (£4,505/month), reflecting a combined effective tax and NI rate of 27.9%.',
     sections: [
@@ -1309,10 +1309,10 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       'Dubai salary after tax 2026',
       'tax in Dubai for expats',
     ],
-    seoTitle: 'Dubai Salary After Tax Calculator 2026 | LivWorthy',
-    h1: 'Dubai Salary After Tax',
+    seoTitle: 'Dubai Salary After Tax & Net Take Home Pay Calculator 2026 | LivWorthy',
+    h1: 'Dubai Take Home Pay & Salary After Tax Calculator',
     metaDescription:
-      'Calculate Dubai net take-home pay under UAE employment income rules, housing fees, living costs and expat compensation structures.',
+      'Calculate Dubai take-home pay, 0% personal tax rules, municipal housing fees, and true expat net savings in 2026.',
     directAnswer:
       'In Dubai, personal employment income is subject to 0% statutory personal income tax and 0% employee social security withholdings for expatriate workers. Consequently, your gross compensation equals your net take-home pay. For example, an annual salary of 300,000 AED yields exactly 25,000 AED per month net. However, cost of living deductions—such as the 5% municipal housing fee, private health insurance co-pays, and schooling fees—must be factored in to determine true discretionary savings.',
     sections: [
