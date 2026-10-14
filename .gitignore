@@ -7,3 +7,5 @@ coverage/
 test-results/
 .env*
 !.env.example
+rzp-key*.csv
+
