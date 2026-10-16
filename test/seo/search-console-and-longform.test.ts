@@ -156,6 +156,11 @@ async function runTests() {
   console.log('Test 5: English leakage auditing for Tier-1 locales...');
   for (const loc of ['es', 'fr', 'de', 'ar', 'pt', 'zh', 'ja']) {
     const leakageReport = EnglishLeakageAuditor.auditLocale(loc);
+    if (leakageReport.leakageCount !== 0) {
+      // Emit full diagnostic to CI logs to make failures actionable (prints the exact keys/locations)
+      console.error(`⚠️ English leakage detected for locale ${loc}:`);
+      console.error(JSON.stringify(leakageReport, null, 2));
+    }
     assert.strictEqual(
       leakageReport.leakageCount,
       0,
