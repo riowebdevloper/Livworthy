@@ -15,7 +15,7 @@ import { LOCALIZED_COUNTRIES } from '../src/lib/i18n/content/countries';
 import { LOCALIZED_GUIDES } from '../src/lib/i18n/content/guides';
 
 // Whitelist of valid terms that may legally appear across languages without constituting "leakage"
-const WHITELIST = new Set([
+export const WHITELIST = new Set([
   'LivWorthy',
   'USD',
   'EUR',
@@ -52,6 +52,28 @@ const WHITELIST = new Set([
   'GEO',
   'SEO',
   'A+',
+]);
+
+// Locale-specific allowlists for legitimate terms, statutory forms, or identifiers per locale
+export const LOCALE_ALLOWLISTS: Record<string, Set<string>> = {
+  es: new Set(['IVA', 'IRPF', 'NIF', 'NIE', 'DNI', 'IBAN']),
+  fr: new Set(['TVA', 'SMIC', 'IR', 'CSG', 'CRDS', 'IBAN']),
+  de: new Set(['MwSt', 'ESt', 'Soli', 'IBAN']),
+  pt: new Set(['IRS', 'IVA', 'NIF', 'IBAN']),
+  ar: new Set(['VAT', 'AED', 'SAR', 'QAR']),
+  hi: new Set(['GST', 'ITR', 'TDS', 'PF', 'EPF']),
+  ur: new Set(['FBR', 'NTN']),
+  zh: new Set(['IIT', 'CNY', 'RMB']),
+  ja: new Set(['JPY']),
+};
+
+// Known allowlisted key paths (e.g. brand constants, technical metadata, system keys)
+export const ALLOWED_KEY_PATHS = new Set<string>([
+  'brand.name',
+  'meta.author',
+  'schema.type',
+  'currency.code',
+  'common.appName',
 ]);
 
 // Typical English function words whose presence in non-English text indicates raw English prose copy-paste
@@ -115,11 +137,22 @@ export class EnglishLeakageAuditor {
           const trimmed = val.trim();
           const enTrimmed = typeof enVal === 'string' ? enVal.trim() : '';
 
-          // If non-empty, longer than 6 chars, and identical to English baseline
-          if (trimmed.length > 6 && trimmed === enTrimmed && !WHITELIST.has(trimmed)) {
-            // Check if it contains suspicious English grammar words
+          // Skip if key path or text is explicitly allowlisted
+          if (
+            ALLOWED_KEY_PATHS.has(path) ||
+            WHITELIST.has(trimmed) ||
+            LOCALE_ALLOWLISTS[locale]?.has(trimmed)
+          ) {
+            continue;
+          }
+
+          // Treat exact string equality with English as suspicious only when:
+          // 1) The value is substantial (> 12 chars to avoid flagging short symbols/abbreviations)
+          // 2) Identical to English baseline
+          // 3) Contains at least 2 distinct suspicious English function words
+          if (trimmed.length > 12 && trimmed === enTrimmed) {
             const words = trimmed.toLowerCase().split(/\W+/);
-            const suspicious = words.filter((w) => SUSPICIOUS_ENGLISH_WORDS.includes(w));
+            const suspicious = Array.from(new Set(words.filter((w) => SUSPICIOUS_ENGLISH_WORDS.includes(w))));
             if (suspicious.length >= 2) {
               findings.push({
                 locale,
@@ -174,10 +207,14 @@ export class EnglishLeakageAuditor {
           .replace(/<[^>]+>/g, ' ')
           .replace(/\s+/g, ' ');
 
-        const sentences = clean.split(/[.!?]+/).map((s) => s.trim()).filter((s) => s.length > 25);
+        const sentences = clean.split(/[.!?]+/).map((s) => s.trim()).filter((s) => s.length > 30);
         for (const sentence of sentences) {
+          // Ignore URLs, markdown links, or JSON-like strings
+          if (/^https?:\/\//i.test(sentence) || /^{.*}$/.test(sentence) || /^\[.*\]\(.*\)$/.test(sentence)) {
+            continue;
+          }
           const words = sentence.toLowerCase().split(/\W+/);
-          const matchedWords = words.filter((w) => SUSPICIOUS_ENGLISH_WORDS.includes(w));
+          const matchedWords = Array.from(new Set(words.filter((w) => SUSPICIOUS_ENGLISH_WORDS.includes(w))));
           if (matchedWords.length >= 4) {
             findings.push({
               locale,
