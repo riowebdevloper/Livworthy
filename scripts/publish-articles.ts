@@ -36,6 +36,18 @@ const ARTICLES: Record<number, ArticleMeta> = {
     tags: ['careers', 'management', 'discuss', 'productivity'],
     canonicalUrl: 'https://www.livworthy.com/job-offers',
   },
+  4: {
+    file: 'outreach/articles/substack-human-tone-100k-reality.md',
+    title: 'I Thought Making $100K in NYC Meant I Made It. Then I Looked at My Paystub',
+    tags: ['career', 'finance', 'productivity', 'discuss'],
+    canonicalUrl: 'https://www.livworthy.com/salary-worth',
+  },
+  5: {
+    file: 'outreach/articles/substack-the-illusion-of-six-figures.md',
+    title: 'The Illusion of the Six-Figure Salary: What $100K Actually Buys in 2026',
+    tags: ['finance', 'career', 'remotework', 'discuss'],
+    canonicalUrl: 'https://www.livworthy.com/salary-after-tax',
+  },
 };
 
 interface DevToPayload {
@@ -53,13 +65,15 @@ async function publishSingleToDevTo(num: number, apiKey: string) {
   if (!meta) return;
 
   const articlePath = path.resolve(process.cwd(), meta.file);
-  const markdown = fs.readFileSync(articlePath, 'utf8');
+  const rawMarkdown = fs.readFileSync(articlePath, 'utf8');
+  // Strip duplicate top-level title if file starts with # Title
+  const cleanedMarkdown = rawMarkdown.replace(/^#\s+[^\n]+\n+/, '');
 
   const payload: DevToPayload = {
     article: {
       title: meta.title,
       published: true,
-      body_markdown: markdown,
+      body_markdown: cleanedMarkdown,
       tags: meta.tags,
       canonical_url: meta.canonicalUrl,
     },

@@ -6,9 +6,9 @@
 
 Growing up, $100,000 was *the* number. 
 
-If you made six figures, you had made it. You could pick up the dinner tab without doing mental gymnastics. You could rent an apartment with an in-unit washer-dryer. You could finally stop stressing about money.
+If you made six figures, you had made it. You could pick up the dinner tab without doing mental gymnastics. You could rent an apartment with an in-unit washer-dryer. You could finally stop stressing about everyday money.
 
-Then I actually got a job in New York City that paid $100K.
+Then I actually got a tech job in New York City that paid $100K.
 
 And on my very first payday, I logged into my banking app, stared at the deposit, and thought: 
 
@@ -26,16 +26,16 @@ On paper, $100,000 sounds like $8,333 every month.
 
 In reality, before a single dollar hits your checking account, four different tax hands reach into your pocket:
 
-- **The Federal Government** takes its cut first.
+- **The Federal Government** takes its cut first (~12.8% after the standard deduction).
 - **Social Security and Medicare (FICA)** take another 7.65%.
-- **New York State** wants its piece.
-- And then comes the gut punch: **New York City** is one of the few places in America that charges its own resident income tax on top of everything else.
+- **New York State** wants its piece (~5.0%).
+- And then comes the local punch: **New York City** is one of the few places in America that charges its own resident income tax (~3.7%) on top of everything else.
 
 By the time all four are done, about **29% of your salary is gone**. 
 
 What actually lands in your bank account is roughly **$5,907 a month** (or around $2,725 every two weeks). 
 
-You can run the numbers yourself on the [LivWorthy NYC salary calculator](https://www.livworthy.com/guides/nyc-100k) to see the exact breakdown line by line.
+You can run your own numbers on the [LivWorthy salary calculator](https://www.livworthy.com/salary-worth) to see the exact breakdown line by line across different cities.
 
 ---
 
@@ -45,20 +45,20 @@ So now you have $5,900. Still decent money, right?
 
 Now try finding an apartment in New York. 
 
-Most landlords require you to make 40 times the monthly rent. On $100K, that caps you at $2,500 a month. But in 2026, the average one-bedroom in Manhattan and Brooklyn easily runs $2,800 to $3,500. 
+Most landlords strictly enforce the **40x rent rule**: your annual gross salary must equal at least 40 times the monthly rent. On $100K, that caps your eligible apartment search at **$2,500/month**. But in 2026, the median one-bedroom in Manhattan and Brooklyn easily runs between $2,800 and $3,500. 
 
-Even if you find a modest place for **$2,600**:
+Even if you get lucky and find a modest place for **$2,600**:
 
 - **Take-home pay**: $5,907
 - **Rent**: -$2,600
-- **Subway pass**: -$132
+- **Subway pass (MTA monthly)**: -$132
 - **Groceries (Trader Joe's runs + basics)**: -$500
-- **ConEd electric & WiFi**: -$220
-- **Healthcare out-of-pocket**: -$250
+- **Electric (ConEd) & Wi-Fi**: -$220
+- **Healthcare out-of-pocket & dental**: -$250
 
 Suddenly you’re sitting at **around $2,200 left for the entire month**.
 
-That $2,200 has to cover everything else: student loans, replacing your winter coat, grabbing a beer with friends, an emergency trip to urgent care, and whatever you can scramble together for your 401(k). 
+That $2,200 has to cover everything else: student loans, replacing your winter coat, grabbing a weekend coffee with friends, an emergency trip to urgent care, and whatever you can scramble together for your 401(k). 
 
 One bad dental bill or an unexpected flight home for the holidays, and your month is shot. 
 
@@ -74,8 +74,8 @@ This is why so many people are packing up and moving.
 
 When you compare New York to other world hubs, the difference in take-home pay is wild:
 
-- **London (£75,000)**: Sounds lower, but rents outside prime zones are much cheaper, and you never have to worry about a surprise $2,000 healthcare bill.
-- **Dubai (350,000 AED)**: Here’s the kicker—**0% income tax**. Every single dirham you earn lands in your account. You can rent a luxury high-rise apartment and still save $4,000+ a month.
+- **London (£75,000)**: Nominal pay is lower, but transit and healthcare costs are much more predictable, and you never have to worry about a surprise $2,000 medical bill.
+- **Dubai (350,000 AED)**: Here’s the game-changer — **0% income tax**. Every single dirham you earn lands in your account. You can rent a luxury high-rise apartment and still save $4,000+ a month.
 
 We built a tool comparing these cities side-by-side using real tax tables and local rent baskets: take a look at the [New York vs London comparison](https://www.livworthy.com/compare/new-york-vs-london) and the [Dubai relocation breakdown](https://www.livworthy.com/cities/dubai).
 
