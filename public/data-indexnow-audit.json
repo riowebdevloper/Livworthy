@@ -1,5 +1,29 @@
 [
   {
+    "submittedAt": "2026-10-16T05:43:46.243Z",
+    "trigger": "manual_cli",
+    "dryRun": false,
+    "success": true,
+    "validUrlsCount": 105,
+    "batches": [
+      {
+        "batchIndex": 0,
+        "urlCount": 100,
+        "statusCode": 200,
+        "statusText": "OK",
+        "success": true
+      },
+      {
+        "batchIndex": 1,
+        "urlCount": 5,
+        "statusCode": 200,
+        "statusText": "OK",
+        "success": true
+      }
+    ],
+    "message": "Successfully submitted 105 canonical URLs across 2 batch(es) to IndexNow."
+  },
+  {
     "submittedAt": "2026-10-08T18:43:13.784Z",
     "trigger": "manual_cli",
     "dryRun": false,

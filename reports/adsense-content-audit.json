@@ -3,32 +3,32 @@
     "totalPublicPages": 4224,
     "indexableBefore": 1897,
     "indexableAfter": 196,
-    "highValueCount": 145,
+    "highValueCount": 91,
     "needsImprovementCount": 47,
     "thinCount": 0,
     "duplicativeCount": 0,
-    "utilityOnlyCount": 4,
+    "utilityOnlyCount": 58,
     "incompleteCount": 0,
     "noindexCount": 4028,
     "removedFromSitemapCount": 1701,
-    "contentUpgradesCompleted": 92,
+    "contentUpgradesCompleted": 38,
     "pagesStillBlocked": 0,
     "sitemapUrlsCount": 196,
     "indexableThinCount": 0,
     "indexableIncompleteCount": 0,
     "indexableDuplicateCount": 0,
-    "indexableUtilityOnlyCount": 4,
+    "indexableUtilityOnlyCount": 58,
     "sitemapNoindexCount": 0,
     "qualityGateFailures": 0,
-    "pagesImprovedThisRun": 92,
+    "pagesImprovedThisRun": 38,
     "pagesNoindexedThisRun": 4028,
     "finalStatus": "READY_FOR_RESUBMISSION",
     "qualityDistribution": {
-      "A_HIGH_VALUE": 145,
+      "A_HIGH_VALUE": 91,
       "B_NEEDS_IMPROVEMENT": 47,
       "C_THIN": 0,
       "D_DUPLICATIVE": 0,
-      "E_UTILITY_ONLY": 4,
+      "E_UTILITY_ONLY": 58,
       "F_INCOMPLETE": 0
     },
     "tier1Breakdown": {
@@ -49,11 +49,11 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 7,
+        "highValueCount": 1,
         "needsImprovementCount": 2,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       },
       "fr": {
@@ -61,11 +61,11 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 7,
+        "highValueCount": 1,
         "needsImprovementCount": 2,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       },
       "ar": {
@@ -73,11 +73,11 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 7,
+        "highValueCount": 1,
         "needsImprovementCount": 2,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       },
       "de": {
@@ -85,11 +85,11 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 7,
+        "highValueCount": 1,
         "needsImprovementCount": 2,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       },
       "pt": {
@@ -97,11 +97,11 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 7,
+        "highValueCount": 1,
         "needsImprovementCount": 2,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       },
       "hi": {
@@ -109,11 +109,11 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 7,
+        "highValueCount": 1,
         "needsImprovementCount": 2,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       },
       "ur": {
@@ -121,11 +121,11 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 7,
+        "highValueCount": 1,
         "needsImprovementCount": 2,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       },
       "zh": {
@@ -133,11 +133,11 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 8,
+        "highValueCount": 2,
         "needsImprovementCount": 1,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       },
       "ja": {
@@ -145,16 +145,16 @@
         "totalPages": 175,
         "indexablePages": 9,
         "noindexPages": 166,
-        "highValueCount": 8,
+        "highValueCount": 2,
         "needsImprovementCount": 1,
         "thinCount": 0,
         "duplicativeCount": 0,
-        "utilityOnlyCount": 0,
+        "utilityOnlyCount": 6,
         "incompleteCount": 0
       }
     },
     "categoryScores": {
-      "contentDepth": 96,
+      "contentDepth": 88,
       "uniqueness": 100,
       "trustAndMethodology": 96,
       "sourceTransparency": 95,
@@ -166,7 +166,7 @@
     },
     "overallReadinessScore": 96,
     "assessmentDisclaimer": "Internal readiness assessment — not a prediction of AdSense approval.",
-    "auditTimestamp": "2026-10-16T05:03:00.909Z"
+    "auditTimestamp": "2026-10-16T05:56:50.532Z"
   },
   "samplePages": [
     {
