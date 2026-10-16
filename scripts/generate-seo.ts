@@ -15,6 +15,7 @@ import { SeoPageRenderer } from '../src/lib/seo-renderer';
 import { createLocalizedLongFormPages } from './localized-long-form-pages';
 import { createLocalizedToolPages } from './localized-tool-pages';
 import { LONG_FORM_LOCALES } from '../src/lib/i18n/long-form';
+import { TIER_1_LOCALES } from '../src/lib/i18n';
 import {
   createRelocationPages,
   createJobOfferAuthorityPage,
@@ -143,11 +144,6 @@ export function runSeoGenerator() {
         name: 'LivWorthy',
         description: PLATFORM_IDENTITY.coreDefinition,
         publisher: { '@id': `${BASE_URL}/#organization` },
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: `${BASE_URL}/?city={search_term_string}&tab=salary-worth`,
-          'query-input': 'required name=search_term_string',
-        },
       },
       {
         '@type': 'Organization',
@@ -943,7 +939,7 @@ export function runSeoGenerator() {
         </div>
 
         <div class="mt-8 flex items-center gap-4 flex-wrap">
-          <a href="/?city=${cityA.id}&tab=compare" class="px-5 py-2.5 bg-teal-700 text-white font-bold text-sm rounded-xl hover:bg-teal-800 inline-block shadow-sm">
+          <a href="/compare/${comp.slug}" class="px-5 py-2.5 bg-teal-700 text-white font-bold text-sm rounded-xl hover:bg-teal-800 inline-block shadow-sm">
             Launch Live Interactive Comparison
           </a>
           <a href="/compare" class="text-sm font-semibold text-teal-700 hover:underline">
@@ -2096,11 +2092,12 @@ function renderPageHtml(
     `<link rel="canonical" href="${page.canonicalUrl}" />`
   );
 
-  // Path-preserving hreflang alternates for localized routes, homepages, and tool pages.
+  // Path-preserving hreflang alternates for verified Tier-1 localized routes, homepages, and tool pages.
   let hreflangTags = '';
   const currentUrl = new URL(page.canonicalUrl);
   const pathParts = currentUrl.pathname.split('/').filter(Boolean);
   const firstSeg = pathParts[0] || '';
+  const isTier1Prefix = (TIER_1_LOCALES as string[]).includes(firstSeg);
   const isLocalePrefix = LONG_FORM_LOCALES.includes(firstSeg);
 
   const cleanPath = isLocalePrefix ? '/' + pathParts.slice(1).join('/') : currentUrl.pathname;
@@ -2114,18 +2111,19 @@ function renderPageHtml(
     '/job-offers',
   ].includes(cleanPath);
 
-  const isLocalizedCluster = isLocalePrefix || isHomeCluster || isCoreTool;
+  const isIndexable = page.robots === 'index, follow';
+  const isLocalizedCluster = isIndexable && (isTier1Prefix || isHomeCluster || isCoreTool);
 
   if (isLocalizedCluster) {
     const alternates: string[] = [];
     if (isHomeCluster) {
-      for (const l of LONG_FORM_LOCALES) {
+      for (const l of TIER_1_LOCALES) {
         alternates.push(`    <link rel="alternate" hreflang="${l}" href="${BASE_URL}/${l}" />`);
       }
       alternates.push(`    <link rel="alternate" hreflang="x-default" href="${BASE_URL}/" />`);
     } else {
       const defaultEnUrl = `${BASE_URL}${cleanPath}`;
-      for (const l of LONG_FORM_LOCALES) {
+      for (const l of TIER_1_LOCALES) {
         if (l === 'en') {
           alternates.push(`    <link rel="alternate" hreflang="en" href="${defaultEnUrl}" />`);
         } else {
@@ -2135,7 +2133,7 @@ function renderPageHtml(
       alternates.push(`    <link rel="alternate" hreflang="x-default" href="${defaultEnUrl}" />`);
     }
     hreflangTags = '\n' + alternates.join('\n');
-  } else {
+  } else if (isIndexable) {
     hreflangTags = `\n    <link rel="alternate" hreflang="x-default" href="${page.canonicalUrl}" />`;
   }
   // Strip any previous hreflang alternate tags in the template before injecting fresh ones
@@ -2360,6 +2358,9 @@ Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /test/
+Disallow: /*?*city=
+Disallow: /*?*tab=
+Disallow: /*?*salary=
 
 Sitemap: ${BASE_URL}/sitemap.xml
 `;

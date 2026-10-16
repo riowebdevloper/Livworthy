@@ -698,18 +698,16 @@ export class SeoPageRenderer {
             <h3 class="text-base font-bold text-white">Interactive Scenario Calculator</h3>
             <p class="text-xs text-slate-300 mt-0.5">Customize your household size, rent override, and tax deductions in real time.</p>
           </div>
-          <a href="/?${
-            page.cityId
-              ? `city=${page.cityId}&salary=${page.salaryMajor || 100000}&tab=${
-                  page.pageType === 'salary-needed'
-                    ? 'salary-needed'
-                    : page.pageType === 'salary-after-tax'
-                    ? 'salary-after-tax'
-                    : page.pageType === 'cost-of-living'
-                    ? 'cost-of-living'
-                    : 'salary-worth'
-                }`
-              : `tab=compare`
+          <a href="${
+            page.pageType === 'salary-needed'
+              ? '/salary-needed'
+              : page.pageType === 'salary-after-tax'
+              ? '/salary-after-tax'
+              : page.pageType === 'cost-of-living'
+              ? '/cost-of-living'
+              : page.pageType === 'comparison'
+              ? '/compare'
+              : '/salary-worth'
           }" class="px-5 py-2.5 bg-[#167D75] hover:bg-[#136660] text-white font-bold text-xs rounded-xl transition-colors whitespace-nowrap shadow-xs">
             Open Interactive Calculator →
           </a>

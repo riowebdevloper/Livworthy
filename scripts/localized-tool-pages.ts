@@ -671,7 +671,7 @@ export function createLocalizedToolPages(baseUrl: string): ToolSeoPage[] {
                   ${escapeHtml(dict.common.disclaimer)}
                 </p>
 
-                ${loc === 'en' ? renderCalculatorEducationalHtml(tool) : ''}
+                ${renderCalculatorEducationalHtml(tool)}
 
                 <div class="mt-8 pt-6 border-t border-[#DCE3E0] flex flex-wrap gap-2 text-xs">
                   <a href="/methodology" class="inline-flex items-center px-3 py-1.5 rounded-lg border border-[#DCE3E0] hover:bg-[#F7F8F5] text-[#102A2E] font-medium">

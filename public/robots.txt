@@ -3,5 +3,8 @@ Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /test/
+Disallow: /*?*city=
+Disallow: /*?*tab=
+Disallow: /*?*salary=
 
 Sitemap: https://www.livworthy.com/sitemap.xml
