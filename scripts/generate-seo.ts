@@ -336,10 +336,10 @@ export function runSeoGenerator() {
 
               <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 border-b border-[#F7F8F5] gap-1">
                 <div>
-                  <div class="font-bold text-sm text-[#167D75]">Estimated Take-Home <span class="text-xs text-[#60706D] font-normal">(29.7% total tax &amp; FICA)</span></div>
+                  <div class="font-bold text-sm text-[#167D75]">Estimated Take-Home <span class="text-xs text-[#60706D] font-normal">(29.1% total tax &amp; FICA)</span></div>
                   <div class="text-xs text-[#60706D]">After federal, state, local resident taxes &amp; social contributions</div>
                 </div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-[#167D75]">$70,343<span class="text-sm font-medium text-[#60706D]">/yr</span></div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#167D75]">$70,879<span class="text-sm font-medium text-[#60706D]">/yr</span></div>
               </div>
 
               <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 border-b border-[#F7F8F5] gap-1">
@@ -347,7 +347,7 @@ export function runSeoGenerator() {
                   <div class="font-bold text-sm text-[#60706D]">Estimated Living Costs</div>
                   <div class="text-xs text-[#60706D]">Housing (ONE BEDROOM), food, utilities, transit &amp; healthcare</div>
                 </div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-[#60706D]">−$63,240<span class="text-sm font-medium text-[#60706D]">/yr</span></div>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#60706D]">−$50,960<span class="text-sm font-medium text-[#60706D]">/yr</span></div>
               </div>
 
               <div class="bg-[#F7F8F5] rounded-xl p-4 sm:p-5 border border-[#DCE3E0]">
@@ -357,8 +357,8 @@ export function runSeoGenerator() {
                     <p class="text-xs text-[#60706D] mt-1 max-w-md leading-relaxed">Money you actually keep each year after taxes and estimated living costs — available for savings, investments, or discretionary spending.</p>
                   </div>
                   <div class="text-left sm:text-right shrink-0">
-                    <span class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#167D75]">+$7,103</span>
-                    <span class="text-sm font-bold text-[#60706D] block mt-0.5">+$592 / month</span>
+                    <span class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#167D75]">+$19,919</span>
+                    <span class="text-sm font-bold text-[#60706D] block mt-0.5">+$1,660 / month</span>
                   </div>
                 </div>
               </div>
@@ -366,13 +366,13 @@ export function runSeoGenerator() {
               <div class="space-y-2 pt-2">
                 <div class="flex justify-between text-xs font-semibold text-[#102A2E]">
                   <span>Where your salary goes:</span>
-                  <span class="text-[#167D75]">Savings: 7%</span>
+                  <span class="text-[#167D75]">Savings: 20%</span>
                 </div>
                 <div class="h-4 w-full rounded-full bg-[#E5EAE8] overflow-hidden flex shadow-inner">
-                  <div style="width: 30%;" class="bg-red-500 h-full" title="Taxes & Deductions: 30%"></div>
-                  <div style="width: 46%;" class="bg-blue-600 h-full" title="Housing: 46%"></div>
-                  <div style="width: 17%;" class="bg-amber-500 h-full" title="Living Essentials: 17%"></div>
-                  <div style="width: 7%;" class="bg-[#167D75] h-full" title="Remaining Surplus: 7%"></div>
+                  <div style="width: 29%;" class="bg-red-500 h-full" title="Taxes & Deductions: 29%"></div>
+                  <div style="width: 32%;" class="bg-blue-600 h-full" title="Housing: 32%"></div>
+                  <div style="width: 19%;" class="bg-amber-500 h-full" title="Living Essentials: 19%"></div>
+                  <div style="width: 20%;" class="bg-[#167D75] h-full" title="Remaining Surplus: 20%"></div>
                 </div>
               </div>
             </div>

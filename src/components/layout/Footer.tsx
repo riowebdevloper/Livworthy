@@ -486,6 +486,14 @@ export const Footer: React.FC<FooterProps> = ({
             <a href="/privacy" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">{dict.footer.privacy}</a>
             <span className="hidden sm:inline" aria-hidden="true">·</span>
             <a href="/contact" className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Contact</a>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('livworthy:open-cookie-preferences'))}
+              className="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded text-xs text-[#60706D] cursor-pointer"
+            >
+              Cookie Preferences
+            </button>
           </nav>
         </div>
       </div>

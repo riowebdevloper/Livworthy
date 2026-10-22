@@ -178,7 +178,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     metaDescription:
       'See how far a $150,000 salary goes in NYC after federal, New York State and city taxes, rent, living costs and savings.',
     directAnswer:
-      'Yes, $150,000 is an excellent salary in New York City, placing an earner in the top 15% of individual income earners citywide. After cumulative federal, New York State, and NYC resident taxes (~32.8% effective rate), take-home pay is roughly $8,397 per month. At $150K, you comfortably pass the landlord 40x rent rule for apartments up to $3,750/month, allowing you to rent an independent 1-bedroom apartment in prime Manhattan or Brooklyn neighborhoods while maintaining strong monthly savings.',
+      'Yes, $150,000 is an excellent salary in New York City, placing an earner in the top 15% of individual income earners citywide. After cumulative federal, New York State, and NYC resident taxes (~33.3% effective rate), take-home pay is roughly $8,343 per month ($100,121 annually). At $150K, you comfortably pass the landlord 40x rent rule for apartments up to $3,750/month, allowing you to rent an independent 1-bedroom apartment in prime Manhattan or Brooklyn neighborhoods while maintaining strong monthly savings.',
     sections: [
       {
         id: 'verdict',
@@ -191,14 +191,14 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'after-tax',
         h2: '$150K salary after tax',
         paragraphs: [
-          'On a $150,000 salary, progressive tax brackets enter higher tiers. Total statutory deductions amount to approximately $49,235 annually (32.8% effective tax rate), consisting of Federal Income Tax (~$24,400), FICA payroll taxes ($10,340), New York State Income Tax (~$8,640), and NYC Resident Tax (~$5,855).',
+          'On a $150,000 salary, progressive tax brackets enter higher tiers. Total statutory deductions amount to approximately $49,879 annually (33.3% effective tax rate), consisting of Federal Income Tax (~$24,000), FICA payroll taxes ($11,475), New York State Income Tax (~$8,500), and NYC Resident Tax (~$5,900).',
         ],
       },
       {
         id: 'monthly-take-home',
         h2: 'Monthly take-home pay on $150K',
         paragraphs: [
-          'Net take-home pay is approximately $8,397 per month (or roughly $3,875 bi-weekly). This provides substantial headroom above baseline metropolitan living costs.',
+          'Net take-home pay is approximately $8,343 per month (or roughly $3,851 bi-weekly). This provides substantial headroom above baseline metropolitan living costs.',
         ],
       },
       {
@@ -856,7 +856,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     metaDescription:
       'See what a £100,000 salary is worth in London after PAYE, National Insurance, personal allowance taper, housing, living costs and savings.',
     directAnswer:
-      'Yes, £100,000 is an elite compensation milestone in London, placing you in the top 4% of UK individual earners. Earning £100,000 yields approximately £5,655 per month in net take-home pay under HMRC PAYE and National Insurance. At this income, you can comfortably afford an upscale 1-bedroom or 2-bedroom flat in prime Central London (Zones 1–2) while saving over £2,000 per month. However, earnings above £100,000 trigger the UK Personal Allowance taper, creating an effective 60% marginal tax rate on income up to £125,140.',
+      'Yes, £100,000 is an elite compensation milestone in London, placing you in the top 4% of UK individual earners. Earning £100,000 yields approximately £5,713 per month (£68,557 annually, 31.4% effective tax rate) in net take-home pay under HMRC PAYE and National Insurance. At this income, you can comfortably afford an upscale 1-bedroom or 2-bedroom flat in prime Central London (Zones 1–2) while saving over £2,000 per month. However, earnings above £100,000 trigger the UK Personal Allowance taper, creating an effective 60% marginal tax rate on income up to £125,140.',
     sections: [
       {
         id: 'verdict',
@@ -877,7 +877,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'take-home',
         h2: 'Monthly take-home pay on £100K',
         paragraphs: [
-          'Net annual pay on £100,000 is approximately £67,860, resulting in roughly £5,655 per month net in your bank account.',
+          'Net annual pay on £100,000 is approximately £68,557, resulting in roughly £5,713 per month net in your bank account.',
         ],
       },
       {
@@ -1819,7 +1819,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     metaDescription:
       'See what an €80,000 salary is worth in Berlin after German income tax, solidarity surcharge, statutory social insurance, rent and living costs.',
     directAnswer:
-      'Yes, €80,000 is an excellent, upper-tier salary in Berlin, placing an individual in the top 12% of German income earners and well above the Berlin median worker income (~€46,000). While German payroll deductions (income tax and mandatory social insurance: health, pension, nursing care, unemployment) total approximately 41.5% for a single person in Tax Class 1 (Steuerklasse 1), €80,000 yields roughly €3,900 in monthly net take-home pay. With Berlin\'s moderate cost of living, you retain €1,200 to €1,600 monthly in savings.',
+      'Yes, €80,000 is an excellent, upper-tier salary in Berlin, placing an individual in the top 12% of German income earners and well above the Berlin median worker income (~€46,000). While German payroll deductions (income tax and mandatory social insurance: health, pension, nursing care, unemployment) total approximately 47.9% for a single person in Tax Class 1 (Steuerklasse 1), €80,000 yields roughly €3,471 in monthly net take-home pay (€41,656 annually). With Berlin\'s moderate cost of living, you retain €700 to €1,100 monthly in savings after rent and essentials.',
     sections: [
       {
         id: 'verdict',
@@ -1835,17 +1835,17 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
           'German payroll withholding is split between progressive Einkommensteuer (Income Tax) and the four pillars of statutory social security (Sozialabgaben), split 50/50 between employee and employer:',
         ],
         subsections: [
-          { h3: 'Income Tax (Lohnsteuer)', content: 'Progressive tariff brackets amounting to roughly €18,400 annually on €80K (including solidarity surcharge if applicable).' },
+          { h3: 'Income Tax (Lohnsteuer)', content: 'Progressive tariff brackets amounting to roughly €18,444 annually on €80K (including solidarity surcharge if applicable).' },
           { h3: 'Pension Insurance (Rentenversicherung)', content: '9.3% employee share of gross up to the federal contribution ceiling.' },
           { h3: 'Health Insurance (Krankenversicherung)', content: '7.3% base + statutory supplementary contribution (~0.85%) up to the ceiling.' },
-          { h3: 'Nursing Care & Unemployment', content: 'Nursing care (Pflegeversicherung) ~2.2% (for childless individuals) + Unemployment (Arbeitslosenversicherung) 1.3%.' },
+          { h3: 'Nursing Care & Unemployment', content: 'Nursing care (Pflegeversicherung) ~2.3% (for childless individuals) + Unemployment (Arbeitslosenversicherung) 1.3%.' },
         ],
       },
       {
         id: 'take-home',
         h2: 'Monthly take-home pay on €80K in Berlin',
         paragraphs: [
-          'Net take-home pay is approximately €3,900 per month (€46,800 annually) for a single employee without church tax in Steuerklasse 1.',
+          'Net take-home pay is approximately €3,471 per month (€41,656 annually) for a single employee without church tax in Steuerklasse 1.',
         ],
       },
       {

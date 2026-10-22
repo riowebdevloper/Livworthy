@@ -55,6 +55,7 @@ import { SalaryNeededResult } from './engines/calculator-core/salary-needed';
 import { SupportedLocale, getInitialLocale, setStoredLocale, TRANSLATIONS } from './lib/i18n';
 import { I18nProvider, useI18n } from './context/I18nContext';
 import { LanguageSuggestionBanner } from './components/layout/LanguageSuggestionBanner';
+import { CookieConsentBanner } from './components/ui/CookieConsentBanner';
 
 function AppContent() {
   const { locale, setLocale, dict } = useI18n();
@@ -717,6 +718,7 @@ export default function App() {
     <I18nProvider>
       <LanguageSuggestionBanner />
       <AppContent />
+      <CookieConsentBanner />
     </I18nProvider>
   );
 }

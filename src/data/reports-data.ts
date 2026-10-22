@@ -1,4 +1,5 @@
 import { TaxRegistry } from '../engines/tax/tax-registry';
+import { CostOfLivingEngine } from '../engines/col/col-engine';
 import { CITIES, COUNTRIES } from './locations';
 import { CITY_COL_BENCHMARKS } from './city-benchmarks';
 import { createMoney, toMajor } from '../lib/money';
@@ -50,15 +51,20 @@ export function getGlobalSalaryWorthIndexReport(): EmpiricalReportMetadata {
 
     const netAnnual = Math.round(toMajor(taxRes.netIncome));
     const effectiveTaxRate = (taxRes.effectiveTaxRate * 100).toFixed(1) + '%';
-    const bm = CITY_COL_BENCHMARKS[h.cityId];
-    const monthlyRent = bm?.rentBase?.['1-bedroom'] || 2000;
-    const annualRent = monthlyRent * 12;
-    const monthlyLiving =
-      (bm?.groceriesPerAdult || 350) +
-      (bm?.diningPerAdult || 200) +
-      (bm?.baseUtilities || 150) +
-      (bm?.publicTransitPerAdult || 100);
-    const annualLiving = Math.round(monthlyLiving * 12);
+    
+    const colRes = CostOfLivingEngine.calculate(h.cityId, {
+      adults: 1,
+      children: 0,
+      housingType: '1-bedroom',
+      areaType: 'typical',
+      transportMode: 'public_transit',
+      carsCount: 0,
+      lifestyleLevel: 'moderate',
+      preset: 'single',
+    });
+
+    const annualRent = Math.round(toMajor(colRes.housingMonthly) * 12);
+    const annualLiving = Math.round(toMajor(colRes.monthlyWithoutRent) * 12);
     const annualDisposable = netAnnual - annualRent - annualLiving;
     const savingsRate = Math.max(0, Math.round((annualDisposable / netAnnual) * 100)) + '%';
 
@@ -101,10 +107,10 @@ export function getGlobalSalaryWorthIndexReport(): EmpiricalReportMetadata {
       { name: 'Office for National Statistics (ONS Private Rental Market)', url: 'https://www.ons.gov.uk', jurisdiction: 'United Kingdom' },
     ],
     summaryInsights: [
-      'Dubai demonstrates the highest uncommitted net savings capacity (51% savings rate on 350,000 AED) driven by 0% statutory personal income tax.',
-      'New York City residents face the steepest combined tax burden among US metros (29.1% effective rate on $100K) due to layered Federal, State, and NYC Local Resident taxes.',
-      'London professionals earning £75,000 retain £52,704 net, but high central housing costs (£2,150/mo) compress discretionary savings capacity to 24%.',
-      'Zurich provides strong absolute purchasing power: despite high nominal living costs, moderate cantonal taxation leaves over 42% disposable savings capacity on 130,000 CHF.',
+      'Dubai demonstrates the highest uncommitted net savings capacity (60% savings rate on 350,000 AED, retaining 208,640 AED annually) driven by 0% statutory personal income tax.',
+      'New York City residents face the steepest combined tax burden among US metros (29.1% effective rate on $100K) due to layered Federal, State, and NYC Local Resident taxes, yielding $70,879 net and $19,919 (28%) in annual uncommitted savings.',
+      'London professionals earning £75,000 retain £54,057 net (27.9% effective tax rate), leaving £16,077 annually (30% savings rate) after central housing (£1,950/mo) and baseline living costs.',
+      'Zurich provides strong absolute purchasing power: despite high nominal living costs, moderate cantonal taxation leaves 48% disposable savings capacity (CHF 48,199 annually) on 130,000 CHF.',
     ],
     tableHeaders: [
       'Metro & Country',
@@ -130,8 +136,8 @@ export function getPurchasingPowerComparisonReport(): EmpiricalReportMetadata {
     { cityA: 'nyc', cityB: 'london', grossA: 100000, currA: 'USD', grossB: 75000, currB: 'GBP', note: 'Higher NYC gross offset by lower London nominal rent' },
     { cityA: 'nyc', cityB: 'dubai', grossA: 100000, currA: 'USD', grossB: 350000, currB: 'AED', note: 'Dubai 0% PIT produces +42% higher annual cash retention' },
     { cityA: 'london', cityB: 'dubai', grossA: 75000, currA: 'GBP', grossB: 350000, currB: 'AED', note: 'Elimination of UK 40% higher-rate tax expands savings by £18,000+' },
-    { cityA: 'toronto', cityB: 'vancouver', grossA: 100000, currA: 'CAD', grossB: 100000, currB: 'CAD', note: 'Vancouver rent carries a 9% premium over Toronto central core' },
-    { cityA: 'sydney', cityB: 'melbourne', grossA: 120000, currA: 'AUD', grossB: 120000, currB: 'AUD', note: 'Melbourne housing offers 18% savings compared to Sydney inner-ring' },
+    { cityA: 'toronto', cityB: 'vancouver', grossA: 100000, currA: 'CAD', grossB: 100000, currB: 'CAD', note: 'Vancouver rent carries a 6% premium over Toronto central core (+6%)' },
+    { cityA: 'sydney', cityB: 'melbourne', grossA: 120000, currA: 'AUD', grossB: 120000, currB: 'AUD', note: 'Melbourne housing offers 20% savings compared to Sydney inner-ring (-20%)' },
     { cityA: 'berlin', cityB: 'munich', grossA: 80000, currA: 'EUR', grossB: 80000, currB: 'EUR', note: 'Identical federal tax schedules, but Munich rent is 28% higher than Berlin' },
     { cityA: 'singapore', cityB: 'dubai', grossA: 120000, currA: 'SGD', grossB: 350000, currB: 'AED', note: 'Both boast low/zero personal income tax; Dubai rents offer larger unit footprints' },
   ];
@@ -272,9 +278,9 @@ export function getSalaryToRentIndexReport(): EmpiricalReportMetadata {
       { name: 'Statistisches Bundesamt (Destatis)', url: 'https://www.destatis.de', jurisdiction: 'Germany' },
     ],
     summaryInsights: [
-      'Zurich and Berlin offer the most favorable salary-to-rent profiles (<29% of net pay), affording median professionals substantial uncommitted savings.',
-      'New York City and London exhibit the most severe housing burdens, where central 1-bed rents absorb 45% and 48% of median net professional take-home pay respectively.',
-      'Austin provides substantially lower rent burdens (31%) than coastal US technology hubs like New York (45%) and San Francisco (41%).',
+      'Austin (30%), Zurich (32%), and Dubai (34%) offer the most favorable salary-to-rent profiles (<35% of net pay), affording median professionals substantial uncommitted savings.',
+      'New York City and London exhibit severe housing burdens, where central 1-bed rents absorb 57% and 55% of median net professional take-home pay respectively.',
+      'Austin provides substantially lower rent burdens (30%) than coastal US technology hubs like New York (57%) and San Francisco (41%).',
     ],
     tableHeaders: [
       'Metro & Country',

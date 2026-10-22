@@ -32,9 +32,9 @@ export const VERIFIED_CITY_EDITORIAL: Record<string, CityEditorialProfile> = {
     typicalSalaryContext:
       'New York City is a city of extremes when it comes to paychecks. According to BLS and state labor figures, the median full-time wage across the five boroughs sits right around $68,500. If you’re starting out in media, non-profits, or hospitality, expect $55,000 to $75,000. On the other end, mid-to-senior roles in software engineering, investment banking, and corporate law routinely pull $140,000 to $220,000 base pay—with bonuses pushing that much higher.',
     takeHomePayAnalysis:
-      'Living in NYC means paying taxes to three separate governments: Uncle Sam, New York State (4.0% to 10.9%), and the New York City resident income tax (3.08% to 3.88%), plus standard FICA deductions. If you earn $100,000 as a single filer, you don’t take home $8,333 a month—you take home about $5,862 ($70,340 a year). Almost 30% of your paycheck vanishes before you pay a single bill.',
+      'Living in NYC means paying taxes to three separate governments: Uncle Sam, New York State (4.0% to 10.9%), and the New York City resident income tax (3.08% to 3.88%), plus standard FICA deductions. If you earn $100,000 as a single filer claiming standard deductions under 2026 tax schedules, you don’t take home $8,333 a month—you take home about $5,907 ($70,879 a year). Exactly 29.1% of your gross earnings goes to statutory withholdings before you pay a single bill.',
     housingMarketContext:
-      'Rent is where New York hits you hardest. HUD benchmarks a standard 1-bedroom fair market rent at around $2,350 across the city as a whole. But if you want to live in prime Manhattan (like the West Village or Flatiron) or trendy Brooklyn (Williamsburg, DUMBO), expect to pay $3,400 to $4,200. Landlords enforce a strict 40x rent rule: to qualify for a $2,350 apartment without a guarantor, you must show at least $94,000 in gross annual income.',
+      'Rent is where New York hits you hardest. HUD benchmarks a standard 1-bedroom fair market rent at $2,655 across the New York metro area (FY 2026). But if you want to live in prime Manhattan (like the West Village or Flatiron) or trendy Brooklyn (Williamsburg, DUMBO), expect to pay $3,400 to $4,200. Landlords enforce a strict 40x rent rule: to qualify for a $2,655 apartment without a guarantor, you must show at least $106,200 in gross annual income.',
     everydayLivingCosts:
       'Day-to-day spending in NYC carries roughly a 28% premium over the US national average. Bodegas, supermarkets, and restaurants all pass along the high commercial rents they pay. Electric bills via ConEdison are steep too—averaging 26 to 30 cents per kilowatt-hour, which easily pushes monthly utilities and broadband to $180–$260 for a modest 1-bedroom.',
     taxConsiderations:
@@ -42,7 +42,7 @@ export const VERIFIED_CITY_EDITORIAL: Record<string, CityEditorialProfile> = {
     singleVsFamilyContext:
       'A single person making $90,000 can live comfortably in Queens, Upper Manhattan, or outer Brooklyn, with some cash left over each month. For a family, the math changes drastically. Infant daycare runs $2,200 to $2,800 a month per child, and decent two- or three-bedroom apartments in solid school districts generally require household earnings north of $220,000.',
     transportAndMobility:
-      'The subway is New York’s greatest financial equalizer. You don’t need a car, which saves you $500 to $900 a month on auto loans, insurance, and parking headaches. An unlimited 30-day MTA pass is $132, giving you 24/7 access to the entire transit grid across Manhattan, Brooklyn, Queens, and the Bronx.',
+      'The subway is New York’s greatest financial equalizer. You don’t need a car, which saves you $500 to $900 a month on auto loans, insurance, and parking headaches. The MTA OMNY fare cap ($35 rolling 7-day cap, equivalent to ~$151.67 per month) provides unlimited 24/7 access to the entire transit grid across Manhattan, Brooklyn, Queens, and the Bronx.',
     peerCityComparison:
       'Compared to London, tech and finance salaries in New York are roughly 35% to 50% higher in dollar terms. But higher rents and out-of-pocket healthcare eat up a lot of that premium. Compared to Austin or Miami, living in New York costs you an extra 12% to 14% of your paycheck in direct state and local income taxes.',
     dataProvenance: 'OBSERVED',
@@ -57,7 +57,7 @@ export const VERIFIED_CITY_EDITORIAL: Record<string, CityEditorialProfile> = {
     typicalSalaryContext:
       'London salaries often surprise American expats because the headline numbers look lower. According to the ONS, the median full-time salary across Greater London is roughly £44,400. Junior analysts and civil servants typically start at £30,000 to £38,000. Experienced software engineers, management consultants, and finance professionals generally land between £70,000 and £115,000 base pay.',
     takeHomePayAnalysis:
-      'The UK tax system is straightforward under HMRC PAYE, but it bites hard as you earn more. You get a tax-free Personal Allowance of £12,570, then pay 20% Basic Rate up to £50,270, and 40% Higher Rate after that, plus 8% employee National Insurance (dropping to 2% above the higher limit). On a £75,000 salary, your net pay is about £52,600 a year—roughly £4,383 a month in your account.',
+      'The UK tax system is straightforward under HMRC PAYE, but it bites hard as you earn more. You get a tax-free Personal Allowance of £12,570, then pay 20% Basic Rate up to £50,270, and 40% Higher Rate after that, plus 8% employee National Insurance (dropping to 2% above the higher limit). On a £75,000 salary under 2026 PAYE and Class 1 NI schedules, your net pay is £54,057 a year—roughly £4,505 a month in your account (an effective tax rate of 27.9%).',
     housingMarketContext:
       'Rent takes the biggest bite out of any Londoner’s paycheck. Expect to pay £1,650 to £1,900 a month for a 1-bedroom flat in Zones 2–3, and upwards of £2,200 in central Zone 1. Don’t forget Council Tax: depending on your borough and valuation band, that’s another £120 to £190 a month you have to budget for on top of rent.',
     everydayLivingCosts:
@@ -107,7 +107,7 @@ export const VERIFIED_CITY_EDITORIAL: Record<string, CityEditorialProfile> = {
     typicalSalaryContext:
       'Toronto is Canada’s financial and tech nerve center. Statistics Canada data pegs median employment earnings in the GTA right around CA$62,000. Tech professionals, corporate accountants, and nurses typically make CA$80,000 to CA$125,000, while engineering managers and senior directors reach CA$150,000 to CA$195,000.',
     takeHomePayAnalysis:
-      'Ontario employees pay combined federal and provincial taxes, plus Canada Pension Plan (CPP) and Employment Insurance (EI). On a CA$100,000 salary, your net pay is about CA$73,200 a year—roughly CA$6,100 a month in your pocket, meaning deductions take about 26.8%.',
+      'Ontario employees pay combined federal and provincial taxes, plus Canada Pension Plan (CPP) and Employment Insurance (EI). On a CA$100,000 salary, your net pay is CA$73,099 a year—roughly CA$6,092 a month in your pocket, meaning deductions take 26.9% under CRA statutory schedules.',
     housingMarketContext:
       'Finding an apartment in Toronto is competitive. CMHC data shows median market rents for a 1-bedroom condo downtown hover between CA$2,300 and CA$2,600 a month. Keep in mind: buildings occupied after November 15, 2018, are exempt from provincial rent control, so your landlord can raise rent by any amount when your lease expires.',
     everydayLivingCosts:
@@ -157,7 +157,7 @@ export const VERIFIED_CITY_EDITORIAL: Record<string, CityEditorialProfile> = {
     typicalSalaryContext:
       'Austin transformed over the last decade from a sleepy state capital into a major tech and corporate hub. Median pay sits around $58,000 across the metro area. For software engineers, semiconductor specialists, and enterprise sales reps, base salaries typically range from $95,000 to $150,000.',
     takeHomePayAnalysis:
-      'The big draw here is zero state income tax. In Austin, you only pay federal income tax and standard FICA payroll deductions. On a $100,000 salary, a single filer keeps roughly $78,730 a year ($6,560 a month)—leaving you with an effective tax rate of just 21.3%. That’s about $8,400 more in your pocket every single year compared to making the exact same salary in New York or California.',
+      'The big draw here is zero state income tax. In Austin, you only pay federal income tax and standard FICA payroll deductions. On a $100,000 salary, a single filer keeps roughly $79,180 a year ($6,598 a month)—leaving you with an effective tax rate of just 20.8%. That’s over $8,300 more in your pocket every single year compared to making the exact same salary in New York.',
     housingMarketContext:
       'A building boom of new apartment complexes has helped cool Austin’s rental market. A modern 1-bedroom apartment in Central Austin or near South Congress averages $1,650 to $1,950 a month. If you’re willing to live in suburbs like Round Rock or Cedar Park, that drops to $1,350–$1,550.',
     everydayLivingCosts:
@@ -182,7 +182,7 @@ export const VERIFIED_CITY_EDITORIAL: Record<string, CityEditorialProfile> = {
     typicalSalaryContext:
       'ABS data puts median full-time earnings in Greater Sydney at roughly A$89,000 a year. Professionals in construction management, tech, healthcare, and corporate finance routinely make A$110,000 to A$165,000.',
     takeHomePayAnalysis:
-      'All income tax in Australia is federal—states don’t charge income tax. You pay progressive brackets plus a 2.0% Medicare levy. On top of your salary, Australian law forces employers to pay an extra 11.5% Superannuation guarantee directly into your retirement fund. On an A$120,000 salary, you take home around A$88,600 net (about A$7,383 a month), an effective tax rate of roughly 26.2%.',
+      'All income tax in Australia is federal—states don’t charge income tax. You pay progressive brackets plus a 2.0% Medicare levy. On top of your salary, Australian law forces employers to pay an extra 11.5% Superannuation guarantee directly into your retirement fund. On an A$120,000 salary, you take home around A$90,812 net (about A$7,568 a month), an effective tax rate of roughly 24.3% under ATO Stage 3 schedules.',
     housingMarketContext:
       'Sydney rent is notoriously expensive, and leases are quoted weekly instead of monthly. A 1-bedroom flat in the Eastern Suburbs or Inner West runs A$680 to A$820 a week (that’s A$2,950 to A$3,550 a month). If you move out to middle-ring suburbs like Parramatta, rents drop to A$520–A$600 a week.',
     everydayLivingCosts:
@@ -207,7 +207,7 @@ export const VERIFIED_CITY_EDITORIAL: Record<string, CityEditorialProfile> = {
     typicalSalaryContext:
       'Berlin was once famous for being “poor but sexy,” but its booming tech and startup scene has changed the landscape. Destatis figures put median full-time wages at roughly €45,800. Senior software developers and product leaders earn €68,000 to €105,000 base pay.',
     takeHomePayAnalysis:
-      'German paystubs are famous for statutory deductions. You pay progressive income tax (Einkommensteuer) plus four mandatory social contributions split between you and your employer: health insurance, long-term care, pension, and unemployment insurance. On a €70,000 gross salary as a single tax-class 1 employee, your net take-home is roughly €42,900 a year—about €3,575 a month, meaning deductions take roughly 38.7%.',
+      'German paystubs are famous for statutory deductions. You pay progressive income tax (Einkommensteuer) plus four mandatory social contributions split between you and your employer: health insurance, long-term care, pension, and unemployment insurance. On a €70,000 gross salary as a single tax-class 1 employee, your net take-home is €37,147 a year—about €3,096 a month, meaning statutory deductions and social insurance take 46.9%.',
     housingMarketContext:
       'Finding a flat in Berlin is tough right now due to tight supply. If you sign a new lease for a 1-bedroom apartment in popular neighborhoods like Mitte, Kreuzberg, or Prenzlauer Berg, expect warm rent (including heat and building fees) of €1,150 to €1,450 a month. Competition for apartments is intense, with dozens of applicants showing up with their SCHUFA credit reports.',
     everydayLivingCosts:

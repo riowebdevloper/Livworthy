@@ -42,10 +42,10 @@
     }
   ],
   "summaryInsights": [
-    "Dubai demonstrates the highest uncommitted net savings capacity (51% savings rate on 350,000 AED) driven by 0% statutory personal income tax.",
-    "New York City residents face the steepest combined tax burden among US metros (29.1% effective rate on $100K) due to layered Federal, State, and NYC Local Resident taxes.",
-    "London professionals earning £75,000 retain £52,704 net, but high central housing costs (£2,150/mo) compress discretionary savings capacity to 24%.",
-    "Zurich provides strong absolute purchasing power: despite high nominal living costs, moderate cantonal taxation leaves over 42% disposable savings capacity on 130,000 CHF."
+    "Dubai demonstrates the highest uncommitted net savings capacity (60% savings rate on 350,000 AED, retaining 208,640 AED annually) driven by 0% statutory personal income tax.",
+    "New York City residents face the steepest combined tax burden among US metros (29.1% effective rate on $100K) due to layered Federal, State, and NYC Local Resident taxes, yielding $70,879 net and $19,919 (28%) in annual uncommitted savings.",
+    "London professionals earning £75,000 retain £54,057 net (27.9% effective tax rate), leaving £16,077 annually (30% savings rate) after central housing (£1,950/mo) and baseline living costs.",
+    "Zurich provides strong absolute purchasing power: despite high nominal living costs, moderate cantonal taxation leaves 48% disposable savings capacity (CHF 48,199 annually) on 130,000 CHF."
   ],
   "tableHeaders": [
     "Metro & Country",
@@ -64,9 +64,9 @@
       "29.1%",
       "USD 70,879",
       "USD 31,860",
-      "USD 12,380",
-      "USD 26,639",
-      "38%"
+      "USD 19,100",
+      "USD 19,919",
+      "28%"
     ],
     [
       "London, United Kingdom",
@@ -74,9 +74,9 @@
       "27.9%",
       "GBP 54,057",
       "GBP 23,400",
-      "GBP 10,800",
-      "GBP 19,857",
-      "37%"
+      "GBP 14,580",
+      "GBP 16,077",
+      "30%"
     ],
     [
       "Dubai, United Arab Emirates",
@@ -84,9 +84,9 @@
       "0.0%",
       "AED 350,000",
       "AED 81,600",
-      "AED 38,400",
-      "AED 230,000",
-      "66%"
+      "AED 59,760",
+      "AED 208,640",
+      "60%"
     ],
     [
       "Toronto, Canada",
@@ -94,9 +94,9 @@
       "26.9%",
       "CAD 73,099",
       "CAD 29,400",
-      "CAD 12,072",
-      "CAD 31,627",
-      "43%"
+      "CAD 17,052",
+      "CAD 26,647",
+      "36%"
     ],
     [
       "Sydney, Australia",
@@ -104,9 +104,9 @@
       "24.3%",
       "AUD 90,812",
       "AUD 32,400",
-      "AUD 12,720",
-      "AUD 45,692",
-      "50%"
+      "AUD 17,820",
+      "AUD 40,592",
+      "45%"
     ],
     [
       "Berlin, Germany",
@@ -114,9 +114,9 @@
       "47.9%",
       "EUR 41,656",
       "EUR 15,000",
-      "EUR 9,468",
-      "EUR 17,188",
-      "41%"
+      "EUR 13,008",
+      "EUR 13,648",
+      "33%"
     ],
     [
       "Singapore, Singapore",
@@ -124,9 +124,9 @@
       "6.6%",
       "SGD 112,050",
       "SGD 43,200",
-      "SGD 13,320",
-      "SGD 55,530",
-      "50%"
+      "SGD 18,600",
+      "SGD 50,250",
+      "45%"
     ],
     [
       "Zurich, Switzerland",
@@ -134,9 +134,9 @@
       "22.8%",
       "CHF 100,423",
       "CHF 27,000",
-      "CHF 15,204",
-      "CHF 58,219",
-      "58%"
+      "CHF 25,224",
+      "CHF 48,199",
+      "48%"
     ]
   ],
   "downloadableCsvUrl": "/reports/global-salary-worth-index.csv",

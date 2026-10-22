@@ -1,15 +1,39 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BQBKMVS7PN"></script>
+    <!-- Google Consent Mode v2 Default (GDPR/ePrivacy Compliant Zero Tracking Before Consent) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
+      var savedConsent = null;
+      try {
+        var rawConsent = localStorage.getItem('livworthy_cookie_consent');
+        if (rawConsent) savedConsent = JSON.parse(rawConsent);
+      } catch (e) {}
+
+      if (savedConsent && savedConsent.analytics === true) {
+        gtag('consent', 'default', {
+          'analytics_storage': 'granted',
+          'ad_storage': savedConsent.marketing ? 'granted' : 'denied',
+          'ad_user_data': savedConsent.marketing ? 'granted' : 'denied',
+          'ad_personalization': savedConsent.marketing ? 'granted' : 'denied',
+          'wait_for_update': 500
+        });
+      } else {
+        gtag('consent', 'default', {
+          'analytics_storage': 'denied',
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied',
+          'wait_for_update': 500
+        });
+      }
+
+      gtag('js', new Date());
       gtag('config', 'G-BQBKMVS7PN');
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BQBKMVS7PN"></script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -52,26 +76,48 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
     </noscript>
 
-    <!-- Production-only analytics/ads. Do not load third-party trackers on localhost, CI, or preview hosts. -->
+    <!-- Production-only analytics/ads with consent gating -->
     <script type="text/javascript">
       (function () {
         var host = window.location.hostname;
         var isCanonicalProduction = host === 'www.livworthy.com' || host === 'livworthy.com';
         if (!isCanonicalProduction) return;
 
-        var ads = document.createElement('script');
-        ads.async = true;
-        ads.crossOrigin = 'anonymous';
-        ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082698285506451';
-        document.head.appendChild(ads);
+        function loadMarketing() {
+          if (window._adsLoaded) return;
+          window._adsLoaded = true;
+          var ads = document.createElement('script');
+          ads.async = true;
+          ads.crossOrigin = 'anonymous';
+          ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082698285506451';
+          document.head.appendChild(ads);
+        }
 
-        window.clarity = window.clarity || function () {
-          (window.clarity.q = window.clarity.q || []).push(arguments);
-        };
-        var clarity = document.createElement('script');
-        clarity.async = true;
-        clarity.src = 'https://www.clarity.ms/tag/yqkv1huqhm?ref=bwt';
-        document.head.appendChild(clarity);
+        function loadAnalytics() {
+          if (window._clarityLoaded) return;
+          window._clarityLoaded = true;
+          window.clarity = window.clarity || function () {
+            (window.clarity.q = window.clarity.q || []).push(arguments);
+          };
+          var clarity = document.createElement('script');
+          clarity.async = true;
+          clarity.src = 'https://www.clarity.ms/tag/yqkv1huqhm?ref=bwt';
+          document.head.appendChild(clarity);
+        }
+
+        try {
+          var rawConsent = localStorage.getItem('livworthy_cookie_consent');
+          if (rawConsent) {
+            var parsed = JSON.parse(rawConsent);
+            if (parsed.analytics) loadAnalytics();
+            if (parsed.marketing) loadMarketing();
+          }
+        } catch (e) {}
+
+        window.addEventListener('livworthy:consent-updated', function (e) {
+          if (e.detail && e.detail.analytics) loadAnalytics();
+          if (e.detail && e.detail.marketing) loadMarketing();
+        });
       })();
     </script>
 
