@@ -25,7 +25,7 @@ export const COMPARISONS_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     metaDescription:
       'Compare take-home pay, CRA taxes in Ontario vs BC, CMHC rental benchmarks, and purchasing power between Toronto and Vancouver for professionals and families.',
     directAnswer:
-      'Comparing a CA$100,000 gross salary across Canada’s two largest commercial metros reveals comparable purchasing power with distinct trade-offs: A single earner takes home CA$6,092 per month in Toronto (26.9% effective tax) versus CA$6,149 in Vancouver (26.2% effective tax), giving Vancouver a modest CA$57/month provincial tax advantage. However, Vancouver rental housing carries a higher median premium (~CA$2,600/month for a 1-bedroom vs CA$2,450/month in Toronto), meaning Toronto retains a slightly higher monthly discretionary cash flow (~CA$2,221 vs CA$2,144). Toronto provides deeper financial and corporate career density, while Vancouver offers immediate ocean and mountain access.',
+      'Comparing a CA$100,000 gross salary across Canada’s two largest commercial metros reveals comparable purchasing power with distinct trade-offs: A single earner takes home CA$6,092 per month in Toronto (26.9% effective tax) versus CA$6,149 in Vancouver (26.2% effective tax), giving Vancouver a modest CA$57/month provincial tax advantage. However, Vancouver rental housing carries a higher median premium (~CA$2,600/month for a 1-bedroom vs CA$2,450/month in Toronto), meaning Toronto retains a slightly higher monthly discretionary cash flow (~CA$2,366 vs CA$2,244). Toronto provides deeper financial and corporate career density, while Vancouver offers immediate ocean and mountain access.',
     sections: [
       {
         id: 'verdict',
@@ -129,7 +129,7 @@ export const COMPARISONS_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     metaDescription:
       'Compare disposable income, ATO income tax, rental costs, and purchasing power between Sydney and Melbourne across professional salary tiers.',
     directAnswer:
-      'Comparing an AU$120,000 salary between Australia’s two largest metropolises shows a definitive cost-of-living advantage for Melbourne: While take-home pay is identical under Australia’s federal tax system (AU$7,568 per month / AU$90,812 annually), Sydney rental housing carries a substantial ~25% premium (AU$2,700/month for a 1-bedroom vs AU$2,150/month in Melbourne). Consequently, a professional in Melbourne retains approximately AU$550 to AU$650 more in monthly uncommitted savings (AU$3,933 vs AU$3,383) at an identical gross salary.',
+      'Comparing an AU$120,000 salary between Australia’s two largest metropolises shows a definitive cost-of-living advantage for Melbourne: While take-home pay is identical under Australia’s federal tax system (AU$7,568 per month / AU$90,812 annually), Sydney rental housing carries a substantial ~25% premium (AU$2,700/month for a 1-bedroom vs AU$2,150/month in Melbourne). Consequently, a professional in Melbourne retains approximately AU$675 more in monthly uncommitted savings (AU$4,023 vs AU$3,348) at an identical gross salary.',
     sections: [
       {
         id: 'verdict',
@@ -233,7 +233,7 @@ export const COMPARISONS_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     metaDescription:
       'Compare take-home pay, German statutory deductions, rental housing markets, and purchasing power between Berlin and Munich across professional salary tiers.',
     directAnswer:
-      'Comparing an €85,000 salary between Germany’s political-creative capital and its Bavarian industrial powerhouse reveals an immense disposable savings divergence: While statutory net take-home pay is virtually identical under German federal tax law (~€3,659 per month / €43,912 annually under Steuerklasse 1), Munich residential rents carry a massive ~28% premium (€1,600/month for a 1-bedroom vs €1,250/month in Berlin). Consequently, an earner on €85,000 in Berlin retains approximately €350 to €450 more in monthly uncommitted savings (€1,280 vs €930) than in Munich, making Berlin significantly more affordable.',
+      'Comparing an €85,000 salary between Germany’s political-creative capital and its Bavarian industrial powerhouse reveals an immense disposable savings divergence: While statutory net take-home pay is virtually identical under German federal tax law (~€3,659 per month / €43,912 annually under Steuerklasse 1), Munich residential rents carry a massive ~28% premium (€1,600/month for a 1-bedroom vs €1,250/month in Berlin). Consequently, an earner on €85,000 in Berlin retains approximately €485 more in monthly uncommitted savings (€1,436 vs €951) than in Munich, making Berlin significantly more affordable.',
     sections: [
       {
         id: 'verdict',
