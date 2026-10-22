@@ -15,12 +15,12 @@ export function CookieConsentBanner() {
   const [marketingEnabled, setMarketingEnabled] = useState(false);
 
   useEffect(() => {
+    let timer: any;
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
         // Small delay to prevent layout jump on immediate load
-        const timer = setTimeout(() => setIsOpen(true), 600);
-        return () => clearTimeout(timer);
+        timer = setTimeout(() => setIsOpen(true), 600);
       }
     } catch {
       // Ignore localStorage access issues in restrictive sandboxes
@@ -41,7 +41,10 @@ export function CookieConsentBanner() {
     };
 
     window.addEventListener('livworthy:open-cookie-preferences', handleReopen);
-    return () => window.removeEventListener('livworthy:open-cookie-preferences', handleReopen);
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener('livworthy:open-cookie-preferences', handleReopen);
+    };
   }, []);
 
   const updateConsent = (analytics: boolean, marketing: boolean) => {
@@ -82,6 +85,7 @@ export function CookieConsentBanner() {
 
   return (
     <div
+      id="cookie-consent-banner"
       role="dialog"
       aria-live="polite"
       aria-label="Cookie and Privacy Preferences"
@@ -107,6 +111,7 @@ export function CookieConsentBanner() {
           {!showPreferences && (
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
               <button
+                id="btn-cookie-reject-all"
                 type="button"
                 onClick={handleRejectAll}
                 className="px-4 py-2 text-xs sm:text-sm font-semibold text-slate-300 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 rounded-lg transition-colors focus:ring-2 focus:ring-emerald-400 focus:outline-none"
@@ -114,6 +119,7 @@ export function CookieConsentBanner() {
                 Reject Non-Essential
               </button>
               <button
+                id="btn-cookie-preferences"
                 type="button"
                 onClick={() => setShowPreferences(true)}
                 className="px-4 py-2 text-xs sm:text-sm font-semibold text-slate-300 hover:text-white bg-transparent border border-slate-700 hover:border-slate-500 rounded-lg transition-colors focus:ring-2 focus:ring-emerald-400 focus:outline-none"
@@ -121,6 +127,7 @@ export function CookieConsentBanner() {
                 Preferences
               </button>
               <button
+                id="btn-cookie-accept-all"
                 type="button"
                 onClick={handleAcceptAll}
                 className="px-5 py-2 text-xs sm:text-sm font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg transition-colors shadow-lg shadow-emerald-500/20 focus:ring-2 focus:ring-emerald-300 focus:outline-none"
