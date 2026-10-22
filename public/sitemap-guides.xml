@@ -156,26 +156,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.livworthy.com/guides/mumbai-25lakh</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/guides/bengaluru-25lakh</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/guides/mumbai-15lakh</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.livworthy.com/guides/tokyo-12m</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.livworthy.com/guides/madrid-50k</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

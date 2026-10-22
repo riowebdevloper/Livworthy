@@ -62,6 +62,10 @@ const SEO_COMPARISON_KEYS: Record<string, string> = {
   'new-york-vs-london': 'compare-nyc-vs-london',
   'new-york-vs-dubai': 'compare-nyc-vs-dubai',
   'london-vs-dubai': 'compare-london-vs-dubai',
+  'toronto-vs-vancouver': 'compare-toronto-vs-vancouver',
+  'sydney-vs-melbourne': 'compare-sydney-vs-melbourne',
+  'berlin-vs-munich': 'compare-berlin-vs-munich',
+  'singapore-vs-dubai': 'compare-singapore-vs-dubai',
 };
 
 const CITY_CLUSTER_LINKS: Record<string, { title: string; url: string; badge: string }[]> = {
@@ -1112,7 +1116,7 @@ export function runSeoGenerator() {
       canonicalUrl: `${BASE_URL}/guides/${g.slug}`,
       title: `${g.title} | LivWorthy`,
       description: `${g.headlineSummary} Comprehensive financial analysis of a ${g.currency} ${g.salaryMajor.toLocaleString()} salary in ${city.name}.`,
-      robots: 'index, follow',
+      robots: cap.hasDedicatedTaxAdapter ? 'index, follow' : 'noindex, follow',
       bodyContent: guideBody,
       structuredData: guideStructuredData,
       changefreq: 'monthly',

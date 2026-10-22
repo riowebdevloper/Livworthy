@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > **Assessment Disclaimer:** Internal readiness assessment — not a prediction of AdSense approval.
-> Generated: 2026-10-22T05:34:20.564Z
+> Generated: 2026-10-22T06:16:54.008Z
 
 ---
 
@@ -12,10 +12,10 @@
 | :--- | :--- | :--- |
 | **TOTAL PUBLIC PAGES AUDITED** | `4224` | Comprehensive repository inventory |
 | **INDEXABLE BEFORE PRUNING** | `1897` | Historical baseline before quality gate |
-| **INDEXABLE AFTER QUALITY GATE** | `198` | Quality-gated indexable URLs |
-| **PAGES NOINDEXED** | `4026` | Protected with `noindex, follow` |
-| **REMOVED FROM SITEMAPS** | `1699` | Excluded from public XML sitemaps |
-| **SITEMAP URLS ON DISK** | `198` | 100% 200 OK, canonical, indexable |
+| **INDEXABLE AFTER QUALITY GATE** | `194` | Quality-gated indexable URLs |
+| **PAGES NOINDEXED** | `4030` | Protected with `noindex, follow` |
+| **REMOVED FROM SITEMAPS** | `1703` | Excluded from public XML sitemaps |
+| **SITEMAP URLS ON DISK** | `194` | 100% 200 OK, canonical, indexable |
 | **SITEMAP NOINDEX CONTRADICTIONS** | `0` | **0** (strictly enforced) |
 | **QUALITY GATE FAILURES** | `0` | **0** (all indexable pages pass gate) |
 | **PAGES STILL BLOCKED** | `0` | **0** (no unresolved blockers) |
@@ -27,13 +27,13 @@
 
 | Classification | Meaning | Count | Percentage of Indexable |
 | :--- | :--- | :--- | :--- |
-| **A — HIGH VALUE** | Useful, unique, complete, index-worthy | **90** | **45%** |
-| **B — NEEDS IMPROVEMENT** | Good baseline; minor depth improvements possible | **50** | **25%** |
+| **A — HIGH VALUE** | Useful, unique, complete, index-worthy | **115** | **59%** |
+| **B — NEEDS IMPROVEMENT** | Good baseline; minor depth improvements possible | **25** | **13%** |
 | **C — THIN** | Low word count / insufficient depth | **0** | **0%** |
 | **D — DUPLICATIVE** | Similarity > 85% to peer templates | **0** | **0%** |
-| **E — UTILITY ONLY** | Interactive calculation tool without prose | **58** | **29%** |
+| **E — UTILITY ONLY** | Interactive calculation tool without prose | **54** | **28%** |
 | **F — INCOMPLETE** | Missing citations or required metadata | **0** | **0%** |
-| **G — NOINDEX** | Safely gated with `noindex, follow` | **4026** | N/A (non-indexable inventory) |
+| **G — NOINDEX** | Safely gated with `noindex, follow` | **4030** | N/A (non-indexable inventory) |
 
 ---
 
@@ -41,7 +41,7 @@
 
 | Locale | Total Pages | Indexable | Noindexed | A (High) | B (Baseline) | C (Thin) | D (Duplicate) | E (Utility) | F (Incomplete) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **EN** | 374 | 116 | 258 | 80 | 32 | **0** | 0 | 4 | **0** |
+| **EN** | 374 | 112 | 262 | 105 | 7 | **0** | 0 | 0 | **0** |
 | **ES** | 175 | 10 | 165 | 1 | 3 | **0** | 0 | 6 | **0** |
 | **FR** | 175 | 9 | 166 | 1 | 2 | **0** | 0 | 6 | **0** |
 | **AR** | 175 | 9 | 166 | 1 | 2 | **0** | 0 | 6 | **0** |
@@ -58,7 +58,7 @@
 
 *Scale: 0–100 per dimension. Grounded in empirical code and asset verification.*
 
-- **Content Depth:** `88/100`
+- **Content Depth:** `90/100`
 - **Uniqueness & Non-Duplication:** `100/100`
 - **Trust Signals & Methodology:** `96/100`
 - **Source Transparency:** `95/100`

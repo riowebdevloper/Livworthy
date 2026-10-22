@@ -1,4 +1,5 @@
 import { SeoLandingPage } from '../types/seo-page';
+import { EXTENDED_SEO_LANDING_PAGES } from './seo-clusters-extended';
 
 export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
   // ==========================================
@@ -2011,4 +2012,5 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     ],
     capabilityRequirements: { tax: true, col: true },
   },
+  ...EXTENDED_SEO_LANDING_PAGES,
 };
