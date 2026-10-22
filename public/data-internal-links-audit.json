@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-06T14:02:57.662Z",
-  "totalPagesAudited": 198,
+  "generatedAt": "2026-10-22T06:37:30.551Z",
+  "totalPagesAudited": 4224,
   "orphanPagesCount": 0,
   "missingCanonicalsCount": 0,
   "nonSelfCanonicalsCount": 0,
@@ -8,77 +8,77 @@
   "sampleLinkDistribution": [
     {
       "urlPath": "/about",
-      "inboundLinksCount": 1,
+      "inboundLinksCount": 146,
       "outboundLinksCount": 5
     },
     {
-      "urlPath": "/ar",
-      "inboundLinksCount": 1,
-      "outboundLinksCount": 6
-    },
-    {
-      "urlPath": "/cities/abudhabi",
-      "inboundLinksCount": 4,
+      "urlPath": "/ar/cities/abudhabi",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/amsterdam",
-      "inboundLinksCount": 4,
+      "urlPath": "/ar/cities/amsterdam",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/auckland",
-      "inboundLinksCount": 3,
+      "urlPath": "/ar/cities/auckland",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/austin",
-      "inboundLinksCount": 4,
-      "outboundLinksCount": 4
-    },
-    {
-      "urlPath": "/cities/bangkok",
-      "inboundLinksCount": 3,
+      "urlPath": "/ar/cities/austin",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/barcelona",
-      "inboundLinksCount": 3,
+      "urlPath": "/ar/cities/bangkok",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/bengaluru",
-      "inboundLinksCount": 4,
+      "urlPath": "/ar/cities/barcelona",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/berlin",
-      "inboundLinksCount": 6,
-      "outboundLinksCount": 4
-    },
-    {
-      "urlPath": "/cities/birmingham",
-      "inboundLinksCount": 4,
+      "urlPath": "/ar/cities/bengaluru",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/boston",
-      "inboundLinksCount": 4,
+      "urlPath": "/ar/cities/berlin",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/brussels",
-      "inboundLinksCount": 3,
+      "urlPath": "/ar/cities/birmingham",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/calgary",
-      "inboundLinksCount": 4,
+      "urlPath": "/ar/cities/boston",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     },
     {
-      "urlPath": "/cities/cape-town",
-      "inboundLinksCount": 3,
+      "urlPath": "/ar/cities/brussels",
+      "inboundLinksCount": 2,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/ar/cities/calgary",
+      "inboundLinksCount": 2,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/ar/cities/cape-town",
+      "inboundLinksCount": 2,
+      "outboundLinksCount": 3
+    },
+    {
+      "urlPath": "/ar/cities/chicago",
+      "inboundLinksCount": 2,
       "outboundLinksCount": 3
     }
   ]

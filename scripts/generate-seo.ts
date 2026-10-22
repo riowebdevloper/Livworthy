@@ -507,6 +507,7 @@ export function runSeoGenerator() {
                 <li><a href="/editorial-policy" class="min-h-[24px] py-1 flex items-center hover:text-[#102A2E]">Editorial & Verification Policy</a></li>
                 <li><a href="/data-policy" class="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Data Policy (Zero PII & Zero Fabrication)</a></li>
                 <li><a href="/privacy" class="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Privacy Policy</a></li>
+                <li><a href="/contact" class="min-h-[44px] sm:min-h-[24px] py-2 sm:py-1 flex items-center hover:text-[#102A2E] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Contact</a></li>
               </ul>
             </div>
           </div>
@@ -550,6 +551,8 @@ export function runSeoGenerator() {
               <a href="/terms" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Terms & YMYL Disclaimer</a>
               <span class="hidden sm:inline" aria-hidden="true">·</span>
               <a href="/privacy" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Privacy Policy</a>
+              <span class="hidden sm:inline" aria-hidden="true">·</span>
+              <a href="/contact" class="inline-flex items-center min-h-[40px] sm:min-h-0 py-2 sm:py-0 px-1.5 sm:px-0 hover:underline hover:text-[#167D75] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75] rounded">Contact</a>
             </nav>
           </div>
         </div>

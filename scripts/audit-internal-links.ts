@@ -125,7 +125,7 @@ async function main() {
   const missingCanonicals: PageAudit[] = [];
 
   for (const page of pagesMap.values()) {
-    if (page.urlPath !== '/' && page.inboundLinksCount === 0) {
+    if (page.urlPath !== '/' && page.isIndexable && page.inboundLinksCount === 0) {
       orphanPages.push(page);
     }
     if (!page.hasCanonical) {
