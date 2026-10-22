@@ -108,7 +108,7 @@ export function getGlobalSalaryWorthIndexReport(): EmpiricalReportMetadata {
     ],
     summaryInsights: [
       'Dubai demonstrates the highest uncommitted net savings capacity (60% savings rate on 350,000 AED, retaining 208,640 AED annually) driven by 0% statutory personal income tax.',
-      'New York City residents face the steepest combined tax burden among US metros (29.1% effective rate on $100K) due to layered Federal, State, and NYC Local Resident taxes, yielding $70,879 net and $19,919 (28%) in annual uncommitted savings.',
+      'New York City residents face the steepest combined tax burden among US metros (29.1% effective rate on $100K) due to layered Federal, State, and NYC Local Resident taxes, yielding $70,879 net and $19,919 in annual uncommitted savings (28% of net take-home pay, equivalent to 20% of gross salary).',
       'London professionals earning £75,000 retain £54,057 net (27.9% effective tax rate), leaving £16,077 annually (30% savings rate) after central housing (£1,950/mo) and baseline living costs.',
       'Zurich provides strong absolute purchasing power: despite high nominal living costs, moderate cantonal taxation leaves 48% disposable savings capacity (CHF 48,199 annually) on 130,000 CHF.',
     ],
@@ -120,7 +120,7 @@ export function getGlobalSalaryWorthIndexReport(): EmpiricalReportMetadata {
       'Annual 1-Bed Rent',
       'Annual Non-Rent Living',
       'Uncommitted Savings',
-      'Savings Rate',
+      'Net Savings Rate (% of Net Pay)',
     ],
     tableRows,
     downloadableCsvUrl: '/reports/global-salary-worth-index.csv',

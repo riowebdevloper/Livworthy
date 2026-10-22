@@ -366,13 +366,13 @@ export function runSeoGenerator() {
               <div class="space-y-2 pt-2">
                 <div class="flex justify-between text-xs font-semibold text-[#102A2E]">
                   <span>Where your salary goes:</span>
-                  <span class="text-[#167D75]">Savings: 20%</span>
+                  <span class="text-[#167D75]">Savings: 20% (of gross)</span>
                 </div>
                 <div class="h-4 w-full rounded-full bg-[#E5EAE8] overflow-hidden flex shadow-inner">
                   <div style="width: 29%;" class="bg-red-500 h-full" title="Taxes & Deductions: 29%"></div>
                   <div style="width: 32%;" class="bg-blue-600 h-full" title="Housing: 32%"></div>
                   <div style="width: 19%;" class="bg-amber-500 h-full" title="Living Essentials: 19%"></div>
-                  <div style="width: 20%;" class="bg-[#167D75] h-full" title="Remaining Surplus: 20%"></div>
+                  <div style="width: 20%;" class="bg-[#167D75] h-full" title="Remaining Surplus: 20% (of gross)"></div>
                 </div>
               </div>
             </div>
