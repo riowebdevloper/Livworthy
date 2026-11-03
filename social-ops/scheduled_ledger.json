@@ -1,0 +1,77 @@
+{
+  "brand_id": 7614477,
+  "checked_at": "2026-11-03T13:02:00Z",
+  "do_not_modify_existing": true,
+  "posts": [
+    {
+      "campaign": "2026-nov-regional-salary",
+      "market": "USA",
+      "platforms": [
+        "threads",
+        "bluesky"
+      ],
+      "post_id": 415180532,
+      "uuid": "-3026045107438927082",
+      "publish_at": "2026-11-04T18:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "status_as_of_2026_11_03": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-3026045107438927082"
+    },
+    {
+      "campaign": "2026-nov-regional-salary",
+      "market": "UK",
+      "platforms": [
+        "threads",
+        "bluesky"
+      ],
+      "post_id": 415180586,
+      "uuid": "-3330337006109439477",
+      "publish_at": "2026-11-05T18:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "status_as_of_2026_11_03": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-3330337006109439477"
+    },
+    {
+      "campaign": "2026-nov-regional-salary",
+      "market": "Canada",
+      "platforms": [
+        "threads",
+        "bluesky"
+      ],
+      "post_id": 415180670,
+      "uuid": "-6017905182090638475",
+      "publish_at": "2026-11-06T18:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "status_as_of_2026_11_03": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-6017905182090638475"
+    },
+    {
+      "campaign": "2026-nov-regional-salary",
+      "market": "UAE",
+      "platforms": [
+        "threads",
+        "bluesky"
+      ],
+      "post_id": 415180731,
+      "uuid": "-7894613387589825779",
+      "publish_at": "2026-11-07T18:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "status_as_of_2026_11_03": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-7894613387589825779"
+    },
+    {
+      "campaign": "2026-nov-regional-salary",
+      "market": "India",
+      "platforms": [
+        "threads",
+        "bluesky"
+      ],
+      "post_id": 415180778,
+      "uuid": "-8145375362010168562",
+      "publish_at": "2026-11-08T18:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "status_as_of_2026_11_03": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-8145375362010168562"
+    }
+  ]
+}
