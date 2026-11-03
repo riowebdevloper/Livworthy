@@ -1,0 +1,119 @@
+{
+  "updated_at": "2026-11-03",
+  "campaign": "What is your salary really worth?",
+  "website": "https://www.livworthy.com",
+  "markets": [
+    {
+      "market": "USA",
+      "locale": "en-US",
+      "creative_id": "2026-11-USA-offer-check",
+      "topic": "Job offer reality check",
+      "website_market_supported": true,
+      "video": "USA_Vertical_1080x1920.mp4",
+      "portrait": "USA_Pinterest_1000x1500.png",
+      "copy": "🇺🇸 A higher salary isn't automatically a better offer. Compare estimated take-home pay, healthcare, housing, transport and savings before deciding. https://www.livworthy.com",
+      "sources": [
+        "https://www.irs.gov/individuals/employees/tax-withholding",
+        "https://www.irs.gov/taxtopics/tc751"
+      ],
+      "claim_type": "qualitative"
+    },
+    {
+      "market": "UK",
+      "locale": "en-GB",
+      "creative_id": "2026-11-UK-net-pay",
+      "topic": "Gross pay versus take-home",
+      "website_market_supported": true,
+      "video": null,
+      "portrait": "UK_Pinterest_1000x1500.png",
+      "copy": "🇬🇧 Gross pay is not take-home pay. Check Income Tax, National Insurance and any pension contributions before weighing local rent and travel costs. https://www.livworthy.com",
+      "sources": [
+        "https://www.gov.uk/payslips",
+        "https://www.gov.uk/estimate-income-tax"
+      ],
+      "claim_type": "qualitative"
+    },
+    {
+      "market": "Canada",
+      "locale": "en-CA",
+      "creative_id": "2026-11-CAN-city-comparison",
+      "topic": "Toronto versus Calgary",
+      "website_market_supported": true,
+      "video": null,
+      "portrait": "CAN_Pinterest_1000x1500.png",
+      "copy": "🇨🇦 Toronto or Calgary? Compare take-home pay, relevant provincial deductions, housing and commuting; there's no universal city winner. https://www.livworthy.com/compare",
+      "sources": [
+        "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/income-tax.html",
+        "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/daycare-your-home/your-employees.html"
+      ],
+      "claim_type": "qualitative"
+    },
+    {
+      "market": "UAE",
+      "locale": "en-AE+ar-AE",
+      "creative_id": "2026-11-UAE-total-offer",
+      "topic": "Dubai salary packages",
+      "website_market_supported": true,
+      "video": null,
+      "portrait": "UAE_Pinterest_1000x1500.png",
+      "copy": "🇦🇪 Dubai job offer? Look at basic salary, housing and transport allowances, healthcare and total compensation. قارن الراتب والبدلات والمزايا المكتوبة في العقد. https://www.livworthy.com",
+      "sources": [
+        "https://u.ae/en/information-and-services/jobs/employment-in-the-private-sector/job-offers-and-work-permits-and-contracts/expatriates-employment-in-private-sector"
+      ],
+      "claim_type": "qualitative"
+    },
+    {
+      "market": "India",
+      "locale": "hi-IN+en-IN",
+      "creative_id": "2026-11-IND-ctc-inhand",
+      "topic": "CTC versus in-hand",
+      "website_market_supported": false,
+      "video": "IND_Vertical_1080x1920.mp4",
+      "portrait": "IND_Pinterest_1000x1500.png",
+      "copy": "🇮🇳 CTC aur monthly in-hand salary alag hote hain. Fixed pay, variable pay, applicable TDS/PF aur rent-commute ka breakdown check karo. Educational guide: https://www.livworthy.com",
+      "sources": [
+        "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/tds-compliance"
+      ],
+      "claim_type": "qualitative",
+      "notes": "India calculator marked unsupported on LivWorthy home page on 2026-11-03. No calculator functionality promises."
+    }
+  ],
+  "proposed_test_posts": [
+    {
+      "platform": "youtube",
+      "market": "USA",
+      "creative_id": "2026-11-USA-offer-check",
+      "asset": "USA_Vertical_1080x1920.mp4",
+      "type": "short",
+      "status": "READY_NOT_UPLOADED",
+      "blocker": "Adobe scheduler not accessible; video not hosted at a publicly accessible media URL for Metricool"
+    },
+    {
+      "platform": "tiktok",
+      "market": "India",
+      "creative_id": "2026-11-IND-ctc-inhand",
+      "asset": "IND_Vertical_1080x1920.mp4",
+      "type": "vertical_video",
+      "status": "READY_NOT_UPLOADED",
+      "blocker": "Adobe scheduler not accessible; TikTok is not connected in Metricool"
+    },
+    {
+      "platform": "pinterest",
+      "market": "Canada",
+      "creative_id": "2026-11-CAN-city-comparison",
+      "asset": "CAN_Pinterest_1000x1500.png",
+      "type": "image_pin",
+      "status": "BLOCKED",
+      "blocker": "Metricool attempted, but no numeric Pinterest board ID was resolved; Adobe scheduler not accessible"
+    },
+    {
+      "platform": "twitter",
+      "market": "UK",
+      "creative_id": "2026-11-UK-net-pay",
+      "asset": "UK_X_1600x900.png",
+      "type": "single_post",
+      "status": "READY_NOT_UPLOADED",
+      "blocker": "Adobe scheduler not accessible; X not connected in Metricool"
+    }
+  ]
+}
