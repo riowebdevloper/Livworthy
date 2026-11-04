@@ -1,6 +1,6 @@
 {
   "brand_id": 7614477,
-  "checked_at": "2026-11-03T13:02:00Z",
+  "checked_at": "2026-11-04T05:54:00Z",
   "do_not_modify_existing": true,
   "posts": [
     {
@@ -72,6 +72,87 @@
       "timezone": "Asia/Calcutta",
       "status_as_of_2026_11_03": "PENDING",
       "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-8145375362010168562"
+    },
+    {
+      "campaign": "2026-nov-livworthy-global-launch",
+      "market": "USA",
+      "platforms": [
+        "facebook"
+      ],
+      "post_id": 416116862,
+      "uuid": "8698061131702028894",
+      "publish_at": "2026-11-06T04:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "media_count": 1,
+      "media_format": "JPEG",
+      "creative_id": "2026-11-USA-offer-check",
+      "status_as_of_2026_11_04": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=8698061131702028894"
+    },
+    {
+      "campaign": "2026-nov-livworthy-global-launch",
+      "market": "Global",
+      "platforms": [
+        "instagram"
+      ],
+      "post_id": 416117622,
+      "uuid": "-3718406168565627212",
+      "publish_at": "2026-11-08T04:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "media_count": 5,
+      "media_format": "5-slide carousel PNG",
+      "creative_id": "2026-11-all-five-market-carousel",
+      "status_as_of_2026_11_04": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-3718406168565627212"
+    },
+    {
+      "campaign": "2026-nov-livworthy-global-launch",
+      "market": "UK",
+      "platforms": [
+        "twitter"
+      ],
+      "post_id": 416116832,
+      "uuid": "-7409560312861933150",
+      "publish_at": "2026-11-09T23:00:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "media_count": 1,
+      "media_format": "JPEG",
+      "creative_id": "2026-11-UK-net-pay",
+      "status_as_of_2026_11_04": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-7409560312861933150"
+    },
+    {
+      "campaign": "2026-nov-livworthy-global-launch",
+      "market": "India",
+      "platforms": [
+        "tiktok"
+      ],
+      "post_id": 416118024,
+      "uuid": "2050267686074666458",
+      "publish_at": "2026-11-07T19:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "media_count": 1,
+      "media_format": "MP4 1080x1920",
+      "creative_id": "2026-11-IND-ctc-inhand",
+      "status_as_of_2026_11_04": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=2050267686074666458"
+    },
+    {
+      "campaign": "2026-nov-livworthy-global-launch",
+      "market": "USA",
+      "platforms": [
+        "youtube"
+      ],
+      "post_id": 416115598,
+      "uuid": "6645160069764171937",
+      "publish_at": "2026-11-11T04:30:00+05:30",
+      "timezone": "Asia/Calcutta",
+      "media_count": 1,
+      "media_format": "Short MP4 1080x1920",
+      "creative_id": "2026-11-USA-offer-check",
+      "status_as_of_2026_11_04": "PENDING",
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=6645160069764171937"
     }
-  ]
+  ],
+  "note": "The five original Threads/Bluesky entries were preserved; five new media-backed posts were independently read from the Metricool calendar on 2026-11-04. PENDING is not PUBLISHED."
 }
