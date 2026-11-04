@@ -1,40 +1,44 @@
-# LivWorthy Global — verified social publishing operations
+# LivWorthy Global — operational social publishing log
 
-Updated 2026-11-03. This directory stages a zero-upfront-cost editorial publishing workflow for **LivWorthy Global**. It is not a live autonomous publishing bot.
+Last verified: **2026-11-04**, Metricool timezone **Asia/Calcutta**. Initial cost: **₹0**, no trials/purchases.
 
-## Scope and restrictions
-- Authorized launch platforms: YouTube, TikTok (`@livworthyglobal`), Pinterest (`@livworthyglobal`) and X (`@JamesRio7y`). Do not publish to Instagram or Facebook.
-- Five localized editorial markets: USA (English), UK (British English), Canada (Canadian English), UAE (Arabic/English), India (Hinglish/English).
-- No paid services, API charges, trials, invented statistics, scraped login credentials, or fake publication receipts.
-- Never represent a generated illustration as a photograph of an actual event. Disclose AI-assisted media where a platform requires it.
-- Only use confirmed live LivWorthy pages; approved default destination is `https://www.livworthy.com`.
-- **Market availability alert:** as verified on 2026-11-03, the website lists India calculators as *UNSUPPORTED*; educational India posts must not imply an India salary calculation is operational.
-- For every quantitative statement record official source, jurisdiction, tax year, verification date, method and assumptions before approval.
+## The actual result
 
-## Actual connection state as of 2026-11-03
-- Metricool brand `7614477`, timezone `Asia/Calcutta`: YouTube and Pinterest connections were returned by the brand settings API.
-- Adobe Express: the owner reports YouTube, TikTok, Pinterest and X linked. The actual Adobe Content Scheduler/calendar could not be inspected through the available app actions; do not treat these as independently verified.
-- Metricool Threads/Bluesky: five region-specific posts scheduled for 2026-11-04 through 2026-11-08 at 18:30 IST, pending when reread; preserved without changes.
-- Pinterest Metricool test attempt: failed before scheduling because the candidate board name `Salary & Cost of Living` could not be resolved to a numeric board ID.
-- YouTube, TikTok and X: no new uploads/schedules confirmed. Do not invent them.
+The owner reports six connections in Adobe Express (YouTube, TikTok, Pinterest, X, Facebook, Instagram). Adobe Content Scheduler is *not browser-accessible from the current chat*. As a supported fallback, five actual media-backed posts were scheduled with the **connected Metricool LivWorthy brand 7614477**. All five returned **PENDING** with automatic publishing enabled; none may yet be represented as live.
 
-## Content pipeline
-1. Research with primary-source links; qualitative facts may be used when a numerical claim is not verified.
-2. Localization by regional terminology (never merely machine-translate tax rules).
-3. Human editorial/legibility review and accurate AI-media declarations.
-4. Produce native graphics (Pinterest 1000×1500, X 1600×900) and captioned vertical MP4 (1080×1920) from original content.
-5. Before a write, check the current publishing calendar *and* the ledger in `scheduled_ledger.json`. Lock the dedupe key `campaign|market|platform|creative_id`.
-6. Publish only using authorized connected tools. Pin requires a valid Pinterest **board ID**, not a guessed board name. YouTube/TikTok need actual publicly accessible media and audience/privacy fields.
-7. Reread the provider calendar, record returned post ID, exact timezone, media checksum, and status. Don't equate scheduled with published.
-8. Verify live URLs after the planned time, track failures, avoid retries without checking existing submissions.
+| Network | Post ID | Planned publishing (IST) | Creative | Schedule URL |
+|---|---:|---|---|---|
+| Facebook | 416116862 | 2026-11-06 04:30 | USA authority JPG + human-readable job-offer checklist | [Planner](https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=8698061131702028894) |
+| TikTok | 416118024 | 2026-11-07 19:30 | India CTC vs in-hand vertical video (MP4), Hinglish caption, AI-content declaration | [Planner](https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=2050267686074666458) |
+| Instagram | 416117622 | 2026-11-08 04:30 | **5-slide original editorial image carousel** for USA, UK, Canada, UAE and India; AI flag; alt text | [Planner](https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-3718406168565627212) |
+| X / Twitter | 416116832 | 2026-11-09 23:00 | UK authority JPG + concise native caption | [Planner](https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-7409560312861933150) |
+| YouTube Shorts | 416115598 | 2026-11-11 04:30 | USA salary reality video (1080×1920 MP4, 16 seconds), audience not made-for-kids, AI-content flag | [Planner](https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=6645160069764171937) |
 
-## Contents
-- `launch_queue.json`: localized launch briefs, official source links, candidate platform-specific copy and current status. Status is **not** a record of scheduling success.
-- `scheduled_ledger.json`: existing calendar IDs and integrity guards.
-- `queue_guard.py`: offline duplicate-key and compliance validator; run `python social-ops/queue_guard.py` from repository root.
+Pinterest: **NOT scheduled**. An actual image-attached scheduling attempt failed validation: `pinterestData.boardId` is mandatory. The earlier board name `Salary & Cost of Living` was not recognized. Need the **existing Pinterest board's numeric ID or exact real name**; do not invent a board. No Pinterest post was created.
 
-## Browser limitation
-The current ChatGPT tools for Adobe Express support template search, design editing, and image export, but **not Content Scheduler navigation or publishing**. Publishing through that interface requires a separately available Cloud Browser in ChatGPT Work. Do not claim the scheduler was opened here.
+## Existing schedule — preserve
 
-## Operating cost
-No third-party subscription or paid trial activated; incremental service purchases: ₹0.
+Five earlier posts (Nov 4–8 at 18:30 IST) target Threads and Bluesky. IDs 415180532, 415180586, 415180670, 415180731, 415180778. All were reread as PENDING and untouched. See `scheduled_ledger.json` for exact uuid/URLs.
+
+## Editorial and legal quality
+- Use only sourced and nuanced claims; no invented numerical salary, tax or city-ranking statistics.
+- Regional language choices: US English, UK English, Canadian English, Arabic/English for UAE, Hinglish/English for India.
+- The current LivWorthy public site has **India calculator marked unsupported** as of Nov 3, 2026; educational India posts do not promise a functioning India calculator.
+- Main authorized destination: https://www.livworthy.com
+- Instagram/TikTok/YouTube AI declarations set where platform supports them.
+- Prefer educational posts with a useful takeaway, thoughtful question and accessible media, not generic spam or invented engagement.
+
+## Repeatable operation
+1. Research with primary-source URLs and date/market assumptions.
+2. Humanize and localize captions; avoid precise figures until official fact-check completes.
+3. Prepare original high-contrast assets, vertical videos, alt text, and correct AI disclosures.
+4. Reread Metricool scheduled posts; compare `scheduled_ledger.json`; do not duplicate existing items.
+5. Upload media through authorized connected publisher; **only** mark SCHEDULED once a provider returns a post ID AND calendar readback confirms it.
+6. After scheduled time, verify provider status PUBLISHED/FAILED and live URL if available. Never equate PENDING with delivered.
+7. Inspect analytics and improve next batch only using observed data.
+
+Files: `launch_queue.json` (regional briefs and staged status); `scheduled_ledger.json` (10 verified calendar entries), `queue_guard.py` (offline dedupe/claim checks).
+
+**Operational monitoring:** recurring publication QA has been created for these five posts (starting Nov 6); a separate prior check covers the original Threads/Bluesky schedule. Monitoring does not independently publish new posts.
+
+This GitHub branch contains configuration and logs, not the actual production website deployment. Production files were not edited.
