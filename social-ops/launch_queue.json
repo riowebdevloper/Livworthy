@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03",
+  "updated_at": "2026-11-04",
   "campaign": "What is your salary really worth?",
   "website": "https://www.livworthy.com",
   "markets": [
@@ -83,19 +83,27 @@
       "platform": "youtube",
       "market": "USA",
       "creative_id": "2026-11-USA-offer-check",
-      "asset": "USA_Vertical_1080x1920.mp4",
+      "asset": "USA_Authority_Short_1080x1920.mp4",
       "type": "short",
-      "status": "READY_NOT_UPLOADED",
-      "blocker": "Adobe scheduler not accessible; video not hosted at a publicly accessible media URL for Metricool"
+      "status": "SCHEDULED",
+      "post_id": 416115598,
+      "uuid": "6645160069764171937",
+      "scheduled_at": "2026-11-11T04:30:00+05:30",
+      "media_uploaded": true,
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=6645160069764171937"
     },
     {
       "platform": "tiktok",
       "market": "India",
       "creative_id": "2026-11-IND-ctc-inhand",
-      "asset": "IND_Vertical_1080x1920.mp4",
+      "asset": "IND_Authority_Short_1080x1920.mp4",
       "type": "vertical_video",
-      "status": "READY_NOT_UPLOADED",
-      "blocker": "Adobe scheduler not accessible; TikTok is not connected in Metricool"
+      "status": "SCHEDULED",
+      "post_id": 416118024,
+      "uuid": "2050267686074666458",
+      "scheduled_at": "2026-11-07T19:30:00+05:30",
+      "media_uploaded": true,
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=2050267686074666458"
     },
     {
       "platform": "pinterest",
@@ -104,16 +112,45 @@
       "asset": "CAN_Pinterest_1000x1500.png",
       "type": "image_pin",
       "status": "BLOCKED",
-      "blocker": "Metricool attempted, but no numeric Pinterest board ID was resolved; Adobe scheduler not accessible"
+      "blocker": "A valid Pinterest board ID is required; attempted scheduling with attached authority image, rejected before creating any post."
     },
     {
       "platform": "twitter",
       "market": "UK",
       "creative_id": "2026-11-UK-net-pay",
-      "asset": "UK_X_1600x900.png",
+      "asset": "UK_X_1600x900.jpg",
       "type": "single_post",
-      "status": "READY_NOT_UPLOADED",
-      "blocker": "Adobe scheduler not accessible; X not connected in Metricool"
+      "status": "SCHEDULED",
+      "post_id": 416116832,
+      "uuid": "-7409560312861933150",
+      "scheduled_at": "2026-11-09T23:00:00+05:30",
+      "media_uploaded": true,
+      "planner_url": "https://app.metricool.com/planner/calendar?blogId=7614477&openWithPostUuid=-7409560312861933150"
     }
-  ]
+  ],
+  "additional_verified_posts": [
+    {
+      "platform": "facebook",
+      "market": "USA",
+      "creative_id": "2026-11-USA-offer-check",
+      "media": "USA_Pinterest_1000x1500.jpg",
+      "format": "image_post",
+      "status": "SCHEDULED",
+      "post_id": 416116862,
+      "uuid": "8698061131702028894",
+      "scheduled_at": "2026-11-06T04:30:00+05:30"
+    },
+    {
+      "platform": "instagram",
+      "market": "Global",
+      "creative_id": "2026-11-all-five-market-carousel",
+      "media": "USA + UK + Canada + UAE + India editorial cover images",
+      "format": "five_image_carousel",
+      "status": "SCHEDULED",
+      "post_id": 416117622,
+      "uuid": "-3718406168565627212",
+      "scheduled_at": "2026-11-08T04:30:00+05:30"
+    }
+  ],
+  "note": "Four of five available channels were found schedulable via Metricool (facebook, instagram, twitter, tiktok), plus youtube. Pinterest remains blocked by board ID. Dates and post IDs cross-checked from Metricool."
 }
