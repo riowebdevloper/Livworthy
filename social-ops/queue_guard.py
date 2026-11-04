@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
-"""Offline safety guard for LivWorthy launch queue. Does not access APIs or publish."""
+"""Offline validation for the LivWorthy social queue. Never publishes content."""
 
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-ALLOWED = {"youtube", "tiktok", "pinterest", "twitter"}
+ALLOWED = {"youtube", "tiktok", "pinterest", "twitter", "facebook", "instagram"}
 REQUIRED_MARKETS = {"USA", "UK", "Canada", "UAE", "India"}
-BLOCKED = {"facebook", "instagram"}
 
 
 def load(name):
     return json.loads((ROOT / name).read_text(encoding="utf-8"))
-
-
-def key(campaign, market, platform, creative_id):
-    return "|".join([campaign.lower(), market.lower(), platform.lower(), creative_id.lower()])
 
 
 def validate():
@@ -23,48 +18,59 @@ def validate():
     ledger = load("scheduled_ledger.json")
     failures = []
 
-    market_by_name = {row["market"]: row for row in queue["markets"]}
-    if set(market_by_name) != REQUIRED_MARKETS:
-        failures.append("Required region set differs from five-country mandate")
+    regions = {r["market"]: r for r in queue["markets"]}
+    if set(regions) != REQUIRED_MARKETS:
+        failures.append("Expected exactly the five approved markets")
 
-    for region in queue["markets"]:
-        if not region.get("sources") or not all(str(s).startswith("https://") for s in region["sources"]):
-            failures.append(f"{region['market']}: no verifiable primary-source URLs")
+    for region in regions.values():
+        if not region.get("sources") or any(not s.startswith("https://") for s in region["sources"]):
+            failures.append(f"{region['market']}: missing primary sources")
         if region.get("claim_type") != "qualitative":
-            failures.append(f"{region['market']}: quantitative content requires manual figure, tax-year and method audit")
+            failures.append(f"{region['market']}: numerical claims require verification")
         if "https://www.livworthy.com" not in region.get("copy", ""):
-            failures.append(f"{region['market']}: LivWorthy link missing")
+            failures.append(f"{region['market']}: destination missing")
+    if regions.get("India", {}).get("website_market_supported") is not False:
+        failures.append("India calculator cannot be marked supported without verification")
 
-    india = market_by_name.get("India", {})
-    if india.get("website_market_supported") is not False:
-        failures.append("India website calculators must not be marked supported without re-verification")
+    indexed = {}
+    for post in ledger.get("posts", []):
+        for platform in post["platforms"]:
+            indexed.setdefault((post["market"], platform), []).append(post)
 
-    existing_posts = ledger.get("posts", [])
-    existing_network_keys = {(p["market"], network) for p in existing_posts for network in p["platforms"]}
-    proposed_keys = set()
-    for row in queue["proposed_test_posts"]:
-        p, m = row["platform"].lower(), row["market"]
-        if p not in ALLOWED or p in BLOCKED:
-            failures.append(f"Forbidden or unknown platform: {p}")
-        if m not in market_by_name:
-            failures.append(f"Unknown market: {m}")
-        if (m, p) in existing_network_keys:
-            failures.append(f"Already scheduled in Metricool: {m}/{p}")
-        k = key(queue["campaign"], m, p, row["creative_id"])
-        if k in proposed_keys:
-            failures.append(f"Duplicate proposed creative: {k}")
-        proposed_keys.add(k)
-        if row.get("status") in {"SCHEDULED", "PUBLISHED"} and not row.get("post_id"):
-            failures.append(f"{m}/{p}: claimed scheduling without a returned post ID")
-        if row.get("status") != "SCHEDULED" and row.get("scheduled_at"):
-            failures.append(f"{m}/{p}: scheduled timestamp present without scheduled status")
+    targets = queue.get("proposed_test_posts", []) + queue.get("additional_verified_posts", [])
+    seen = set()
+    for post in targets:
+        network, market = post["platform"], post["market"]
+        status, post_id = post.get("status"), post.get("post_id")
+        if network not in ALLOWED:
+            failures.append(f"Invalid network: {network}")
+        if market not in regions and market != "Global":
+            failures.append(f"Invalid market: {market}")
+        key = (queue["campaign"], market, network, post["creative_id"])
+        if key in seen:
+            failures.append(f"Duplicated creative key: {key}")
+        seen.add(key)
 
-    for row in queue["proposed_test_posts"]:
-        print(f"{row['platform']:10} {row['market']:7} {row['status']}")
+        existing = indexed.get((market, network), [])
+        same = next((entry for entry in existing if entry.get("post_id") == post_id), None)
+        if status == "SCHEDULED":
+            if not post_id or not post.get("scheduled_at"):
+                failures.append(f"{market}/{network}: scheduled without ID/time")
+            if same is None:
+                failures.append(f"{market}/{network}: scheduled ID missing in verified ledger")
+        elif status in {"PUBLISHED", "FAILED"}:
+            failures.append(f"{market}/{network}: publish outcomes require a separate provider-verified record")
+        elif existing:
+            failures.append(f"{market}/{network}: already scheduled, do not submit again")
+        elif post.get("scheduled_at"):
+            failures.append(f"{market}/{network}: timestamp on unscheduled row")
+
+        print(f"{network:<11} {market:<7} {status:<12} {post_id or '-'}")
+
     if failures:
-        print("\nBLOCKED: " + "; ".join(failures))
+        print("\nFAILED: " + "; ".join(failures))
         return 2
-    print(f"\nPASS: {len(queue['markets'])} countries and {len(queue['proposed_test_posts'])} launch posts validated as staging records, NOT publication receipts.")
+    print(f"\nPASS: {len(targets)} launch records cross-checked. SCHEDULED does not mean PUBLISHED.")
     return 0
 
 
