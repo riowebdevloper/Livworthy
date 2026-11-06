@@ -157,3 +157,4 @@ A user or administrator initiated "Start Validation" in Google Search Console fo
 ### Actionable Recommendation for GSC
 - **DO NOT attempt to re-validate this report.**
 - "Excluded by 'noindex' tag" is **not an error**; it is the desired state for non-qualifying pages. Having noindex exclusions confirms that the Quality Gate is successfully protecting your domain.
+

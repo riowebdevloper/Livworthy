@@ -76,7 +76,6 @@ export function createLocalizedLongFormPages(baseUrl: string): LocalizedSeoPage[
               description: desc,
               url: canonical,
               inLanguage: intl,
-              license: `${baseUrl}/terms`,
               isAccessibleForFree: true,
               creator: {
                 '@type': 'Organization',

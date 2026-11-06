@@ -4,12 +4,12 @@
  * Enforces Google Search Console & Schema.org Dataset invariants:
  * - Every Dataset schema must specify a non-empty name
  * - Every Dataset schema must specify a non-empty description
- * - Every Dataset schema must specify a valid creator (Organization or Person with name and url)
- * - Every Dataset schema must specify a valid publisher
- * - Every Dataset schema must specify an authoritative verified license (https://www.livworthy.com/terms)
+ * - Every Dataset schema must specify a valid creator (Organization with verified name and url)
+ * - Every Dataset schema must specify a valid publisher (Organization with verified name and url)
  * - Every Dataset schema must specify a valid canonical URL
  * - Every Dataset schema must specify isAccessibleForFree: true
- * - Zero fictional authors or unverified open-source licenses
+ * - Truthful Licensing Policy: Zero fabricated licenses (no unverified Creative Commons, no misusing website Terms as open data license)
+ * - Zero synthetic personas or fictitious organizations
  */
 
 import assert from 'node:assert/strict';
@@ -54,30 +54,47 @@ for (const f of htmlFiles) {
           datasetCount++;
           const rel = path.relative(distDir, f);
 
-          // 1. Name
+          // 1. Name (Required by Schema.org and Google)
           assert.ok(item.name && item.name.trim().length > 3, `${rel}: Dataset must have a valid name`);
 
-          // 2. Description
+          // 2. Description (Required by Schema.org and Google)
           assert.ok(item.description && item.description.trim().length > 10, `${rel}: Dataset must have a valid description`);
 
-          // 3. Creator
+          // 3. Creator (Recommended by Schema.org; must be truthful and verified)
           assert.ok(item.creator, `${rel}: Dataset must have a creator`);
           if (typeof item.creator === 'object') {
             assert.ok(
-              item.creator.name || item.creator['@id'],
-              `${rel}: Dataset creator must include a name or valid reference`
+              item.creator.name === 'LivWorthy' || item.creator['@id']?.includes('#organization'),
+              `${rel}: Dataset creator must be the verified entity 'LivWorthy' (got ${JSON.stringify(item.creator)})`
+            );
+            assert.ok(
+              !JSON.stringify(item.creator).includes('Quantitative Research Institute'),
+              `${rel}: Dataset creator must not use fictional personas`
             );
           }
 
-          // 4. Publisher
+          // 4. Publisher (Recommended by Schema.org; must be truthful and verified)
           assert.ok(item.publisher, `${rel}: Dataset must have a publisher`);
+          if (typeof item.publisher === 'object') {
+            assert.ok(
+              item.publisher.name === 'LivWorthy' || item.publisher['@id']?.includes('#organization'),
+              `${rel}: Dataset publisher must be the verified entity 'LivWorthy'`
+            );
+          }
 
-          // 5. License
-          assert.ok(item.license, `${rel}: Dataset must specify a license`);
-          assert.ok(
-            item.license.startsWith('https://www.livworthy.com/terms'),
-            `${rel}: Dataset license must reference authoritative terms of use (got ${item.license})`
-          );
+          // 5. Licensing Truthfulness & Provenance
+          // In Google Dataset & Schema.org guidelines, 'license' is optional/recommended.
+          // Rule: Never fabricate an open-source license (e.g. Creative Commons) or inappropriately claim website terms without authorization.
+          if (item.license) {
+            assert.ok(
+              !item.license.includes('creativecommons.org'),
+              `${rel}: Dataset must not claim fabricated Creative Commons license (${item.license})`
+            );
+            assert.ok(
+              !item.license.endsWith('/terms'),
+              `${rel}: General website Terms must not be asserted as a dataset redistribution license without dedicated data licensing terms`
+            );
+          }
 
           // 6. Canonical URL
           assert.ok(item.url && item.url.startsWith('https://www.livworthy.com'), `${rel}: Dataset URL must be absolute HTTPS www`);
@@ -94,5 +111,5 @@ for (const f of htmlFiles) {
 
 assert.ok(datasetCount > 0, `Expected at least 1 Dataset structured data object, found ${datasetCount}`);
 console.log(`✅ PASS: Verified ${datasetCount} Schema.org Dataset structured data instances.`);
-console.log('✅ PASS: 100% of Dataset objects have creator, publisher, license, description, and canonical URL.');
+console.log('✅ PASS: 100% of Dataset objects have creator, publisher, description, canonical URL, and truthful licensing metadata.');
 console.log('\n🎉 ALL DATASET STRUCTURED DATA INVARIANTS PASSED 100%!\n');

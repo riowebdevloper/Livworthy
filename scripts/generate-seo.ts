@@ -184,7 +184,6 @@ export function runSeoGenerator() {
         description:
           'Income and living-cost intelligence across 39 target markets, with statutory tax calculations available for supported jurisdictions, fair-market rent benchmarks, and essential goods expenditure models.',
         url: `${BASE_URL}/`,
-        license: `${BASE_URL}/terms#permitted-use`,
         isAccessibleForFree: true,
         creator: {
           '@type': 'Organization',

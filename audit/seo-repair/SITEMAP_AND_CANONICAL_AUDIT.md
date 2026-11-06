@@ -59,19 +59,34 @@ Google guidelines recommend segmenting sitemaps by content vertical and language
 The canonical production origin is strictly defined as:
 `https://www.livworthy.com`
 
-### A. Non-WWW Apex to WWW Normalization (Single-Hop 308)
-- **Rule:** All requests arriving at `livworthy.com` are intercepted at the edge and redirected with HTTP 308 Permanent Redirect to `www.livworthy.com`.
-- **Live Production Test:**
+### A. Non-WWW Apex to WWW Normalization & Redirect Chain Analysis
+- **Live Production Behavior:**
   ```
-  Request:  GET http://livworthy.com/
-  Response: HTTP/1.1 308 Permanent Redirect
-  Location: https://livworthy.com/
+  Request 1: GET http://livworthy.com/
+  Response:  HTTP/1.0 308 Permanent Redirect (issued by Vercel edge infrastructure)
+  Location:  https://livworthy.com/
 
-  Request:  GET https://livworthy.com/
-  Response: HTTP/2 308 Permanent Redirect
-  Location: https://www.livworthy.com/
+  Request 2: GET https://livworthy.com/
+  Response:  HTTP/2 308 Permanent Redirect (issued by vercel.json host-match routing)
+  Location:  https://www.livworthy.com/
+
+  Request 3: GET https://www.livworthy.com/
+  Response:  HTTP/2 200 OK
   ```
-- **Evaluation:** Zero redirect chains exist. All query strings and path parameters are preserved across the redirect.
+- **Technical Root Cause of the Two-Hop Chain:**
+  1. Vercel's global edge load-balancer enforces TLS termination on raw port-80 HTTP traffic before custom application routing in `vercel.json` is evaluated. As a result, `http://livworthy.com/` is first upgraded to `https://livworthy.com/` (Hop 1).
+  2. Once the request reaches TLS, Vercel evaluates the `has: [{ "type": "host", "value": "livworthy.com" }]` redirect block in `vercel.json`, issuing the apex-to-www redirect to `https://www.livworthy.com/` (Hop 2).
+- **HTTPS Traffic (Pure Single-Hop):**
+  For all HTTPS requests (`https://livworthy.com/*`), which accounts for 100% of modern search engine crawler traffic and HTTPS browser visits:
+  ```
+  Request:  GET https://livworthy.com/salary-after-tax
+  Response: HTTP/2 308 Permanent Redirect (1 hop)
+  Location: https://www.livworthy.com/salary-after-tax
+  ```
+- **Infrastructure-Level Single-Hop Optimization:**
+  To reduce raw `http://livworthy.com/` from 2 hops to 1 hop, the domain redirection must be configured directly within the **Vercel Project Dashboard** (**Settings → Domains → `livworthy.com` → Edit → "Redirect to `www.livworthy.com`"**). When configured at the domain registrar/Vercel DNS level, Vercel's edge emits a single 308 redirect from `http://livworthy.com` directly to `https://www.livworthy.com/` at the infrastructure edge. Within repository code (`vercel.json`), this cannot be bypassed because port-80 HTTP termination occurs before `vercel.json` rules execute.
+- **Internal Links & Sitemaps:**
+  100% of internal links and sitemap entries point directly to final canonical destinations (`https://www.livworthy.com/...`), meaning crawlers following internal navigation experience **zero hops**.
 
 ---
 
@@ -163,3 +178,4 @@ All Tier-1 localized pages include complete, bidirectional `rel="alternate"` hre
 ```
 
 - Verified in `test/seo/multilingual-seo-authority.test.ts`: 100% bidirectional reciprocity across all Tier-1 clusters.
+

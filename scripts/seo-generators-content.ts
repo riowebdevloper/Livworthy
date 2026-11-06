@@ -544,7 +544,6 @@ export function createCoveragePage(baseUrl: string): SeoPage {
         url: `${baseUrl}/coverage`,
         description:
           'Official transparency registry tracking verified statutory personal income tax adapters, limited schedule coverage, and cost-of-living metropolitan benchmarks across 39 commercial markets.',
-        license: `${baseUrl}/terms`,
         isAccessibleForFree: true,
         creator: {
           '@type': 'Organization',
@@ -1115,7 +1114,6 @@ export function createEmpiricalReportsPages(baseUrl: string): {
           name: report.title,
           description: report.metaDescription,
           url: `${baseUrl}/${report.slug}`,
-          license: `${baseUrl}/terms`,
           isAccessibleForFree: true,
           creator: {
             '@type': 'Organization',
