@@ -153,7 +153,7 @@ export function createRelocationPages(baseUrl: string): SeoPage[] {
           <a href="/job-offer-comparison" class="px-5 py-2.5 rounded-lg bg-[#167D75] hover:bg-[#136862] text-white text-sm font-semibold transition-colors">
             Job Offer Comparison Guide
           </a>
-          <a href="/?tab=job-offers" class="px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-semibold border border-white/20 transition-colors">
+          <a href="/job-offers" class="px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-semibold border border-white/20 transition-colors">
             Open Interactive Evaluator
           </a>
         </div>
@@ -425,6 +425,7 @@ export function createJobOfferAuthorityPage(baseUrl: string): SeoPage {
         </div>
         <a
           href="/?tab=job-offers"
+          rel="nofollow"
           class="shrink-0 px-5 py-3 rounded-xl bg-[#167D75] hover:bg-[#136862] text-white text-sm font-bold shadow-xs transition-colors flex items-center space-x-2"
         >
           <span>Launch Job Offer Calculator →</span>
@@ -489,7 +490,7 @@ export function createJobOfferAuthorityPage(baseUrl: string): SeoPage {
             Use LivWorthy’s verified statutory engines to determine your exact net take-home, living expenses, and realistic monthly savings.
           </p>
           <div class="flex flex-wrap justify-center gap-3 pt-2">
-            <a href="/?tab=job-offers" class="px-5 py-2.5 rounded-lg bg-[#102A2E] hover:bg-[#167D75] text-white text-sm font-bold transition-colors">
+            <a href="/job-offers" class="px-5 py-2.5 rounded-lg bg-[#102A2E] hover:bg-[#167D75] text-white text-sm font-bold transition-colors">
               Open Job Offer Comparison Tool
             </a>
             <a href="/relocation" class="px-5 py-2.5 rounded-lg bg-white border border-[#DCE3E0] hover:bg-[#F7F8F5] text-[#102A2E] text-sm font-semibold transition-colors">
@@ -538,11 +539,25 @@ export function createCoveragePage(baseUrl: string): SeoPage {
       },
       {
         '@type': 'Dataset',
+        '@id': `${baseUrl}/coverage#dataset`,
         name: 'LivWorthy Global Market & Tax Engine Coverage Registry',
         url: `${baseUrl}/coverage`,
         description:
           'Official transparency registry tracking verified statutory personal income tax adapters, limited schedule coverage, and cost-of-living metropolitan benchmarks across 39 commercial markets.',
-        publisher: { '@id': `${baseUrl}/#organization` },
+        license: `${baseUrl}/terms`,
+        isAccessibleForFree: true,
+        creator: {
+          '@type': 'Organization',
+          '@id': `${baseUrl}/#organization`,
+          name: 'LivWorthy',
+          url: `${baseUrl}/`,
+        },
+        publisher: {
+          '@type': 'Organization',
+          '@id': `${baseUrl}/#organization`,
+          name: 'LivWorthy',
+          url: `${baseUrl}/`,
+        },
       },
     ],
   };
@@ -1096,13 +1111,22 @@ export function createEmpiricalReportsPages(baseUrl: string): {
         },
         {
           '@type': 'Dataset',
+          '@id': `${baseUrl}/${report.slug}#dataset`,
           name: report.title,
           description: report.metaDescription,
           url: `${baseUrl}/${report.slug}`,
-          license: 'https://creativecommons.org/licenses/by/4.0/',
+          license: `${baseUrl}/terms`,
+          isAccessibleForFree: true,
           creator: {
             '@type': 'Organization',
-            name: 'LivWorthy Quantitative Research Institute',
+            '@id': `${baseUrl}/#organization`,
+            name: 'LivWorthy',
+            url: baseUrl,
+          },
+          publisher: {
+            '@type': 'Organization',
+            '@id': `${baseUrl}/#organization`,
+            name: 'LivWorthy',
             url: baseUrl,
           },
           distribution: [

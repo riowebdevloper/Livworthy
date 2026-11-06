@@ -67,13 +67,37 @@ export function createLocalizedLongFormPages(baseUrl: string): LocalizedSeoPage[
         dir,
         changefreq: freq,
         priority,
-        structuredData: {
-          '@context': 'https://schema.org',
-          '@type': type,
-          name: title,
-          url: canonical,
-          inLanguage: intl,
-        },
+        structuredData: type === 'Dataset'
+          ? {
+              '@context': 'https://schema.org',
+              '@type': 'Dataset',
+              '@id': `${canonical}#dataset`,
+              name: title,
+              description: desc,
+              url: canonical,
+              inLanguage: intl,
+              license: `${baseUrl}/terms`,
+              isAccessibleForFree: true,
+              creator: {
+                '@type': 'Organization',
+                '@id': `${baseUrl}/#organization`,
+                name: 'LivWorthy',
+                url: `${baseUrl}/`,
+              },
+              publisher: {
+                '@type': 'Organization',
+                '@id': `${baseUrl}/#organization`,
+                name: 'LivWorthy',
+                url: `${baseUrl}/`,
+              },
+            }
+          : {
+              '@context': 'https://schema.org',
+              '@type': type,
+              name: title,
+              url: canonical,
+              inLanguage: intl,
+            },
         bodyContent: `<article class="max-w-5xl mx-auto px-4 py-10" dir="${dir}">${body}</article>`,
       });
     };

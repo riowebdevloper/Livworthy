@@ -183,10 +183,25 @@ export function runSeoGenerator() {
         name: 'LivWorthy Global Income, Tax & Cost of Living Benchmark Dataset',
         description:
           'Income and living-cost intelligence across 39 target markets, with statutory tax calculations available for supported jurisdictions, fair-market rent benchmarks, and essential goods expenditure models.',
-        creator: { '@id': `${BASE_URL}/#organization` },
+        url: `${BASE_URL}/`,
+        license: `${BASE_URL}/terms`,
+        isAccessibleForFree: true,
+        creator: {
+          '@type': 'Organization',
+          '@id': `${BASE_URL}/#organization`,
+          name: 'LivWorthy',
+          url: `${BASE_URL}/`,
+          logo: `${BASE_URL}/logo.png`,
+        },
+        publisher: {
+          '@type': 'Organization',
+          '@id': `${BASE_URL}/#organization`,
+          name: 'LivWorthy',
+          url: `${BASE_URL}/`,
+          logo: `${BASE_URL}/logo.png`,
+        },
         temporalCoverage: `2024/${LATEST_STATUTORY_TAX_YEAR}`,
         spatialCoverage: 'Global (39 Target Commercial Markets)',
-        license: `${BASE_URL}/terms`,
       },
     ],
   };
@@ -1101,7 +1116,7 @@ export function runSeoGenerator() {
         </section>
 
         <div class="mt-8 flex flex-wrap items-center gap-3">
-          <a href="/?city=${city.id}&salary=${g.salaryMajor}&tab=nyc-100k-guide&guide=${g.slug}" class="px-5 py-2.5 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm rounded-xl shadow-xs transition-colors">
+          <a href="/?city=${city.id}&salary=${g.salaryMajor}&tab=nyc-100k-guide&guide=${g.slug}" rel="nofollow" class="px-5 py-2.5 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm rounded-xl shadow-xs transition-colors">
             Launch Live Interactive Scenario (${g.currency} ${g.salaryMajor.toLocaleString()})
           </a>
           <a href="/cities/${city.id}" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium text-sm rounded-xl transition-colors">

@@ -636,13 +636,13 @@ export function createLocalizedToolPages(baseUrl: string): ToolSeoPage[] {
                       ${escapeHtml(getLocalizedCityDisplayName('nyc', loc))} ($100k)
                     </a>
                     <a href="/cities/london" class="text-xs px-2.5 py-1 rounded-full border bg-[#F7F8F5] text-[#102A2E] border-[#DCE3E0] hover:bg-[#EAEFEA]">
-                      ${escapeHtml(getLocalizedCityDisplayName('london', loc))} (£60k)
+                      ${escapeHtml(getLocalizedCityDisplayName('london', loc))} (£75k)
                     </a>
                     <a href="/cities/dubai" class="text-xs px-2.5 py-1 rounded-full border bg-[#F7F8F5] text-[#102A2E] border-[#DCE3E0] hover:bg-[#EAEFEA]">
                       ${escapeHtml(getLocalizedCityDisplayName('dubai', loc))} (300k AED)
                     </a>
                     <a href="/cities/toronto" class="text-xs px-2.5 py-1 rounded-full border bg-[#F7F8F5] text-[#102A2E] border-[#DCE3E0] hover:bg-[#EAEFEA]">
-                      ${escapeHtml(getLocalizedCityDisplayName('toronto', loc))} (CA$90k)
+                      ${escapeHtml(getLocalizedCityDisplayName('toronto', loc))} (CA$100k)
                     </a>
                   </div>
                 </div>

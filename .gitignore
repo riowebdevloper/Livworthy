@@ -11,3 +11,4 @@ rzp-key*.csv
 *.zip
 data/gsc-audit/
 
+Reports_snapshot.csv
