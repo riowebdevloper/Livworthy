@@ -1,22 +1,50 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BQBKMVS7PN"></script>
+    <!-- Google Consent Mode v2 Default (GDPR/ePrivacy Compliant Zero Tracking Before Consent) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'G-BQBKMVS7PN');
+      var savedConsent = null;
       try {
+        var rawConsent = localStorage.getItem('livworthy_cookie_consent');
+        if (rawConsent) savedConsent = JSON.parse(rawConsent);
+      } catch (e) {}
+
+      if (savedConsent && savedConsent.analytics === true) {
+        gtag('consent', 'default', {
+          'analytics_storage': 'granted',
+          'ad_storage': savedConsent.marketing ? 'granted' : 'denied',
+          'ad_user_data': savedConsent.marketing ? 'granted' : 'denied',
+          'ad_personalization': savedConsent.marketing ? 'granted' : 'denied',
+          'wait_for_update': 500
+        });
+      } else {
+        gtag('consent', 'default', {
+          'analytics_storage': 'denied',
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied',
+          'wait_for_update': 500
+        });
+      }
+
+      gtag('js', new Date());
+      gtag('config', 'G-BQBKMVS7PN');
+
+      try {
+        var cleanPath = window.location.pathname;
+        var cleanLocation = window.location.origin + cleanPath;
+        var cleanReferrer = document.referrer ? document.referrer.split('?')[0] : '(direct)';
         gtag('event', 'page_not_found', {
-          page_path: window.location.pathname,
-          page_referrer: document.referrer || '(direct)',
-          page_location: window.location.href,
+          page_path: cleanPath,
+          page_referrer: cleanReferrer,
+          page_location: cleanLocation
         });
       } catch (e) {}
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BQBKMVS7PN"></script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

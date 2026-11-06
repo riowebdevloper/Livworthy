@@ -62,21 +62,22 @@ In the React Single-Page Application (`src/App.tsx`), tab switches (`salary-wort
 
 ## 3. Investigation: Suspected Automated Traffic vs. Attribution Defects (Task 2)
 
-An evidence-based audit was performed to determine whether the 4,059 users represent automated traffic, human traffic with broken attribution, or a combination of both:
+An evidence-based audit was performed to evaluate whether the 4,059 users represent suspected automated traffic, human traffic with fragmented attribution, or a combination of both:
 
 ### Evidence Matrix
 
 | Dimension | Observed Evidence | Technical Evaluation |
 |---|---|---|
-| **Temporal Spike** | 3,948 of 4,059 users (97.26%) occurred on Oct 14 (1,014) and Oct 15 (2,934). The remaining 26 days averaged ~4 users/day. | **Automated Batch Activity:** Natural human search volume does not spike by 25,000% over 48 hours and drop to zero without paid marketing. This matches a scheduled automated crawl, audit, or discovery sweep. |
-| **Geographic Clustering** | 98.87% of all users came from Des Moines IA (2,435), Cheyenne WY (552), Phoenix AZ (514), and Chicago IL (512). | **Datacenter IP Footprint:**<br>• Des Moines / Council Bluffs: Microsoft Azure Central US & Google Cloud `us-central1`.<br>• Cheyenne: Microsoft Azure West Central US.<br>• Phoenix: Google Cloud `us-west4`, Azure West US 3, AWS Phoenix.<br>• Chicago: Primary Midwest carrier-hotel exchange. |
-| **Engagement Duration** | Average 0.2257 seconds across all active users. | **Headless Script Execution:** Headless browsers (such as Puppeteer/Selenium auditing suites or search rendering bots) fetch the page, execute synchronous JavaScript (triggering `gtag.js`), and terminate immediately. |
+| **Temporal Spike** | 3,948 of 4,059 users (97.26%) occurred on Oct 14 (1,014) and Oct 15 (2,934). The remaining 26 days averaged ~4 users/day. | **Suspected Automated Activity (Unconfirmed):** Natural human search volume rarely surges by 25,000% over 48 hours and collapses to baseline without marketing campaigns. This matches typical signatures of automated crawls, security scans, or synthetic audits. However, without server-level access logs and User-Agent headers, this remains classified as **suspected automation**, not definitive proof. |
+| **Geographic Clustering** | 98.87% of all users came from Des Moines IA (2,435), Cheyenne WY (552), Phoenix AZ (514), and Chicago IL (512). | **Datacenter Hub Association (Hypothesis):** Major hyperscaler infrastructure (Azure Central US, GCP us-central1, Azure West Central US, GCP us-west4) is located in these regions. However, standard residential and commercial Internet Service Providers also peer and route traffic through carrier exchanges in Chicago and Phoenix. Traffic cannot be classified as bots based on geographic location alone without Autonomous System Number (ASN) verification. |
+| **Engagement Duration** | Average 0.2257 seconds across all active users. | **Dual Factor Analysis:** Ultra-short duration (<1s) is consistent with headless automated scanners (e.g. Puppeteer/Lighthouse/curl) executing JavaScript and terminating. Crucially, it also occurs for real human visitors who reject or dismiss the Consent Mode v2 banner, causing GA4 to receive isolated cookieless pings with no subsequent session timestamping. |
 | **Page Traversal Pattern** | Exact uniform clusters across site sections:<br>• Institutional policy pages: ~131–161 views each.<br>• Top guide clusters: ~72–79 views each.<br>• Admin dashboard: exactly 27 views.<br>• Multilingual homepages: 16–27 views each. | **Sequential Crawl Graph:** Scripted crawlers systematically spider footer links, guide links, and language toggles in uniform passes. |
-| **Referrer & Source** | 99.93% `(direct) / (none)`. | **Automated Direct Ingestion:** Automated HTTP clients and crawlers rarely send external HTTP referrers, compounding the cookieless Consent Mode attribution collapse. |
+| **Referrer & Source** | 99.93% `(direct) / (none)`. | **Direct Traffic Signature:** Automated HTTP clients and crawlers rarely send external HTTP referrers, compounding the cookieless Consent Mode attribution collapse. |
 
 ### Conclusion on Traffic Composition
-1. **Automated Traffic (Primary Factor ~97%):** The vast majority of traffic during October 14–15 was automated cloud infrastructure crawling (datacenter IPs in Iowa, Wyoming, and Arizona).
-2. **Measurement Attribution Defect (Secondary Factor ~3%):** Real visitors who did not interact with the cookie consent banner had their sessions fragmented by Consent Mode v2 and SPA client-side routing gaps, artificially depressing engagement time and inflating direct source numbers.
+1. **Suspected Automated Traffic (Leading Hypothesis for Oct 14–15 Surge):** The intense two-day concentration of 3,948 visits from datacenter-adjacent locations with sub-second engagement exhibits strong characteristics of automated crawling or synthetic auditing. However, pending verification against Vercel edge access logs, reverse DNS, and full User-Agent distribution, this traffic is classified as **suspected automation** rather than confirmed bots.
+2. **Measurement Attribution & Consent Mode Dynamics:** Real visitors who did not interact with the cookie consent banner had their sessions recorded as cookieless pings under Google Consent Mode v2, which prevents persistent cookie creation and session stitching, artificially depressing engagement time and inflating direct source numbers.
+3. **No Blanket Assumptions or Exclusions:** Entire metropolitan areas or historical records must NEVER be permanently purged or excluded from GA4 without rigorous server-side proof. Human users also live and work in these cities.
 
 ---
 
@@ -185,14 +186,15 @@ In `Reports_snapshot.csv`:
 
 ## 8. GA4 Data Retention & Exclusion Policy (Task 7)
 
-Per strict data governance guidelines:
-- **Do NOT permanently delete or purge historical GA4 data.** Historical data provides the baseline evidence for crawl spikes and audit provenance.
-- **Recommended GA4 Setup:**
-  1. **Primary Reporting View:** Maintain the unfiltered `All Users` stream to preserve raw telemetry.
-  2. **Audited Traffic Comparison Filter:** In Looker Studio or GA4 Custom Explorations, create an audience filter:
+Per strict data governance and analytics integrity standards:
+- **Do NOT permanently delete or purge historical GA4 data.** Historical records represent essential telemetry baselines and audit evidence.
+- **Do NOT apply permanent IP or city-level exclusion filters** to the GA4 property (e.g. banning Des Moines, Cheyenne, Phoenix, or Chicago). Real human visitors live in and browse from these metropolitan areas. Permanent exclusions create unrecoverable reporting blind spots and violate measurement principles.
+- **Recommended Non-Destructive Segmentation:**
+  1. **Primary Reporting View:** Maintain the unfiltered `All Users` stream to preserve raw telemetry and complete audit provenance.
+  2. **Comparative Exploration Segment:** In Looker Studio or GA4 Custom Explorations, use an exploratory segment for comparative analysis:
      - `Town/City does not match exactly "Des Moines|Cheyenne|Phoenix|Chicago"`
      - OR `Engagement time > 1 second`
-  3. This separates the 3,948 automated datacenter hits from organic human exploratory traffic without destroying historical compliance logs.
+  3. This enables analysts to inspect baseline organic engagement patterns in parallel with raw traffic without destroying data or corrupting compliance logs.
 
 ---
 
@@ -229,9 +231,10 @@ All 28 repository test suites pass cleanly (`npm test`).
 |---|---|---|---|
 | **Broken Internal Links** | 6 broken links in US guides (`/salary-after-tax/{city}`) + 1 broken link in cookie banner (`/editorial`). | 0 broken internal links across 4,226 HTML pages. All links point to canonical `/cities/*` and `/editorial-policy`. | **FIXED IN CODE & TESTED** |
 | **Edge 308 Redirects for Broken Paths** | Missing. Visiting `/editorial` or `/salary-after-tax/boston` returned 404. | 7 permanent 308 redirects added in `vercel.json`. | **FIXED IN CODE & TESTED** |
-| **404 Diagnostic Tracking** | Standalone 404 page only fired standard config without custom event logging. | Enhanced `public/404.html` logs `page_not_found` with exact `page_path` and `page_referrer`. | **FIXED IN CODE & TESTED** |
-| **SPA Calculator Engagement Tracking** | 0 events fired on tab switches or calculation runs. Engagement time reported as ~0.23s. | `src/lib/analytics.ts` dispatches `page_view`, `calculator_engagement`, and `calculate_salary` events with active engagement duration. | **FIXED IN CODE & TESTED** |
+| **404 Diagnostic Tracking** | Standalone 404 page only fired standard config without custom event logging. | Enhanced `public/404.html` implements Consent Mode v2 and logs `page_not_found` with sanitized `page_path` and `page_referrer` (no sensitive parameters). | **FIXED IN CODE & TESTED** |
+| **SPA Calculator Engagement Tracking** | 0 events fired on tab switches or calculation runs. Engagement time reported as ~0.23s. | `src/lib/analytics.ts` dispatches `page_view` (deduplicated), `calculator_engagement`, and `calculate_salary` (user-initiated only, privacy salary tiers, genuine GA4 engagement). | **FIXED IN CODE & TESTED** |
 | **UTM Campaign Preservation** | Unverified. | Verified 100% preservation across apex, trailing slash, and guide redirects via live curl tests. | **LIVE VERIFIED** |
-| **Datacenter Traffic Root Cause** | Unexplained 4,059 direct users. | Proved that 97.3% of traffic was automated cloud scanning on Oct 14–15 from datacenter IPs in Des Moines, Cheyenne, Phoenix, and Chicago. | **AUDITED & DOCUMENTED** |
+| **Datacenter Traffic Root Cause** | Unexplained 4,059 direct users. | Evaluated as suspected automated crawling pending Vercel log and User-Agent verification; preserved all historical data without destructive city exclusions. | **AUDITED & DOCUMENTED** |
 | **Search Console vs GA4 Organic** | 2 organic users unexplained. | Verified 2 organic users matches GSC's 27–34 indexed pages and low daily impressions during the audit period. | **AUDITED & VERIFIED** |
 | **Automated Regression Suite** | 27 test suites. | 28 test suites incorporating GA4 measurement and broken link invariants (100% passing). | **TESTED LOCALLY (28/28)** |
+

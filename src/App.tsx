@@ -58,12 +58,23 @@ import { LanguageSuggestionBanner } from './components/layout/LanguageSuggestion
 import { CookieConsentBanner } from './components/ui/CookieConsentBanner';
 import { trackPageView, trackCalculatorEngagement, trackCalculationOutcome } from './lib/analytics';
 
+const TAB_TITLES: Record<ActiveTab, string> = {
+  'salary-worth': 'Salary Worth Calculator — LivWorthy',
+  'salary-needed': 'Salary Needed Calculator — LivWorthy',
+  'salary-after-tax': 'Salary After Tax Calculator — LivWorthy',
+  'cost-of-living': 'Cost of Living Calculator — LivWorthy',
+  'compare': 'Cost of Living & Salary Comparison — LivWorthy',
+  'job-offers': 'Job Offer Comparison & Net Income — LivWorthy',
+  'nyc-100k-guide': 'Salary & Living Cost Guide — LivWorthy',
+};
+
 function AppContent() {
   const { locale, setLocale, dict } = useI18n();
   const t = TRANSLATIONS[locale] || TRANSLATIONS.en;
 
   const handleSelectLocale = (newLoc: SupportedLocale) => {
     setLocale(newLoc);
+    trackCalculatorEngagement(activeTab, 'locale_selected', { locale: newLoc });
   };
 
   const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
@@ -156,6 +167,7 @@ function AppContent() {
   const [correctionJurisdiction, setCorrectionJurisdiction] = useState<string>('');
 
   const isInitialMount = useRef<boolean>(true);
+  const hasUserInteractedRef = useRef<boolean>(false);
 
   // Sync state from current URL query parameters (supports deep links and Back/Forward)
   const syncStateFromUrl = useCallback(() => {
@@ -259,45 +271,61 @@ function AppContent() {
 
     const handlePopState = () => {
       syncStateFromUrl();
+      if (typeof document !== 'undefined') {
+        const title = TAB_TITLES[activeTab] || 'LivWorthy — Know what your income is really worth';
+        document.title = title;
+        trackPageView(window.location.pathname, title);
+      }
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
-  }, [syncStateFromUrl]);
+  }, [syncStateFromUrl, activeTab]);
 
-  // Sync state to URL query parameters
+  // Sync state to URL query parameters (debounced to avoid history flooding & spurious GA4 history events)
+  const replaceStateTimerRef = useRef<any>(null);
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
 
-    try {
-      if (typeof window === 'undefined') return;
-      const params = new URLSearchParams(window.location.search);
-      params.set('city', scenario.location.id);
-      params.set('salary', toMajor(scenario.compensation.baseSalary).toString());
-      if (activeTab === 'nyc-100k-guide' && selectedGuideSlug) {
-        params.set('guide', selectedGuideSlug);
+    if (replaceStateTimerRef.current) clearTimeout(replaceStateTimerRef.current);
+    replaceStateTimerRef.current = setTimeout(() => {
+      try {
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        params.set('city', scenario.location.id);
+        params.set('salary', toMajor(scenario.compensation.baseSalary).toString());
+        if (activeTab === 'nyc-100k-guide' && selectedGuideSlug) {
+          params.set('guide', selectedGuideSlug);
+        }
+        if (actualRentMajor !== undefined && isFinite(actualRentMajor)) {
+          params.set('rent', actualRentMajor.toString());
+        }
+        const cleanTabs = ['salary-worth', 'salary-needed', 'salary-after-tax', 'cost-of-living', 'compare', 'job-offers'];
+        const isCleanRoute = cleanTabs.some((t) => window.location.pathname.endsWith(`/${t}`));
+        if (!isCleanRoute) {
+          params.set('tab', activeTab);
+        } else {
+          params.delete('tab');
+        }
+        const q = params.toString();
+        const expectedSearch = q ? `?${q}` : '';
+        if (window.location.search !== expectedSearch) {
+          const newUrl = expectedSearch ? `${window.location.pathname}${expectedSearch}` : window.location.pathname;
+          window.history.replaceState(null, '', newUrl);
+        }
+      } catch {
+        // Ignore in strict iframes
       }
-      if (actualRentMajor !== undefined && isFinite(actualRentMajor)) {
-        params.set('rent', actualRentMajor.toString());
-      }
-      const cleanTabs = ['salary-worth', 'salary-needed', 'salary-after-tax', 'cost-of-living', 'compare', 'job-offers'];
-      const isCleanRoute = cleanTabs.some((t) => window.location.pathname.endsWith(`/${t}`));
-      if (!isCleanRoute) {
-        params.set('tab', activeTab);
-      } else {
-        params.delete('tab');
-      }
-      const q = params.toString();
-      const newUrl = q ? `${window.location.pathname}?${q}` : window.location.pathname;
-      window.history.replaceState(null, '', newUrl);
-    } catch {
-      // Ignore in strict iframes
-    }
+    }, 600);
+
+    return () => {
+      if (replaceStateTimerRef.current) clearTimeout(replaceStateTimerRef.current);
+    };
   }, [scenario.location.id, scenario.compensation.baseSalary, activeTab, selectedGuideSlug, actualRentMajor]);
 
   // Tab switching pushes new browser history state
@@ -308,6 +336,9 @@ function AppContent() {
       const cleanTabs = ['salary-worth', 'salary-needed', 'salary-after-tax', 'cost-of-living', 'compare', 'job-offers'];
       const isCleanRoute = cleanTabs.some((t) => window.location.pathname.endsWith(`/${t}`));
       let targetPath = window.location.pathname;
+      const title = TAB_TITLES[tab] || document.title;
+      document.title = title;
+
       if (isCleanRoute) {
         if (tab === 'salary-worth') {
           targetPath = locale === 'en' ? '/' : `/${locale}`;
@@ -327,14 +358,17 @@ function AppContent() {
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         window.history.pushState(null, '', newUrl);
       }
-      trackPageView(targetPath);
+      trackPageView(targetPath, title);
       trackCalculatorEngagement(tab, 'tab_selected', { locale });
     } catch {}
   };
 
-  // Track calculation interactions (debounced to accurately record active engagement)
+  // Track calculation interactions (debounced, and ONLY after meaningful user-initiated interaction)
   const calculationTimerRef = useRef<any>(null);
   useEffect(() => {
+    // Prevent firing on initial mount or automatic programmatic state initialization
+    if (!hasUserInteractedRef.current) return;
+
     if (calculationTimerRef.current) clearTimeout(calculationTimerRef.current);
     calculationTimerRef.current = setTimeout(() => {
       trackCalculationOutcome(
@@ -351,6 +385,7 @@ function AppContent() {
 
   // Updates from customizer
   const handleUpdateHousehold = (updatedHousehold: HouseholdProfile) => {
+    hasUserInteractedRef.current = true;
     setScenario((prev) => ({
       ...prev,
       household: updatedHousehold,
@@ -358,6 +393,7 @@ function AppContent() {
   };
 
   const handleUpdateTaxProfile = (updatedTaxProfile: TaxProfile) => {
+    hasUserInteractedRef.current = true;
     setScenario((prev) => ({
       ...prev,
       taxProfile: updatedTaxProfile,
@@ -365,6 +401,7 @@ function AppContent() {
   };
 
   const handleUpdateRentOverride = (rentMajor: number | undefined) => {
+    hasUserInteractedRef.current = true;
     setActualRentMajor(rentMajor);
     setScenario((prev) => ({
       ...prev,
@@ -379,6 +416,7 @@ function AppContent() {
   };
 
   const handleSwitchToSalaryWorthWithSalary = (salaryMajor: number, cityId?: string) => {
+    hasUserInteractedRef.current = true;
     const targetCity = cityId ? (CITIES[cityId] || scenario.location) : scenario.location;
     setScenario((prev) => ({
       ...prev,
@@ -392,6 +430,8 @@ function AppContent() {
 
     try {
       if (typeof window === 'undefined') return;
+      const title = TAB_TITLES['salary-worth'];
+      document.title = title;
       const params = new URLSearchParams();
       params.set('city', targetCity.id);
       params.set('salary', salaryMajor.toString());
@@ -401,6 +441,7 @@ function AppContent() {
       }
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       window.history.pushState(null, '', newUrl);
+      trackPageView(window.location.pathname, title);
     } catch {}
   };
 
@@ -480,19 +521,25 @@ function AppContent() {
   }, []);
 
   const handleSelectGuide = (slug: string) => {
+    hasUserInteractedRef.current = true;
     setSelectedGuideSlug(slug);
     setActiveTab('nyc-100k-guide');
     try {
       if (typeof window === 'undefined') return;
+      const title = 'Salary & Living Cost Guide — LivWorthy';
+      document.title = title;
       const params = new URLSearchParams(window.location.search);
       params.set('tab', 'nyc-100k-guide');
       params.set('guide', slug);
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       window.history.pushState(null, '', newUrl);
+      trackPageView(`/guides/${slug}`, title);
+      trackCalculatorEngagement('nyc-100k-guide', 'guide_selected', { guide: slug });
     } catch {}
   };
 
   const handleSelectCityFromLink = (cityId: string) => {
+    hasUserInteractedRef.current = true;
     const targetCity = CITIES[cityId];
     if (targetCity) {
       setScenario((prev) => {
@@ -514,6 +561,8 @@ function AppContent() {
       setActiveTab('salary-worth');
       try {
         if (typeof window === 'undefined') return;
+        const title = TAB_TITLES['salary-worth'];
+        document.title = title;
         const targetSalaryMajor = targetCity.currency !== scenario.location.currency
           ? getDefaultSalaryForCurrency(targetCity.currency)
           : toMajor(scenario.compensation.baseSalary);
@@ -523,6 +572,8 @@ function AppContent() {
         params.set('tab', 'salary-worth');
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         window.history.pushState(null, '', newUrl);
+        trackPageView(window.location.pathname, title);
+        trackCalculatorEngagement('salary-worth', 'city_selected', { cityId: targetCity.id });
       } catch {}
     }
   };
@@ -542,6 +593,7 @@ function AppContent() {
   };
 
   const handleUpdateScenario = useCallback((nextScenario: LivWorthScenario) => {
+    hasUserInteractedRef.current = true;
     setScenario(nextScenario);
     try {
       const outcome = SalaryWorthCalculator.calculate(nextScenario);

@@ -30,28 +30,70 @@ assert.ok(indexHtmlContent.includes("gtag('consent', 'default'"), 'index.html mu
 assert.ok(indexHtmlContent.includes("'analytics_storage': 'denied'"), 'index.html must default analytics_storage to denied before user consent');
 console.log('  ✔ index.html GA4 and Consent Mode v2 verified.');
 
-console.log('▶ Test 2: Verifying 404 Error Path Logging Invariants...');
+console.log('▶ Test 2: Verifying 404 Error Path Logging & Privacy Consent Invariants...');
 const notFoundHtmlPath = path.resolve('public/404.html');
 const notFoundContent = fs.readFileSync(notFoundHtmlPath, 'utf8');
 assert.ok(notFoundContent.includes(EXPECTED_GA_ID), `404.html must configure measurement ID ${EXPECTED_GA_ID}`);
+assert.ok(notFoundContent.includes("gtag('consent', 'default'"), '404.html must implement Google Consent Mode v2 default before tracking');
+assert.ok(notFoundContent.includes("'analytics_storage': 'denied'"), '404.html must deny analytics by default before consent');
+assert.ok(notFoundContent.includes("localStorage.getItem('livworthy_cookie_consent')"), '404.html must honor saved user cookie consent state');
 assert.ok(notFoundContent.includes('page_not_found'), '404.html must log custom page_not_found event');
 assert.ok(notFoundContent.includes('window.location.pathname'), '404.html must report exact 404 path to GA4');
-console.log('  ✔ 404.html GA4 event and path logging verified.');
+assert.ok(!notFoundContent.includes('page_location: window.location.href'), '404.html must NOT leak sensitive query parameters in page_location');
+assert.ok(notFoundContent.includes('cleanLocation'), '404.html must use sanitized query-stripped URL for location');
+console.log('  ✔ 404.html GA4 event, Consent Mode v2 and privacy URL sanitization verified.');
 
 // 2. Client Analytics Module Verification
-console.log('▶ Test 3: Verifying Client Analytics & Calculator Engagement Module...');
+console.log('▶ Test 3: Verifying Client Analytics & Privacy-Preserving Engagement Module...');
 const analyticsModulePath = path.resolve('src/lib/analytics.ts');
 assert.ok(fs.existsSync(analyticsModulePath), 'src/lib/analytics.ts must exist');
 const analyticsContent = fs.readFileSync(analyticsModulePath, 'utf8');
 assert.ok(analyticsContent.includes('export function trackPageView'), 'analytics.ts must export trackPageView');
 assert.ok(analyticsContent.includes('export function trackCalculatorEngagement'), 'analytics.ts must export trackCalculatorEngagement');
 assert.ok(analyticsContent.includes('export function trackCalculationOutcome'), 'analytics.ts must export trackCalculationOutcome');
+assert.ok(analyticsContent.includes('export function getSalaryTier'), 'analytics.ts must export getSalaryTier');
+
+// Privacy & Genuine Engagement Invariants:
+assert.ok(!analyticsContent.includes('engagement_time_msec: 1000'), 'analytics.ts must NOT inject hardcoded 1000ms engagement time');
+assert.ok(!analyticsContent.includes('engagement_time_msec: 2500'), 'analytics.ts must NOT inject hardcoded 2500ms engagement time');
+assert.ok(!analyticsContent.includes('salary_amount: salaryMajor'), 'analytics.ts must NOT send raw salary amounts (PII/sensitive financial data)');
+assert.ok(analyticsContent.includes('salary_tier: getSalaryTier(salaryMajor)'), 'analytics.ts must map salary to coarse privacy tiers');
+
+// Unit test getSalaryTier and trackPageView deduplication
+import { getSalaryTier, trackPageView, resetAnalyticsState } from '../../src/lib/analytics';
+assert.strictEqual(getSalaryTier(35000), 'under_50k');
+assert.strictEqual(getSalaryTier(60000), '50k_75k');
+assert.strictEqual(getSalaryTier(90000), '75k_100k');
+assert.strictEqual(getSalaryTier(125000), '100k_150k');
+assert.strictEqual(getSalaryTier(175000), '150k_200k');
+assert.strictEqual(getSalaryTier(250000), '200k_300k');
+assert.strictEqual(getSalaryTier(400000), 'over_300k');
+assert.strictEqual(getSalaryTier(0), 'unspecified');
+console.log('  ✔ Salary tier privacy aggregation verified.');
+
+// Deduplication testing in browser-mocked environment
+(globalThis as any).window = {
+  location: { origin: 'https://www.livworthy.com' },
+  gtag: () => {},
+};
+(globalThis as any).document = { title: 'LivWorthy Test' };
+resetAnalyticsState();
+const firstCall = trackPageView('/compare', 'Compare View');
+assert.strictEqual(firstCall, true, 'First route navigation must fire virtual pageview');
+const duplicateCall = trackPageView('/compare', 'Compare View');
+assert.strictEqual(duplicateCall, false, 'Immediate duplicate call to same route must be suppressed');
+const secondRouteCall = trackPageView('/salary-after-tax', 'Tax View');
+assert.strictEqual(secondRouteCall, true, 'Navigation to distinct route must fire virtual pageview');
+console.log('  ✔ SPA virtual pageview deduplication guard verified.');
 
 const appContent = fs.readFileSync(path.resolve('src/App.tsx'), 'utf8');
 assert.ok(appContent.includes('trackPageView('), 'App.tsx must dispatch trackPageView on navigation');
 assert.ok(appContent.includes('trackCalculatorEngagement('), 'App.tsx must dispatch trackCalculatorEngagement on tab switch');
 assert.ok(appContent.includes('trackCalculationOutcome('), 'App.tsx must dispatch trackCalculationOutcome on scenario run');
-console.log('  ✔ Client analytics hooks and calculator engagement verified.');
+assert.ok(appContent.includes('hasUserInteractedRef'), 'App.tsx must gate calculation tracking behind user-initiated interaction');
+assert.ok(appContent.includes('replaceStateTimerRef'), 'App.tsx must debounce replaceState query sync to prevent history flooding');
+assert.ok(appContent.includes('TAB_TITLES'), 'App.tsx must set document.title appropriately on tab transitions');
+console.log('  ✔ App.tsx user-initiated calculation gating and debounced history verified.');
 
 // 3. Vercel Redirects for Legacy / Broken Links
 console.log('▶ Test 4: Verifying Vercel Edge Redirects for Historical Broken Paths...');
@@ -155,3 +197,4 @@ assert.strictEqual(brokenTargets.size, 0, `Expected 0 broken internal links in p
 console.log(`  ✔ Verified 0 broken internal links across ${htmlFiles.length} prerendered pages.`);
 
 console.log('\n🎉 ALL GA4 MEASUREMENT & LINK INTEGRITY TESTS PASSED 100%!\n');
+
