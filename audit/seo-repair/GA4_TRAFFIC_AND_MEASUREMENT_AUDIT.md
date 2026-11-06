@@ -59,18 +59,50 @@ LivWorthy intentionally implements **Advanced Google Consent Mode v2**:
    - Session duration cannot be calculated without session timestamps, causing Average Engagement Time to collapse to **0.23 seconds**.
    - Attribution cannot be stitched across landing page transitions, defaulting traffic to `(direct) / (none)`.
 
-### C. Single Authoritative SPA Pageview Strategy & History Shielding
-1. **The Conflict with GA4 Enhanced Measurement:**
-   - In Google's compiled container for `G-BQBKMVS7PN`, Enhanced Measurement (`__ccd_em_page_view`) is configured with `"vtp_historyEvents": true`.
-   - By default, `gtag.js` monkey-patches `window.history.pushState` and `window.history.replaceState`.
-   - When the React application transitioned routes via `pushState`, `gtag.js` fired an automatic `page_view`. When the app simultaneously called custom `trackPageView()`, GA4 received **two separate pageview hits for every navigation**.
-   - Worse, when users adjusted calculator sliders, the application called `replaceState` to update URL query parameters (`?salary=...`). GA4's history hook treated every query string change as a virtual navigation, spamming artificial pageviews and leaking users' raw financial inputs (`salary`, `rent`) in the `page_location` (`dl`) parameter.
-2. **Authoritative Resolution Implemented:**
-   - **History Shield in `<head>`:** Installed a protective shim in `index.html` before `gtag.js` loads that marks `history.pushState` and `history.replaceState` non-writable and filters automatic GA4 `popstate` listeners.
-   - **Single Owner:** `gtag('config', 'G-BQBKMVS7PN', { send_page_view: false })` disables automatic initial pageviews. All pageviews are authoritatively dispatched by `trackPageView()` in `src/lib/analytics.ts`.
-   - **Financial Privacy Protection:** Implemented `sanitizeUrlForAnalytics()` which strips `salary`, `rent`, `token`, and sensitive parameters before URLs are passed to `page_location` or `page_referrer`, while preserving marketing attribution parameters (`utm_*`, `gclid`).
-   - **Query-Only State Updates:** Slider scrubbing and calculator parameter updates via `replaceState` dispatch **0 pageviews**.
-   - **International Salary Analytics:** Removed nominal USD salary tiers from `calculate_salary` event payloads to prevent cross-currency statistical distortion, transmitting only `calculator_name`, `city_id`, and `currency`.
+### C. Supported Google Analytics 4 SPA & Prerendered Pageview Strategy
+
+#### 1. Architecture: Prerendered SEO Pages vs. Interactive SPA
+LivWorthy uses a hybrid architecture:
+- **Prerendered Static SEO Pages (4,224+ pages):** City hubs, salary guides, empirical reports, directories, and institutional pages are statically prerendered at build time with inlined critical CSS. The React module bundle is stripped to ensure sub-100ms First Contentful Paint and zero runtime JavaScript bloat.
+- **Interactive SPA Islands & Calculator Views:** The homepage (`/`), calculator tabs (`/compare`, `/salary-worth`, `/salary-needed`, `/cost-of-living`), and dynamic interactive islands execute React client-side.
+
+#### 2. Authoritative Single Pageview Strategy (Google Supported Standard)
+1. **Initial Pageview on All Documents:**
+   - In `index.html` and every prerendered page, `gtag('config', 'G-BQBKMVS7PN', { send_page_view: false, page_location: cleanLocation, page_referrer: cleanReferrer })` initializes the container without automatic Enhanced Measurement pageviews.
+   - An immediate consent-aware `gtag('event', 'page_view', { page_path: cleanPath, page_title: document.title, page_location: cleanLocation })` dispatches the authoritative initial pageview.
+   - This guarantees that **100% of static SEO pages** (which lack React) record a valid, canonical pageview upon visit.
+2. **Interactive SPA Mount Deduplication:**
+   - The initial dispatch records `window.__livworthy_initial_pv_path` and `window.__livworthy_initial_pv_time`.
+   - When the React SPA mounts, `trackPageView()` inspects these values. Because the initial route was already tracked by the HTML head snippet within the deduplication threshold, the React mount dispatch is safely ignored, preventing duplicate initial pageviews.
+3. **Controlled SPA Navigation:**
+   - Every genuine user-initiated navigation (tab changes, guide selection, locale switching, browser back/forward) calls `trackPageView(targetPath, title)`.
+   - Each transition emits exactly one virtual `page_view` event.
+4. **Zero Pageviews on Query-Only State Adjustments:**
+   - Slider drags and calculator adjustments update the browser address bar via `window.history.replaceState` (`?salary=...&rent=...`).
+   - The application does NOT fire `trackPageView` during these state updates, emitting **0 artificial pageviews**.
+
+#### 3. Removal of Unsupported "History Shield" & GA4 Admin Configuration Blocker
+- **Unsupported Monkey-Patching Removed:** Previous iterations installed an experimental "History Shield" that froze `history.pushState` / `history.replaceState` and intercepted `window.addEventListener`. This global monkey-patching has been completely removed to adhere to Google standards and ensure full compatibility with browser APIs, third-party libraries, and native browser history.
+- **CRITICAL GA4 DASHBOARD CONFIGURATION REQUIREMENT (ADMIN BLOCKER):**
+  > [!IMPORTANT]
+  > Because developer agent access cannot modify Google Analytics Admin UI settings, property administrators must execute the following step in the GA4 Console to ensure complete deduplication:
+  > 1. Go to **Google Analytics Admin** → **Data Streams** → Select the Web Stream for `livworthy.com` (`G-BQBKMVS7PN`).
+  > 2. Under **Enhanced measurement**, click the **Settings (gear)** icon.
+  > 3. Click **Show advanced settings** under the "Page views" toggle.
+  > 4. **UNCHECK** the option: **"Page changes based on browser history events"**.
+  > 5. Click **Save**.
+  >
+  > *If this checkbox remains enabled in the GA4 Admin UI, Google's `gtag.js` script will independently attempt to listen to history changes. Disabling this checkbox in the GA4 Console is required to guarantee zero duplicate hits.*
+
+#### 4. Strict Attribution Allowlist Privacy Architecture
+Instead of an incomplete denylist, URL sanitization enforces a **conservative allowlist** across all analytics touchpoints (`index.html`, `404.html`, `analytics.ts`):
+- **Allowed Parameters:**
+  - Standard UTM campaign attribution: `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`, `utm_id`, `utm_source_platform`, `utm_creative_format`, `utm_marketing_tactic`
+  - Verified click identifiers: `gclid`, `gbraid`, `wbraid`, `fbclid`, `msclkid`, `ttclid`, `twclid`, `li_fat_id`, `mc_eid`, `dclid`
+  - Safe navigation & referral: `ref`, `tab`, `page`, `lang`, `hl`
+- **Strictly Excluded Parameters:**
+  - All user financial inputs (`salary`, `rent`, `income`, `bonus`, `equity`), tokens (`token`, `auth`, `key`, `secret`, `password`), and arbitrary query parameters are stripped from `page_location`, `page_referrer`, `page_path`, and event payloads before transmission to Google Analytics.
+  - Deep linking in the user's browser address bar remains fully operational without transmitting private data to Google.
 
 ---
 

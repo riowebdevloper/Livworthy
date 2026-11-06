@@ -22,17 +22,18 @@ const distDir = path.resolve('dist');
 assert.ok(fs.existsSync(distDir), 'dist/ directory must exist');
 
 // 1. GA4 Configuration Invariants
-console.log('▶ Test 1: Verifying GA4 Tag Installation, History Shield & Consent Mode v2...');
+console.log('▶ Test 1: Verifying GA4 Tag Installation, Supported SPA Strategy & Consent Mode v2...');
 const indexHtmlPath = path.resolve('index.html');
 const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8');
 assert.ok(indexHtmlContent.includes(EXPECTED_GA_ID), `index.html must configure measurement ID ${EXPECTED_GA_ID}`);
 assert.ok(indexHtmlContent.includes("gtag('consent', 'default'"), 'index.html must implement Google Consent Mode v2 default');
 assert.ok(indexHtmlContent.includes("'analytics_storage': 'denied'"), 'index.html must default analytics_storage to denied before user consent');
 assert.ok(indexHtmlContent.includes("send_page_view': false") || indexHtmlContent.includes('"send_page_view": false'), 'index.html must pass send_page_view: false to prevent duplicate initial pageviews');
+assert.ok(indexHtmlContent.includes("gtag('event', 'page_view'"), 'index.html must dispatch single authoritative initial pageview');
 assert.ok(indexHtmlContent.includes('sanitizeAnalyticsUrl'), 'index.html must sanitize URL before passing to GA4 config');
-assert.ok(indexHtmlContent.includes('Object.defineProperty(history, \'pushState\''), 'index.html must include History Shield protecting pushState from automatic GA4 scraping');
-assert.ok(indexHtmlContent.includes('Object.defineProperty(history, \'replaceState\''), 'index.html must include History Shield protecting replaceState from automatic GA4 scraping');
-console.log('  ✔ index.html GA4, History Shield and Consent Mode v2 verified.');
+assert.ok(indexHtmlContent.includes('ALLOWED_ANALYTICS_PARAMS'), 'index.html must use conservative attribution allowlist');
+assert.ok(!indexHtmlContent.includes('Object.defineProperty(history'), 'index.html must NOT monkey-patch native history APIs');
+console.log('  ✔ index.html GA4 configuration, supported SPA strategy, and Consent Mode v2 verified.');
 
 console.log('▶ Test 2: Verifying 404 Error Path Logging & Privacy Consent Invariants...');
 const notFoundHtmlPath = path.resolve('public/404.html');
@@ -63,15 +64,16 @@ assert.ok(!analyticsContent.includes('engagement_time_msec: 2500'), 'analytics.t
 assert.ok(!analyticsContent.includes('salary_amount:'), 'analytics.ts must NOT send raw salary amounts (PII/sensitive financial data)');
 assert.ok(!analyticsContent.includes('salary_tier:'), 'analytics.ts must NOT send un-normalized cross-currency salary tiers');
 
-// Unit test URL sanitization
+// Unit test URL sanitization with strict allowlist
 import { sanitizeUrlForAnalytics, trackPageView, resetAnalyticsState, trackCalculationOutcome } from '../../src/lib/analytics';
-const testUrl1 = 'https://www.livworthy.com/?salary=150000&rent=3500&city=nyc&utm_source=google&utm_campaign=brand';
+const testUrl1 = 'https://www.livworthy.com/?salary=150000&rent=3500&city=nyc&utm_source=google&utm_campaign=brand&unknown_param=evil';
 const clean1 = sanitizeUrlForAnalytics(testUrl1);
 assert.strictEqual(clean1.includes('salary='), false, 'URL sanitizer must strip salary query parameter');
 assert.strictEqual(clean1.includes('rent='), false, 'URL sanitizer must strip rent query parameter');
+assert.strictEqual(clean1.includes('city='), false, 'URL sanitizer must strip unallowed city query parameter');
+assert.strictEqual(clean1.includes('unknown_param='), false, 'URL sanitizer must strip unallowed unknown parameters');
 assert.strictEqual(clean1.includes('utm_source=google'), true, 'URL sanitizer must preserve marketing utm_source');
 assert.strictEqual(clean1.includes('utm_campaign=brand'), true, 'URL sanitizer must preserve marketing utm_campaign');
-assert.strictEqual(clean1.includes('city=nyc'), true, 'URL sanitizer must preserve city parameter');
 
 const testPath2 = '/compare?salary=120000&tab=compare';
 const clean2 = sanitizeUrlForAnalytics(testPath2);
@@ -80,7 +82,7 @@ assert.strictEqual(clean2, '/compare?tab=compare', 'Relative path sanitizer must
 const testPath3 = '/guides/nyc-100k?token=secret123&salary=100000#section';
 const clean3 = sanitizeUrlForAnalytics(testPath3);
 assert.strictEqual(clean3, '/guides/nyc-100k', 'URL sanitizer must strip token, salary, and hash fragment');
-console.log('  ✔ Sensitive URL query parameter sanitization verified.');
+console.log('  ✔ Sensitive URL query parameter allowlist sanitization verified.');
 
 // Deduplication testing in browser-mocked environment
 const gtagEventsDispatched: Array<{ name: string; params: any }> = [];
@@ -235,6 +237,44 @@ if (brokenTargets.size > 0) {
 
 assert.strictEqual(brokenTargets.size, 0, `Expected 0 broken internal links in prerendered HTML, found ${brokenTargets.size}`);
 console.log(`  ✔ Verified 0 broken internal links across ${htmlFiles.length} prerendered pages.`);
+
+// 6. Regression Testing for Non-React Prerendered Static SEO Pages Tracking
+console.log('▶ Test 6: Verifying GA4 Tracking on Non-React Prerendered Static Pages...');
+const sampleStaticPages = [
+  'about/index.html',
+  'methodology/index.html',
+  'privacy/index.html',
+  'terms/index.html',
+  'cities/london/index.html',
+  'cities/tokyo/index.html',
+  'guides/nyc-100k-salary-worth-guide/index.html',
+  'es/cities/london/index.html',
+  'fr/about/index.html',
+];
+
+for (const relPath of sampleStaticPages) {
+  const filePath = path.join(distDir, relPath);
+  if (!fs.existsSync(filePath)) continue;
+  const content = fs.readFileSync(filePath, 'utf8');
+
+  // Verify React module bundle is stripped to ensure static lightweight performance
+  assert.ok(!content.includes('<script type="module"'), `${relPath} must NOT include React SPA module script`);
+
+  // Verify Google Consent Mode v2 default is initialized
+  assert.ok(content.includes("gtag('consent', 'default'"), `${relPath} must implement Consent Mode v2 default`);
+
+  // Verify GA4 config is present with send_page_view: false
+  assert.ok(content.includes("send_page_view': false") || content.includes('"send_page_view": false'), `${relPath} must configure GA4 with send_page_view: false`);
+
+  // Verify single authoritative initial page_view event is dispatched
+  assert.ok(content.includes("gtag('event', 'page_view'"), `${relPath} must dispatch initial page_view event on page load`);
+
+  // Verify document.title is available (title declared before analytics script)
+  const titleIdx = content.indexOf('<title>');
+  const scriptIdx = content.indexOf("gtag('event', 'page_view'");
+  assert.ok(titleIdx !== -1 && titleIdx < scriptIdx, `${relPath} must declare <title> before page_view dispatch script`);
+}
+console.log(`  ✔ Verified GA4 tracking and script stripping across sample prerendered static SEO pages.`);
 
 console.log('\n🎉 ALL GA4 MEASUREMENT & LINK INTEGRITY TESTS PASSED 100%!\n');
 

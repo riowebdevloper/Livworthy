@@ -334,31 +334,24 @@ function AppContent() {
     setActiveTab(tab);
     try {
       if (typeof window === 'undefined') return;
-      const cleanTabs = ['salary-worth', 'salary-needed', 'salary-after-tax', 'cost-of-living', 'compare', 'job-offers'];
-      const isCleanRoute = cleanTabs.some((t) => window.location.pathname.endsWith(`/${t}`));
-      let targetPath = window.location.pathname;
       const title = TAB_TITLES[tab] || document.title;
       document.title = title;
 
-      if (isCleanRoute) {
-        if (tab === 'salary-worth') {
-          targetPath = locale === 'en' ? '/' : `/${locale}`;
-        } else if (tab === 'nyc-100k-guide') {
-          targetPath = locale === 'en' ? `/guides/${selectedGuideSlug}` : `/${locale}/guides/${selectedGuideSlug}`;
-        } else {
-          targetPath = locale === 'en' ? `/${tab}` : `/${locale}/${tab}`;
-        }
-        const params = new URLSearchParams(window.location.search);
-        params.delete('tab');
-        const q = params.toString();
-        const newUrl = q ? `${targetPath}?${q}` : targetPath;
-        window.history.pushState(null, '', newUrl);
+      let targetPath: string;
+      if (tab === 'salary-worth') {
+        targetPath = locale === 'en' ? '/' : `/${locale}`;
+      } else if (tab === 'nyc-100k-guide') {
+        targetPath = locale === 'en' ? `/guides/${selectedGuideSlug}` : `/${locale}/guides/${selectedGuideSlug}`;
       } else {
-        const params = new URLSearchParams(window.location.search);
-        params.set('tab', tab);
-        const newUrl = `${window.location.pathname}?${params.toString()}`;
-        window.history.pushState(null, '', newUrl);
+        targetPath = locale === 'en' ? `/${tab}` : `/${locale}/${tab}`;
       }
+
+      const params = new URLSearchParams(window.location.search);
+      params.delete('tab');
+      const q = params.toString();
+      const newUrl = q ? `${targetPath}?${q}` : targetPath;
+      window.history.pushState(null, '', newUrl);
+
       trackPageView(targetPath, title);
       trackCalculatorEngagement(tab, 'tab_selected', { locale });
     } catch {}

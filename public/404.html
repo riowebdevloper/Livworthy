@@ -1,34 +1,65 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404: Page Not Found — LivWorthy</title>
+    <meta name="description" content="The page you requested does not exist on LivWorthy. Explore our verified salary calculators, cost of living indices, and country directories." />
+    <meta name="robots" content="noindex, nofollow" />
+
     <!-- Google Consent Mode v2 Default (Advanced Consent Mode: Cookieless Pings Until Explicit Consent) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
 
+      var ALLOWED_ANALYTICS_PARAMS = [
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id',
+        'utm_source_platform', 'utm_creative_format', 'utm_marketing_tactic',
+        'gclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid', 'ttclid', 'twclid', 'li_fat_id', 'mc_eid', 'dclid',
+        'ref', 'tab', 'page', 'lang', 'hl'
+      ];
+
       function sanitizeAnalyticsUrl(rawUrl) {
         if (!rawUrl) return '';
         try {
-          var u = new URL(rawUrl, window.location.origin);
-          var sensitive = ['salary', 'rent', 'bonus', 'equity', 'income', 'token', 'auth', 'email', 'key', 'password', 'secret'];
+          var origin = window.location && window.location.origin ? window.location.origin : 'https://www.livworthy.com';
+          var u = new URL(rawUrl, origin);
           var sp = new URLSearchParams(u.search);
-          var keys = [];
-          sp.forEach(function(_, k) { keys.push(k); });
-          for (var i = 0; i < keys.length; i++) {
-            var kLower = keys[i].toLowerCase();
-            for (var j = 0; j < sensitive.length; j++) {
-              if (kLower === sensitive[j] || kLower.indexOf('salary') !== -1 || kLower.indexOf('rent') !== -1) {
-                sp.delete(keys[i]);
-                break;
-              }
+          var cleanSp = new URLSearchParams();
+          for (var i = 0; i < ALLOWED_ANALYTICS_PARAMS.length; i++) {
+            var param = ALLOWED_ANALYTICS_PARAMS[i];
+            if (sp.has(param)) {
+              var val = sp.get(param);
+              if (val !== null) cleanSp.set(param, val);
             }
           }
-          var cleanQ = sp.toString();
+          var cleanQ = cleanSp.toString();
           u.search = cleanQ ? '?' + cleanQ : '';
           u.hash = '';
           return u.toString();
         } catch (e) {
-          return rawUrl.split('?')[0].split('#')[0];
+          return rawUrl.split('?')[0].split('#')[0] || '/';
+        }
+      }
+
+      function sanitizeAnalyticsPath(rawPath) {
+        if (!rawPath) return '/404';
+        try {
+          var origin = window.location && window.location.origin ? window.location.origin : 'https://www.livworthy.com';
+          var u = new URL(rawPath, origin);
+          var sp = new URLSearchParams(u.search);
+          var cleanSp = new URLSearchParams();
+          for (var i = 0; i < ALLOWED_ANALYTICS_PARAMS.length; i++) {
+            var param = ALLOWED_ANALYTICS_PARAMS[i];
+            if (sp.has(param)) {
+              var val = sp.get(param);
+              if (val !== null) cleanSp.set(param, val);
+            }
+          }
+          var cleanQ = cleanSp.toString();
+          return u.pathname + (cleanQ ? '?' + cleanQ : '');
+        } catch (e) {
+          return rawPath.split('?')[0].split('#')[0] || '/404';
         }
       }
 
@@ -59,8 +90,8 @@
 
       gtag('js', new Date());
 
-      var cleanPath = window.location.pathname;
-      var cleanLocation = sanitizeAnalyticsUrl(window.location.origin + cleanPath);
+      var cleanPath = sanitizeAnalyticsPath(window.location.pathname + window.location.search);
+      var cleanLocation = sanitizeAnalyticsUrl(window.location.href);
       var cleanReferrer = sanitizeAnalyticsUrl(document.referrer);
 
       gtag('config', 'G-BQBKMVS7PN', {
@@ -78,12 +109,6 @@
       } catch (e) {}
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BQBKMVS7PN"></script>
-
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>404: Page Not Found — LivWorthy</title>
-    <meta name="description" content="The page you requested does not exist on LivWorthy. Explore our verified salary calculators, cost of living indices, and country directories." />
-    <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

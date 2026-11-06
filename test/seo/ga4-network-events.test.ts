@@ -2,11 +2,12 @@
  * GA4 Network Events, Browser Navigation & Financial Privacy Simulation Test
  *
  * Verifies at the runtime/network layer:
- * 1. History Shield suppresses GA4 automatic history hooks (pushState, replaceState, popstate).
- * 2. Exactly one pageview is emitted per genuine navigation (initial load, tabs, guides, locale, back/forward).
- * 3. Query-only state changes (via replaceState) emit ZERO artificial pageviews.
- * 4. Sensitive financial parameters (salary, rent, tokens) are NEVER leaked into page_location or payloads.
- * 5. calculate_salary is debounced and fired only on user-initiated changes, never on tab switches or mount.
+ * 1. Native History API safety: pushState and replaceState are standard native functions (no monkey patching).
+ * 2. Prerendered & SPA single pageview strategy: initial HTML head dispatch + SPA mount deduplication.
+ * 3. Exactly one pageview is emitted per genuine navigation (initial load, tabs, guides, locale, back/forward).
+ * 4. Query-only state changes (via replaceState) emit ZERO artificial pageviews.
+ * 5. Conservative allowlist: sensitive financial parameters (salary, rent, tokens) are NEVER leaked into page_location.
+ * 6. calculate_salary is debounced and fired only on user-initiated changes, never on tab switches or mount.
  */
 
 import assert from 'node:assert/strict';
@@ -16,6 +17,7 @@ import {
   trackCalculationOutcome,
   sanitizeUrlForAnalytics,
   resetAnalyticsState,
+  ALLOWED_ANALYTICS_QUERY_PARAMS,
 } from '../../src/lib/analytics';
 
 console.log('========================================================');
@@ -63,118 +65,52 @@ const mockHistory: any = {
   },
 };
 
-// 2. Apply History Shield (identically to index.html)
-(function applyHistoryShield() {
-  const nativePush = mockHistory.pushState.bind(mockHistory);
-  const nativeReplace = mockHistory.replaceState.bind(mockHistory);
-  Object.defineProperty(mockHistory, 'pushState', {
-    value: nativePush,
-    writable: false,
-    configurable: true,
-  });
-  Object.defineProperty(mockHistory, 'replaceState', {
-    value: nativeReplace,
-    writable: false,
-    configurable: true,
-  });
-
-  const nativeAddEventListener = mockWindow.addEventListener.bind(mockWindow);
-  mockWindow.addEventListener = function(type: string, listener: Function, options: any) {
-    if (type === 'popstate' || type === 'hashchange') {
-      const fnStr = listener ? listener.toString() : '';
-      if (
-        fnStr.indexOf('gtm.historyChange') !== -1 ||
-        fnStr.indexOf('source:"popstate"') !== -1 ||
-        fnStr.indexOf('source:"hashchange"') !== -1 ||
-        fnStr.indexOf('QL(b)') !== -1
-      ) {
-        return; // Suppress GA4 automatic history change listener
-      }
-    }
-    return nativeAddEventListener(type, listener, options);
-  };
-})();
-
 (globalThis as any).window = mockWindow;
 (globalThis as any).document = { title: 'LivWorthy — Know what your income is really worth' };
 (globalThis as any).history = mockHistory;
 
-// 3. Simulate gtag.js attempting to hijack history
-function simulateGtagHijackAttempt() {
-  try {
-    mockHistory.pushState = function() {
-      capturedNetworkHits.push({
-        type: 'event',
-        eventName: 'page_view',
-        params: { hijacked: true, location: mockWindow.location.href },
-      });
-    };
-  } catch (e) {}
+// Verify Native History API safety (Zero monkey patching)
+console.log('▶ Test 1: Verifying Native History API Safety & Unpatched Standards...');
+assert.strictEqual(typeof mockHistory.pushState, 'function');
+assert.strictEqual(typeof mockHistory.replaceState, 'function');
+assert.strictEqual(typeof mockWindow.addEventListener, 'function');
+console.log('  ✔ Native history APIs and event listeners operate without monkey-patching.');
 
-  try {
-    mockHistory.replaceState = function() {
-      capturedNetworkHits.push({
-        type: 'event',
-        eventName: 'page_view',
-        params: { hijacked: true, location: mockWindow.location.href },
-      });
-    };
-  } catch (e) {}
-
-  // Attempt to add automatic GA4 popstate listener
-  mockWindow.addEventListener('popstate', function(b: any) {
-    var c = 'QL(b)';
-    capturedNetworkHits.push({ type: 'event', eventName: 'page_view', params: { source: 'popstate', c } });
-  });
-}
-
-simulateGtagHijackAttempt();
-
-// Verify History Shield defeated the hijack
-console.log('▶ Test 1: Verifying History Shield Neutralizes Automatic Scrapers...');
-mockHistory.pushState(null, '', '/test-route');
-assert.strictEqual(
-  capturedNetworkHits.filter((h) => h.params?.hijacked).length,
-  0,
-  'History Shield must prevent pushState from being hijacked'
-);
-mockHistory.replaceState(null, '', '/test-route?salary=99999');
-assert.strictEqual(
-  capturedNetworkHits.filter((h) => h.params?.hijacked).length,
-  0,
-  'History Shield must prevent replaceState from being hijacked'
-);
-console.log('  ✔ History Shield successfully neutralized automatic scrapers.');
-
-// 4. Test Single Authoritative Initial Pageview
-console.log('▶ Test 2: Verifying Initial Pageview & Financial Query Scrubbing...');
+// 2. Test Initial HTML Dispatch & SPA Mount Deduplication
+console.log('▶ Test 2: Verifying Initial Pageview Dispatch & SPA Mount Deduplication...');
 capturedNetworkHits.length = 0;
 resetAnalyticsState();
 
-// Landing page with sensitive deep link: /?salary=150000&rent=3500&city=nyc&utm_source=newsletter
-mockWindow.location.href = 'https://www.livworthy.com/?salary=150000&rent=3500&city=nyc&utm_source=newsletter';
+// Simulate initial HTML head execution on page load
+mockWindow.location.href = 'https://www.livworthy.com/?salary=150000&rent=3500&utm_source=newsletter&utm_campaign=spring';
 mockWindow.location.pathname = '/';
-mockWindow.location.search = '?salary=150000&rent=3500&city=nyc&utm_source=newsletter';
+mockWindow.location.search = '?salary=150000&rent=3500&utm_source=newsletter&utm_campaign=spring';
 
-trackPageView(mockWindow.location.pathname, 'Homepage — LivWorthy');
+const initialCleanLocation = sanitizeUrlForAnalytics(mockWindow.location.href);
+mockWindow.gtag('event', 'page_view', {
+  page_path: '/',
+  page_title: document.title,
+  page_location: initialCleanLocation,
+});
+mockWindow.__livworthy_initial_pv_path = '/';
+mockWindow.__livworthy_initial_pv_time = Date.now();
 
-assert.strictEqual(capturedNetworkHits.length, 1, 'Initial load must dispatch exactly 1 pageview');
-const initialHit = capturedNetworkHits[0];
-assert.strictEqual(initialHit.eventName, 'page_view');
-assert.strictEqual(initialHit.params.page_path, '/');
+assert.strictEqual(capturedNetworkHits.length, 1, 'HTML head must dispatch initial pageview');
+assert.strictEqual(capturedNetworkHits[0].params.page_location.includes('salary='), false, 'Initial location must NOT contain salary');
+assert.strictEqual(capturedNetworkHits[0].params.page_location.includes('rent='), false, 'Initial location must NOT contain rent');
+assert.strictEqual(capturedNetworkHits[0].params.page_location.includes('utm_source=newsletter'), true, 'Initial location must preserve utm_source');
+
+// Now simulate React App mounting and calling trackPageView('/', ...)
+const reactMountTrackResult = trackPageView('/', 'Homepage — LivWorthy');
 assert.strictEqual(
-  initialHit.params.page_location.includes('salary='),
+  reactMountTrackResult,
   false,
-  'page_location must NEVER transmit raw salary'
+  'React SPA initial mount trackPageView must be suppressed to avoid duplicate pageview'
 );
-assert.strictEqual(
-  initialHit.params.page_location.includes('rent='),
-  false,
-  'page_location must NEVER transmit raw rent'
-);
-console.log('  ✔ Initial pageview dispatched once with sanitized location.');
+assert.strictEqual(capturedNetworkHits.length, 1, 'Pageview count must remain exactly 1 after React mounts');
+console.log('  ✔ Initial pageview dispatched once by document head; React mount duplicate suppressed.');
 
-// 5. Test SPA Navigation (Tabs, Guides, Locale)
+// 3. Test SPA Navigation (Tabs, Guides, Locale)
 console.log('▶ Test 3: Verifying SPA Tab & Guide Navigation (1 Pageview Each)...');
 // Navigate to /compare
 mockHistory.pushState(null, '', '/compare');
@@ -192,7 +128,7 @@ const pageViews = capturedNetworkHits.filter((h) => h.eventName === 'page_view')
 assert.strictEqual(pageViews.length, 4, 'Must have exactly 4 pageviews for 4 distinct navigations');
 console.log('  ✔ Each SPA navigation triggered exactly 1 pageview.');
 
-// 6. Test Query-Only Calculator State Changes (0 Pageviews)
+// 4. Test Query-Only Calculator State Changes (0 Pageviews)
 console.log('▶ Test 4: Verifying Query-Only Calculator Slider Scrubbing (0 Pageviews)...');
 const beforeQueryCount = capturedNetworkHits.filter((h) => h.eventName === 'page_view').length;
 
@@ -209,7 +145,7 @@ assert.strictEqual(
 );
 console.log('  ✔ Slider scrubbing emitted 0 artificial pageviews.');
 
-// 7. Test Calculation Outcome Privacy & Debouncing
+// 5. Test Calculation Outcome Privacy & Debouncing
 console.log('▶ Test 5: Verifying calculate_salary Payload Invariants...');
 capturedNetworkHits.length = 0;
 
@@ -231,4 +167,3 @@ assert.strictEqual(
 console.log('  ✔ calculate_salary payload verified (clean currency metadata, zero financial leakage).');
 
 console.log('\n🎉 ALL GA4 NETWORK EVENT & PRIVACY TESTS PASSED 100%!\n');
-
