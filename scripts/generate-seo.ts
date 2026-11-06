@@ -184,7 +184,7 @@ export function runSeoGenerator() {
         description:
           'Income and living-cost intelligence across 39 target markets, with statutory tax calculations available for supported jurisdictions, fair-market rent benchmarks, and essential goods expenditure models.',
         url: `${BASE_URL}/`,
-        license: `${BASE_URL}/terms`,
+        license: `${BASE_URL}/terms#permitted-use`,
         isAccessibleForFree: true,
         creator: {
           '@type': 'Organization',
@@ -1898,7 +1898,7 @@ function createTransparencyPages(): SeoPage[] {
             </p>
           </div>
 
-          <h2 class="text-xl font-bold text-[#102A2E] mt-6">1. Permitted Informational Use</h2>
+          <h2 id="permitted-use" class="text-xl font-bold text-[#102A2E] mt-6">1. Permitted Informational Use</h2>
           <p>By accessing or using LivWorthy, you are granted a revocable, non-exclusive license to utilize our public calculation tools, empirical reports, and directory guides for personal, educational, and non-commercial planning purposes.</p>
 
           <h2 class="text-xl font-bold text-[#102A2E] mt-6">2. Limitation of Liability</h2>
