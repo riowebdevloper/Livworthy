@@ -9,6 +9,13 @@
       gtag('js', new Date());
 
       gtag('config', 'G-BQBKMVS7PN');
+      try {
+        gtag('event', 'page_not_found', {
+          page_path: window.location.pathname,
+          page_referrer: document.referrer || '(direct)',
+          page_location: window.location.href,
+        });
+      } catch (e) {}
     </script>
 
     <meta charset="UTF-8" />

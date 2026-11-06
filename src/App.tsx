@@ -56,6 +56,7 @@ import { SupportedLocale, getInitialLocale, setStoredLocale, TRANSLATIONS } from
 import { I18nProvider, useI18n } from './context/I18nContext';
 import { LanguageSuggestionBanner } from './components/layout/LanguageSuggestionBanner';
 import { CookieConsentBanner } from './components/ui/CookieConsentBanner';
+import { trackPageView, trackCalculatorEngagement, trackCalculationOutcome } from './lib/analytics';
 
 function AppContent() {
   const { locale, setLocale, dict } = useI18n();
@@ -306,8 +307,8 @@ function AppContent() {
       if (typeof window === 'undefined') return;
       const cleanTabs = ['salary-worth', 'salary-needed', 'salary-after-tax', 'cost-of-living', 'compare', 'job-offers'];
       const isCleanRoute = cleanTabs.some((t) => window.location.pathname.endsWith(`/${t}`));
+      let targetPath = window.location.pathname;
       if (isCleanRoute) {
-        let targetPath = '/';
         if (tab === 'salary-worth') {
           targetPath = locale === 'en' ? '/' : `/${locale}`;
         } else if (tab === 'nyc-100k-guide') {
@@ -326,8 +327,27 @@ function AppContent() {
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         window.history.pushState(null, '', newUrl);
       }
+      trackPageView(targetPath);
+      trackCalculatorEngagement(tab, 'tab_selected', { locale });
     } catch {}
   };
+
+  // Track calculation interactions (debounced to accurately record active engagement)
+  const calculationTimerRef = useRef<any>(null);
+  useEffect(() => {
+    if (calculationTimerRef.current) clearTimeout(calculationTimerRef.current);
+    calculationTimerRef.current = setTimeout(() => {
+      trackCalculationOutcome(
+        activeTab,
+        scenario.location.id,
+        toMajor(scenario.compensation.baseSalary),
+        scenario.compensation.baseSalary.currency
+      );
+    }, 1200);
+    return () => {
+      if (calculationTimerRef.current) clearTimeout(calculationTimerRef.current);
+    };
+  }, [activeTab, scenario.location.id, scenario.compensation.baseSalary.amountMinor]);
 
   // Updates from customizer
   const handleUpdateHousehold = (updatedHousehold: HouseholdProfile) => {

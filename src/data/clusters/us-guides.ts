@@ -107,7 +107,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     ],
     relatedLinks: [
       { title: 'Is $150K a Good Salary in San Francisco?', url: '/guides/sf-150k', description: 'Financial breakdown of $150K compensation in SF.' },
-      { title: 'San Francisco Salary After Tax Calculator', url: '/salary-after-tax/san-francisco', description: 'Interactive California tax withholding tool.' },
+      { title: 'San Francisco Income, Tax & Cost Profile', url: '/cities/sf', description: 'Interactive California tax withholding and living cost profile.' },
       { title: 'San Francisco to Austin Relocation Guide', url: '/relocation/san-francisco-to-austin', description: 'Tax savings comparing California to Texas 0% income tax.' },
     ],
     capabilityRequirements: { tax: true, col: true },
@@ -218,7 +218,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
       },
     ],
     relatedLinks: [
-      { title: 'Chicago Salary After Tax Calculator', url: '/salary-after-tax/chicago', description: 'Interactive Illinois tax computation tool.' },
+      { title: 'Chicago Income, Tax & Cost Profile', url: '/cities/chicago', description: 'Interactive Illinois tax computation and living cost benchmark.' },
       { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', description: 'Compare Chicago purchasing power with New York City.' },
       { title: 'Is $100K a Good Salary in Austin?', url: '/guides/austin-100k', description: 'Compare Chicago living costs with no-income-tax Texas.' },
     ],
@@ -331,7 +331,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     ],
     relatedLinks: [
       { title: 'San Francisco to Seattle Relocation Guide', url: '/relocation/san-francisco-to-seattle', description: 'Tax and housing analysis moving from CA to WA.' },
-      { title: 'Seattle Salary After Tax Calculator', url: '/salary-after-tax/seattle', description: 'Interactive Washington take-home calculator.' },
+      { title: 'Seattle Income, Tax & Cost Profile', url: '/cities/seattle', description: 'Interactive Washington take-home calculator and cost profile.' },
       { title: 'Is $150K a Good Salary in San Francisco?', url: '/guides/sf-150k', description: 'Compare Seattle tech pay with Silicon Valley.' },
     ],
     capabilityRequirements: { tax: true, col: true },
@@ -442,7 +442,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
       },
     ],
     relatedLinks: [
-      { title: 'Los Angeles Salary After Tax Calculator', url: '/salary-after-tax/los-angeles', description: 'Interactive California take-home pay tool.' },
+      { title: 'Los Angeles Income, Tax & Cost Profile', url: '/cities/la', description: 'Interactive California take-home pay tool and living costs.' },
       { title: 'Is $150K a Good Salary in San Francisco?', url: '/guides/sf-150k', description: 'Compare Northern vs Southern California living costs.' },
       { title: 'Is $90K a Good Salary in Miami?', url: '/guides/miami-90k', description: 'Compare LA with Florida no-state-tax compensation.' },
     ],
@@ -554,7 +554,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
       },
     ],
     relatedLinks: [
-      { title: 'Boston Salary After Tax Calculator', url: '/salary-after-tax/boston', description: 'Interactive Massachusetts take-home pay tool.' },
+      { title: 'Boston Income, Tax & Cost Profile', url: '/cities/boston', description: 'Interactive Massachusetts take-home pay tool and living costs.' },
       { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', description: 'Compare Boston living costs with New York City.' },
       { title: 'Is $100K a Good Salary in Chicago?', url: '/guides/chicago-100k', description: 'Compare Boston rents with Midwest affordability.' },
     ],
@@ -666,7 +666,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
       },
     ],
     relatedLinks: [
-      { title: 'Miami Salary After Tax Calculator', url: '/salary-after-tax/miami', description: 'Interactive Florida take-home pay calculator.' },
+      { title: 'Miami Income, Tax & Cost Profile', url: '/cities/miami', description: 'Interactive Florida take-home pay calculator and cost profile.' },
       { title: 'Is $100K a Good Salary in Austin?', url: '/guides/austin-100k', description: 'Compare Miami with Texas no-state-tax compensation.' },
       { title: 'Is $120K a Good Salary in Los Angeles?', url: '/guides/la-120k', description: 'Compare Miami purchasing power with Southern California.' },
     ],

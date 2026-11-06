@@ -206,7 +206,7 @@ export function CookieConsentBanner() {
                 <a href="/data-policy" className="hover:text-emerald-400 underline underline-offset-2">
                   Data Policy
                 </a>
-                <a href="/editorial" className="hover:text-emerald-400 underline underline-offset-2">
+                <a href="/editorial-policy" className="hover:text-emerald-400 underline underline-offset-2">
                   Editorial Methodology
                 </a>
               </div>

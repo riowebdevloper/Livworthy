@@ -176,6 +176,76 @@
       "permanent": true
     },
     {
+      "source": "/editorial",
+      "destination": "https://www.livworthy.com/editorial-policy",
+      "permanent": true
+    },
+    {
+      "source": "/editorial/",
+      "destination": "https://www.livworthy.com/editorial-policy",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/san-francisco",
+      "destination": "https://www.livworthy.com/cities/sf",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/san-francisco/",
+      "destination": "https://www.livworthy.com/cities/sf",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/chicago",
+      "destination": "https://www.livworthy.com/cities/chicago",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/chicago/",
+      "destination": "https://www.livworthy.com/cities/chicago",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/seattle",
+      "destination": "https://www.livworthy.com/cities/seattle",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/seattle/",
+      "destination": "https://www.livworthy.com/cities/seattle",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/los-angeles",
+      "destination": "https://www.livworthy.com/cities/la",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/los-angeles/",
+      "destination": "https://www.livworthy.com/cities/la",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/boston",
+      "destination": "https://www.livworthy.com/cities/boston",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/boston/",
+      "destination": "https://www.livworthy.com/cities/boston",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/miami",
+      "destination": "https://www.livworthy.com/cities/miami",
+      "permanent": true
+    },
+    {
+      "source": "/salary-after-tax/miami/",
+      "destination": "https://www.livworthy.com/cities/miami",
+      "permanent": true
+    },
+    {
       "source": "/",
       "has": [
         {
