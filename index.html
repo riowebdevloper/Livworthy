@@ -1,10 +1,73 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google Consent Mode v2 Default (GDPR/ePrivacy Compliant Zero Tracking Before Consent) -->
+    <!-- History Shield: Protect native history APIs from being hijacked by GA4 Enhanced Measurement automatic scrapers -->
+    <!-- This enforces single authoritative SPA pageview tracking and stops automatic leakage of sensitive query parameters -->
+    <script>
+      (function() {
+        try {
+          var nativePush = history.pushState.bind(history);
+          var nativeReplace = history.replaceState.bind(history);
+          Object.defineProperty(history, 'pushState', {
+            value: nativePush,
+            writable: false,
+            configurable: true
+          });
+          Object.defineProperty(history, 'replaceState', {
+            value: nativeReplace,
+            writable: false,
+            configurable: true
+          });
+
+          var nativeAddEventListener = window.addEventListener.bind(window);
+          window.addEventListener = function(type, listener, options) {
+            if (type === 'popstate' || type === 'hashchange') {
+              var fnStr = listener ? listener.toString() : '';
+              if (
+                fnStr.indexOf('gtm.historyChange') !== -1 ||
+                fnStr.indexOf('source:"popstate"') !== -1 ||
+                fnStr.indexOf('source:"hashchange"') !== -1 ||
+                fnStr.indexOf('QL(b)') !== -1
+              ) {
+                return; // Suppress GA4 automatic history change listener to prevent duplicate pageviews
+              }
+            }
+            return nativeAddEventListener(type, listener, options);
+          };
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Google Consent Mode v2 Default (Advanced Consent Mode: Cookieless Pings Until Explicit Consent) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+
+      function sanitizeAnalyticsUrl(rawUrl) {
+        if (!rawUrl) return '';
+        try {
+          var u = new URL(rawUrl, window.location.origin);
+          var sensitive = ['salary', 'rent', 'bonus', 'equity', 'income', 'token', 'auth', 'email', 'key', 'password', 'secret'];
+          var sp = new URLSearchParams(u.search);
+          var keys = [];
+          sp.forEach(function(_, k) { keys.push(k); });
+          for (var i = 0; i < keys.length; i++) {
+            var kLower = keys[i].toLowerCase();
+            for (var j = 0; j < sensitive.length; j++) {
+              if (kLower === sensitive[j] || kLower.indexOf('salary') !== -1 || kLower.indexOf('rent') !== -1) {
+                sp.delete(keys[i]);
+                break;
+              }
+            }
+          }
+          var cleanQ = sp.toString();
+          u.search = cleanQ ? '?' + cleanQ : '';
+          u.hash = '';
+          return u.toString();
+        } catch (e) {
+          return rawUrl.split('?')[0].split('#')[0];
+        }
+      }
 
       var savedConsent = null;
       try {
@@ -12,6 +75,7 @@
         if (rawConsent) savedConsent = JSON.parse(rawConsent);
       } catch (e) {}
 
+      // Advanced Consent Mode: denies storage by default while permitting modeled cookieless pings before user consent
       if (savedConsent && savedConsent.analytics === true) {
         gtag('consent', 'default', {
           'analytics_storage': 'granted',
@@ -31,7 +95,16 @@
       }
 
       gtag('js', new Date());
-      gtag('config', 'G-BQBKMVS7PN');
+
+      // Configure GA4 with send_page_view: false to prevent duplicate pageviews
+      // All pageviews are authoritatively controlled by the application via trackPageView()
+      var cleanInitLocation = sanitizeAnalyticsUrl(window.location.href);
+      var cleanInitReferrer = sanitizeAnalyticsUrl(document.referrer);
+      gtag('config', 'G-BQBKMVS7PN', {
+        'send_page_view': false,
+        'page_location': cleanInitLocation,
+        'page_referrer': cleanInitReferrer
+      });
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BQBKMVS7PN"></script>
 

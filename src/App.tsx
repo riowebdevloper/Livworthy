@@ -74,6 +74,7 @@ function AppContent() {
 
   const handleSelectLocale = (newLoc: SupportedLocale) => {
     setLocale(newLoc);
+    trackPageView(window.location.pathname, document.title);
     trackCalculatorEngagement(activeTab, 'locale_selected', { locale: newLoc });
   };
 
@@ -363,61 +364,69 @@ function AppContent() {
     } catch {}
   };
 
-  // Track calculation interactions (debounced, and ONLY after meaningful user-initiated interaction)
-  const calculationTimerRef = useRef<any>(null);
+  // Dispatch single authoritative initial pageview on client load
   useEffect(() => {
-    // Prevent firing on initial mount or automatic programmatic state initialization
-    if (!hasUserInteractedRef.current) return;
+    const title = TAB_TITLES[activeTab] || document.title;
+    trackPageView(window.location.pathname, title);
+  }, []);
 
-    if (calculationTimerRef.current) clearTimeout(calculationTimerRef.current);
-    calculationTimerRef.current = setTimeout(() => {
-      trackCalculationOutcome(
-        activeTab,
-        scenario.location.id,
-        toMajor(scenario.compensation.baseSalary),
-        scenario.compensation.baseSalary.currency
-      );
-    }, 1200);
-    return () => {
+  // Track calculation interactions (debounced, and ONLY after meaningful user-initiated calculation changes)
+  const calculationTimerRef = useRef<any>(null);
+  const triggerUserInitiatedCalculation = useCallback(
+    (toolName: string, cityId: string, currency: string) => {
       if (calculationTimerRef.current) clearTimeout(calculationTimerRef.current);
-    };
-  }, [activeTab, scenario.location.id, scenario.compensation.baseSalary.amountMinor]);
+      calculationTimerRef.current = setTimeout(() => {
+        trackCalculationOutcome(toolName, cityId, currency);
+      }, 1000);
+    },
+    []
+  );
 
   // Updates from customizer
   const handleUpdateHousehold = (updatedHousehold: HouseholdProfile) => {
     hasUserInteractedRef.current = true;
-    setScenario((prev) => ({
-      ...prev,
-      household: updatedHousehold,
-    }));
+    setScenario((prev) => {
+      triggerUserInitiatedCalculation(activeTab, prev.location.id, prev.compensation.baseSalary.currency);
+      return {
+        ...prev,
+        household: updatedHousehold,
+      };
+    });
   };
 
   const handleUpdateTaxProfile = (updatedTaxProfile: TaxProfile) => {
     hasUserInteractedRef.current = true;
-    setScenario((prev) => ({
-      ...prev,
-      taxProfile: updatedTaxProfile,
-    }));
+    setScenario((prev) => {
+      triggerUserInitiatedCalculation(activeTab, prev.location.id, prev.compensation.baseSalary.currency);
+      return {
+        ...prev,
+        taxProfile: updatedTaxProfile,
+      };
+    });
   };
 
   const handleUpdateRentOverride = (rentMajor: number | undefined) => {
     hasUserInteractedRef.current = true;
     setActualRentMajor(rentMajor);
-    setScenario((prev) => ({
-      ...prev,
-      overrides: {
-        ...prev.overrides,
-        actualRentMonthlyMinor:
-          rentMajor !== undefined && isFinite(rentMajor)
-            ? createMoney(rentMajor, prev.location.currency).amountMinor
-            : undefined,
-      },
-    }));
+    setScenario((prev) => {
+      triggerUserInitiatedCalculation(activeTab, prev.location.id, prev.compensation.baseSalary.currency);
+      return {
+        ...prev,
+        overrides: {
+          ...prev.overrides,
+          actualRentMonthlyMinor:
+            rentMajor !== undefined && isFinite(rentMajor)
+              ? createMoney(rentMajor, prev.location.currency).amountMinor
+              : undefined,
+        },
+      };
+    });
   };
 
   const handleSwitchToSalaryWorthWithSalary = (salaryMajor: number, cityId?: string) => {
     hasUserInteractedRef.current = true;
     const targetCity = cityId ? (CITIES[cityId] || scenario.location) : scenario.location;
+    triggerUserInitiatedCalculation('salary-worth', targetCity.id, targetCity.currency);
     setScenario((prev) => ({
       ...prev,
       location: targetCity,
@@ -595,6 +604,11 @@ function AppContent() {
   const handleUpdateScenario = useCallback((nextScenario: LivWorthScenario) => {
     hasUserInteractedRef.current = true;
     setScenario(nextScenario);
+    triggerUserInitiatedCalculation(
+      activeTab,
+      nextScenario.location.id,
+      nextScenario.compensation.baseSalary.currency
+    );
     try {
       const outcome = SalaryWorthCalculator.calculate(nextScenario);
       const isTaxUnavailable = outcome.tax?.status === 'TAX_CALCULATION_UNAVAILABLE';
@@ -608,7 +622,7 @@ function AppContent() {
         },
       });
     } catch {}
-  }, []);
+  }, [activeTab, triggerUserInitiatedCalculation]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F8F5]">

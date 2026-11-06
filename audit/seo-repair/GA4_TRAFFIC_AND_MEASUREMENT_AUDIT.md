@@ -32,8 +32,8 @@ A rigorous audit of the Google Analytics 4 (GA4) historical export `Reports_snap
   2. `public/404.html` (lines 5–12): Global site tag configured directly on the standalone error template.
 - **Tag Integrity:** Confirmed **zero duplicate measurement IDs** or conflicting Google Tag Manager / Analytics containers across the codebase.
 
-### B. Session Identity & Google Consent Mode v2 Mechanics
-In `index.html`, Google Consent Mode v2 is configured as:
+### B. Session Identity & Google Consent Mode v2 Mechanics: Basic vs. Advanced
+In `index.html` and `public/404.html`, Google Consent Mode v2 is configured as:
 ```javascript
 gtag('consent', 'default', {
   'analytics_storage': 'denied',
@@ -43,20 +43,34 @@ gtag('consent', 'default', {
   'wait_for_update': 500
 });
 ```
-When `localStorage.getItem('livworthy_cookie_consent')` is empty (default state for new visitors), GA4 operates under **Advanced Consent Mode**:
-1. GA4 sends cookieless pings (`gcs=G100`).
-2. Cookieless pings **do NOT write or read `_ga` or `_ga_<container-id>` cookies**.
-3. Without a persistent client cookie, GA4 cannot associate multiple hits or page views into a cohesive user session.
-4. **Direct Impact:**
-   - Every single hit is counted as a separate `New user` (explaining why **4,058 of 4,059 users were classified as New Users**).
+
+#### Intentional Consent Mode Architecture: Advanced Consent Mode
+LivWorthy intentionally implements **Advanced Google Consent Mode v2**:
+1. **Network Measurement Behavior:** Advanced Consent Mode does **NOT** mean zero network measurement before consent. The `gtag.js` library loads immediately and dispatches **cookieless pings / telemetry beacons** (`gcs=G100`) to Google Analytics servers.
+2. **Privacy Guarantees:** These cookieless pings strictly adhere to ePrivacy and GDPR requirements:
+   - They **do NOT read or write** persistent client cookies (`_ga`, `_ga_<container-id>`).
+   - Browser storage keys are blocked.
+   - IP addresses are anonymized and redacted at Google's collection edge.
+   - Telemetry is utilized exclusively by Google's server-side behavioral modeling engines to estimate aggregated conversion and user volume without persistent identification.
+3. **Contrast with Basic Consent Mode:** In Basic Consent Mode, the Google tag script is completely blocked from downloading or executing until explicit opt-in, resulting in zero network hits. Advanced Consent Mode was chosen to balance regulatory compliance (zero unauthorized cookie storage) with statistical modeling completeness.
+4. **Impact on Unconsented Reporting:**
+   - Because cookieless pings do not persist client identifiers, GA4 cannot associate multiple hits across navigation into a single session.
+   - Every individual page interaction from an unconsented user registers as a distinct `New user` (explaining why **4,058 of 4,059 users were classified as New Users**).
    - Session duration cannot be calculated without session timestamps, causing Average Engagement Time to collapse to **0.23 seconds**.
    - Attribution cannot be stitched across landing page transitions, defaulting traffic to `(direct) / (none)`.
 
-### C. Single-Page Application (SPA) Event Collection Gap
-In the React Single-Page Application (`src/App.tsx`), tab switches (`salary-worth`, `salary-needed`, `salary-after-tax`, `cost-of-living`, `compare`, `job-offers`) updated the browser URL via `window.history.pushState(null, '', newUrl)`.
-- **Measurement Defect Identified:** The application did NOT dispatch any virtual `page_view` or calculator interaction events to `gtag`.
-- When users navigated between calculators or tested scenarios, GA4 never received secondary interaction events.
-- **Fix Implemented:** Created `src/lib/analytics.ts` and integrated `trackPageView`, `trackCalculatorEngagement`, and debounced `trackCalculationOutcome` into `src/App.tsx`.
+### C. Single Authoritative SPA Pageview Strategy & History Shielding
+1. **The Conflict with GA4 Enhanced Measurement:**
+   - In Google's compiled container for `G-BQBKMVS7PN`, Enhanced Measurement (`__ccd_em_page_view`) is configured with `"vtp_historyEvents": true`.
+   - By default, `gtag.js` monkey-patches `window.history.pushState` and `window.history.replaceState`.
+   - When the React application transitioned routes via `pushState`, `gtag.js` fired an automatic `page_view`. When the app simultaneously called custom `trackPageView()`, GA4 received **two separate pageview hits for every navigation**.
+   - Worse, when users adjusted calculator sliders, the application called `replaceState` to update URL query parameters (`?salary=...`). GA4's history hook treated every query string change as a virtual navigation, spamming artificial pageviews and leaking users' raw financial inputs (`salary`, `rent`) in the `page_location` (`dl`) parameter.
+2. **Authoritative Resolution Implemented:**
+   - **History Shield in `<head>`:** Installed a protective shim in `index.html` before `gtag.js` loads that marks `history.pushState` and `history.replaceState` non-writable and filters automatic GA4 `popstate` listeners.
+   - **Single Owner:** `gtag('config', 'G-BQBKMVS7PN', { send_page_view: false })` disables automatic initial pageviews. All pageviews are authoritatively dispatched by `trackPageView()` in `src/lib/analytics.ts`.
+   - **Financial Privacy Protection:** Implemented `sanitizeUrlForAnalytics()` which strips `salary`, `rent`, `token`, and sensitive parameters before URLs are passed to `page_location` or `page_referrer`, while preserving marketing attribution parameters (`utm_*`, `gclid`).
+   - **Query-Only State Updates:** Slider scrubbing and calculator parameter updates via `replaceState` dispatch **0 pageviews**.
+   - **International Salary Analytics:** Removed nominal USD salary tiers from `calculate_salary` event payloads to prevent cross-currency statistical distortion, transmitting only `calculator_name`, `city_id`, and `currency`.
 
 ---
 

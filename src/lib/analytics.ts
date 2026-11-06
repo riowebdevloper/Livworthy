@@ -2,11 +2,11 @@
  * LivWorthy Client-Side Analytics & Engagement Measurement Module
  *
  * Implements Google Analytics 4 (GA4) event measurement:
- * - Route change / Virtual Page View tracking for React Single-Page Application (SPA) with deduplication
- * - Calculator engagement tracking (tab switches, city changes, adjustments)
- * - Financial privacy protection: salary brackets/tiers instead of exact raw compensation numbers
+ * - Single authoritative SPA Virtual Page View tracking with strict query sanitization
+ * - Zero transmission of sensitive financial inputs (salary, rent, tokens, secrets)
  * - Genuine engagement measurement: relies on GA4 native engagement time rather than synthetic hardcoded values
- * - Full compatibility with Google Consent Mode v2 (fails safely when consent is denied)
+ * - Currency-accurate event reporting (currency, city, tool; zero distorted nominal tiers)
+ * - Full compatibility with Advanced Google Consent Mode v2 (fails safely when consent is denied)
  */
 
 declare global {
@@ -24,34 +24,91 @@ export interface AnalyticsEventParams {
 let lastTrackedPath: string | null = null;
 let lastTrackedTimestamp = 0;
 
+export const SENSITIVE_PARAM_NAMES = new Set([
+  'salary',
+  'rent',
+  'bonus',
+  'equity',
+  'income',
+  'token',
+  'auth',
+  'email',
+  'key',
+  'password',
+  'secret',
+]);
+
 /**
- * Returns coarse salary tier for analytics aggregation without sending exact financial inputs.
- * Protects user privacy while providing statistical utility.
+ * Sanitizes URLs and query paths before transmitting to Google Analytics.
+ * Strips sensitive financial inputs (salary, rent) and personal identifiers/tokens,
+ * while preserving standard marketing attribution parameters (utm_*, gclid, etc.).
  */
-export function getSalaryTier(salaryMajor: number): string {
-  if (!isFinite(salaryMajor) || salaryMajor <= 0) return 'unspecified';
-  if (salaryMajor < 50000) return 'under_50k';
-  if (salaryMajor < 75000) return '50k_75k';
-  if (salaryMajor < 100000) return '75k_100k';
-  if (salaryMajor < 150000) return '100k_150k';
-  if (salaryMajor < 200000) return '150k_200k';
-  if (salaryMajor < 300000) return '200k_300k';
-  return 'over_300k';
+export function sanitizeUrlForAnalytics(rawUrl: string): string {
+  if (!rawUrl || typeof rawUrl !== 'string') return '/';
+  try {
+    const origin =
+      typeof window !== 'undefined' && window.location && window.location.origin
+        ? window.location.origin
+        : 'https://www.livworthy.com';
+    const parsed = new URL(rawUrl, origin);
+    const searchParams = new URLSearchParams(parsed.search);
+
+    const keysToDelete: string[] = [];
+    searchParams.forEach((_, key) => {
+      const lower = key.toLowerCase();
+      if (
+        SENSITIVE_PARAM_NAMES.has(lower) ||
+        lower.includes('salary') ||
+        lower.includes('rent') ||
+        lower.includes('token') ||
+        lower.includes('secret')
+      ) {
+        keysToDelete.push(key);
+      }
+    });
+
+    for (const key of keysToDelete) {
+      searchParams.delete(key);
+    }
+
+    const cleanSearch = searchParams.toString();
+    parsed.search = cleanSearch ? `?${cleanSearch}` : '';
+    parsed.hash = '';
+
+    if (rawUrl.startsWith('http://') || rawUrl.startsWith('https://')) {
+      return parsed.toString();
+    }
+    return parsed.pathname + (cleanSearch ? `?${cleanSearch}` : '');
+  } catch {
+    return rawUrl.split('?')[0].split('#')[0] || '/';
+  }
+}
+
+/**
+ * Gets sanitized absolute URL of current page for analytics location parameter.
+ */
+export function getSanitizedLocation(): string {
+  if (typeof window === 'undefined' || !window.location) {
+    return 'https://www.livworthy.com/';
+  }
+  return sanitizeUrlForAnalytics(window.location.href);
 }
 
 /**
  * Dispatches a virtual page_view event on client-side route transitions.
- * Enforces deduplication to prevent double-counting alongside GA4 Enhanced Measurement browser history tracking.
+ * Enforces single authoritative SPA pageview tracking:
+ * - Sanitizes URL location and path (stripping sensitive financial query parameters).
+ * - Ensures one pageview per genuine route navigation.
  */
 export function trackPageView(pagePath: string, pageTitle?: string): boolean {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return false;
 
-  // Normalize path (strip query parameters and hashes for canonical route identity)
-  const normalizedPath = pagePath.split('?')[0].split('#')[0] || '/';
+  const sanitizedRelative = sanitizeUrlForAnalytics(pagePath);
+  const normalizedPath = sanitizedRelative.split('?')[0] || '/';
   const now = Date.now();
 
-  // Deduplication: prevent duplicate virtual pageviews for the same path within 1200ms
-  if (lastTrackedPath === normalizedPath && now - lastTrackedTimestamp < 1200) {
+  // Deduplication guard: ignore if the exact route was already tracked within 400ms
+  if (lastTrackedPath === normalizedPath && now - lastTrackedTimestamp < 400) {
     return false;
   }
 
@@ -59,11 +116,12 @@ export function trackPageView(pagePath: string, pageTitle?: string): boolean {
   lastTrackedTimestamp = now;
 
   try {
-    const loc = window.location.origin + normalizedPath;
+    const origin = window.location.origin || 'https://www.livworthy.com';
+    const cleanLocation = sanitizeUrlForAnalytics(origin + sanitizedRelative);
     window.gtag('event', 'page_view', {
-      page_path: normalizedPath,
+      page_path: sanitizedRelative,
       page_title: pageTitle || document.title,
-      page_location: loc,
+      page_location: cleanLocation,
     });
     return true;
   } catch {
@@ -86,6 +144,7 @@ export function trackCalculatorEngagement(
     window.gtag('event', 'calculator_engagement', {
       calculator_name: toolName,
       interaction_type: action,
+      page_location: getSanitizedLocation(),
       ...params,
     });
   } catch {
@@ -95,13 +154,14 @@ export function trackCalculatorEngagement(
 
 /**
  * Tracks when a deliberate, user-initiated salary calculation or scenario is evaluated.
- * - Does NOT send exact salary amounts (uses privacy-preserving salary tiers).
- * - Does NOT inject synthetic engagement duration (relies on GA4 automatic measurement).
+ * - Does NOT send exact financial amounts (GDPR/privacy compliant).
+ * - Does NOT send un-normalized cross-currency salary tiers (avoids international distortion).
+ * - Transmits tool, city, and ISO currency for cross-country aggregation.
+ * - Injects sanitized page_location to ensure zero query parameter leakage.
  */
 export function trackCalculationOutcome(
   toolName: string,
   cityId: string,
-  salaryMajor: number,
   currency: string
 ): void {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
@@ -110,8 +170,8 @@ export function trackCalculationOutcome(
     window.gtag('event', 'calculate_salary', {
       calculator_name: toolName,
       city_id: cityId,
-      salary_tier: getSalaryTier(salaryMajor),
       currency: currency,
+      page_location: getSanitizedLocation(),
     });
   } catch {
     // Fail silently

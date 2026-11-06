@@ -22,13 +22,17 @@ const distDir = path.resolve('dist');
 assert.ok(fs.existsSync(distDir), 'dist/ directory must exist');
 
 // 1. GA4 Configuration Invariants
-console.log('▶ Test 1: Verifying GA4 Tag Installation & Consent Mode v2...');
+console.log('▶ Test 1: Verifying GA4 Tag Installation, History Shield & Consent Mode v2...');
 const indexHtmlPath = path.resolve('index.html');
 const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8');
 assert.ok(indexHtmlContent.includes(EXPECTED_GA_ID), `index.html must configure measurement ID ${EXPECTED_GA_ID}`);
 assert.ok(indexHtmlContent.includes("gtag('consent', 'default'"), 'index.html must implement Google Consent Mode v2 default');
 assert.ok(indexHtmlContent.includes("'analytics_storage': 'denied'"), 'index.html must default analytics_storage to denied before user consent');
-console.log('  ✔ index.html GA4 and Consent Mode v2 verified.');
+assert.ok(indexHtmlContent.includes("send_page_view': false") || indexHtmlContent.includes('"send_page_view": false'), 'index.html must pass send_page_view: false to prevent duplicate initial pageviews');
+assert.ok(indexHtmlContent.includes('sanitizeAnalyticsUrl'), 'index.html must sanitize URL before passing to GA4 config');
+assert.ok(indexHtmlContent.includes('Object.defineProperty(history, \'pushState\''), 'index.html must include History Shield protecting pushState from automatic GA4 scraping');
+assert.ok(indexHtmlContent.includes('Object.defineProperty(history, \'replaceState\''), 'index.html must include History Shield protecting replaceState from automatic GA4 scraping');
+console.log('  ✔ index.html GA4, History Shield and Consent Mode v2 verified.');
 
 console.log('▶ Test 2: Verifying 404 Error Path Logging & Privacy Consent Invariants...');
 const notFoundHtmlPath = path.resolve('public/404.html');
@@ -51,46 +55,82 @@ const analyticsContent = fs.readFileSync(analyticsModulePath, 'utf8');
 assert.ok(analyticsContent.includes('export function trackPageView'), 'analytics.ts must export trackPageView');
 assert.ok(analyticsContent.includes('export function trackCalculatorEngagement'), 'analytics.ts must export trackCalculatorEngagement');
 assert.ok(analyticsContent.includes('export function trackCalculationOutcome'), 'analytics.ts must export trackCalculationOutcome');
-assert.ok(analyticsContent.includes('export function getSalaryTier'), 'analytics.ts must export getSalaryTier');
+assert.ok(analyticsContent.includes('export function sanitizeUrlForAnalytics'), 'analytics.ts must export sanitizeUrlForAnalytics');
 
 // Privacy & Genuine Engagement Invariants:
 assert.ok(!analyticsContent.includes('engagement_time_msec: 1000'), 'analytics.ts must NOT inject hardcoded 1000ms engagement time');
 assert.ok(!analyticsContent.includes('engagement_time_msec: 2500'), 'analytics.ts must NOT inject hardcoded 2500ms engagement time');
-assert.ok(!analyticsContent.includes('salary_amount: salaryMajor'), 'analytics.ts must NOT send raw salary amounts (PII/sensitive financial data)');
-assert.ok(analyticsContent.includes('salary_tier: getSalaryTier(salaryMajor)'), 'analytics.ts must map salary to coarse privacy tiers');
+assert.ok(!analyticsContent.includes('salary_amount:'), 'analytics.ts must NOT send raw salary amounts (PII/sensitive financial data)');
+assert.ok(!analyticsContent.includes('salary_tier:'), 'analytics.ts must NOT send un-normalized cross-currency salary tiers');
 
-// Unit test getSalaryTier and trackPageView deduplication
-import { getSalaryTier, trackPageView, resetAnalyticsState } from '../../src/lib/analytics';
-assert.strictEqual(getSalaryTier(35000), 'under_50k');
-assert.strictEqual(getSalaryTier(60000), '50k_75k');
-assert.strictEqual(getSalaryTier(90000), '75k_100k');
-assert.strictEqual(getSalaryTier(125000), '100k_150k');
-assert.strictEqual(getSalaryTier(175000), '150k_200k');
-assert.strictEqual(getSalaryTier(250000), '200k_300k');
-assert.strictEqual(getSalaryTier(400000), 'over_300k');
-assert.strictEqual(getSalaryTier(0), 'unspecified');
-console.log('  ✔ Salary tier privacy aggregation verified.');
+// Unit test URL sanitization
+import { sanitizeUrlForAnalytics, trackPageView, resetAnalyticsState, trackCalculationOutcome } from '../../src/lib/analytics';
+const testUrl1 = 'https://www.livworthy.com/?salary=150000&rent=3500&city=nyc&utm_source=google&utm_campaign=brand';
+const clean1 = sanitizeUrlForAnalytics(testUrl1);
+assert.strictEqual(clean1.includes('salary='), false, 'URL sanitizer must strip salary query parameter');
+assert.strictEqual(clean1.includes('rent='), false, 'URL sanitizer must strip rent query parameter');
+assert.strictEqual(clean1.includes('utm_source=google'), true, 'URL sanitizer must preserve marketing utm_source');
+assert.strictEqual(clean1.includes('utm_campaign=brand'), true, 'URL sanitizer must preserve marketing utm_campaign');
+assert.strictEqual(clean1.includes('city=nyc'), true, 'URL sanitizer must preserve city parameter');
+
+const testPath2 = '/compare?salary=120000&tab=compare';
+const clean2 = sanitizeUrlForAnalytics(testPath2);
+assert.strictEqual(clean2, '/compare?tab=compare', 'Relative path sanitizer must strip salary and preserve tab');
+
+const testPath3 = '/guides/nyc-100k?token=secret123&salary=100000#section';
+const clean3 = sanitizeUrlForAnalytics(testPath3);
+assert.strictEqual(clean3, '/guides/nyc-100k', 'URL sanitizer must strip token, salary, and hash fragment');
+console.log('  ✔ Sensitive URL query parameter sanitization verified.');
 
 // Deduplication testing in browser-mocked environment
+const gtagEventsDispatched: Array<{ name: string; params: any }> = [];
 (globalThis as any).window = {
-  location: { origin: 'https://www.livworthy.com' },
-  gtag: () => {},
+  location: {
+    origin: 'https://www.livworthy.com',
+    href: 'https://www.livworthy.com/compare?salary=120000&rent=3000',
+    pathname: '/compare',
+    search: '?salary=120000&rent=3000',
+  },
+  gtag: (type: string, name: string, params: any) => {
+    if (type === 'event') gtagEventsDispatched.push({ name, params });
+  },
 };
 (globalThis as any).document = { title: 'LivWorthy Test' };
 resetAnalyticsState();
-const firstCall = trackPageView('/compare', 'Compare View');
+
+const firstCall = trackPageView('/compare?salary=120000', 'Compare View');
 assert.strictEqual(firstCall, true, 'First route navigation must fire virtual pageview');
-const duplicateCall = trackPageView('/compare', 'Compare View');
+assert.strictEqual(gtagEventsDispatched.length, 1);
+assert.strictEqual(gtagEventsDispatched[0].params.page_path, '/compare');
+assert.strictEqual(gtagEventsDispatched[0].params.page_location, 'https://www.livworthy.com/compare');
+assert.strictEqual(gtagEventsDispatched[0].params.page_location.includes('salary='), false, 'page_location must never contain salary');
+
+const duplicateCall = trackPageView('/compare?salary=120000', 'Compare View');
 assert.strictEqual(duplicateCall, false, 'Immediate duplicate call to same route must be suppressed');
+assert.strictEqual(gtagEventsDispatched.length, 1, 'Event count must remain 1 after duplicate attempt');
+
 const secondRouteCall = trackPageView('/salary-after-tax', 'Tax View');
 assert.strictEqual(secondRouteCall, true, 'Navigation to distinct route must fire virtual pageview');
-console.log('  ✔ SPA virtual pageview deduplication guard verified.');
+assert.strictEqual(gtagEventsDispatched.length, 2);
+console.log('  ✔ SPA virtual pageview deduplication guard and sanitized payload verified.');
+
+// Test calculation outcome payload privacy
+trackCalculationOutcome('salary-worth', 'nyc', 'USD');
+assert.strictEqual(gtagEventsDispatched.length, 3);
+const calcEvent = gtagEventsDispatched[2];
+assert.strictEqual(calcEvent.name, 'calculate_salary');
+assert.strictEqual(calcEvent.params.calculator_name, 'salary-worth');
+assert.strictEqual(calcEvent.params.city_id, 'nyc');
+assert.strictEqual(calcEvent.params.currency, 'USD');
+assert.strictEqual(calcEvent.params.salary_amount, undefined, 'calculate_salary must NOT transmit salary_amount');
+assert.strictEqual(calcEvent.params.salary_tier, undefined, 'calculate_salary must NOT transmit salary_tier');
+assert.strictEqual(calcEvent.params.page_location.includes('salary='), false, 'calculate_salary page_location must be sanitized');
+console.log('  ✔ calculate_salary privacy and payload invariants verified.');
 
 const appContent = fs.readFileSync(path.resolve('src/App.tsx'), 'utf8');
 assert.ok(appContent.includes('trackPageView('), 'App.tsx must dispatch trackPageView on navigation');
 assert.ok(appContent.includes('trackCalculatorEngagement('), 'App.tsx must dispatch trackCalculatorEngagement on tab switch');
-assert.ok(appContent.includes('trackCalculationOutcome('), 'App.tsx must dispatch trackCalculationOutcome on scenario run');
-assert.ok(appContent.includes('hasUserInteractedRef'), 'App.tsx must gate calculation tracking behind user-initiated interaction');
+assert.ok(appContent.includes('triggerUserInitiatedCalculation('), 'App.tsx must gate calculation tracking behind explicit user calculation triggers');
 assert.ok(appContent.includes('replaceStateTimerRef'), 'App.tsx must debounce replaceState query sync to prevent history flooding');
 assert.ok(appContent.includes('TAB_TITLES'), 'App.tsx must set document.title appropriately on tab transitions');
 console.log('  ✔ App.tsx user-initiated calculation gating and debounced history verified.');
