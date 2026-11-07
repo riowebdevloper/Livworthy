@@ -23,11 +23,11 @@ All mathematical computations across salary guides, city profiles, bilateral met
 #### 1. NYC Canon Unification ($100,000 Single Filer 2026)
 * **Problem:** Conflicting annual take-home figures ($70,879 vs legacy $70,340) and housing/transit cost benchmarks ($2,655 HUD FMR vs legacy $2,350; OMNY rolling fare cap vs obsolete $132 MTA monthly pass).
 * **Investigation & Engine Proof:**
-  * Under 2026 statutory tax law (IRS Rev. Proc. 2025-33, NYS Form IT-2105-I, NYC Administrative Code), a single filer claiming standard deduction ($16,100 Federal, $8,000 NYS/NYC) with zero dependents earning $100,000 gross incurs:
-    * Federal Income Tax: $12,776.50
+  * Under 2026 statutory tax law (IRS Rev. Proc. 2025-32, NYS Form IT-2105-I, NYC Administrative Code § 11-1701), a single filer claiming standard deduction ($16,100 Federal, $8,000 NYS/NYC) with zero dependents earning $100,000 gross incurs:
+    * Federal Income Tax: $13,170.00 (taxable income $83,900: $1,240 + $4,560 + $7,370)
     * FICA Social Security (6.2%) & Medicare (1.45%): $7,650.00
-    * New York State Income Tax: $5,023.75
-    * NYC Local Resident Income Tax: $3,670.59
+    * New York State Income Tax: $4,859.75 (taxable income $92,000: 3.90% to 5.90% single brackets)
+    * NYC Local Resident Income Tax: $3,441.09 (taxable income $92,000: 3.078% to 3.876% progressive rates)
     * Total Statutory Withholding: $29,120.84 (29.12% effective rate)
     * Deterministic Net Annual Take-Home: **$70,879.16** (rounded: **$70,879**)
     * Deterministic Net Monthly Take-Home: **$5,906.60** (rounded: **$5,907**)

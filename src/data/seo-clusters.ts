@@ -50,20 +50,20 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         ],
         subsections: [
           {
-            h3: '1. Federal Personal Income Tax ($12,796 / ~12.8% effective)',
-            content: 'Computed under IRS Rev. Proc. 2025-33 progressive marginal brackets (10%, 12%, and 22% on taxable income after the $16,100 single standard deduction).',
+            h3: '1. Federal Personal Income Tax ($13,170 / 13.17% effective)',
+            content: 'Computed under IRS Rev. Proc. 2025-32 progressive marginal brackets (10%, 12%, and 22% on taxable income of $83,900 after the $16,100 single standard deduction: $1,240 + $4,560 + $7,370).',
           },
           {
             h3: '2. FICA Mandatory Payroll Taxes ($7,650 / 7.65% flat)',
             content: 'Consists of 6.20% Social Security ($6,200 up to the 2026 statutory wage base) plus 1.45% Medicare ($1,450 uncapped).',
           },
           {
-            h3: '3. New York State Personal Income Tax ($4,995 / ~5.0% effective)',
-            content: 'Governed by NYS Tax Law § 601 (Form IT-2105-I single marginal brackets between 4.0% and 5.5% on this bracket).',
+            h3: '3. New York State Personal Income Tax ($4,860 / ~4.86% effective)',
+            content: 'Governed by NYS Tax Law § 601 (Form IT-2105-I single marginal brackets on $92,000 taxable income after the $8,000 NYS standard deduction: 3.90% to 5.90%, totaling $4,859.75).',
           },
           {
-            h3: '4. New York City Resident Personal Income Tax ($3,680 / ~3.7% effective)',
-            content: 'Governed by NYC Administrative Code § 11-1701, applying progressive municipal rates between 3.078% and 3.876% on taxable residents.',
+            h3: '4. New York City Resident Personal Income Tax ($3,441 / ~3.44% effective)',
+            content: 'Governed by NYC Administrative Code § 11-1701, applying progressive municipal rates between 3.078% and 3.876% on taxable residents ($92,000 taxable income after the $8,000 standard deduction, totaling $3,441.09).',
           },
         ],
       },
@@ -126,7 +126,8 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
             ['Groceries & Household Essentials', '$440', '7.4%'],
             ['Dining Out, Social & Entertainment', '$260', '4.4%'],
             ['MTA OMNY Fare-Capped Transit ($35/wk cap)', '$152', '2.6%'],
-            ['Healthcare & Personal Care', '$160', '2.7%'],
+            ['Healthcare (Premium share & copays)', '$160', '2.7%'],
+            ['Personal Care, Apparel & Subscriptions', '$260', '4.4%'],
             ['Discretionary Savings / Investments / Buffer', '$1,660', '28.1%'],
           ],
         },
@@ -167,7 +168,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and assumptions',
         paragraphs: [
-          'All calculations are generated deterministically using the official LivWorthy statutory tax engine and baseline cost of living index. Tax computations reflect a single filer taking the standard deduction ($16,100) without employer retirement match or itemized deductions under IRS Rev. Proc. 2025-33, NYS Tax Law § 601 (IT-2105-I), and NYC Admin Code § 11-1701 for Tax Year 2026.',
+          'All calculations are generated deterministically using the official LivWorthy statutory tax engine and baseline cost of living index. Tax computations reflect a single filer taking the standard deduction ($16,100) without employer retirement match or itemized deductions under IRS Rev. Proc. 2025-32, NYS Tax Law § 601 (IT-2105-I), and NYC Admin Code § 11-1701 for Tax Year 2026.',
           'Cost of living estimates are benchmarked from verified municipal datasets including the US Department of Housing and Urban Development (HUD FY 2026 FMR) and Metropolitan Transportation Authority (MTA) OMNY fare capping.',
         ],
       },
@@ -181,7 +182,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       {
         question: 'What is $100K salary New York take-home pay?',
         answer:
-          'Under 2026 statutory rates, a $100,000 salary in New York City yields $70,879 annually or $5,907 per month. Total statutory taxes equal $29,121 (a 29.1% effective tax rate), consisting of Federal Income Tax ($12,796), FICA Social Security and Medicare ($7,650), NY State Tax ($4,995), and NYC Resident Local Tax ($3,680).',
+          'Under 2026 statutory rates, a $100,000 salary in New York City yields $70,879 annually or $5,907 per month. Total statutory taxes equal $29,121 (a 29.1% effective tax rate), consisting of Federal Income Tax ($13,170), FICA Social Security and Medicare ($7,650), NY State Tax ($4,860), and NYC Resident Local Tax ($3,441).',
       },
       {
         question: 'What is $100K after tax in NYC per paycheck?',

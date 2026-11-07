@@ -13,11 +13,13 @@ import {
 import { TaxRegistry } from '../src/engines/tax/tax-registry';
 import { CostOfLivingEngine } from '../src/engines/col/col-engine';
 import { createMoney, toMajor } from '../src/lib/money';
+import { INTL_EXTENDED_CLUSTERS } from '../src/data/clusters/intl-guides';
+import { US_EXTENDED_CLUSTERS } from '../src/data/clusters/us-guides';
 import { PLATFORM_IDENTITY, AUTHORITATIVE_SOURCES } from '../src/data/transparency';
 
 console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===\n');
 
-// 1. NYC $100K CANONICAL CONSISTENCY
+// 1. NYC $100K CANONICAL CONSISTENCY & STATUTORY HARDENING
 {
   console.log('Test 1: NYC $100K 2026 TaxRegistry & CostOfLivingEngine');
   const taxRes = TaxRegistry.calculate(
@@ -25,6 +27,30 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
     { filingStatus: 'single', taxYear: 2026, dependentsCount: 0 },
     { countryId: 'US', cityId: 'nyc', taxYear: 2026 }
   );
+
+  // Independent statutory calculation
+  // A. Federal Tax (IRS Rev. Proc. 2025-32: $16,100 single standard deduction, taxable = $83,900)
+  // 10% on $12,400 = $1,240; 12% on $38,000 = $4,560; 22% on $33,500 = $7,370 -> $13,170.00
+  const expectedFederalTax = 1240 + 4560 + 7370; // 13,170
+  assert.strictEqual(toMajor(taxRes.federalTax), expectedFederalTax, 'Federal income tax must match IRS Rev. Proc. 2025-32 ($13,170)');
+
+  // B. FICA (SSA statutory wage base $184,500): 6.2% Social Security ($6,200) + 1.45% Medicare ($1,450)
+  const expectedFica = 6200 + 1450; // 7,650
+  assert.strictEqual(toMajor(taxRes.socialContributions), expectedFica, 'FICA must match statutory 7.65% ($7,650)');
+
+  // C. NY State Tax (NYS Tax Law § 601, IT-2105-I 2026 single brackets on $92,000 taxable):
+  // 3.90% on $8,500 ($331.50) + 4.40% on $3,200 ($140.80) + 5.15% on $2,200 ($113.30) + 5.40% on $66,750 ($3,604.50) + 5.90% on $11,350 ($669.65) = $4,859.75
+  const expectedNysTax = 331.50 + 140.80 + 113.30 + 3604.50 + 669.65; // 4859.75
+  assert.strictEqual(toMajor(taxRes.stateTax), expectedNysTax, 'NYS tax must match Form IT-2105-I brackets ($4,859.75)');
+
+  // D. NYC Resident Tax (NYC Admin Code § 11-1701 on $92,000 taxable):
+  // 3.078% on $12,000 ($369.36) + 3.762% on $13,000 ($489.06) + 3.819% on $25,000 ($954.75) + 3.876% on $42,000 ($1,627.92) = $3,441.09
+  const expectedNycTax = 369.36 + 489.06 + 954.75 + 1627.92; // 3441.09
+  assert.strictEqual(toMajor(taxRes.localTax), expectedNycTax, 'NYC resident tax must match Admin Code § 11-1701 ($3,441.09)');
+
+  // E. Deductions & Net Take-Home Reconciliation
+  const expectedTotalDeductions = expectedFederalTax + expectedFica + expectedNysTax + expectedNycTax; // 29,120.84
+  assert.strictEqual(toMajor(taxRes.totalDeductionsAndTaxes), expectedTotalDeductions, 'Total deductions must equal exactly $29,120.84');
 
   const netAnnual = Math.round(toMajor(taxRes.netIncome));
   const netMonthly = Math.round(netAnnual / 12);
@@ -47,7 +73,54 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
 
   const rentMonthly = toMajor(colRes.housingMonthly);
   assert.strictEqual(rentMonthly, 2655, 'CostOfLivingEngine NYC 1-bed rent must be 2655 (HUD FY2026 FMR)');
-  console.log('  ✓ NYC $100K engine output confirmed ($70,879 net, $5,907/mo, 29.1% tax, $2,655 HUD FMR)');
+  console.log('  ✓ NYC $100K independent statutory calculation & engine confirmed');
+}
+
+{
+  console.log('Test 1b: NYC $100K Monthly Budget Table Exact Dollar & Percentage Reconciliation');
+  const cluster = SEO_LANDING_PAGES['nyc-100k'];
+  const budgetSection = cluster.sections.find((s) => s.id === 'monthly-budget');
+  assert.ok(budgetSection?.table, 'Monthly budget table must exist');
+
+  const rows = budgetSection.table.rows;
+  const netRow = rows.find((r) => r[0] === 'Net Take-Home Pay');
+  assert.ok(netRow, 'Net Take-Home Pay row must exist');
+  assert.strictEqual(netRow[1], '$5,907');
+  assert.strictEqual(netRow[2], '100.0%');
+
+  const expenseCategories = [
+    { name: 'Rent (HUD 1-Bed FMR Benchmark)', amount: 2655, pct: 45.0 },
+    { name: 'Utilities, Internet & Mobile', amount: 320, pct: 5.4 },
+    { name: 'Groceries & Household Essentials', amount: 440, pct: 7.4 },
+    { name: 'Dining Out, Social & Entertainment', amount: 260, pct: 4.4 },
+    { name: 'MTA OMNY Fare-Capped Transit ($35/wk cap)', amount: 152, pct: 2.6 },
+    { name: 'Healthcare (Premium share & copays)', amount: 160, pct: 2.7 },
+    { name: 'Personal Care, Apparel & Subscriptions', amount: 260, pct: 4.4 },
+  ];
+
+  let totalExpenses = 0;
+  let totalPct = 0;
+
+  for (const cat of expenseCategories) {
+    const row = rows.find((r) => r[0] === cat.name);
+    assert.ok(row, `Budget category "${cat.name}" must be present in table`);
+    const parsedAmount = parseInt(row[1].replace(/[$,]/g, ''), 10);
+    assert.strictEqual(parsedAmount, cat.amount, `Amount for "${cat.name}" must match $${cat.amount}`);
+    totalExpenses += parsedAmount;
+    totalPct += cat.pct;
+  }
+
+  const savingsRow = rows.find((r) => r[0].includes('Discretionary Savings'));
+  assert.ok(savingsRow, 'Savings row must exist');
+  const savingsAmount = parseInt(savingsRow[1].replace(/[$,]/g, ''), 10);
+  assert.strictEqual(savingsAmount, 1660, 'Savings amount must be exactly $1,660');
+  totalPct += 28.1;
+
+  // Exact dollar reconciliation: Expenses ($4,247) + Savings ($1,660) === Net Take-Home ($5,907)
+  assert.strictEqual(totalExpenses, 4247, 'Total monthly expenses must equal $4,247');
+  assert.strictEqual(totalExpenses + savingsAmount, 5907, 'Expenses ($4,247) + Savings ($1,660) must reconcile 100% to Net Take-Home ($5,907)');
+  assert.strictEqual(Number(totalPct.toFixed(1)), 100.0, 'Budget percentages must sum exactly to 100.0%');
+  console.log('  ✓ NYC $100K monthly budget reconciles to the exact dollar ($4,247 expenses + $1,660 savings = $5,907 net)');
 }
 
 {
@@ -175,6 +248,17 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   assert.strictEqual(Math.round(toMajor(taxZH.netIncome) / 12), 8369);
   assert.strictEqual(Number((taxZH.effectiveTaxRate * 100).toFixed(1)), 22.8);
 
+  // Independent statutory checks for Swiss components
+  // Pillar 1: AHV/IV/EO (5.3% = 6,890) + ALV (1.1% on 130k = 1,430) = 8,320 CHF
+  // Pillar 2 (BVG): Coordinated salary (90,720 - 26,460 = 64,260) * 5% = 3,213 CHF
+  // Total social = 8,320 + 3,213 = 11,533 CHF
+  assert.strictEqual(toMajor(taxZH.socialContributions), 11533, 'Social contributions must equal 11,533 CHF');
+  // Federal Direct Tax = 4,420 CHF (4,419.95 CHF)
+  assert.strictEqual(Math.round(toMajor(taxZH.federalTax)), 4420, 'Federal Direct Tax must round to 4,420 CHF');
+  // Cantonal & Municipal Tax = 13,624 CHF (13,623.71 CHF)
+  assert.strictEqual(Math.round(toMajor(taxZH.stateTax)), 13624, 'Cantonal & Municipal Tax must round to 13,624 CHF');
+  assert.strictEqual(Math.round(toMajor(taxZH.totalDeductionsAndTaxes)), 29577, 'Total deductions must round to 29,577 CHF');
+
   const guideZH = SALARY_GUIDES['zurich-130k'];
   assert.ok(guideZH.lifestyleContext.includes('CHF 8,369'));
   assert.ok(guideZH.lifestyleContext.includes('CHF 100,423/year'));
@@ -188,7 +272,27 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   const zhEditorial = VERIFIED_CITY_EDITORIAL['zurich'];
   assert.ok(zhEditorial, 'zurich city editorial must exist');
   assert.ok(zhEditorial.takeHomePayAnalysis.includes('8,369 CHF per month'));
-  console.log('  ✓ Zurich CHF 130K numbers & editorial confirmed');
+
+  // Statutory Pillar 3a 2026 Limit Assertion: CHF 7,258 (BSV)
+  assert.ok(zhEditorial.taxConsiderations.includes('7,258 CHF in 2026'), 'Zurich editorial must cite statutory 7,258 CHF Pillar 3a limit');
+  assert.ok(INTL_EXTENDED_CLUSTERS['zurich-130k'].sections.find(s => s.id === 'pillar-3a')?.paragraphs[0].includes('7,258 CHF'), 'Zurich guide must cite 7,258 CHF statutory limit');
+
+  // Zurich Budget Table Exact Reconciliation
+  const zhBudgetTable = INTL_EXTENDED_CLUSTERS['zurich-130k'].sections.find(s => s.id === 'monthly-budget')?.table;
+  assert.ok(zhBudgetTable, 'Zurich budget table must exist');
+  // 2250 (Rent) + 380 (Health) + 210 (Utilities) + 520 (Groceries) + 650 (Dining) + 120 (Transit) = 4,130 CHF expenses
+  // Savings: 4,239 CHF -> 4,130 + 4,239 === 8,369 CHF
+  const zhRent = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Rent'))![1].replace(/[^0-9]/g, ''), 10);
+  const zhHealth = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Health Insurance'))![1].replace(/[^0-9]/g, ''), 10);
+  const zhUtil = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Utilities'))![1].replace(/[^0-9]/g, ''), 10);
+  const zhGroc = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Groceries'))![1].replace(/[^0-9]/g, ''), 10);
+  const zhDining = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Dining Out'))![1].replace(/[^0-9]/g, ''), 10);
+  const zhTransit = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Transport Pass'))![1].replace(/[^0-9]/g, ''), 10);
+  const zhSavings = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Discretionary Savings'))![1].replace(/[^0-9]/g, ''), 10);
+  const zhTotalExpenses = zhRent + zhHealth + zhUtil + zhGroc + zhDining + zhTransit;
+  assert.strictEqual(zhTotalExpenses, 4130, 'Zurich monthly expenses must equal 4,130 CHF');
+  assert.strictEqual(zhTotalExpenses + zhSavings, 8369, 'Zurich expenses (4,130) + savings (4,239) must equal 8,369 CHF net');
+  console.log('  ✓ Zurich CHF 130K numbers, Pillar 3a (7,258 CHF), & exact budget reconciliation confirmed');
 }
 
 {
@@ -202,6 +306,12 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   assert.strictEqual(Math.round(toMajor(taxMIA.netIncome) / 12), 6012);
   assert.strictEqual(Number((taxMIA.effectiveTaxRate * 100).toFixed(1)), 19.8);
 
+  // Independent statutory breakdown checks
+  assert.strictEqual(toMajor(taxMIA.federalTax), 10970, 'Federal tax must equal $10,970');
+  assert.strictEqual(toMajor(taxMIA.socialContributions), 6885, 'FICA must equal $6,885');
+  assert.strictEqual(toMajor(taxMIA.stateTax), 0, 'Florida state tax must be $0');
+  assert.strictEqual(toMajor(taxMIA.totalDeductionsAndTaxes), 17855, 'Total deductions must equal $17,855');
+
   const guideMIA = SALARY_GUIDES['miami-90k'];
   assert.ok(guideMIA.lifestyleContext.includes('$6,012/month'));
   assert.ok(guideMIA.lifestyleContext.includes('19.8%'));
@@ -214,7 +324,23 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   const miaEditorial = VERIFIED_CITY_EDITORIAL['miami'];
   assert.ok(miaEditorial, 'miami city editorial must exist');
   assert.ok(miaEditorial.takeHomePayAnalysis.includes('$6,012 per month'));
-  console.log('  ✓ Miami $90K numbers & editorial confirmed');
+
+  // Miami Budget Table Exact Reconciliation
+  const miaBudgetTable = US_EXTENDED_CLUSTERS['miami-90k'].sections.find(s => s.id === 'monthly-budget')?.table;
+  assert.ok(miaBudgetTable, 'Miami budget table must exist');
+  // Rent ($2,150) + Utilities ($220) + Auto ($520) + Groceries ($380) + Dining ($320) + Healthcare ($150) = $3,740
+  // Savings: $2,272 -> $3,740 + $2,272 === $6,012
+  const miaRent = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Rent'))![1].replace(/[^0-9]/g, ''), 10);
+  const miaUtil = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Utilities'))![1].replace(/[^0-9]/g, ''), 10);
+  const miaAuto = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Auto'))![1].replace(/[^0-9]/g, ''), 10);
+  const miaGroc = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Groceries'))![1].replace(/[^0-9]/g, ''), 10);
+  const miaDining = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Dining'))![1].replace(/[^0-9]/g, ''), 10);
+  const miaHealth = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Healthcare'))![1].replace(/[^0-9]/g, ''), 10);
+  const miaSavings = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Discretionary Savings'))![1].replace(/[^0-9]/g, ''), 10);
+  const miaTotalExpenses = miaRent + miaUtil + miaAuto + miaGroc + miaDining + miaHealth;
+  assert.strictEqual(miaTotalExpenses, 3740, 'Miami monthly expenses must equal $3,740');
+  assert.strictEqual(miaTotalExpenses + miaSavings, 6012, 'Miami expenses ($3,740) + savings ($2,272) must equal $6,012 net');
+  console.log('  ✓ Miami $90K numbers, 0% FL tax & exact budget reconciliation confirmed');
 }
 
 // 3. EMPIRICAL REPORTS SYNCHRONIZATION
@@ -330,6 +456,36 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
     assert.ok(s.officialUrl.startsWith('https://'), `Source ${s.id} must have official HTTPS URL`);
   }
   console.log(`  ✓ Institutional identity and ${AUTHORITATIVE_SOURCES.length} official government/statistical sources verified`);
+}
+
+// 6. STATUTORY CITATION RIGOR (IRS Rev. Proc. 2025-32)
+{
+  console.log('Test 13: IRS Rev. Proc. 2025-32 Statutory Citation Audit');
+  // Verify reports-data.ts citations
+  const repA = getGlobalSalaryWorthIndexReport();
+  const irsSource = repA.primarySources.find((s) => s.name.includes('Internal Revenue Service'));
+  assert.ok(irsSource, 'IRS source must exist in Report A');
+  assert.ok(irsSource.name.includes('IRS Rev. Proc. 2025-32'), 'Report A must cite IRS Rev. Proc. 2025-32');
+
+  // Verify us-guides.ts citations
+  for (const [key, cluster] of Object.entries(US_EXTENDED_CLUSTERS)) {
+    const methodology = cluster.sections.find((s) => s.id === 'methodology');
+    if (methodology) {
+      assert.ok(
+        methodology.paragraphs[0].includes('IRS Rev. Proc. 2025-32'),
+        `Cluster ${key} methodology must cite IRS Rev. Proc. 2025-32`
+      );
+      assert.ok(
+        !methodology.paragraphs[0].includes('2025-33'),
+        `Cluster ${key} must not contain obsolete 2025-33`
+      );
+    }
+  }
+
+  // Verify seo-clusters.ts nyc-100k methodology
+  const nycMethodology = SEO_LANDING_PAGES['nyc-100k'].sections.find((s) => s.id === 'methodology');
+  assert.ok(nycMethodology?.paragraphs[0].includes('IRS Rev. Proc. 2025-32'), 'nyc-100k must cite IRS Rev. Proc. 2025-32');
+  console.log('  ✓ All IRS statutory citations verified against official IRS Rev. Proc. 2025-32');
 }
 
 console.log('\n================================================================');

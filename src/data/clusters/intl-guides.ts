@@ -1053,15 +1053,15 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         subsections: [
           {
             h3: 'Pillar 1: Federal Social Security AHV/IV/EO/ALV (6.4% / ~8,320 CHF)',
-            content: 'Mandatory federal social insurance comprising Old Age and Survivors Insurance (AHV 5.3%), Disability Insurance (IV), Income Compensation (EO), and Unemployment Insurance (ALV 1.1% on wages up to 148,200 CHF).',
+            content: 'Mandatory federal social insurance comprising Old Age and Survivors Insurance (AHV 5.3% / 6,890 CHF), Disability Insurance (IV), Income Compensation (EO), and Unemployment Insurance (ALV 1.1% on wages up to 148,200 CHF / 1,430 CHF).',
           },
           {
-            h3: 'Pillar 2: Occupational Pension / BVG (~6.0% / ~7,800 CHF)',
-            content: 'Company pension fund contributions (Berufliche Vorsorge), matched equally by employers, funding tax-sheltered retirement capital.',
+            h3: 'Pillar 2: Occupational Pension / BVG (~2.5% / ~3,213 CHF employee deduction)',
+            content: 'Mandatory occupational pension fund contributions (Berufliche Vorsorge / BVG) on coordinated salary between the 26,460 CHF coordination deduction and 90,720 CHF ceiling (coordinated salary of 64,260 CHF at 5% employee statutory baseline), matched equally by employers.',
           },
           {
-            h3: 'Income Taxes: Federal, Cantonal & Municipal (~10.3% / ~13,457 CHF)',
-            content: 'Combines Federal Direct Tax (Direkte Bundessteuer), Canton Zurich state tax (Staatssteuer), and City of Zurich communal tax (Gemeindesteuer, applied via the municipal Steuerfuss of ~119%).',
+            h3: 'Income Taxes: Federal, Cantonal & Municipal (~13.9% / ~18,044 CHF)',
+            content: 'Combines Direct Federal Tax (Direkte Bundessteuer of ~4,420 CHF / 3.4%) under ESTV schedules, plus Canton Zurich state tax (Staatssteuer) and City of Zurich communal tax (Gemeindesteuer at ~119% municipal Steuerfuss, totaling ~13,624 CHF / 10.5%).',
           },
         ],
       },
@@ -1132,7 +1132,7 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'pillar-3a',
         h2: 'Tax optimization via Pillar 3a (Säule 3a)',
         paragraphs: [
-          'Swiss residents affiliated with a Pillar 2 pension fund can contribute up to 7,056 CHF annually (2026 statutory ceiling) to a tax-deductible Pillar 3a account.',
+          'Swiss residents affiliated with a Pillar 2 pension fund can contribute up to 7,258 CHF annually (2026 statutory ceiling) to a tax-deductible Pillar 3a account.',
           'Every franc deposited into Pillar 3a is deducted directly from your taxable income on your cantonal and federal tax returns, generating approximately 1,500 to 1,800 CHF in immediate tax refunds for an earner at the 130,000 CHF threshold in the City of Zurich.',
         ],
       },

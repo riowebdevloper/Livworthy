@@ -84,7 +84,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'All calculations are generated deterministically by the LivWorthy statutory tax engine and baseline cost-of-living index. Calculations model a single filer claiming standard statutory deductions under Internal Revenue Service (IRS Rev. Proc. 2025-33) and California Franchise Tax Board (FTB) schedules. Housing reflects HUD FY 2026 40th percentile Fair Market Rents for the San Francisco HMFA.',
+          'All calculations are generated deterministically by the LivWorthy statutory tax engine and baseline cost-of-living index. Calculations model a single filer claiming standard statutory deductions under Internal Revenue Service (IRS Rev. Proc. 2025-32) and California Franchise Tax Board (FTB) schedules. Housing reflects HUD FY 2026 40th percentile Fair Market Rents for the San Francisco HMFA.',
         ],
       },
     ],
@@ -196,7 +196,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are executed deterministically by LivWorthy’s statutory tax engine using IRS Rev. Proc. 2025-33 and Illinois Department of Revenue Form IL-1040 statutory schedules. Housing costs reflect HUD FY 2026 Fair Market Rents for the Chicago-Joliet-Naperville, IL HUD Metro FMR Area.',
+          'Calculations are executed deterministically by LivWorthy’s statutory tax engine using IRS Rev. Proc. 2025-32 and Illinois Department of Revenue Form IL-1040 statutory schedules. Housing costs reflect HUD FY 2026 Fair Market Rents for the Chicago-Joliet-Naperville, IL HUD Metro FMR Area.',
         ],
       },
     ],
@@ -308,7 +308,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically derived using the LivWorthy statutory engine and IRS Rev. Proc. 2025-33 schedules with 0% Washington state personal wage tax. Housing costs reflect HUD FY 2026 Fair Market Rents for the Seattle-Bellevue, WA HUD Metro FMR Area.',
+          'Calculations are deterministically derived using the LivWorthy statutory engine and IRS Rev. Proc. 2025-32 schedules with 0% Washington state personal wage tax. Housing costs reflect HUD FY 2026 Fair Market Rents for the Seattle-Bellevue, WA HUD Metro FMR Area.',
         ],
       },
     ],
@@ -420,7 +420,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are executed deterministically by LivWorthy using IRS Rev. Proc. 2025-33 schedules and California FTB Form 540 statutory brackets. Housing reflects HUD FY 2026 Fair Market Rents for the Los Angeles-Long Beach-Glendale, CA HUD Metro FMR Area.',
+          'Calculations are executed deterministically by LivWorthy using IRS Rev. Proc. 2025-32 schedules and California FTB Form 540 statutory brackets. Housing reflects HUD FY 2026 Fair Market Rents for the Los Angeles-Long Beach-Glendale, CA HUD Metro FMR Area.',
         ],
       },
     ],
@@ -532,7 +532,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically derived using the LivWorthy statutory engine and IRS Rev. Proc. 2025-33 schedules with Massachusetts Department of Revenue Form 1 flat 5% schedules. Housing reflects HUD FY 2026 Fair Market Rents for the Boston-Cambridge-Quincy, MA-NH HUD Metro FMR Area.',
+          'Calculations are deterministically derived using the LivWorthy statutory engine and IRS Rev. Proc. 2025-32 schedules with Massachusetts Department of Revenue Form 1 flat 5% schedules. Housing reflects HUD FY 2026 Fair Market Rents for the Boston-Cambridge-Quincy, MA-NH HUD Metro FMR Area.',
         ],
       },
     ],
@@ -609,7 +609,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         subsections: [
           {
             h3: '1. Federal Personal Income Tax ($10,970 / 12.2% effective)',
-            content: 'Computed under IRS Rev. Proc. 2025-33 progressive federal tax brackets (10%, 12%, and 22% on taxable income after standard deduction).',
+            content: 'Computed under IRS Rev. Proc. 2025-32 progressive federal tax brackets (10%, 12%, and 22% on taxable income after standard deduction).',
           },
           {
             h3: '2. FICA Mandatory Payroll Taxes ($6,885 / 7.65% flat)',
@@ -708,7 +708,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically generated by the LivWorthy statutory engine using IRS Rev. Proc. 2025-33 federal schedules and Article VII, Section 5 of the Florida Constitution (0% state personal income tax).',
+          'Calculations are deterministically generated by the LivWorthy statutory engine using IRS Rev. Proc. 2025-32 federal schedules and Article VII, Section 5 of the Florida Constitution (0% state personal income tax).',
           'Housing costs reflect HUD FY 2026 Fair Market Rents for the Miami-Miami Beach-Kendall, FL HUD Metro FMR Area. Auto expense benchmarks are derived from Florida Department of Highway Safety and Motor Vehicles (FLHSMV) and regional insurance rate indices.',
         ],
       },
