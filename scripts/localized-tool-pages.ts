@@ -650,15 +650,30 @@ export function createLocalizedToolPages(baseUrl: string): ToolSeoPage[] {
 
               <!-- Interactive Application Mounting Point -->
               <div id="root" class="min-h-[400px]">
-                <div class="bg-white rounded-2xl border border-[#DCE3E0] p-8 text-center text-[#60706D]">
-                  <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#E8F3F1] text-[#167D75] mb-4">
-                    <svg class="w-6 h-6 animate-spin" viewBox="0 0 24 24" fill="none">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                <div class="bg-white rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#F7F8F5] pb-4 mb-6 gap-2">
+                    <div>
+                      <h2 class="text-lg sm:text-xl font-bold text-[#102A2E]">${escapeHtml(meta.h1)}</h2>
+                      <p class="text-xs sm:text-sm text-[#60706D] mt-1">${escapeHtml(meta.description)}</p>
+                    </div>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#E8F3F1] text-[#167D75] shrink-0 self-start sm:self-center">
+                      ${escapeHtml(dict.common.verifiedTaxBaseline)}
+                    </span>
                   </div>
-                  <h2 class="text-lg font-bold text-[#102A2E] mb-2">${escapeHtml(meta.h1)}</h2>
-                  <p class="text-sm max-w-md mx-auto leading-relaxed">${escapeHtml(dict.common.calculating)}</p>
+                  <div class="space-y-4">
+                    <p class="text-sm text-[#334D4A] leading-relaxed">
+                      ${escapeHtml(meta.passage)}
+                    </p>
+                    <div class="p-4 rounded-xl bg-[#F7F8F5] border border-[#DCE3E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <span class="text-xs font-bold text-[#102A2E] block uppercase tracking-wider">${escapeHtml(dict.calculator.popularScenarios)}</span>
+                        <span class="text-xs text-[#60706D]">New York City ($100k) · London (£75k) · Dubai (300k AED) · Toronto (CA$100k)</span>
+                      </div>
+                      <a href="/salary-worth" class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-[#102A2E] text-white text-xs font-bold hover:bg-[#167D75] transition-colors">
+                        ${escapeHtml(dict.common.calculate)} →
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
 

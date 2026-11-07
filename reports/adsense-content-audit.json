@@ -2,18 +2,18 @@
   "summary": {
     "totalPublicPages": 4224,
     "indexableBefore": 1897,
-    "indexableAfter": 194,
-    "highValueCount": 115,
+    "indexableAfter": 195,
+    "highValueCount": 116,
     "needsImprovementCount": 25,
     "thinCount": 0,
     "duplicativeCount": 0,
     "utilityOnlyCount": 54,
     "incompleteCount": 0,
-    "noindexCount": 4030,
-    "removedFromSitemapCount": 1703,
+    "noindexCount": 4029,
+    "removedFromSitemapCount": 1702,
     "contentUpgradesCompleted": 41,
     "pagesStillBlocked": 0,
-    "sitemapUrlsCount": 194,
+    "sitemapUrlsCount": 195,
     "indexableThinCount": 0,
     "indexableIncompleteCount": 0,
     "indexableDuplicateCount": 0,
@@ -21,10 +21,10 @@
     "sitemapNoindexCount": 0,
     "qualityGateFailures": 0,
     "pagesImprovedThisRun": 41,
-    "pagesNoindexedThisRun": 4030,
+    "pagesNoindexedThisRun": 4029,
     "finalStatus": "READY_FOR_RESUBMISSION",
     "qualityDistribution": {
-      "A_HIGH_VALUE": 115,
+      "A_HIGH_VALUE": 116,
       "B_NEEDS_IMPROVEMENT": 25,
       "C_THIN": 0,
       "D_DUPLICATIVE": 0,
@@ -35,9 +35,9 @@
       "en": {
         "locale": "en",
         "totalPages": 374,
-        "indexablePages": 112,
-        "noindexPages": 262,
-        "highValueCount": 105,
+        "indexablePages": 113,
+        "noindexPages": 261,
+        "highValueCount": 106,
         "needsImprovementCount": 7,
         "thinCount": 0,
         "duplicativeCount": 0,
@@ -166,7 +166,7 @@
     },
     "overallReadinessScore": 96,
     "assessmentDisclaimer": "Internal readiness assessment — not a prediction of AdSense approval.",
-    "auditTimestamp": "2026-11-06T17:53:07.717Z"
+    "auditTimestamp": "2026-11-07T01:30:44.852Z"
   },
   "samplePages": [
     {

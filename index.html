@@ -115,6 +115,9 @@
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BQBKMVS7PN"></script>
 
+    <!-- Google AdSense (Official Publisher Integration, governed by Consent Mode v2) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082698285506451" crossorigin="anonymous"></script>
+
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="LivWorthy — Know what your income is really worth" />
     <meta property="og:description" content="Know what your income is really worth. Precision global income and living intelligence platform." />
@@ -150,22 +153,12 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
     </noscript>
 
-    <!-- Production-only analytics/ads with consent gating -->
+    <!-- Production-only analytics (Clarity) with consent gating -->
     <script type="text/javascript">
       (function () {
         var host = window.location.hostname;
         var isCanonicalProduction = host === 'www.livworthy.com' || host === 'livworthy.com';
         if (!isCanonicalProduction) return;
-
-        function loadMarketing() {
-          if (window._adsLoaded) return;
-          window._adsLoaded = true;
-          var ads = document.createElement('script');
-          ads.async = true;
-          ads.crossOrigin = 'anonymous';
-          ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082698285506451';
-          document.head.appendChild(ads);
-        }
 
         function loadAnalytics() {
           if (window._clarityLoaded) return;
@@ -184,13 +177,11 @@
           if (rawConsent) {
             var parsed = JSON.parse(rawConsent);
             if (parsed.analytics) loadAnalytics();
-            if (parsed.marketing) loadMarketing();
           }
         } catch (e) {}
 
         window.addEventListener('livworthy:consent-updated', function (e) {
           if (e.detail && e.detail.analytics) loadAnalytics();
-          if (e.detail && e.detail.marketing) loadMarketing();
         });
       })();
     </script>

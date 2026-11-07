@@ -224,6 +224,12 @@ export function runSeoGenerator() {
               <a id="nav-sources" href="/sources" class="inline-flex items-center space-x-1.5 text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]" aria-label="Sources — Data & Evidence Registry">
                 <span>Sources</span>
               </a>
+              <a id="nav-reports" href="/reports" class="hidden sm:inline-flex items-center space-x-1.5 text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]" aria-label="Empirical Reports — Global Research Studies">
+                <span>Empirical Reports</span>
+              </a>
+              <a id="nav-guides" href="/guides" class="hidden md:inline-flex items-center space-x-1.5 text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-3 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]" aria-label="City Guides — Salary Benchmarks">
+                <span>Salary Guides</span>
+              </a>
             </nav>
           </div>
           <nav aria-label="Calculator tabs" class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none border-t border-[#F7F8F5] bg-white">
@@ -418,6 +424,186 @@ export function runSeoGenerator() {
               </div>
             </div>
           </div>
+
+          <!-- Featured Empirical Research & Benchmark Studies (AdSense E-E-A-T Quality Centerpiece) -->
+          <section class="mt-10">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Original Research & Economics</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">Featured Empirical Benchmark Reports</h2>
+              </div>
+              <a href="/reports" class="text-xs sm:text-sm font-semibold text-[#167D75] hover:text-[#0D524D] hover:underline flex items-center">
+                Explore all 5 empirical research datasets & methodology →
+              </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Report A -->
+              <article class="bg-white rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between hover:border-[#167D75] transition-all">
+                <div>
+                  <div class="flex items-center justify-between text-xs font-semibold text-[#60706D] mb-3">
+                    <span class="bg-[#DDF2EC] text-[#0D625B] px-2.5 py-1 rounded-full uppercase tracking-wider font-bold">Empirical Index</span>
+                    <time datetime="2026-10-15">Updated Q4 2026</time>
+                  </div>
+                  <h3 class="text-lg font-bold text-[#102A2E] leading-snug">
+                    <a href="/reports/global-salary-worth-index" class="hover:text-[#167D75]">
+                      2026 Global Salary Worth Index: 39-Market Purchasing Power Analysis
+                    </a>
+                  </h3>
+                  <p class="text-xs sm:text-sm text-[#60706D] mt-3 leading-relaxed">
+                    Empirical benchmark analyzing net retained disposable cash across 65 metropolitan economies. Evaluates statutory tax drag, fair-market housing burden, and discretionary purchasing power using official 2026 tax schedules.
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-[#F7F8F5] flex items-center justify-between">
+                  <span class="text-xs font-medium text-[#102A2E]">65 Global Metros Audited</span>
+                  <a href="/reports/global-salary-worth-index" class="text-xs font-bold text-[#167D75] hover:underline">Read Study →</a>
+                </div>
+              </article>
+
+              <!-- Report B -->
+              <article class="bg-white rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between hover:border-[#167D75] transition-all">
+                <div>
+                  <div class="flex items-center justify-between text-xs font-semibold text-[#60706D] mb-3">
+                    <span class="bg-[#DDF2EC] text-[#0D625B] px-2.5 py-1 rounded-full uppercase tracking-wider font-bold">Equivalency Study</span>
+                    <time datetime="2026-10-18">Updated Q4 2026</time>
+                  </div>
+                  <h3 class="text-lg font-bold text-[#102A2E] leading-snug">
+                    <a href="/reports/purchasing-power-comparison" class="hover:text-[#167D75]">
+                      Cross-Border Living Cost & Purchasing Power Parity (PPP) Report
+                    </a>
+                  </h3>
+                  <p class="text-xs sm:text-sm text-[#60706D] mt-3 leading-relaxed">
+                    Bilateral economic equivalency modeling standard of living across North America, Europe, Asia-Pacific, and the Middle East. Compares actual lifestyle equivalence versus headline FX exchange rates.
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-[#F7F8F5] flex items-center justify-between">
+                  <span class="text-xs font-medium text-[#102A2E]">Deterministic PPP Model</span>
+                  <a href="/reports/purchasing-power-comparison" class="text-xs font-bold text-[#167D75] hover:underline">Read Study →</a>
+                </div>
+              </article>
+
+              <!-- Report C -->
+              <article class="bg-white rounded-2xl border border-[#DCE3E0] p-6 shadow-xs flex flex-col justify-between hover:border-[#167D75] transition-all">
+                <div>
+                  <div class="flex items-center justify-between text-xs font-semibold text-[#60706D] mb-3">
+                    <span class="bg-[#DDF2EC] text-[#0D625B] px-2.5 py-1 rounded-full uppercase tracking-wider font-bold">Housing Benchmark</span>
+                    <time datetime="2026-10-22">Updated Q4 2026</time>
+                  </div>
+                  <h3 class="text-lg font-bold text-[#102A2E] leading-snug">
+                    <a href="/reports/salary-to-rent-index" class="hover:text-[#167D75]">
+                      The 2026 Global Metropolitan Salary-to-Rent Ratio Index
+                    </a>
+                  </h3>
+                  <p class="text-xs sm:text-sm text-[#60706D] mt-3 leading-relaxed">
+                    Empirical housing affordability audit measuring single-earner and dual-earner rent-to-gross percentages. Evaluates median local wages against HUD Fair Market Rents and international tenancy data.
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-[#F7F8F5] flex items-center justify-between">
+                  <span class="text-xs font-medium text-[#102A2E]">Rental Burden Audit</span>
+                  <a href="/reports/salary-to-rent-index" class="text-xs font-bold text-[#167D75] hover:underline">Read Study →</a>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <!-- Featured Flagship City Salary & Living Analysis Guides -->
+          <section class="mt-10">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Editorial Guides & City Benchmarks</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#102A2E] mt-1 tracking-tight">Flagship Metropolitan Salary Guides</h2>
+              </div>
+              <a href="/guides" class="text-xs sm:text-sm font-semibold text-[#167D75] hover:text-[#0D524D] hover:underline flex items-center">
+                Browse all 32 comprehensive city salary guides →
+              </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <article class="bg-white rounded-xl border border-[#DCE3E0] p-5 shadow-xs hover:border-[#167D75] transition-all">
+                <span class="text-[11px] font-bold text-[#167D75] uppercase tracking-wider">New York City · US</span>
+                <h3 class="text-base font-bold text-[#102A2E] mt-1">
+                  <a href="/guides/nyc-100k" class="hover:text-[#167D75]">Is $100,000 a Good Salary in New York City?</a>
+                </h3>
+                <p class="text-xs text-[#60706D] mt-2 leading-relaxed">
+                  Full tax withholding breakdown across IRS federal, NY state, and NYC resident taxes, combined with five-borough median rent and monthly savings margins.
+                </p>
+                <div class="mt-4 pt-3 border-t border-[#F7F8F5] flex items-center justify-between text-xs font-medium text-[#102A2E]">
+                  <span>29.1% Total Tax Drag</span>
+                  <a href="/guides/nyc-100k" class="font-bold text-[#167D75] hover:underline">Read Guide →</a>
+                </div>
+              </article>
+
+              <article class="bg-white rounded-xl border border-[#DCE3E0] p-5 shadow-xs hover:border-[#167D75] transition-all">
+                <span class="text-[11px] font-bold text-[#167D75] uppercase tracking-wider">London · United Kingdom</span>
+                <h3 class="text-base font-bold text-[#102A2E] mt-1">
+                  <a href="/guides/london-75k" class="hover:text-[#167D75]">Is £75,000 a Good Salary in London?</a>
+                </h3>
+                <p class="text-xs text-[#60706D] mt-2 leading-relaxed">
+                  HMRC PAYE brackets, National Insurance contributions, TfL Zone 1-4 commuting passes, council tax bands, and outer-borough flat rental benchmarks.
+                </p>
+                <div class="mt-4 pt-3 border-t border-[#F7F8F5] flex items-center justify-between text-xs font-medium text-[#102A2E]">
+                  <span>£4,480 Net Monthly</span>
+                  <a href="/guides/london-75k" class="font-bold text-[#167D75] hover:underline">Read Guide →</a>
+                </div>
+              </article>
+
+              <article class="bg-white rounded-xl border border-[#DCE3E0] p-5 shadow-xs hover:border-[#167D75] transition-all">
+                <span class="text-[11px] font-bold text-[#167D75] uppercase tracking-wider">Berlin · Germany</span>
+                <h3 class="text-base font-bold text-[#102A2E] mt-1">
+                  <a href="/guides/berlin-80k" class="hover:text-[#167D75]">Is €80,000 a Good Salary in Berlin?</a>
+                </h3>
+                <p class="text-xs text-[#60706D] mt-2 leading-relaxed">
+                  Steuerklasse 1 progressive rates, Solidaritätszuschlag, statutory public health insurance (GKV), warm vs cold rent differences, and BVG transit costs.
+                </p>
+                <div class="mt-4 pt-3 border-t border-[#F7F8F5] flex items-center justify-between text-xs font-medium text-[#102A2E]">
+                  <span>€3,920 Net Monthly</span>
+                  <a href="/guides/berlin-80k" class="font-bold text-[#167D75] hover:underline">Read Guide →</a>
+                </div>
+              </article>
+
+              <article class="bg-white rounded-xl border border-[#DCE3E0] p-5 shadow-xs hover:border-[#167D75] transition-all">
+                <span class="text-[11px] font-bold text-[#167D75] uppercase tracking-wider">Dubai · United Arab Emirates</span>
+                <h3 class="text-base font-bold text-[#102A2E] mt-1">
+                  <a href="/guides/dubai-300k" class="hover:text-[#167D75]">Is 300,000 AED a Good Salary in Dubai?</a>
+                </h3>
+                <p class="text-xs text-[#60706D] mt-2 leading-relaxed">
+                  Analyzing zero personal income tax reality alongside 5% Dubai municipality housing fees, DEWA cooling tariffs, and international healthcare premiums.
+                </p>
+                <div class="mt-4 pt-3 border-t border-[#F7F8F5] flex items-center justify-between text-xs font-medium text-[#102A2E]">
+                  <span>25,000 AED / Month</span>
+                  <a href="/guides/dubai-300k" class="font-bold text-[#167D75] hover:underline">Read Guide →</a>
+                </div>
+              </article>
+
+              <article class="bg-white rounded-xl border border-[#DCE3E0] p-5 shadow-xs hover:border-[#167D75] transition-all">
+                <span class="text-[11px] font-bold text-[#167D75] uppercase tracking-wider">Toronto · Canada</span>
+                <h3 class="text-base font-bold text-[#102A2E] mt-1">
+                  <a href="/guides/toronto-100k" class="hover:text-[#167D75]">Is CA$100,000 a Good Salary in Toronto?</a>
+                </h3>
+                <p class="text-xs text-[#60706D] mt-2 leading-relaxed">
+                  Federal CRA brackets, Ontario provincial surtax, CPP and Employment Insurance annual maximums, and Greater Toronto Area 1-bedroom rental pressure.
+                </p>
+                <div class="mt-4 pt-3 border-t border-[#F7F8F5] flex items-center justify-between text-xs font-medium text-[#102A2E]">
+                  <span>CA$6,020 Net Monthly</span>
+                  <a href="/guides/toronto-100k" class="font-bold text-[#167D75] hover:underline">Read Guide →</a>
+                </div>
+              </article>
+
+              <article class="bg-white rounded-xl border border-[#DCE3E0] p-5 shadow-xs hover:border-[#167D75] transition-all">
+                <span class="text-[11px] font-bold text-[#167D75] uppercase tracking-wider">Sydney · Australia</span>
+                <h3 class="text-base font-bold text-[#102A2E] mt-1">
+                  <a href="/guides/sydney-120k" class="hover:text-[#167D75]">Is A$120,000 a Good Salary in Sydney?</a>
+                </h3>
+                <p class="text-xs text-[#60706D] mt-2 leading-relaxed">
+                  Australian Taxation Office (ATO) progressive brackets, 2% Medicare levy, mandatory employer Superannuation, and eastern suburbs median rental rates.
+                </p>
+                <div class="mt-4 pt-3 border-t border-[#F7F8F5] flex items-center justify-between text-xs font-medium text-[#102A2E]">
+                  <span>A$7,240 Net Monthly</span>
+                  <a href="/guides/sydney-120k" class="font-bold text-[#167D75] hover:underline">Read Guide →</a>
+                </div>
+              </article>
+            </div>
+          </section>
 
           <section class="mt-8">
             <h2 class="text-xl font-bold text-[#102A2E] mb-4">Core Financial Intelligence Capabilities</h2>
@@ -2091,9 +2277,9 @@ function renderPageHtml(
     );
   }
 
-  // For static institutional and SEO pages, strip the SPA module script bundle
-  // unless the page contains an interactive island (e.g. /salary-after-tax/new-york).
-  const isInteractivePage = isHomepage || page.canonicalUrl.endsWith('/salary-after-tax/new-york');
+  // For static institutional and SEO pages without interactive app containers, strip the SPA module script bundle.
+  // Retain the module script for interactive application pages that mount into #root (e.g. calculators and interactive hubs).
+  const isInteractivePage = isHomepage || page.bodyContent.includes('id="root"') || page.canonicalUrl.endsWith('/salary-after-tax/new-york');
   if (!isInteractivePage) {
     html = html.replace(/<script\s+type="module"[^>]*>.*?<\/script>\s*/gi, '');
   }

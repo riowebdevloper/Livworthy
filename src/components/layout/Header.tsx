@@ -131,6 +131,22 @@ export const Header: React.FC<HeaderProps> = ({
               <Compass className="w-3.5 h-3.5 text-[#167D75] shrink-0" aria-hidden="true" />
               <span>{t.navRelocation}</span>
             </a>
+            <a
+              id="nav-reports"
+              href="/reports"
+              className="hidden xl:inline-flex items-center space-x-1 sm:space-x-1.5 text-xs sm:text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-2 sm:px-2.5 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
+              aria-label={dict.nav.reports}
+            >
+              <span>{dict.nav.reports}</span>
+            </a>
+            <a
+              id="nav-guides"
+              href="/guides"
+              className="hidden xl:inline-flex items-center space-x-1 sm:space-x-1.5 text-xs sm:text-sm font-medium text-[#334D4A] hover:text-[#102A2E] px-2 sm:px-2.5 py-1.5 rounded border border-[#DCE3E0] hover:bg-[#F7F8F5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167D75]"
+              aria-label={dict.nav.guides}
+            >
+              <span>{dict.nav.guides}</span>
+            </a>
 
             {/* Language Selector Dropdown */}
             <div className="relative" ref={langMenuRef}>

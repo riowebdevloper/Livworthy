@@ -56,13 +56,13 @@ export function extractCleanText(html: string): string {
  * Extracts meaningful article/main text from HTML.
  */
 export function extractMeaningfulHtmlText(html: string): string {
-  const articleMatch = html.match(/<article[\s\S]*?<\/article>/i);
-  if (articleMatch) {
-    return extractCleanText(articleMatch[0]);
-  }
   const mainMatch = html.match(/<main[\s\S]*?<\/main>/i);
   if (mainMatch) {
     return extractCleanText(mainMatch[0]);
+  }
+  const articleMatches = html.match(/<article[\s\S]*?<\/article>/gi);
+  if (articleMatches && articleMatches.length > 0) {
+    return extractCleanText(articleMatches.join(' '));
   }
   return extractCleanText(html);
 }

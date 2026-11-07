@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { SalaryWorthView } from './components/calculator/SalaryWorthView';
+import { HomeEditorialShowcase } from './components/home/HomeEditorialShowcase';
 import { Header, ActiveTab } from './components/layout/Header';
 // Defer below-the-fold Footer to reduce initial JS payload
 const Footer = React.lazy(() =>
@@ -633,16 +634,19 @@ function AppContent() {
       {/* Main Dynamic Calculator Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'salary-worth' && (
-          <SalaryWorthView
-            scenario={scenario}
-            onUpdateScenario={handleUpdateScenario}
-            actualRentMajor={actualRentMajor}
-            onUpdateRentOverride={handleUpdateRentOverride}
-            onOpenCustomizer={() => setIsCustomizerOpen(true)}
-            onOpenEvidence={() => setIsEvidenceOpen(true)}
-            onNavigateToCompare={() => handleSelectTab('compare')}
-            onCalculationOutcome={handleSalaryWorthOutcome}
-          />
+          <>
+            <SalaryWorthView
+              scenario={scenario}
+              onUpdateScenario={handleUpdateScenario}
+              actualRentMajor={actualRentMajor}
+              onUpdateRentOverride={handleUpdateRentOverride}
+              onOpenCustomizer={() => setIsCustomizerOpen(true)}
+              onOpenEvidence={() => setIsEvidenceOpen(true)}
+              onNavigateToCompare={() => handleSelectTab('compare')}
+              onCalculationOutcome={handleSalaryWorthOutcome}
+            />
+            <HomeEditorialShowcase />
+          </>
         )}
 
         {activeTab === 'salary-needed' && (
