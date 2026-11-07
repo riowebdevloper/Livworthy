@@ -57,6 +57,8 @@ import { SupportedLocale, getInitialLocale, setStoredLocale, TRANSLATIONS } from
 import { I18nProvider, useI18n } from './context/I18nContext';
 import { LanguageSuggestionBanner } from './components/layout/LanguageSuggestionBanner';
 import { CookieConsentBanner } from './components/ui/CookieConsentBanner';
+import { RecentScenariosBar } from './components/layout/RecentScenariosBar';
+import { saveRecentScenario } from './lib/user-retention';
 import { trackPageView, trackCalculatorEngagement, trackCalculationOutcome } from './lib/analytics';
 
 const TAB_TITLES: Record<ActiveTab, string> = {
@@ -353,6 +355,13 @@ function AppContent() {
       const newUrl = q ? `${targetPath}?${q}` : targetPath;
       window.history.pushState(null, '', newUrl);
 
+      saveRecentScenario({
+        id: tab,
+        title: TAB_TITLES[tab]?.split('—')[0]?.trim() || tab,
+        url: targetPath,
+        tab,
+      });
+
       trackPageView(targetPath, title);
       trackCalculatorEngagement(tab, 'tab_selected', { locale });
     } catch {}
@@ -618,6 +627,21 @@ function AppContent() {
     } catch {}
   }, [activeTab, triggerUserInitiatedCalculation]);
 
+  const handleSelectScenarioUrl = (url: string) => {
+    const rawPath = url.replace(/^\/[a-z]{2}(?:\/|$)/, '/').replace(/^\/+|\/+$/g, '');
+    if (rawPath === '') {
+      handleSelectTab('salary-worth');
+      return;
+    }
+    const VALID_TABS: ActiveTab[] = ['salary-worth', 'salary-needed', 'salary-after-tax', 'cost-of-living', 'compare', 'job-offers'];
+    const tabMatch = VALID_TABS.find((t) => t === rawPath);
+    if (tabMatch) {
+      handleSelectTab(tabMatch);
+    } else {
+      window.location.href = url;
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F8F5]">
       {/* Persistent Global Header with brand and live navigation */}
@@ -630,6 +654,9 @@ function AppContent() {
         locale={locale}
         onSelectLocale={handleSelectLocale}
       />
+
+      {/* Privacy-Safe Recently Viewed Scenarios Drawer / Bar */}
+      <RecentScenariosBar onSelectScenario={handleSelectScenarioUrl} />
 
       {/* Main Dynamic Calculator Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">

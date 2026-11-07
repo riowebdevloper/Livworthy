@@ -31,39 +31,39 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     metaDescription:
       'Is $100K enough to live in NYC? A $100,000 salary yields $5,907/mo ($70,879 net) after federal, NYS, NYC & FICA taxes. See real 2026 rent, budgets & savings.',
     directAnswer:
-      'Yes, $100,000 is enough to live comfortably as a single earner in New York City, placing you well above the citywide individual median worker income (~$65,000). However, because New York City residents pay four distinct statutory withholdings (Federal income tax, New York State income tax, NYC Resident Tax, and FICA payroll taxes), net take-home pay is $5,907 per month ($70,879 annually), an effective tax rate of 29.1%. Renting independently at the HUD Fair Market Rent benchmark ($2,655) leaves approximately $1,660 monthly for uncommitted savings, emergency funds, and discretionary spending. Sharing an apartment with a roommate ($1,400–$1,600 rent share) increases monthly uncommitted savings to over $2,700.',
+      'Yes, $100,000 is enough to live comfortably as a single earner in New York City, placing you well above the citywide individual median worker income (~$65,000). However, because New York City residents pay four distinct statutory withholdings (Federal income tax, New York State income tax, NYC Resident Tax, and FICA payroll taxes), net take-home pay is $5,907 per month ($70,879 annually), an effective tax rate of 29.1%. Renting independently at the [HUD Fair Market Rent benchmark](source:us-hud-nyc-fmr-2026) ($2,655) leaves approximately $1,660 monthly for uncommitted savings, emergency funds, and discretionary spending. Sharing an apartment with a roommate ($1,400–$1,600 rent share) increases monthly uncommitted savings to over $2,700.',
     sections: [
       {
         id: 'verdict',
         h2: 'Is $100K enough to live in NYC in 2026?',
         paragraphs: [
-          'In New York City, earning six figures has long stood as an iconic financial milestone. In 2026, earning $100,000 provides genuine financial stability, autonomy, and comfortable baseline living for an individual, though it does not afford a lavish lifestyle in prime Manhattan high-rises.',
-          'Your purchasing power on $100K depends decisively on housing structure. A single professional renting independently in outer-borough transit hubs (Astoria, Sunnyside, Crown Heights, Bushwick, Long Island City) or sharing a multi-bedroom apartment can easily save $1,600 to $2,700 every month while enjoying dining, arts, and weekend travel. In contrast, insisting on a luxury doorman studio in SoHo or the West Village on a solo $100K income will stretch cash flow to its absolute limit.',
+          'On a $100,000 salary in New York City, rent makes a bigger difference to your monthly budget than almost any small spending cut. In 2026, earning six figures provides genuine financial independence and a comfortable baseline for a single earner, though it does not stretch to luxury high-rises in prime Manhattan.',
+          'Your practical purchasing power depends decisively on your living arrangement. A professional renting an independent 1-bedroom apartment at the 2026 [HUD Fair Market Rent benchmark](source:us-hud-nyc-fmr-2026) ($2,655/mo) in transit-accessible neighborhoods (Astoria, Sunnyside, Crown Heights, or Bushwick) can comfortably save $1,660 every month while enjoying dining, entertainment, and weekend travel. In contrast, splitting a 2-bedroom with a roommate ($1,400–$1,600/mo share) increases savings to over $2,700/mo, whereas renting a luxury doorman studio in SoHo or the West Village on a solo $100K income stretches cash flow to its absolute limit.',
         ],
       },
       {
         id: 'after-tax',
         h2: 'How much is $100K after tax in NYC? (Take-home pay breakdown)',
         paragraphs: [
-          'New York City residents navigate one of the highest cumulative statutory tax burdens in the United States. Unlike almost every other American city, NYC levies its own dedicated municipal resident personal income tax on top of New York State personal income tax and Federal taxes.',
-          'Under 2026 statutory schedules, a single filer claiming the $16,100 federal standard deduction pays four distinct statutory deduction layers totaling $29,121 (an effective rate of 29.1%):',
+          'New York City residents navigate one of the highest cumulative statutory tax burdens in the United States. Unlike almost every other American municipality, New York City levies its own dedicated resident income tax on top of New York State personal income tax and Federal withholdings.',
+          'Under 2026 statutory tax schedules, a single filer claiming the $16,100 federal standard deduction pays four distinct deduction layers totaling $29,121 (an effective tax rate of 29.1%):',
         ],
         subsections: [
           {
             h3: '1. Federal Personal Income Tax ($13,170 / 13.17% effective)',
-            content: 'Computed under IRS Rev. Proc. 2025-32 progressive marginal brackets (10%, 12%, and 22% on taxable income of $83,900 after the $16,100 single standard deduction: $1,240 + $4,560 + $7,370).',
+            content: 'Computed under [IRS Rev. Proc. 2025-32](source:us-irs-tax-2026) progressive marginal brackets (10%, 12%, and 22% on taxable income of $83,900 after the $16,100 single standard deduction: $1,240 + $4,560 + $7,370).',
           },
           {
             h3: '2. FICA Mandatory Payroll Taxes ($7,650 / 7.65% flat)',
-            content: 'Consists of 6.20% Social Security ($6,200 up to the 2026 statutory wage base) plus 1.45% Medicare ($1,450 uncapped).',
+            content: 'Governed by the [Social Security Administration (SSA)](source:us-ssa-fica-2026), consisting of 6.20% Social Security ($6,200 up to the 2026 statutory wage base of $184,500) plus 1.45% Medicare ($1,450 uncapped).',
           },
           {
             h3: '3. New York State Personal Income Tax ($4,860 / ~4.86% effective)',
-            content: 'Governed by NYS Tax Law § 601 (Form IT-2105-I page 10 single marginal brackets on $92,000 taxable income after the $8,000 NYS standard deduction: 3.90% up to $8,500, 4.40% to $11,700, 5.15% to $13,900, 5.40% to $80,650, and 5.90% on the remainder, totaling $4,859.75 with zero supplemental recapture below the $107,650 statutory threshold).',
+            content: 'Governed by NYS Tax Law § 601 and [Form IT-2105-I](source:us-nys-tax-2026) page 10 single marginal brackets on $92,000 taxable income after the $8,000 NYS standard deduction: 3.90% up to $8,500, 4.40% to $11,700, 5.15% to $13,900, 5.40% to $80,650, and 5.90% on the remainder, totaling $4,859.75 with zero supplemental recapture below the $107,650 statutory threshold.',
           },
           {
             h3: '4. New York City Resident Personal Income Tax ($3,441 / ~3.44% effective)',
-            content: 'Governed by NYC Administrative Code § 11-1701, applying progressive municipal rates between 3.078% and 3.876% on taxable residents ($92,000 taxable income after the $8,000 standard deduction, totaling $3,441.09).',
+            content: 'Governed by [NYC Administrative Code § 11-1701](source:us-nyc-tax-2026), applying progressive municipal rates between 3.078% and 3.876% on taxable residents ($92,000 taxable income after the $8,000 standard deduction, totaling $3,441.09).',
           },
         ],
       },
@@ -71,7 +71,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'monthly-take-home',
         h2: 'What is $100K per month and per paycheck after tax?',
         paragraphs: [
-          'Divided across 12 calendar months, a $100,000 gross salary yields approximately $5,907 in monthly net take-home pay.',
+          'Divided across 12 calendar months, a $100,000 gross salary yields approximately $5,907 in monthly net take-home pay ($70,879 annually).',
           'Depending on your employer’s payroll distribution schedule, here is your exact net pay per paycheck in 2026:',
         ],
         subsections: [
@@ -93,8 +93,8 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'rent-context',
         h2: 'Typical rent on a $100K salary: The 40× rule vs reality',
         paragraphs: [
-          'Most New York City landlords and property management companies require prospective tenants to demonstrate an annual gross income of at least 40 times the monthly rent. On a $100,000 salary, the mathematical 40× ceiling equals exactly $2,500/month in rent without requiring an institutional guarantor.',
-          'While median 1-bedroom asking rents across Manhattan core exceed $4,200/month, neighborhood selection unlocks high-quality housing within budget:',
+          'Most New York City landlords and property management companies require prospective tenants to demonstrate an annual gross income of at least 40 times the monthly rent. On a $100,000 salary, the mathematical 40× ceiling equals exactly **$2,500/month** in rent without requiring an institutional guarantor.',
+          'While median 1-bedroom asking rents across Manhattan core exceed $4,200/month, neighborhood selection unlocks high-quality housing within budget. Solo renters can look slightly below the $2,655 HUD benchmark in outer boroughs or opt for a 2-bedroom shared with a roommate to keep rent well inside the 40× standard:',
         ],
         subsections: [
           {
@@ -133,6 +133,15 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         },
       },
       {
+        id: 'solo-vs-roommate',
+        h2: 'Solo apartment vs roommate budget on $100K in NYC',
+        paragraphs: [
+          'The decision between living alone and sharing an apartment is the single largest determinant of wealth accumulation in New York City.',
+          'Living alone in a 1-bedroom at the [HUD Fair Market Rent benchmark](source:us-hud-nyc-fmr-2026) ($2,655/mo) commits 45.0% of your take-home pay to rent, leaving $1,660/mo ($19,920/yr) for savings and emergencies.',
+          'Splitting a 2-bedroom apartment with a roommate ($1,500/mo rent share) reduces housing costs to 25.4% of net income and cuts utilities in half ($160 vs $320). This increases discretionary savings to **$2,975/mo** ($35,700/yr)—delivering an extra $15,780 in annual savings that can fully fund both a Roth IRA ($7,000) and substantial 401(k) contributions.',
+        ],
+      },
+      {
         id: 'single-vs-couple',
         h2: 'Can one person live comfortably on $100K? Can a couple live on $100K?',
         paragraphs: [
@@ -152,6 +161,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         h2: 'How much can you save on $100K in NYC?',
         paragraphs: [
           'A disciplined saver sharing an apartment ($1,400 rent share) can save over $2,400 monthly (nearly $30,000 annually). Living alone in a $2,655 Fair Market Rent apartment leaves approximately $1,660 per month for 401(k), IRA, and emergency fund contributions.',
+          'To model custom payroll withholdings with 401(k) or pre-tax health insurance deductions, test your scenario in our [NYC Salary After Tax Calculator](/salary-after-tax/new-york).',
         ],
       },
       {
@@ -159,8 +169,8 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         h2: '$100K in NYC vs Miami, London and Zurich',
         paragraphs: [
           'How does $100K in New York City compare to other major commercial capitals?',
-          'Compared to Miami ($90K / $6,012/mo net), Florida’s 0% personal state income tax means a $90,000 salary in Miami yields virtually identical spendable cash to a $100,000 salary in New York City, while median housing is roughly $500/month cheaper.',
-          'Compared to Zurich (CHF 130K / CHF 8,369/mo net), Switzerland’s low cantonal tax and strong currency deliver more than double the absolute monthly savings (CHF 4,000+ vs $1,660).',
+          'Compared to [Miami ($90K salary)](/guides/miami-90k), Florida’s 0% state income tax means a $90,000 salary in Miami yields $6,012/mo net—slightly more take-home cash than $100,000 in New York City ($5,907/mo)—while median rent in Miami is roughly $500/month cheaper ($2,150 vs $2,655).',
+          'Compared to [Zurich (CHF 130K salary)](/guides/zurich-130k), Switzerland’s low cantonal tax and strong currency deliver more than double the absolute monthly savings (CHF 4,239 vs $1,660).',
           'Compared to London (£75,000 / £4,505/mo net), after factoring in free NHS healthcare and slightly lower rental costs in outer zones, purchasing power is broadly comparable.',
         ],
       },
@@ -168,8 +178,8 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and assumptions',
         paragraphs: [
-          'All calculations are generated deterministically using the official LivWorthy statutory tax engine and baseline cost of living index. Tax computations reflect a single filer taking the standard deduction ($16,100) without employer retirement match or itemized deductions under IRS Rev. Proc. 2025-32, NYS Tax Law § 601 (IT-2105-I), and NYC Admin Code § 11-1701 for Tax Year 2026.',
-          'Cost of living estimates are benchmarked from verified municipal datasets including the US Department of Housing and Urban Development (HUD FY 2026 FMR) and Metropolitan Transportation Authority (MTA) OMNY fare capping. Monthly budget allocations reconcile to the rounded monthly net take-home pay of $5,907 ($4,247 itemized expenses + $1,660 discretionary savings/buffer) derived from the exact statutory annual net of $70,879.16 ($5,906.60 monthly).',
+          'All calculations are generated deterministically using the official LivWorthy statutory tax engine and baseline cost of living index. Tax computations reflect a single filer taking the standard deduction ($16,100) without employer retirement match or itemized deductions under [IRS Rev. Proc. 2025-32](source:us-irs-tax-2026), NYS Tax Law § 601 ([Form IT-2105-I](source:us-nys-tax-2026)), and [NYC Admin Code § 11-1701](source:us-nyc-tax-2026) for Tax Year 2026.',
+          'Cost of living estimates are benchmarked from verified municipal datasets including the US Department of Housing and Urban Development ([HUD FY 2026 FMR](source:us-hud-nyc-fmr-2026)) and Metropolitan Transportation Authority ([MTA OMNY fare capping](source:us-mta-nyc-transit-2026)). Monthly budget allocations reconcile to the rounded monthly net take-home pay of $5,907 ($4,247 itemized expenses + $1,660 discretionary savings/buffer) derived from the exact statutory annual net of $70,879.16 ($5,906.60 monthly).',
         ],
       },
     ],

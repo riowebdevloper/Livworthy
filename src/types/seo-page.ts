@@ -67,6 +67,8 @@ export interface SeoLandingPage {
 
   relatedLinks: RelatedLink[];
 
+  evidenceSourceIds?: string[];
+
   capabilityRequirements: {
     tax?: boolean;
     col?: boolean;

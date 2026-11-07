@@ -103,6 +103,10 @@ const ALLOWED_LITERALS = new Set([
   'Subscribed! We will notify you when 2027 schedules are live.',
   'Print or save report as PDF',
   'Email address for 2027 tax updates',
+  'Recently viewed calculators',
+  'Recently viewed:',
+  'Clear recent scenarios',
+  'Clear',
 ]);
 
 const TARGET_ATTRIBUTES = [

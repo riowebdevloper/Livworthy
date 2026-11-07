@@ -589,7 +589,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     metaDescription:
       'Is $90K a good salary in Miami? A $90,000 salary yields $6,012/mo net ($72,145/yr) with 0% Florida state tax. See 2026 Miami-Dade rent, auto costs & budget.',
     directAnswer:
-      'Yes, $90,000 is a solid, comfortable compensation tier in Miami, comfortably exceeding the Miami-Dade County individual median worker earnings (~$44,000) by more than 2×. Benefiting from 0% Florida State personal income tax, a single earner takes home approximately $6,012 per month ($72,145 annually), representing an effective tax rate of just 19.8% (paid solely to Federal income tax and FICA). After baseline housing ($2,150/month HUD Fair Market Rent in Miami-Dade) and essential living costs, single professionals retain approximately $2,272 to $2,400 monthly in clean uncommitted savings.',
+      'Yes, $90,000 is a solid, comfortable compensation tier in Miami, comfortably exceeding the Miami-Dade County individual median worker earnings (~$44,000) by more than 2×. Benefiting from 0% Florida State personal income tax, a single earner takes home approximately $6,012 per month ($72,145 annually), representing an effective tax rate of just 19.8% (paid solely to Federal income tax and FICA). After baseline housing ($2,150/month [HUD Fair Market Rent](source:us-hud-miami-fmr-2026) in Miami-Dade) and essential living costs, single professionals retain approximately $2,272 to $2,400 monthly in clean uncommitted savings.',
     sections: [
       {
         id: 'verdict',
@@ -603,17 +603,17 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'after-tax',
         h2: 'How much is $90K after tax in Florida? (0% State Tax Advantage)',
         paragraphs: [
-          'Under Article VII, Section 5 of the Florida Constitution, the state is prohibited from levying any personal income tax on earned wages. As a result, paycheck deductions in Miami are limited strictly to federal statutory withholdings.',
+          'Under [Article VII, Section 5 of the Florida Constitution](source:us-fl-dor-tax-2026), the state is prohibited from levying any personal income tax on earned wages. As a result, paycheck deductions in Miami are limited strictly to federal statutory withholdings.',
           'Under 2026 federal tax schedules, a single filer claiming the $16,100 standard deduction faces the following deductions on a $90,000 salary:',
         ],
         subsections: [
           {
             h3: '1. Federal Personal Income Tax ($10,970 / 12.2% effective)',
-            content: 'Computed under IRS Rev. Proc. 2025-32 progressive federal tax brackets (10%, 12%, and 22% on taxable income after standard deduction).',
+            content: 'Computed under [IRS Rev. Proc. 2025-32](source:us-irs-tax-2026) progressive federal tax brackets (10%, 12%, and 22% on taxable income after standard deduction).',
           },
           {
             h3: '2. FICA Mandatory Payroll Taxes ($6,885 / 7.65% flat)',
-            content: 'Consists of 6.20% Social Security ($5,580) plus 1.45% Medicare ($1,305).',
+            content: 'Governed by the [Social Security Administration (SSA)](source:us-ssa-fica-2026), consisting of 6.20% Social Security ($5,580) plus 1.45% Medicare ($1,305).',
           },
           {
             h3: '3. Florida State & Miami Municipal Income Tax ($0 / 0.0%)',
@@ -634,7 +634,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         subsections: [
           {
             h3: 'Auto Insurance Premium Reality ($200 – $350/mo)',
-            content: 'Florida consistently ranks among the most expensive states for auto insurance due to weather risks, high litigation rates, and uninsured driver ratios. Budgeting $520/month covers financing/depreciation, Florida auto insurance, fuel, and SunPass tolls.',
+            content: 'Florida consistently ranks among the most expensive states for auto insurance under [FLHSMV](source:us-flhsmv-auto-2026) regulatory standards due to high litigation rates, storm risks, and uninsured motorist ratios. Budgeting $520/month covers financing/depreciation, Florida auto insurance, fuel, and SunPass tolls.',
           },
           {
             h3: 'Summer Electricity & Air Conditioning ($180 – $240/mo)',
@@ -661,6 +661,14 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
             ['Discretionary Savings / Investments / Buffer', '$2,272', '37.8%'],
           ],
         },
+      },
+      {
+        id: 'car-vs-car-free',
+        h2: 'Car ownership vs car-free monthly budget in Miami',
+        paragraphs: [
+          'In most of South Florida, car ownership is practically essential. Budgeting $520/month covers vehicle amortization, high Florida auto insurance, gas, and SunPass toll fees.',
+          'However, single professionals residing in Brickell or Downtown Miami can live car-free. By utilizing the free elevated Metromover system, walking to financial district offices, and using rideshare for weekend beach trips (~$150/mo), you can eliminate the $520 auto expense, boosting monthly discretionary savings from **$2,272** to over **$2,640/month** ($31,600+ annually).',
+        ],
       },
       {
         id: 'neighborhoods',

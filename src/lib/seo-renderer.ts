@@ -15,6 +15,111 @@ function escapeHtml(str?: string): string {
     .replace(/'/g, '&#039;');
 }
 
+const TRUSTED_OFFICIAL_DOMAINS = [
+  'irs.gov',
+  'ssa.gov',
+  'huduser.gov',
+  'bls.gov',
+  'tax.ny.gov',
+  'mta.info',
+  'admin.ch',
+  'zh.ch',
+  'gov.uk',
+  'canada.ca',
+  'ato.gov.au',
+  'flhsmv.gov',
+  'floridarevenue.com',
+  'myflorida.com',
+  'revenue.ie',
+  'bund.de',
+  'destatis.de',
+  'economie.gouv.fr',
+  'impots.gouv.fr',
+  'agenciatributaria.gob.es',
+  'belastingdienst.nl',
+  'iras.gov.sg',
+  'ird.govt.nz',
+  'gta.gov.qa',
+  'zatca.gov.sa',
+];
+
+function isTrustedOfficialUrl(urlStr: string): boolean {
+  try {
+    const parsed = new URL(urlStr);
+    if (parsed.protocol !== 'https:') return false;
+    const hostname = parsed.hostname.toLowerCase();
+    return (
+      hostname.endsWith('.gov') ||
+      hostname.endsWith('.gov.uk') ||
+      hostname.endsWith('.admin.ch') ||
+      TRUSTED_OFFICIAL_DOMAINS.some(
+        (domain) => hostname === domain || hostname.endsWith(`.${domain}`)
+      )
+    );
+  } catch {
+    return false;
+  }
+}
+
+function formatText(raw: string): string {
+  if (!raw) return '';
+  const parts = raw.split(/(\*\*[^*]+\*\*)/g);
+  return parts
+    .map((part) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return `<strong>${escapeHtml(part.slice(2, -2))}</strong>`;
+      }
+      return escapeHtml(part);
+    })
+    .join('');
+}
+
+export function renderFormattedContent(text: string, collectedSourceIds?: string[]): string {
+  if (!text) return '';
+
+  const linkRegex = /\[([^\]]+)\]\(((?:source:[a-z0-9_-]+)|(?:https:\/\/[^\s)]+)|(?:\/[a-zA-Z0-9_\-\/]*))\)/g;
+  let result = '';
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = linkRegex.exec(text)) !== null) {
+    const beforeText = text.substring(lastIndex, match.index);
+    result += formatText(beforeText);
+
+    const anchorText = match[1];
+    const target = match[2];
+
+    if (target.startsWith('source:')) {
+      const sourceId = target.slice(7);
+      if (collectedSourceIds && !collectedSourceIds.includes(sourceId)) {
+        collectedSourceIds.push(sourceId);
+      }
+      const source = EVIDENCE_SOURCES[sourceId];
+      if (source && source.url) {
+        const titleText = `${source.organization} — ${source.canonicalReference}`;
+        result += `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-0.5 font-semibold text-[#167D75] underline decoration-[#167D75]/40 hover:decoration-[#167D75] transition-colors" title="${escapeHtml(titleText)}"><span>${escapeHtml(anchorText)}</span><span class="sr-only"> (opens official source)</span><span aria-hidden="true" class="text-xs no-underline">↗</span></a>`;
+      } else {
+        result += escapeHtml(anchorText);
+      }
+    } else if (target.startsWith('https://')) {
+      if (isTrustedOfficialUrl(target)) {
+        result += `<a href="${escapeHtml(target)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-0.5 font-semibold text-[#167D75] underline decoration-[#167D75]/40 hover:decoration-[#167D75] transition-colors"><span>${escapeHtml(anchorText)}</span><span class="sr-only"> (opens official source)</span><span aria-hidden="true" class="text-xs no-underline">↗</span></a>`;
+      } else {
+        result += escapeHtml(anchorText);
+      }
+    } else if (target.startsWith('/')) {
+      result += `<a href="${escapeHtml(target)}" class="font-semibold text-[#167D75] underline decoration-[#167D75]/40 hover:decoration-[#167D75] transition-colors">${escapeHtml(anchorText)}</a>`;
+    } else {
+      result += escapeHtml(anchorText);
+    }
+
+    lastIndex = linkRegex.lastIndex;
+  }
+
+  result += formatText(text.substring(lastIndex));
+  return result;
+}
+
 function getCategoryTotal(colResult: any, categoryName: string): number {
   const match = colResult.categories.find((c: any) => c.category === categoryName);
   return match ? Math.round(match.monthlyTotal.amountMinor / 100) : 0;
@@ -32,46 +137,46 @@ function renderEvidenceSection(sourceIds: string[]): string {
   return `
     <!-- Primary Sources & Statutory Authority -->
     <section aria-label="Primary Sources and Statutory Authority" class="mt-12 pt-8 border-t border-[#DCE3E0]">
-      <div class="mb-4">
-        <h2 class="text-xl font-bold text-[#102A2E]">Primary Sources &amp; Statutory Authority</h2>
-        <p class="text-xs text-[#60706D] mt-0.5">
+      <div class="mb-5">
+        <h2 class="text-xl sm:text-[22px] font-bold text-[#102A2E]">Primary Sources &amp; Statutory Authority</h2>
+        <p class="text-xs sm:text-sm text-[#60706D] mt-1">
           Calculations are executed deterministically from official government publications, statutory tax legislation, and verified agency schedules.
         </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         ${sources
           .map(
             (s) => `
-          <div class="p-4 bg-white border border-[#DCE3E0] rounded-xl shadow-2xs hover:border-[#167D75] transition-colors flex flex-col justify-between">
+          <div class="p-4 sm:p-5 bg-white border border-[#DCE3E0] rounded-xl shadow-2xs hover:border-[#167D75] transition-colors flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between gap-2 mb-1.5">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-[#167D75] bg-teal-50 border border-teal-200 px-2 py-0.5 rounded">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#167D75] bg-teal-50 border border-teal-200 px-2 py-0.5 rounded">
                   ${escapeHtml(s.jurisdiction)}
                 </span>
-                <span class="text-[10px] text-[#60706D] font-mono">
+                <span class="text-xs text-[#60706D] font-mono">
                   ${escapeHtml(s.reliabilityTier)}
                 </span>
               </div>
-              <h3 class="text-xs font-bold text-[#102A2E] leading-snug">
+              <h3 class="text-sm sm:text-base font-bold text-[#102A2E] leading-snug">
                 ${escapeHtml(s.organization)}
               </h3>
-              <p class="text-[11px] text-[#334D4A] mt-1 leading-relaxed">
+              <p class="text-xs sm:text-sm text-[#334D4A] mt-1.5 leading-relaxed">
                 ${escapeHtml(s.canonicalReference)}
               </p>
-              <div class="mt-2 text-[10px] text-[#60706D] space-y-0.5">
-                ${s.effectiveDate ? `<div>Effective / Period: <strong>${escapeHtml(s.effectiveDate)}</strong></div>` : ''}
-                <div>Last reviewed: <strong>${escapeHtml(s.lastReviewedAt || s.verifiedAt || '')}</strong></div>
+              <div class="mt-3 text-xs text-[#60706D] space-y-1">
+                ${s.effectiveDate ? `<div>Effective / Period: <strong class="text-[#102A2E]">${escapeHtml(s.effectiveDate)}</strong></div>` : ''}
+                <div>Last reviewed: <strong class="text-[#102A2E]">${escapeHtml(s.lastReviewedAt || s.verifiedAt || '')}</strong></div>
               </div>
             </div>
             ${
               s.url
                 ? `
-              <div class="mt-3 pt-2.5 border-t border-[#F7F8F5]">
+              <div class="mt-4 pt-3 border-t border-[#F7F8F5]">
                 <a
                   href="${escapeHtml(s.url)}"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-[11px] font-semibold text-[#167D75] hover:underline inline-flex items-center gap-1"
+                  class="text-xs sm:text-sm font-semibold text-[#167D75] hover:underline inline-flex items-center gap-1"
                 >
                   <span>Official Primary Source</span>
                   <span aria-hidden="true">↗</span>
@@ -213,12 +318,14 @@ export class SeoPageRenderer {
     // 2. Fetch Authoritative Engine Computations
     let dynamicHtml = '';
     let taxRuleVersion = 'STATUTORY-CURRENT';
-    let evidenceSourceIds: string[] = [];
+    const evidenceSourceIds: string[] = [...(page.evidenceSourceIds || [])];
 
     if (page.pageType === 'salary-guide' && page.cityId && page.salaryMajor) {
       const computed = SeoEngineAdapter.computeSalaryGuide(page.cityId, page.salaryMajor);
       taxRuleVersion = computed.taxRuleVersion;
-      evidenceSourceIds = computed.evidenceSourceIds;
+      for (const id of computed.evidenceSourceIds) {
+        if (!evidenceSourceIds.includes(id)) evidenceSourceIds.push(id);
+      }
 
       const city = CITIES[page.cityId];
       const currency = page.currency || city?.currency || 'USD';
@@ -302,7 +409,9 @@ export class SeoPageRenderer {
     } else if (page.pageType === 'salary-after-tax' && page.cityId) {
       const computed = SeoEngineAdapter.computeSalaryAfterTax(page.cityId);
       taxRuleVersion = computed.taxRuleVersion;
-      evidenceSourceIds = computed.evidenceSourceIds;
+      for (const id of computed.evidenceSourceIds) {
+        if (!evidenceSourceIds.includes(id)) evidenceSourceIds.push(id);
+      }
       const currency = computed.currency;
 
       let calculatorHtml = '';
@@ -503,7 +612,9 @@ export class SeoPageRenderer {
     } else if (page.pageType === 'salary-needed' && page.cityId) {
       const computed = SeoEngineAdapter.computeSalaryNeeded(page.cityId);
       taxRuleVersion = computed.taxRuleVersion;
-      evidenceSourceIds = computed.evidenceSourceIds;
+      for (const id of computed.evidenceSourceIds) {
+        if (!evidenceSourceIds.includes(id)) evidenceSourceIds.push(id);
+      }
       const currency = computed.currency;
 
       dynamicHtml = `
@@ -544,7 +655,9 @@ export class SeoPageRenderer {
       `;
     } else if (page.pageType === 'cost-of-living' && page.cityId) {
       const computed = SeoEngineAdapter.computeCostOfLiving(page.cityId);
-      evidenceSourceIds = computed.evidenceSourceIds;
+      for (const id of computed.evidenceSourceIds) {
+        if (!evidenceSourceIds.includes(id)) evidenceSourceIds.push(id);
+      }
       const currency = computed.currency;
 
       dynamicHtml = `
@@ -609,7 +722,9 @@ export class SeoPageRenderer {
       `;
     } else if (page.pageType === 'comparison' && page.cityAId && page.cityBId) {
       const computed = SeoEngineAdapter.computeComparison(page.slug, page.cityAId, page.cityBId);
-      evidenceSourceIds = computed.evidenceSourceIds;
+      for (const id of computed.evidenceSourceIds) {
+        if (!evidenceSourceIds.includes(id)) evidenceSourceIds.push(id);
+      }
       const res = computed.result;
 
       dynamicHtml = `
@@ -669,7 +784,7 @@ export class SeoPageRenderer {
           <span>${escapeHtml(page.primaryKeyword)}</span> • <span>2026 estimate</span>
         </div>
 
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#102A2E] tracking-tight leading-tight">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-[#102A2E] tracking-tight leading-tight">
           ${escapeHtml(page.h1)}
         </h1>
 
@@ -683,8 +798,8 @@ export class SeoPageRenderer {
             <span class="text-xs font-bold uppercase tracking-wider text-[#167D75]">Quick answer</span>
             <span class="text-xs text-[#60706D]">2026 estimate</span>
           </div>
-          <p class="text-base text-[#102A2E] leading-relaxed font-semibold">
-            <strong>Short answer:</strong> ${escapeHtml(page.directAnswer)}
+          <p class="text-base sm:text-[17px] text-[#102A2E] leading-relaxed font-semibold">
+            <strong>Short answer:</strong> ${renderFormattedContent(page.directAnswer, evidenceSourceIds)}
           </p>
         </div>
 
@@ -724,10 +839,10 @@ export class SeoPageRenderer {
             .map(
               (sec) => `
             <section id="${escapeHtml(sec.id)}" class="prose max-w-none">
-              <h2 class="text-2xl font-bold text-[#102A2E] mb-3 pb-1 border-b border-[#DCE3E0]">${escapeHtml(sec.h2)}</h2>
+              <h2 class="text-xl sm:text-[22px] font-bold text-[#102A2E] mb-3 pb-2 border-b border-[#DCE3E0]">${escapeHtml(sec.h2)}</h2>
               ${
                 sec.paragraphs
-                  ? sec.paragraphs.map((p) => `<p class="text-sm text-[#334D4A] leading-relaxed mb-3">${escapeHtml(p)}</p>`).join('')
+                  ? sec.paragraphs.map((p) => `<p class="text-base text-[#2C3E3B] leading-relaxed mb-4">${renderFormattedContent(p, evidenceSourceIds)}</p>`).join('')
                   : ''
               }
               ${
@@ -736,8 +851,8 @@ export class SeoPageRenderer {
                       .map(
                         (sub) => `
                 <div class="mt-3 p-4 bg-[#F7F8F5] rounded-xl border border-[#DCE3E0]">
-                  <h3 class="text-sm font-bold text-[#102A2E]">${escapeHtml(sub.h3)}</h3>
-                  <p class="text-xs text-[#334D4A] mt-1 leading-relaxed">${escapeHtml(sub.content)}</p>
+                  <h3 class="text-sm sm:text-base font-bold text-[#102A2E]">${escapeHtml(sub.h3)}</h3>
+                  <p class="text-xs sm:text-sm text-[#334D4A] mt-1.5 leading-relaxed">${renderFormattedContent(sub.content, evidenceSourceIds)}</p>
                 </div>
               `
                       )
@@ -748,7 +863,7 @@ export class SeoPageRenderer {
                 sec.table
                   ? `
                 <div class="overflow-x-auto mt-4">
-                  <table class="w-full text-left text-xs border-collapse border border-[#DCE3E0] rounded-xl overflow-hidden">
+                  <table class="w-full text-left text-xs sm:text-sm border-collapse border border-[#DCE3E0] rounded-xl overflow-hidden">
                     <thead>
                       <tr class="bg-[#F7F8F5] text-[#102A2E] font-bold">
                         ${sec.table.headers.map((h) => `<th class="p-3 border-b border-[#DCE3E0]">${escapeHtml(h)}</th>`).join('')}
@@ -781,18 +896,18 @@ export class SeoPageRenderer {
           page.faq.length > 0
             ? `
           <section class="mt-12 pt-8 border-t border-[#DCE3E0]">
-            <h2 class="text-2xl font-bold text-[#102A2E] mb-6">Frequently Asked Questions</h2>
+            <h2 class="text-xl sm:text-[22px] font-bold text-[#102A2E] mb-6">Frequently Asked Questions</h2>
             <div class="space-y-3">
               ${page.faq
                 .map(
                   (f, idx) => `
                 <details class="p-4 bg-white border border-[#DCE3E0] rounded-xl group transition-all" ${idx === 0 ? 'open' : ''}>
-                  <summary class="font-bold text-sm text-[#102A2E] cursor-pointer flex items-center justify-between list-none">
+                  <summary class="font-bold text-sm sm:text-base text-[#102A2E] cursor-pointer flex items-center justify-between list-none">
                     <span>${escapeHtml(f.question)}</span>
                     <span class="text-[#167D75] group-open:rotate-180 transition-transform text-xs">▼</span>
                   </summary>
-                  <p class="text-xs text-[#334D4A] mt-3 leading-relaxed pt-2 border-t border-[#F7F8F5]">
-                    ${escapeHtml(f.answer)}
+                  <p class="text-xs sm:text-sm text-[#334D4A] mt-3 leading-relaxed pt-2 border-t border-[#F7F8F5]">
+                    ${renderFormattedContent(f.answer, evidenceSourceIds)}
                   </p>
                 </details>
               `

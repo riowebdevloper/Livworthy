@@ -2628,6 +2628,76 @@ var EVIDENCE_SOURCES = {
     verifiedAt: "2026-01-15",
     verifiedBy: "Lead Financial Systems Engineer",
     notes: "Tarife der direkten Bundessteuer 2026 und kantonale Steuerf\xFCsse."
+  },
+  "ch-bsv-pillar3a-2026": {
+    id: "ch-bsv-pillar3a-2026",
+    organization: "Bundesamt f\xFCr Sozialversicherungen (BSV)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "BSV Grenzbetr\xE4ge der beruflichen Vorsorge und S\xE4ule 3a (2026 H\xF6chstabzug: 7,258 CHF)",
+    url: "https://www.bsv.admin.ch/bsv/de/home/sozialversicherungen/bv/grundlagen-und-gesetze/grenzbetraege.html",
+    jurisdiction: "Switzerland (Federal)",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2025-11-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
+    verifiedBy: "Senior Financial Systems Engineer",
+    notes: "Statutory maximum tax-deductible contribution to Pillar 3a for employees affiliated with a 2nd pillar pension fund: 7,258 CHF in 2026."
+  },
+  "ch-bag-priminfo-2026": {
+    id: "ch-bag-priminfo-2026",
+    organization: "Bundesamt f\xFCr Gesundheit (BAG) / Priminfo",
+    sourceType: "Official Statistics Bureau",
+    canonicalReference: "BAG Offizielle Krankenkassenpr\xE4mien \u2014 Kanton Z\xFCrich 2026 (Pr\xE4mien\xFCbersicht Priminfo)",
+    url: "https://www.priminfo.admin.ch",
+    jurisdiction: "Canton Zurich, Switzerland",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2025-10-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-15",
+    verifiedBy: "Lead Living Cost Analyst",
+    notes: "Mandatory basic health insurance (KVG / LAMal) monthly premiums for adults in Canton Zurich."
+  },
+  "us-hud-miami-fmr-2026": {
+    id: "us-hud-miami-fmr-2026",
+    organization: "US Department of Housing and Urban Development (HUD)",
+    sourceType: "Housing Market Registry",
+    canonicalReference: "HUD Office of Policy Development and Research (PD&R) FY 2026 Fair Market Rents for Miami-Miami Beach-Kendall, FL HUD Metro FMR Area",
+    url: "https://www.huduser.gov/portal/datasets/fmr.html",
+    jurisdiction: "Miami-Dade County, Florida",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2025-10-15",
+    effectiveDate: "2025-10-01",
+    verifiedAt: "2026-01-10",
+    verifiedBy: "Senior Living Cost Analyst",
+    notes: "Official FY 2026 40th percentile Fair Market Rents: 1-Bed $2,150, 2-Bed $2,640 in Miami-Dade County."
+  },
+  "us-fl-dor-tax-2026": {
+    id: "us-fl-dor-tax-2026",
+    organization: "Florida Department of Revenue",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "Florida Constitution Article VII, Section 5 (Prohibition of Personal Income Tax on Individuals)",
+    url: "https://floridarevenue.com/taxes/Pages/default.aspx",
+    jurisdiction: "State of Florida",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2025-10-01",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-10",
+    verifiedBy: "Lead Financial Systems Engineer",
+    notes: "Constitutional guarantee of 0.0% individual state personal income tax on salaries and wages."
+  },
+  "us-flhsmv-auto-2026": {
+    id: "us-flhsmv-auto-2026",
+    organization: "Florida Department of Highway Safety and Motor Vehicles (FLHSMV)",
+    sourceType: "Government / Tax Authority",
+    canonicalReference: "FLHSMV Motor Vehicle Registration & Financial Responsibility Mandatory Insurance Requirements",
+    url: "https://www.flhsmv.gov/insurance/",
+    jurisdiction: "State of Florida",
+    reliabilityTier: "Tier 1",
+    retrievedAt: "2025-10-15",
+    effectiveDate: "2026-01-01",
+    verifiedAt: "2026-01-10",
+    verifiedBy: "Senior Living Cost Analyst",
+    notes: "Mandatory Personal Injury Protection (PIP) and Property Damage Liability (PDL) statutory vehicle guidelines in Florida."
   }
 };
 var EVIDENCE_REGISTRY = EVIDENCE_SOURCES;

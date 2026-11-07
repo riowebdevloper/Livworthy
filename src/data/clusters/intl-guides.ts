@@ -1033,7 +1033,7 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     metaDescription:
       'Is CHF 130K a good salary in Zurich? A 130,000 CHF salary yields 8,369 CHF/mo net (100,423 CHF/yr) after Swiss taxes. See real rent, Krankenkasse & budgets.',
     directAnswer:
-      'Yes, 130,000 CHF is a very strong professional salary in Zurich, comfortably exceeding Canton Zurich’s individual median worker earnings (~95,000 CHF) by over 35%. Under 2026 Swiss statutory tax law (Federal direct tax, Canton Zurich tax, City of Zurich municipal tax, and mandatory AHV/IV/EO/ALV social security), a single earner takes home approximately 8,369 CHF per month (100,423 CHF annually), representing an effective tax rate of just 22.8%. With high-standard 1-bedroom apartments in Zurich leasing at ~2,250 CHF/month (BFS benchmark), single professionals retain over 4,000 CHF monthly in clean uncommitted savings.',
+      'Yes, 130,000 CHF is a very strong professional salary in Zurich, comfortably exceeding Canton Zurich’s individual median worker earnings (~95,000 CHF) by over 35%. Under 2026 Swiss statutory tax law ([Federal direct tax](source:ch-estv-tax-2026), Canton Zurich tax, City of Zurich municipal tax, and mandatory AHV/IV/EO/ALV social security), a single earner takes home approximately 8,369 CHF per month (100,423 CHF annually), representing an effective tax rate of just 22.8%. With high-standard 1-bedroom apartments in Zurich leasing at ~2,250 CHF/month ([BFS benchmark](source:ch-bfs-zurich-2024)), single professionals retain over 4,000 CHF monthly in clean uncommitted savings.',
     sections: [
       {
         id: 'verdict',
@@ -1061,7 +1061,7 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
           },
           {
             h3: 'Income Taxes: Federal, Cantonal & Municipal (~13.9% / ~18,044 CHF)',
-            content: 'Combines Direct Federal Tax (Direkte Bundessteuer of ~4,420 CHF / 3.4%) under ESTV schedules, plus Canton Zurich state tax (Staatssteuer) and City of Zurich communal tax (Gemeindesteuer at ~119% municipal Steuerfuss, totaling ~13,624 CHF / 10.5%).',
+            content: 'Combines Direct Federal Tax (Direkte Bundessteuer of ~4,420 CHF / 3.4%) under [ESTV statutory schedules](source:ch-estv-tax-2026), plus Canton Zurich state tax (Staatssteuer) and City of Zurich communal tax (Gemeindesteuer at ~119% municipal Steuerfuss, totaling ~13,624 CHF / 10.5%).',
           },
         ],
       },
@@ -1069,8 +1069,8 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'health-insurance',
         h2: 'Mandatory Swiss Health Insurance (Krankenkasse LAMal)',
         paragraphs: [
-          'A fundamental operational distinction of working in Switzerland: Basic health insurance (Krankenkasse / LAMal) is legally mandatory for all residents but is NEVER deducted from your paycheck by your employer.',
-          'Every resident must contract individually with an authorized health insurer (such as Swica, Helsana, CSS, or Sanitas) within three months of arrival. In Canton Zurich, standard adult premiums average between 350 and 450 CHF per month.',
+          'A fundamental operational distinction of working in Switzerland: Basic health insurance (Krankenkasse / LAMal) is legally mandatory for all residents but is **never deducted from your paycheck** by your employer.',
+          'Every resident must contract individually with an authorized health insurer (such as Swica, Helsana, CSS, or Sanitas) within three months of arrival. In Canton Zurich, standard adult premiums under official [BAG Priminfo benchmarks](source:ch-bag-priminfo-2026) average between 350 and 450 CHF per month.',
           'Residents can optimize premiums by choosing a higher annual deductible (Franchise of 2,500 CHF vs standard 300 CHF) and selecting alternative care models (Telmed or Family Doctor / Hausarzt model), reducing monthly premiums toward ~320–360 CHF.',
         ],
       },
@@ -1095,11 +1095,20 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         },
       },
       {
+        id: 'wealth-accumulation',
+        h2: 'Single professional monthly savings & capital accumulation in Zurich',
+        paragraphs: [
+          'On 130,000 CHF in Zurich, a single professional achieves one of the highest capital accumulation rates in the developed world.',
+          'After independent housing (2,250 CHF), health insurance (380 CHF), groceries (520 CHF), and dining (650 CHF), you retain **4,239 CHF per month** ($4,800+ USD) in uncommitted discretionary cash flow. Over a calendar year, this equates to 50,868 CHF in surplus capital.',
+          'By maxing out the tax-deductible [Pillar 3a](source:ch-bsv-pillar3a-2026) contribution (7,258 CHF in 2026), you shield your highest marginal tax dollars, earn an immediate ~1,600 CHF tax refund, and still have over 43,000 CHF in liquid annual savings for index funds, cash reserves, or property down payments.',
+        ],
+      },
+      {
         id: 'neighborhoods',
         h2: 'Where to live in Zurich on 130K CHF: Neighborhood guide & rent',
         paragraphs: [
           'Swiss landlords evaluate rental applicants using the 1/3 gross income rule (Drittelregel: gross monthly income should be at least 3× the gross rent). On 130,000 CHF (10,833 CHF/month gross), you qualify for apartments renting up to 3,600 CHF/month, granting access to nearly any 1- or 2-bedroom in Zurich.',
-          'Target rental districts across the metropolitan area include:',
+          'Target rental districts across the metropolitan area under [BFS rental market surveys](source:ch-bfs-zurich-2024) include:',
         ],
         subsections: [
           {
@@ -1132,7 +1141,7 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'pillar-3a',
         h2: 'Tax optimization via Pillar 3a (Säule 3a)',
         paragraphs: [
-          'Swiss residents affiliated with a Pillar 2 pension fund can contribute up to 7,258 CHF annually (2026 statutory ceiling) to a tax-deductible Pillar 3a account.',
+          'Swiss residents affiliated with a Pillar 2 pension fund can contribute up to [7,258 CHF in 2026](source:ch-bsv-pillar3a-2026) (statutory ceiling set by the Federal Social Insurance Office BSV) to a tax-deductible Pillar 3a account.',
           'Every franc deposited into Pillar 3a is deducted directly from your taxable income on your cantonal and federal tax returns, generating approximately 1,500 to 1,800 CHF in immediate tax refunds for an earner at the 130,000 CHF threshold in the City of Zurich.',
         ],
       },
@@ -1140,7 +1149,7 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically derived using LivWorthy’s statutory engine using Swiss Federal Tax Administration (ESTV) 2026 rates, Canton Zurich tax scales, and federal social insurance laws (AHV/IV/EO/ALV). Pillar 2 pension deductions represent an illustrative statutory-minimum employee rate (5.0% on coordinated salary for age 35–44); actual net pay depends on your employer’s specific pension fund regulations. Housing benchmarks reflect Bundesamt für Statistik (BFS) rental market surveys for Canton Zurich.',
+          'Calculations are deterministically derived using LivWorthy’s statutory engine using Swiss Federal Tax Administration ([ESTV](source:ch-estv-tax-2026)) 2026 rates, Canton Zurich tax scales, and federal social insurance laws (AHV/IV/EO/ALV). Pillar 2 pension deductions represent an illustrative statutory-minimum employee rate (5.0% on coordinated salary for age 35–44); actual net pay depends on your employer’s specific pension fund regulations. Housing benchmarks reflect Bundesamt für Statistik ([BFS](source:ch-bfs-zurich-2024)) rental market surveys for Canton Zurich, and health insurance figures are based on [BAG Priminfo](source:ch-bag-priminfo-2026) schedules.',
         ],
       },
     ],
