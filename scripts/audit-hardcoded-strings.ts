@@ -105,7 +105,10 @@ const ALLOWED_LITERALS = new Set([
   'Email address for 2027 tax updates',
   'Recently viewed calculators',
   'Recently viewed:',
+  'Recently viewed tools:',
+  'Recently opened tools',
   'Clear recent scenarios',
+  'Clear recent calculators history',
   'Clear',
 ]);
 

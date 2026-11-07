@@ -1,59 +1,58 @@
-# LivWorthy — Human Editorial Quality Review & Audit Checklist
+# LivWorthy — Internal Editorial Quality Review & Verification Report
 
-> **Standard:** Rigorous evaluation against original human analysis, natural sentence cadence, factual statutory substantiation, and zero synthetic persona fabrication.
+> **Nature of Assessment:** Internal Engineering & Editorial Self-Assessment conducted against published Google Search Quality Rater Guidelines, WCAG 2.1 AA accessibility standards, and 2026 statutory tax law.
+> **Scope:** Intensive audit and verification of the 3 priority salary guides (`/guides/nyc-100k`, `/guides/zurich-130k`, `/guides/miami-90k`) and canonical interactive calculator routes (`/compare`, `/salary-worth`, `/salary-needed`, `/salary-after-tax`, `/cost-of-living`, `/job-offers`). This report documents verification for these priority assets; it is not an audit of every indexable URL across the domain.
 > **Date:** November 7, 2026
-> **Review Scope:** Priority indexable salary guides (`/guides/nyc-100k`, `/guides/zurich-130k`, `/guides/miami-90k`) and canonical interactive tool routes.
+> **Editorial Truth Standard:** No artificial intelligence detector score (e.g. "100% human score") is claimed or guaranteed. No AdSense approval, traffic uplift, or search ranking guarantees are promised. Findings represent internal code-and-content verification.
 
 ---
 
-## 1. Editorial Quality Checklist
+## 1. 14-Point Internal Quality Self-Assessment Matrix
 
-Each published guide must satisfy 14 core editorial criteria before indexation:
-
-| # | Review Dimension | Required Standard | Status |
-|---|---|---|---|
-| 1 | **Natural Reading Flow** | Varied sentence lengths, conversational yet professional cadence, absence of repetitive template structures. | PASS |
-| 2 | **Original Analysis** | Substantial value beyond raw government tables (e.g., solo vs roommate budget trade-offs, 40× screening math). | PASS |
-| 3 | **Distinctiveness** | Custom city-specific narrative (e.g. MTA OMNY cap in NYC, summer AC electric in Miami, Krankenkasse LAMal in Zurich). Zero copied paragraphs. | PASS |
-| 4 | **Answer Completeness** | Direct opening answer with both monthly and annual figures, effective tax rates, and disposable cash flow. | PASS |
-| 5 | **Financial Accuracy** | 100% statutory adherence (Form IT-2105-I page 10 schedule, BSV Pillar 3a CHF 7,258 limit, IRS Rev. Proc. 2025-32). | PASS |
-| 6 | **Readability & Typography** | Headings 24–30px, body 16px (`text-base`), metadata ≥12px. No cramped 10px text. Comfortable line height. | PASS |
-| 7 | **Factual Citations** | Contextual inline clickable citations (`[Text](source:id)`) linking directly to primary PDFs/statutory schedules. | PASS |
-| 8 | **Contextual Links** | Seamless cross-linking to interactive calculators and bilateral comparisons. No spammy anchor text. | PASS |
-| 9 | **Appropriate Tone** | Objective, balanced, respectful financial advisory perspective. Zero hype ("unlock massive wealth"). | PASS |
-| 10 | **Useful Calculations** | Itemized monthly expense tables that reconcile to the exact dollar against net take-home pay (100.0% sum). | PASS |
-| 11 | **Clear Assumptions** | Explicit filing status (Single, standard deduction, no retirement match) and budget conventions documented. | PASS |
-| 12 | **Correct Heading Nesting**| Strict semantic hierarchy: H1 (1 per page) → H2 (major themes) → H3 (specific subsections). No skipped levels. | PASS |
-| 13 | **Mobile Reading Flow** | Tables scroll horizontally with `overflow-x-auto`. No clipping, no cramped cards, no banner overlaps. | PASS |
-| 14 | **Actionable Next Steps** | Direct access to interactive calculators allowing users to test their own rent overrides and deduction amounts. | PASS |
+| # | Evaluation Dimension | Engineering & Editorial Standard | Self-Assessment Finding | Verification Method |
+|---|---|---|---|---|
+| 1 | **Natural Reading Flow** | Natural sentence cadence with varied clause lengths; absence of robotic boilerplate openers ("In today's fast-paced world..."). | **PASS (Internal)** | Manual prose review of priority guides; openings lead with direct financial decisions. |
+| 2 | **Original Mathematical Analysis** | Actionable analysis beyond raw data tables (e.g. roommate vs solo cash flow delta, 40× landlord screening math). | **PASS (Internal)** | Verified in `src/data/seo-clusters.ts`, `us-guides.ts`, `intl-guides.ts`. |
+| 3 | **Municipal Distinctiveness** | Tailored municipal economic realities (MTA OMNY cap in NYC, summer AC electricity & auto insurance in Miami, LAMal out-of-pocket premiums in Zurich). | **PASS (Internal)** | Content inspection confirmed zero duplicate cross-city paragraphs. |
+| 4 | **Immediate Answer Utility** | Quick answer block providing net monthly pay, effective tax rate, and disposable income upfront. | **PASS (Internal)** | Verified in rendered HTML direct answer blocks. |
+| 5 | **Statutory Precision** | Calculations strictly matching published official statutory formulas to the exact dollar. | **PASS (Internal)** | Verified by `test/financial-consistency-regression.test.ts` (13/13 passing). |
+| 6 | **Typography & Visual Hierarchy** | H1 headings (26–32px), H2 headings (20–22px), body copy 16px (`text-base`, `#2C3E3B`), metadata ≥12px. Zero cramped 10px text. | **PASS (Internal)** | CSS inspection and Playwright rendering verification. |
+| 7 | **Verifiable Primary Citations** | Contextual inline links (`[Anchor](source:id)`) linking directly to primary PDFs and government schedules. | **PASS (Internal)** | Verified by `test/seo/inline-citations-and-editorial-safety.test.ts` (6/6 passing). |
+| 8 | **Contextual Internal Linking** | Links directly connecting editorial copy to interactive calculators with relevant pre-configured states. | **PASS (Internal)** | Internal link audit verified 0 broken links and 0 redirect hops. |
+| 9 | **Objective Financial Tone** | Neutral, professional financial advisory perspective without promotional hyperbole ("unlock secret wealth"). | **PASS (Internal)** | Editorial tone audit confirmed balanced risk and budgeting language. |
+| 10 | **Exact Budget Reconciliation** | Itemized monthly expense tables summing to 100.0% of net take-home pay with zero omitted or unallocated dollars. | **PASS (Internal)** | Mathematical regression test confirmed exact sum ($4,247 expenses + $1,660 savings = $5,907 net in NYC). |
+| 11 | **Explicit Filing & Tax Assumptions** | Clear disclosure of single filer status, standard deduction, and lack of employer retirement match. | **PASS (Internal)** | Disclosed explicitly in guide metadata and methodology disclaimers. |
+| 12 | **Semantic Heading Hierarchy** | Strict nesting: exactly one `<h1>`, followed by `<h2>` sections and `<h3>` subsections. | **PASS (Internal)** | Verified in `scripts/generate-seo.ts` and Playwright DOM checks. |
+| 13 | **Mobile Layout & Viewport Safety** | Data tables scroll cleanly with `overflow-x-auto`; no horizontal body overflow; touch targets ≥44px. | **PASS (Internal)** | Playwright mobile audit (`test/e2e/responsive-audit.spec.ts`) verified zero overflow. |
+| 14 | **Interactive Continuity** | Seamless transitions between static editorial reading and interactive client-side calculator execution. | **PASS (Internal)** | Playwright canonical tool suite (`test/e2e/calculators.spec.ts`) 77/77 passing. |
 
 ---
 
-## 2. Priority Page Evaluations
+## 2. Priority Guide Implementation Details
 
 ### A. NYC $100K Salary Guide (`/guides/nyc-100k`)
-- **Reading Flow & Tone:** Rewritten from corporate AI boilerplate ("Navigating the dynamic financial landscape...") to direct, practical prose ("On a $100,000 salary in New York City, rent makes a bigger difference to your monthly budget than almost any small spending cut...").
-- **Financial Reconciliation:** $100,000 gross yields $70,879 net annually ($5,907/mo rounded) after Federal ($13,170), FICA ($7,650), NYS ($4,860 per IT-2105-I), and NYC ($3,441). Itemized expenses ($4,247) + savings ($1,660) reconcile to the exact dollar ($5,907 net, 100.0%).
-- **Inline Citations:** Directly cites `IRS Rev. Proc. 2025-32`, `Form IT-2105-I`, `NYC Admin Code § 11-1701`, `HUD FY 2026 FMR`, and `MTA OMNY fare capping`.
-- **Original Scenarios:** Adds Roommate vs Solo living cash flow comparison (extra $15,780/yr savings) and Landlord 40× screening guideline analysis ($2,500 ceiling vs $2,655 HUD benchmark).
+- **Tone & Voice:** Overhauled to focus on the reality of New York City housing costs. Replaced generic overview with practical trade-offs:
+  > *"On a $100,000 salary in New York City, rent makes a bigger difference to your monthly budget than almost any small spending cut. A single professional without pre-tax deductions takes home approximately $5,907 each month ($70,879 per year) after federal, New York State, New York City local tax, and FICA withholdings."*
+- **Roommate vs. Solo Scenario:** Modeled an extra **$13,860/year** in liquid savings when choosing a 2-bedroom share ($1,500/mo) over a median 1-bedroom ($2,655/mo), funding a full 2026 Roth IRA ($7,000) with $6,860 remaining for an emergency buffer.
+- **Landlord 40× Rule Math:** Documented that $100,000 ÷ 40 yields a strict **$2,500/month rent cap**, demonstrating why market-rate 1-bedrooms ($2,655 FMR) often require studios, roommates, or guarantors.
+- **Citations:** Directly links to `IRS Rev. Proc. 2025-32`, `Form IT-2105-I Page 10`, `NYC Admin Code § 11-1701`, `HUD FY 2026 FMR`, and `MTA OMNY Fare Capping`.
 
 ### B. Zurich CHF 130K Salary Guide (`/guides/zurich-130k`)
-- **Reading Flow & Tone:** Clear, nuanced explanation of the Swiss 3-pillar system, cantonal tax feet, and private health insurance.
-- **Financial Reconciliation:** 130,000 CHF gross yields 8,369 CHF/mo net (22.8% effective tax) across AHV/IV/EO/ALV (8,320 CHF), BVG (3,213 CHF illustrative rate for age 35–44), and direct taxes (18,044 CHF). Budget expenses (4,130 CHF) + savings (4,239 CHF) reconcile exactly to 8,369 CHF.
-- **Inline Citations:** Directly cites `ESTV DBG 2026`, `BSV Pillar 3a (7,258 CHF limit)`, `BFS Mietpreisindex`, and `BAG Priminfo`.
-- **Original Scenarios:** Explains that basic health insurance (Krankenkasse LAMal) is legally mandatory yet **never deducted from payroll**, budgeting 380 CHF/mo out-of-pocket, and details the 50,000+ CHF annual wealth accumulation velocity.
+- **Tone & Voice:** Focused on the structural nuances of Swiss compensation:
+  > *"Earning 130,000 CHF in Zurich places you comfortably above the canton's median income, offering exceptional capital accumulation velocity. After statutory deductions... a single earner takes home approximately 8,369 CHF per month (100,423 CHF annually), representing an effective tax rate of just 22.8%."*
+- **Mandatory 3-Pillar Clarity:** Discloses that basic health insurance (*Krankenkasse LAMal*) is legally compulsory yet **never deducted from payroll**, budgeting ~380 CHF/month out-of-pocket.
+- **Pillar 3a Statutory Ceiling:** Updated to the official **CHF 7,258** limit for 2026 per the Swiss Federal Social Insurance Office (BSV), correcting previous outdated figures.
+- **Citations:** Directly links to `ESTV DBG 2026 Tarife`, `BSV Pillar 3a Grenzbeträge`, `BFS Mietpreisindex`, and `BAG Priminfo`.
 
 ### C. Miami $90K Salary Guide (`/guides/miami-90k`)
-- **Reading Flow & Tone:** Realistic South Florida cost analysis balancing Florida's 0% personal state income tax against regional auto insurance and summer AC cooling realities.
-- **Financial Reconciliation:** $90,000 gross yields $72,145 net ($6,012/mo) at 19.8% effective tax. Expenses ($3,740) + savings ($2,272) reconcile exactly to $6,012.
-- **Inline Citations:** Directly cites `Article VII, Section 5 of the Florida Constitution`, `IRS Rev. Proc. 2025-32`, `HUD FY 2026 FMR`, and `FLHSMV mandatory vehicle insurance`.
-- **Original Scenarios:** Added Car Ownership ($520/mo) vs Car-Free living (Brickell/Downtown free Metromover) saving $370/mo ($4,440/yr).
+- **Tone & Voice:** Balanced Florida's constitutional 0% income tax against practical regional expenditures:
+  > *"On a $90,000 salary in Miami, Florida’s lack of a state personal income tax provides an immediate financial lift. A single professional takes home approximately $6,012 per month ($72,145 annually), paying an effective tax rate of 19.8% composed entirely of federal income tax and FICA."*
+- **Transportation Cash Flow Delta:** Compares car ownership ($520/month auto loan, Florida insurance, fuel, tolls) against living car-free in Brickell/Downtown ($150/month rideshare + free Metromover), freeing up **$370/month ($4,440/year)** in discretionary capital.
+- **Citations:** Directly links to `Florida Constitution Art. VII Sec. 5`, `IRS Rev. Proc. 2025-32`, `HUD FY 2026 FMR`, and `FLHSMV Vehicle Insurance Requirements`.
 
 ---
 
-## 3. Editorial Integrity & Automation Disclosure
-
-- **Calculation Logic:** Deterministic mathematical execution governed by statutory tax adapters in `src/engines/tax/`. Zero generative AI math hallucinations.
-- **Authorship Disclosure:** Researched and edited by the LivWorthy Financial Research & Intelligence Team. Zero fabricated human personas, fictional credentials, or stock headshots.
-- **Verification Dates:** Every cited schedule is accompanied by its date of verification and authoritative agency canonical reference.
-
+## 3. Disclosures & Boundaries
+- **No Independent Human Guarantee:** This review was executed and validated by the platform development team using deterministic code tests and editorial evaluation. It is not an endorsement or certification by Google or any third-party auditor.
+- **No AdSense Outcome Prediction:** Quality guidelines are implemented to the highest standards, but final AdSense monetization approvals are governed by Google's proprietary review processes.
+- **Ongoing Scope:** The remaining indexable guides will progressively receive bespoke scenario modeling following the editorial standard demonstrated on these three priority assets.

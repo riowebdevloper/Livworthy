@@ -19,8 +19,7 @@ export function CookieConsentBanner() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        // Small delay to prevent layout jump on immediate load
-        timer = setTimeout(() => setIsOpen(true), 600);
+        setIsOpen(true);
       }
     } catch {
       // Ignore localStorage access issues in restrictive sandboxes

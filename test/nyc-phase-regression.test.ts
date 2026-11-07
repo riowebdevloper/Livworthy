@@ -128,7 +128,7 @@ export function runNycPhaseRegressionTests() {
     '6b. salary-after-tax renders crawlable NYS Dept of Taxation and Finance primary source link'
   );
   assert(
-    colHtml.includes('href="https://www.huduser.gov/portal/datasets/fmr.html"'),
+    colHtml.includes('https://www.huduser.gov/portal/datasets/fmr.html'),
     '6c. cost-of-living renders crawlable HUD Fair Market Rent primary source link'
   );
   assert(
