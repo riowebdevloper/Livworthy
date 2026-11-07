@@ -19,8 +19,7 @@ export function CookieConsentBanner() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        // Small delay to prevent layout jump on immediate load
-        timer = setTimeout(() => setIsOpen(true), 600);
+        setIsOpen(true);
       }
     } catch {
       // Ignore localStorage access issues in restrictive sandboxes
@@ -96,15 +95,12 @@ export function CookieConsentBanner() {
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <h2 className="text-base sm:text-lg font-bold text-white tracking-wide">
-                Privacy, Cookie Transparency & Consent
+              <h2 className="text-sm font-bold text-white tracking-wide">
+                Privacy & Cookie Choices
               </h2>
             </div>
-            <p className="text-sm text-slate-300 leading-relaxed max-w-4xl">
-              LivWorthy uses strictly essential session storage for currency calculation states and
-              optional analytics to evaluate financial guide utility. In accordance with GDPR and
-              Google Consent Mode v2, third-party analytics and advertising cookies remain blocked
-              until you grant explicit permission. We never sell personal financial inputs.
+            <p className="text-xs text-slate-300 leading-tight">
+              Essential storage used for calculations. Analytics optional under GDPR & Consent Mode v2.
             </p>
           </div>
 
@@ -212,6 +208,7 @@ export function CookieConsentBanner() {
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  id="btn-cookie-cancel-preferences"
                   type="button"
                   onClick={() => setShowPreferences(false)}
                   className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white"
@@ -219,6 +216,7 @@ export function CookieConsentBanner() {
                   Cancel
                 </button>
                 <button
+                  id="btn-cookie-save-choices"
                   type="button"
                   onClick={handleSavePreferences}
                   className="px-5 py-2 text-xs sm:text-sm font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg transition-colors focus:ring-2 focus:ring-emerald-300"

@@ -84,7 +84,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'All calculations are generated deterministically by the LivWorthy statutory tax engine and baseline cost-of-living index. Calculations model a single filer claiming standard statutory deductions under Internal Revenue Service (IRS Rev. Proc. 2025-33) and California Franchise Tax Board (FTB) schedules. Housing reflects HUD FY 2026 40th percentile Fair Market Rents for the San Francisco HMFA.',
+          'All calculations are generated deterministically by the LivWorthy statutory tax engine and baseline cost-of-living index. Calculations model a single filer claiming standard statutory deductions under Internal Revenue Service (IRS Rev. Proc. 2025-32) and California Franchise Tax Board (FTB) schedules. Housing reflects HUD FY 2026 40th percentile Fair Market Rents for the San Francisco HMFA.',
         ],
       },
     ],
@@ -196,7 +196,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are executed deterministically by LivWorthy’s statutory tax engine using IRS Rev. Proc. 2025-33 and Illinois Department of Revenue Form IL-1040 statutory schedules. Housing costs reflect HUD FY 2026 Fair Market Rents for the Chicago-Joliet-Naperville, IL HUD Metro FMR Area.',
+          'Calculations are executed deterministically by LivWorthy’s statutory tax engine using IRS Rev. Proc. 2025-32 and Illinois Department of Revenue Form IL-1040 statutory schedules. Housing costs reflect HUD FY 2026 Fair Market Rents for the Chicago-Joliet-Naperville, IL HUD Metro FMR Area.',
         ],
       },
     ],
@@ -308,7 +308,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically derived using the LivWorthy statutory engine and IRS Rev. Proc. 2025-33 schedules with 0% Washington state personal wage tax. Housing costs reflect HUD FY 2026 Fair Market Rents for the Seattle-Bellevue, WA HUD Metro FMR Area.',
+          'Calculations are deterministically derived using the LivWorthy statutory engine and IRS Rev. Proc. 2025-32 schedules with 0% Washington state personal wage tax. Housing costs reflect HUD FY 2026 Fair Market Rents for the Seattle-Bellevue, WA HUD Metro FMR Area.',
         ],
       },
     ],
@@ -420,7 +420,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are executed deterministically by LivWorthy using IRS Rev. Proc. 2025-33 schedules and California FTB Form 540 statutory brackets. Housing reflects HUD FY 2026 Fair Market Rents for the Los Angeles-Long Beach-Glendale, CA HUD Metro FMR Area.',
+          'Calculations are executed deterministically by LivWorthy using IRS Rev. Proc. 2025-32 schedules and California FTB Form 540 statutory brackets. Housing reflects HUD FY 2026 Fair Market Rents for the Los Angeles-Long Beach-Glendale, CA HUD Metro FMR Area.',
         ],
       },
     ],
@@ -532,7 +532,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically derived using the LivWorthy statutory engine and IRS Rev. Proc. 2025-33 schedules with Massachusetts Department of Revenue Form 1 flat 5% schedules. Housing reflects HUD FY 2026 Fair Market Rents for the Boston-Cambridge-Quincy, MA-NH HUD Metro FMR Area.',
+          'Calculations are deterministically derived using the LivWorthy statutory engine and IRS Rev. Proc. 2025-32 schedules with Massachusetts Department of Revenue Form 1 flat 5% schedules. Housing reflects HUD FY 2026 Fair Market Rents for the Boston-Cambridge-Quincy, MA-NH HUD Metro FMR Area.',
         ],
       },
     ],
@@ -574,41 +574,79 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     currency: 'USD',
     primaryKeyword: 'is 90k a good salary in Miami',
     secondaryKeywords: [
+      'is 90k a good salary in Miami or Florida',
       '90k salary Miami',
       '90k after tax Florida',
       '90k take home Miami',
       'is 90k enough in Miami',
       'Miami 90k budget',
       'living in Miami on 90k',
+      'can you live in Miami on 90k',
+      'Miami 90k salary single',
     ],
-    seoTitle: 'Is $90K a Good Salary in Miami in 2026? | LivWorthy',
+    seoTitle: 'Is $90K a Good Salary in Miami? 2026 Take-Home & Budget | LivWorthy',
     h1: 'Is $90K a Good Salary in Miami?',
     metaDescription:
-      'Detailed financial analysis of a $90,000 salary in Miami. See net take-home pay with 0% Florida state income tax, Brickell rents, and monthly savings capacity.',
+      'Is $90K a good salary in Miami? A $90,000 salary yields $6,012/mo net ($72,145/yr) with 0% Florida state tax. See 2026 Miami-Dade rent, auto costs & budget.',
     directAnswer:
-      'Yes, $90,000 is a solid compensation tier in Miami, comfortably exceeding the Miami-Dade County individual median worker earnings (~$44,000) by over 2×. Benefiting from 0% Florida State personal income tax, a single earner takes home approximately $6,012 per month ($72,145 annually), representing an effective tax rate of 19.8%. After baseline housing ($2,150/month HUD Fair Market Rent) and essential living costs, single professionals retain approximately $2,400/month in uncommitted savings.',
+      'Yes, $90,000 is a solid, comfortable compensation tier in Miami, comfortably exceeding the Miami-Dade County individual median worker earnings (~$44,000) by more than 2×. Benefiting from 0% Florida State personal income tax, a single earner takes home approximately $6,012 per month ($72,145 annually), representing an effective tax rate of just 19.8% (paid solely to Federal income tax and FICA). After baseline housing ($2,150/month [HUD Fair Market Rent](source:us-hud-miami-fmr-2026) in Miami-Dade) and essential living costs, single professionals retain approximately $2,272 to $2,400 monthly in clean uncommitted savings.',
     sections: [
       {
         id: 'verdict',
-        h2: 'Is $90K a good salary in Miami?',
+        h2: 'Is $90K a good salary in Miami or Florida in 2026?',
         paragraphs: [
-          'In Miami, $90,000 provides a comfortable living standard, supported by Florida’s constitutionally protected 0% state personal income tax. While South Florida rental and insurance costs have escalated in recent years, the absence of state and municipal tax withholdings delivers substantial take-home cash flow.',
-          'On $90K in Miami, you can independently lease a modern 1-bedroom apartment in areas like Edgewater, Coral Gables, Downtown, or Doral, enjoy the city’s renowned dining and beach lifestyle, and maintain strong monthly savings.',
+          'In Miami, $90,000 provides a strong, financially independent lifestyle bolstered by Florida’s constitutional ban on state personal income tax. While South Florida rents, auto insurance, and dining costs have risen substantially in recent years, the complete absence of state and municipal paycheck withholdings delivers unmatched take-home cash flow.',
+          'On $90,000 in Miami, a single professional can comfortably lease a modern 1-bedroom apartment in Edgewater, Coral Gables, or Downtown, own and insure a car, participate in South Florida’s active outdoor and dining scene, and consistently save over $25,000 each year.',
         ],
       },
       {
         id: 'after-tax',
-        h2: 'How much is $90K after tax in Miami?',
+        h2: 'How much is $90K after tax in Florida? (0% State Tax Advantage)',
         paragraphs: [
-          'Florida levies 0% personal state income tax. Deductions from your paycheck are limited strictly to Federal Income Tax and mandatory FICA withholdings.',
-          'Under 2026 federal statutory brackets, a single filer claiming the $16,100 standard deduction pays ~$10,970 in federal income tax (12.2%) and $6,885 in FICA taxes (7.65%). Total statutory deductions equal $17,855 (19.8% effective tax rate), leaving $72,145 in annual net take-home pay ($6,012 monthly).',
+          'Under [Article VII, Section 5 of the Florida Constitution](source:us-fl-dor-tax-2026), the state is prohibited from levying any personal income tax on earned wages. As a result, paycheck deductions in Miami are limited strictly to federal statutory withholdings.',
+          'Under 2026 federal tax schedules, a single filer claiming the $16,100 standard deduction faces the following deductions on a $90,000 salary:',
+        ],
+        subsections: [
+          {
+            h3: '1. Federal Personal Income Tax ($10,970 / 12.2% effective)',
+            content: 'Computed under [IRS Rev. Proc. 2025-32](source:us-irs-tax-2026) progressive federal tax brackets (10%, 12%, and 22% on taxable income after standard deduction).',
+          },
+          {
+            h3: '2. FICA Mandatory Payroll Taxes ($6,885 / 7.65% flat)',
+            content: 'Governed by the [Social Security Administration (SSA)](source:us-ssa-fica-2026), consisting of 6.20% Social Security ($5,580) plus 1.45% Medicare ($1,305).',
+          },
+          {
+            h3: '3. Florida State & Miami Municipal Income Tax ($0 / 0.0%)',
+            content: 'Zero personal income tax at state, county, or municipal levels across Florida.',
+          },
+          {
+            h3: 'Comparison with High-Tax States ($7,000+ Annual Tax Bonus)',
+            content: 'On the same $90,000 gross salary, a New York City resident takes home only $5,430/month (paying ~$7,100 in combined NY state and city tax), and a Los Angeles resident takes home ~$5,500/month. Miami residents keep $6,012/month—nearly $600/month in extra spendable cash.',
+          },
+        ],
+      },
+      {
+        id: 'south-florida-costs',
+        h2: 'The South Florida cost equation: Rent, auto insurance & summer electric',
+        paragraphs: [
+          'While tax savings in Florida are substantial, living in Miami requires budgeting for specific regional cost dynamics that differ from northern or midwestern cities:',
+        ],
+        subsections: [
+          {
+            h3: 'Auto Insurance Premium Reality ($200 – $350/mo)',
+            content: 'Florida consistently ranks among the most expensive states for auto insurance under [FLHSMV](source:us-flhsmv-auto-2026) regulatory standards due to high litigation rates, storm risks, and uninsured motorist ratios. Budgeting $520/month covers financing/depreciation, Florida auto insurance, fuel, and SunPass tolls.',
+          },
+          {
+            h3: 'Summer Electricity & Air Conditioning ($180 – $240/mo)',
+            content: 'Florida Power & Light (FPL) electric bills rise significantly from June to October due to continuous central air conditioning for South Florida humidity.',
+          },
         ],
       },
       {
         id: 'monthly-budget',
         h2: 'Example monthly budget on $90K in Miami',
         paragraphs: [
-          'Here is the verified monthly expenditure model for a single professional living in Miami under 2026 benchmarks:',
+          'Here is the verified monthly expenditure model for a single professional living in Miami under latest 2026 benchmarks:',
         ],
         table: {
           headers: ['Budget Category', 'Monthly Amount', '% of Net Take-Home'],
@@ -625,26 +663,61 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         },
       },
       {
-        id: 'neighborhoods',
-        h2: 'Where to live in Miami on $90K',
+        id: 'car-vs-car-free',
+        h2: 'Car ownership vs car-free monthly budget in Miami',
         paragraphs: [
-          'Landlord 40× screening guidelines qualify a $90K earner for rents up to $2,250/month. At the $1,900 to $2,200 level, solid options exist across diverse neighborhoods.',
-          'In Edgewater and Downtown Miami, modern high-rises with pools and gyms rent 1-bedrooms from $2,100 to $2,350. In Coral Gables and Coconut Grove, quiet residential enclaves offer 1-bedrooms from $2,000 to $2,300. In Doral or Kendall, newer developments offer larger layouts with parking between $1,850 and $2,150.',
+          'In most of South Florida, car ownership is practically essential. Budgeting $520/month covers vehicle amortization, high Florida auto insurance, gas, and SunPass toll fees.',
+          'However, single professionals residing in Brickell or Downtown Miami can live car-free. By utilizing the free elevated Metromover system, walking to financial district offices, and using rideshare for weekend beach trips (~$150/mo), you can eliminate the $520 auto expense, boosting monthly discretionary savings from **$2,272** to over **$2,640/month** ($31,600+ annually).',
+        ],
+      },
+      {
+        id: 'neighborhoods',
+        h2: 'Where to live in Miami on $90K: Neighborhood rent guide',
+        paragraphs: [
+          'Under standard landlord 40× screening rules, a $90,000 salary qualifies you for monthly rents up to $2,250 without a guarantor.',
+          'Key neighborhoods accessible within this budget include:',
+        ],
+        subsections: [
+          {
+            h3: 'Edgewater & Midtown ($2,100 – $2,450/mo)',
+            content: 'Modern residential high-rises along Biscayne Bay with pools, fitness centers, and proximity to Wynwood and the Design District.',
+          },
+          {
+            h3: 'Coral Gables & Coconut Grove ($2,000 – $2,350/mo)',
+            content: 'Leafy, walkable historic enclaves with Mediterranean architecture, boutique dining, and shade trees along Miracle Mile.',
+          },
+          {
+            h3: 'Brickell & Downtown Miami ($2,350 – $2,750/mo)',
+            content: 'South Florida’s premier financial hub with high-rise density and free Metromover transit; studios and select 1-beds qualify near the $2,250 limit.',
+          },
+          {
+            h3: 'Doral, Kendall & South Miami ($1,850 – $2,150/mo)',
+            content: 'Spacious garden-style communities offering larger floor plans, in-unit laundry, and dedicated parking included in the rent.',
+          },
         ],
       },
       {
         id: 'household-scenarios',
         h2: 'Single earner vs couple on $90K in Miami',
         paragraphs: [
-          'For a single person, $90,000 enables independent condo living and annual savings exceeding $25,000.',
-          'For a couple living on a single $90K income, the budget is tighter due to car insurance and living costs. Joint federal filing boosts take-home pay to ~$6,350/month. With shared living expenses, monthly savings average approximately $1,200 to $1,500.',
+          'For a single individual, $90,000 is more than sufficient for independent luxury living, vehicle ownership, and annual savings exceeding $25,000.',
+          'For a couple supported by a single $90K income, finances remain stable. Joint federal filing increases take-home pay to approximately $6,350/month. With shared 1-bedroom rent and dual groceries, a couple saves approximately $1,200 to $1,500 every month.',
+        ],
+      },
+      {
+        id: 'savings-potential',
+        h2: 'How much can you save on $90K in Miami?',
+        paragraphs: [
+          'A single earner living in an independent 1-bedroom apartment at the $2,150 HUD benchmark retains approximately $2,272 per month ($27,264 annually) in uncommitted discretionary cash flow.',
+          'This surplus allows an earner to easily max out a Roth IRA ($7,000 in 2026), contribute $10,000+ to an employer 401(k), and maintain a robust emergency fund reserve.',
         ],
       },
       {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically generated by the LivWorthy statutory engine using IRS Rev. Proc. 2025-33 schedules and 0% Florida state income tax. Housing costs reflect HUD FY 2026 Fair Market Rents for the Miami-Miami Beach-Kendall, FL HUD Metro FMR Area.',
+          'Calculations are deterministically generated by the LivWorthy statutory engine using IRS Rev. Proc. 2025-32 federal schedules and Article VII, Section 5 of the Florida Constitution (0% state personal income tax).',
+          'Housing costs reflect HUD FY 2026 Fair Market Rents for the Miami-Miami Beach-Kendall, FL HUD Metro FMR Area. Auto expense benchmarks are derived from Florida Department of Highway Safety and Motor Vehicles (FLHSMV) and regional insurance rate indices.',
         ],
       },
     ],
@@ -660,15 +733,38 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
           'A single earner making $90,000 gross in Florida takes home approximately $6,012 per month ($72,145 annually), paying an effective tax rate of 19.8% exclusively to federal taxes and FICA.',
       },
       {
+        question: 'Is $90K a good salary in Miami or Florida?',
+        answer:
+          'Yes, $90,000 is a very good salary in Miami, exceeding the Miami-Dade individual median worker income (~$44,000) by more than double. With 0% Florida state income tax, it provides $6,012/month net, allowing independent 1-bedroom housing and over $2,200/month in clean savings.',
+      },
+      {
         question: 'Can you live comfortably in Miami on $90K?',
         answer:
           'Yes, $90K allows you to rent a 1-bedroom apartment in areas like Edgewater or Coral Gables ($2,150/mo) and still retain over $2,200 per month for savings and leisure.',
       },
+      {
+        question: 'Do you need a car to live in Miami on $90K?',
+        answer:
+          'Unless you live and work strictly within the Brickell and Downtown core (which is serviced by the free elevated Metromover), owning a vehicle is essential in Miami. Budgeting around $520/month covers auto financing, high Florida car insurance rates, fuel, and SunPass tolls.',
+      },
+      {
+        question: 'How much rent can you afford on a $90K salary in Miami?',
+        answer:
+          'Under common landlord 40× annual income screening rules, a $90,000 salary qualifies for up to $2,250 per month in rent. This budget readily secures modern 1-bedroom apartments in Edgewater, Coral Gables, Midtown, or Doral.',
+      },
+      {
+        question: 'How does $90K in Miami compare to New York City?',
+        answer:
+          'Because Florida has 0% state income tax and New York City levies federal, state, and city income taxes, a $90,000 salary in Miami yields $6,012/month in net cash—virtually identical to a $100,000 salary in New York City ($5,907/mo). Furthermore, median 1-bedroom rents in Miami-Dade are roughly $500/month cheaper ($2,150 vs $2,655 HUD FMR).',
+      },
     ],
     relatedLinks: [
-      { title: 'Miami Income, Tax & Cost Profile', url: '/cities/miami', description: 'Interactive Florida take-home pay calculator and cost profile.' },
-      { title: 'Is $100K a Good Salary in Austin?', url: '/guides/austin-100k', description: 'Compare Miami with Texas no-state-tax compensation.' },
-      { title: 'Is $120K a Good Salary in Los Angeles?', url: '/guides/la-120k', description: 'Compare Miami purchasing power with Southern California.' },
+      { title: 'Miami City Income & Cost Profile', url: '/cities/miami', description: 'Interactive Florida take-home pay calculator and cost profile.', category: 'city' },
+      { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', description: 'Compare Florida no-state-tax savings with New York City.', category: 'guide' },
+      { title: 'Is $100K a Good Salary in Austin?', url: '/guides/austin-100k', description: 'Compare Miami with Texas no-state-tax compensation.', category: 'guide' },
+      { title: 'Is $120K a Good Salary in Los Angeles?', url: '/guides/la-120k', description: 'Compare Miami purchasing power with Southern California.', category: 'guide' },
+      { title: 'Cost of Living Calculator', url: '/cost-of-living', description: 'Interactive metropolitan cost-of-living breakdown.', category: 'tool' },
+      { title: 'Salary Worth Calculator', url: '/salary-worth', description: 'Calculate spendable purchasing power across global metros.', category: 'tool' },
     ],
     capabilityRequirements: { tax: true, col: true },
   },

@@ -58,11 +58,11 @@ export const CALCULATOR_EDITORIAL_MODULES: Record<string, CalculatorEditorialMod
       grossInput: '$100,000 gross per year ($8,333 a month on paper)',
       location: 'New York City (Five Boroughs, single filer)',
       taxBreakdown:
-        'Here’s where the paycheck shrinks: Federal tax takes about $13,850. New York State takes roughly $4,930. The NYC resident tax adds another $3,680. Then FICA (Social Security & Medicare) takes $7,650. That’s roughly $30,110 gone in payroll taxes alone. Your real take-home pay is around $69,890 a year—or roughly $5,824 a month in your checking account.',
+        'Here’s where the paycheck shrinks under 2026 statutory rates: Federal tax takes $13,170. New York State takes $4,860. The NYC resident tax adds another $3,441. Then FICA (Social Security & Medicare) takes $7,650. Total statutory withholdings equal $29,121 (a 29.1% effective rate). Your real take-home pay is $70,879 a year—or $5,907 a month in your checking account.',
       rentAndLiving:
-        'A typical 1-bedroom fair market apartment across the city runs about $2,350/mo. Add $580 for groceries, $132 for an unlimited MTA MetroCard, and roughly $220 for ConEd electricity and home broadband. Basic monthly overhead comes out to roughly $3,282.',
+        'A typical 1-bedroom fair market apartment across the city runs $2,655/mo (HUD FY2026 FMR). Add $440 for groceries, $260 for dining out, $152 for MTA transit (OMNY $35/wk cap), $320 for ConEd utilities & broadband, $160 for healthcare copays, and $260 for personal care. Basic monthly overhead comes out to $4,247.',
       finalTakeaway:
-        'Subtract $3,282 in living costs from your $5,824 take-home pay. You have roughly $2,542 left each month. That’s your breathing room for 401(k) retirement savings, emergency cash, dining out, and weekend trips. Rent eats about 28% of your gross pay—right within the classic 30% rule of thumb.',
+        'Subtract $4,247 in living costs from your $5,907 take-home pay. You have $1,660 left each month (28.1% of net pay). That’s your uncommitted cash cushion for 401(k) retirement savings, emergency reserves, and investments. Independent 1-bedroom rent consumes ~45% of net pay—requiring outer-borough renting or roommate sharing to expand discretionary cash flow.',
     },
     howToInterpret:
       'Keep your eyes on your monthly cash cushion, not the gross salary on your offer letter. If your leftover money after rent and groceries is under 15% of your take-home pay, one unexpected bill or rent bump will hurt. If your buffer is 25% or higher, you’re in a solid position to build wealth and handle surprises.',

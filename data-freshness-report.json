@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T01:30:42.158Z",
+  "generatedAt": "2026-11-07T07:17:50.854Z",
   "auditPolicy": {
     "currentThresholdMonths": 18,
     "agingThresholdMonths": 30,
@@ -13,7 +13,7 @@
     "staleCount": 0,
     "unknownCount": 0,
     "currentPercent": 3,
-    "totalEvidenceSources": 89,
+    "totalEvidenceSources": 94,
     "activeTaxYears": [
       2026,
       2027
@@ -1016,6 +1016,46 @@
       "effectiveDate": "2026-01-01",
       "verifiedAt": "2026-01-15",
       "jurisdiction": "Switzerland"
+    },
+    {
+      "id": "ch-bsv-pillar3a-2026",
+      "organization": "Bundesamt für Sozialversicherungen (BSV)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Switzerland (Federal)"
+    },
+    {
+      "id": "ch-bag-priminfo-2026",
+      "organization": "Bundesamt für Gesundheit (BAG) / Priminfo",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-15",
+      "jurisdiction": "Canton Zurich, Switzerland"
+    },
+    {
+      "id": "us-hud-miami-fmr-2026",
+      "organization": "US Department of Housing and Urban Development (HUD)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2025-10-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "Miami-Dade County, Florida"
+    },
+    {
+      "id": "us-fl-dor-tax-2026",
+      "organization": "Florida Department of Revenue",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "State of Florida"
+    },
+    {
+      "id": "us-flhsmv-auto-2026",
+      "organization": "Florida Department of Highway Safety and Motor Vehicles (FLHSMV)",
+      "reliabilityTier": "Tier 1",
+      "effectiveDate": "2026-01-01",
+      "verifiedAt": "2026-01-10",
+      "jurisdiction": "State of Florida"
     }
   ]
 }

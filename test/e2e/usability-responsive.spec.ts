@@ -17,6 +17,11 @@ const VIEWPORTS = [
 test.describe('17 Usability Fixes — Multi-Viewport Responsive & Functional Suite', () => {
   for (const vp of VIEWPORTS) {
     test(`Responsive verification at ${vp.name}`, async ({ page }) => {
+      await page.addInitScript(() => {
+        try {
+          localStorage.setItem('livworthy_cookie_consent', JSON.stringify({ analytics: true, marketing: false, timestamp: Date.now() }));
+        } catch {}
+      });
       await page.setViewportSize({ width: vp.width, height: vp.height });
       await page.goto('/');
 

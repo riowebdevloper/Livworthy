@@ -31,6 +31,14 @@ test.beforeAll(() => {
 });
 
 test.describe('Phase 3 & 4 — Complete Device Matrix Responsive Layout Audit', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      try {
+        localStorage.setItem('livworthy_cookie_consent', JSON.stringify({ analytics: true, marketing: false, timestamp: Date.now() }));
+      } catch {}
+    });
+  });
+
   for (const device of DEVICE_MATRIX) {
     test(`[${device.width}x${device.height}] ${device.name}`, async ({ page }) => {
       await page.setViewportSize({ width: device.width, height: device.height });
