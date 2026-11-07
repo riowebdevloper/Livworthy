@@ -36,7 +36,7 @@ export interface RelatedLink {
   title: string;
   url: string;
   description: string;
-  category?: 'guide' | 'tool' | 'comparison' | 'city';
+  category?: 'guide' | 'tool' | 'comparison' | 'city' | 'report';
 }
 
 export interface SeoLandingPage {

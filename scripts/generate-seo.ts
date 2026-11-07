@@ -13,7 +13,7 @@ import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
 import { createLocalizedLongFormPages } from './localized-long-form-pages';
-import { createLocalizedToolPages } from './localized-tool-pages';
+import { createLocalizedToolPages, CORE_TOOL_SLUGS } from './localized-tool-pages';
 import { LONG_FORM_LOCALES } from '../src/lib/i18n/long-form';
 import { TIER_1_LOCALES } from '../src/lib/i18n';
 import {
@@ -109,6 +109,18 @@ const CITY_CLUSTER_LINKS: Record<string, { title: string; url: string; badge: st
   ],
   singapore: [
     { title: 'Is S$120K a Good Salary in Singapore?', url: '/guides/singapore-120k', badge: 'Salary Guide' },
+  ],
+  zurich: [
+    { title: 'Is CHF 130K a Good Salary in Zurich?', url: '/guides/zurich-130k', badge: 'Salary Guide' },
+    { title: 'Berlin to Zurich Relocation Guide', url: '/relocation/berlin-to-zurich', badge: 'Relocation' },
+    { title: 'Global Salary Worth Index 2026', url: '/reports/global-salary-worth-index', badge: 'Empirical Study' },
+    { title: 'Switzerland Country Profile', url: '/countries/ch', badge: 'Country Profile' },
+  ],
+  miami: [
+    { title: 'Is $90K a Good Salary in Miami?', url: '/guides/miami-90k', badge: 'Salary Guide' },
+    { title: 'Is $100K a Good Salary in Austin?', url: '/guides/austin-100k', badge: 'Salary Guide' },
+    { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', badge: 'Salary Guide' },
+    { title: 'United States Country Profile', url: '/countries/us', badge: 'Country Profile' },
   ],
 };
 
@@ -2258,6 +2270,7 @@ function renderPageHtml(
     structuredData?: any;
     lang?: string;
     dir?: 'ltr' | 'rtl';
+    relativePath?: string;
   },
   isHomepage = false,
   criticalCss = ''
@@ -2279,7 +2292,19 @@ function renderPageHtml(
 
   // For static institutional and SEO pages without interactive app containers, strip the SPA module script bundle.
   // Retain the module script for interactive application pages that mount into #root (e.g. calculators and interactive hubs).
-  const isInteractivePage = isHomepage || page.bodyContent.includes('id="root"') || page.canonicalUrl.endsWith('/salary-after-tax/new-york');
+  const isCanonicalToolPage = CORE_TOOL_SLUGS.some((slug) => {
+    if (page.relativePath) {
+      if (
+        page.relativePath === `${slug}/index.html` ||
+        new RegExp(`^[a-z]{2}\\/${slug}\\/index\\.html$`).test(page.relativePath)
+      ) {
+        return true;
+      }
+    }
+    const pathname = page.canonicalUrl.replace(BASE_URL, '').replace(/^\/+|\/+$/g, '');
+    return pathname === slug || new RegExp(`^[a-z]{2}\\/${slug}$`).test(pathname);
+  });
+  const isInteractivePage = isHomepage || isCanonicalToolPage || page.canonicalUrl.endsWith('/salary-after-tax/new-york');
   if (!isInteractivePage) {
     html = html.replace(/<script\s+type="module"[^>]*>.*?<\/script>\s*/gi, '');
   }

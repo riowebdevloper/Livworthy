@@ -23,18 +23,18 @@ All mathematical computations across salary guides, city profiles, bilateral met
 #### 1. NYC Canon Unification ($100,000 Single Filer 2026)
 * **Problem:** Conflicting annual take-home figures ($70,879 vs legacy $70,340) and housing/transit cost benchmarks ($2,655 HUD FMR vs legacy $2,350; OMNY rolling fare cap vs obsolete $132 MTA monthly pass).
 * **Investigation & Engine Proof:**
-  * Under 2026 statutory tax law (IRS Rev. Proc. 2025-33, NYS Form IT-2105-I, NYC Administrative Code), a single filer claiming standard deduction ($16,100 Federal, $8,000 NYS/NYC) with zero dependents earning $100,000 gross incurs:
-    * Federal Income Tax: $12,776.50
+  * Under 2026 statutory tax law (IRS Rev. Proc. 2025-32, NYS Form IT-2105-I page 10, NYC Administrative Code § 11-1701), a single filer claiming standard deduction ($16,100 Federal, $8,000 NYS/NYC) with zero dependents earning $100,000 gross incurs:
+    * Federal Income Tax: $13,170.00 (taxable income $83,900: 10% on $12,400 = $1,240; 12% on $38,000 = $4,560; 22% on $33,500 = $7,370)
     * FICA Social Security (6.2%) & Medicare (1.45%): $7,650.00
-    * New York State Income Tax: $5,023.75
-    * NYC Local Resident Income Tax: $3,670.59
+    * New York State Income Tax: $4,859.75 (Form IT-2105-I page 10 single-rate schedule on $92,000 taxable income: 3.90% on $8,500 = $331.50; 4.40% on $3,200 = $140.80; 5.15% on $2,200 = $113.30; 5.40% on $66,750 = $3,604.50; 5.90% on $11,350 = $669.65; zero supplemental recapture below the $107,650 NYS Tax Law § 601(d) cutoff)
+    * NYC Local Resident Income Tax: $3,441.09 (taxable income $92,000: 3.078% on $12,000 = $369.36; 3.762% on $13,000 = $489.06; 3.819% on $25,000 = $954.75; 3.876% on $42,000 = $1,627.92)
     * Total Statutory Withholding: $29,120.84 (29.12% effective rate)
-    * Deterministic Net Annual Take-Home: **$70,879.16** (rounded: **$70,879**)
-    * Deterministic Net Monthly Take-Home: **$5,906.60** (rounded: **$5,907**)
+    * Deterministic Net Annual Take-Home: **$70,879.16** (integer rounded: **$70,879**)
+    * Deterministic Net Monthly Take-Home: **$5,906.60** (integer rounded: **$5,907**)
   * Under HUD FY2026 Fair Market Rent schedules for the New York, NY HUD Metro FMR Area, a median 1-bedroom apartment benchmarks at **$2,655/month** (requiring **$106,200** gross annual income under the NYC 40x landlord qualification rule).
   * Transit access benchmarks at the MTA OMNY 7-day rolling fare cap ($35/week, **~$151.67/month**), superseding the legacy $132 physical MetroCard.
-  * Essential living expenses basket (BLS Consumer Expenditure Survey metropolitan weights): $1,591.67/month ($19,100/year).
-  * Uncommitted monthly savings buffer: $5,906.60 - $2,655.00 - $1,591.67 = **$1,659.93/month** (~**$1,660/month**, $19,919/year, 28% net savings rate).
+  * Essential living expenses basket: $4,247/month (rent $2,655 + utilities $320 + groceries $440 + dining $260 + transit $152 + healthcare $160 + personal care/discretionary $260).
+  * Uncommitted monthly savings buffer: **$1,660/month** (28.1% net savings rate). The monthly budget balances to the rounded monthly net of **$5,907/month** ($4,247 + $1,660 = $5,907), representing a $0.40 monthly rounding convention from unrounded cents ($5,906.60).
 * **Code Changes Applied:**
   * `src/data/salary-guides.ts` (`nyc-100k`): Harmonized headline summary and lifestyle context to $5,907/mo net, $70,879/yr, 29.1% effective tax rate, $2,655 HUD FMR rent, and ~$1,660/mo uncommitted savings.
   * `src/data/seo-clusters.ts` (`nyc-100k`): Updated direct answer, breakdown narrative, and rent context to $5,907/mo net, $70,879/yr, 29.1%, and $2,655 FMR.
@@ -78,6 +78,23 @@ All mathematical computations across salary guides, city profiles, bilateral met
 * **Code Changes Applied:**
   * `src/data/salary-guides.ts` (`berlin-80k`): Verified €3,471/mo net, €41,656/yr, 47.9% tax.
   * `src/data/seo-clusters.ts` (`berlin-80k`): Updated direct answer and tax breakdown to €3,471/mo net, €41,656/yr, 47.9% tax.
+
+#### 4b. Zurich CHF 130K & Swiss Pillar 3a Harmonization
+* **Problem:** Outdated Pillar 3a contribution limits (CHF 7,056) and unqualified occupational pension deductions.
+* **Engine Proof & Statutory Basis:**
+  * Swiss 2026 statutory rules (ESTV, Canton Zurich Steueramt, BSV/OFAS):
+    * Pillar 1 (AHV/IV/EO/ALV): 6.40% flat = **CHF 8,320.00**
+    * Pillar 2 (BVG Occupational Pension): Coordinated salary ceiling CHF 90,720 − coordination deduction CHF 26,460 = CHF 64,260. Illustrative statutory-minimum employee rate for ages 35–44 is 5.0% = **CHF 3,213.00** (matched 50/50 by employer for 10% total under BVG Art. 16).
+    * Direct Federal Tax (ESTV single schedule): **CHF 4,419.95** (~CHF 4,420)
+    * Cantonal & Municipal Tax (Canton Zurich + City of Zurich ~119% Steuerfuss): **CHF 13,623.71** (~CHF 13,624)
+    * Total Statutory Deductions: **CHF 29,576.66** (~**CHF 29,577**, 22.8% effective rate)
+    * Deterministic Annual Net Take-Home: **CHF 100,423.34** (~**CHF 100,423**)
+    * Deterministic Monthly Net Take-Home: **CHF 8,368.61** (~**CHF 8,369**)
+  * Monthly Budget: Rent CHF 2,250 + Basic Health Insurance (KVG mandatory) CHF 380 + Utilities CHF 210 + Groceries CHF 520 + Dining CHF 650 + Transit CHF 120 = CHF 4,130 expenses + CHF 4,239 discretionary buffer/savings = **CHF 8,369/month** (100.0% reconciled).
+  * Pillar 3a Ceiling: **CHF 7,258** for 2026 (official BSV/OFAS directive for employees affiliated with a pension fund).
+* **Code Changes Applied:**
+  * `src/data/clusters/intl-guides.ts`: Updated Zurich CHF 130K guide with Pillar 3a CHF 7,258 ceiling, qualified Pillar 2 BVG as an illustrative statutory-minimum employee rate for age 35–44, and synchronized budget reconciliation.
+  * `src/data/city-editorial.ts`: Updated Zurich profile with canonical 2026 deductions and explicit pension fund age/plan qualifiers.
 
 #### 5. Empirical Reports & Downloadable Dataset Synchronization
 * **Problem:** Discrepancies between table data, prose summary insights, and downloadable CSV/JSON exports in empirical reports.

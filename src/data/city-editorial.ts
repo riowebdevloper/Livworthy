@@ -249,6 +249,56 @@ export const VERIFIED_CITY_EDITORIAL: Record<string, CityEditorialProfile> = {
     primarySources: ['Ministry of Manpower Singapore (MOM Labour Force Survey)', 'Inland Revenue Authority of Singapore (IRAS Tax Schedules)', 'Urban Redevelopment Authority (URA Rental Index)'],
     lastUpdated: 'October 2026',
   },
+  zurich: {
+    cityId: 'zurich',
+    cityName: 'Zurich',
+    countryName: 'Switzerland',
+    currency: 'CHF',
+    typicalSalaryContext:
+      'Zurich offers some of the highest nominal and real wages in the world. According to the Federal Statistical Office (BFS) and the Statistical Office of Canton Zurich, the median full-time wage across Zurich is approximately 95,000 CHF per year. Entry-level university graduates and administrative personnel commonly earn between 75,000 and 88,000 CHF. Senior software engineers at Google or financial institutions in Zurich West and Enge regularly earn between 140,000 and 190,000 CHF base pay, with quantitative and executive packages reaching 220,000 CHF or higher.',
+    takeHomePayAnalysis:
+      'Swiss taxation is layered but remarkably moderate compared to the rest of Western Europe. You pay Federal Direct Tax (Direkte Bundessteuer), Cantonal Tax (Staatssteuer), and Municipal Tax (Gemeindesteuer for the City of Zurich, with a Steuerfuss around 119%). On a 130,000 CHF gross salary for a single filer under 2026 statutory rates, direct federal, cantonal, and municipal taxes total 18,044 CHF (13.9%), while mandatory social security (AHV/IV/EO/ALV at 6.4% / 8,320 CHF) and occupational pension (Pillar 2 / BVG illustrative statutory-minimum employee deduction of 3,213 CHF for age 35–44) take 11,533 CHF. Net take-home pay is approximately 8,369 CHF per month (100,423 CHF annually), representing an effective overall retention rate of 77.2% (22.8% total deductions). Actual pension deductions depend on your age bracket and employer plan regulations.',
+    housingMarketContext:
+      'Finding an apartment in Zurich is competitive, with citywide vacancy rates hovering around 0.1% to 0.3%. The Federal Statistical Office (BFS) benchmarks typical 1-bedroom fair-market rents at 2,250 CHF per month across Canton Zurich. Prime waterfront or central quarters like Kreis 1 (Altstadt), Kreis 2 (Enge), and Kreis 8 (Seefeld) rent for 2,400 to 3,100 CHF. Popular urban districts like Kreis 4 and Kreis 5 rent between 2,200 and 2,600 CHF, while Oerlikon (Kreis 11) or suburban transit towns (Dübi, Wallisellen, Thalwil) offer modern flats between 1,850 and 2,200 CHF. Landlords strictly adhere to the 1/3 income rule (monthly gross should be at least 3x the gross rent).',
+    everydayLivingCosts:
+      'Day-to-day consumer expenses in Zurich are steep by international standards. Supermarket groceries at Migros or Coop run 450 to 550 CHF per month for a single adult. Dining out in Zurich carries a noticeable premium: a casual business lunch costs 25 to 35 CHF, while a dinner with wine easily tops 75 to 110 CHF per person. However, utilities through ewz (electricity, water, waste disposal) are efficient, averaging 180 to 220 CHF monthly for a 1-bedroom apartment.',
+    taxConsiderations:
+      'A critical detail in Switzerland: basic health insurance (Krankenkasse LAMal) is legally mandatory for all residents but is NOT deducted from your salary by your employer. You must purchase an individual policy out-of-pocket, which averages 350 to 450 CHF per month in Canton Zurich. Additionally, tax liability varies by municipality: moving just outside the city limits to low-tax communities like Kilchberg, Rüschlikon, or Wollerau can significantly reduce your municipal tax multiplier. Contributing the maximum to Pillar 3a (Säule 3a, 7,258 CHF in 2026) offers substantial upfront tax deductions.',
+    singleVsFamilyContext:
+      'A single professional on 130,000 CHF can live very comfortably in Zurich, saving more than 4,000 CHF ($4,400 USD) every month after housing and living expenses. For families, married tax splitting provides favorable tax relief, increasing monthly net pay by 400 to 600 CHF. However, private daycare (KITA) is among the most expensive globally, running 2,200 to 2,800 CHF per month per child without subsidies, meaning dual-earner households or higher compensation tiers are common among families.',
+    transportAndMobility:
+      'Zurich’s public transit system (ZVV and SBB) is globally celebrated for precision and coverage. With clean trams, buses, and S-Bahn trains running every few minutes, owning a personal car is entirely unnecessary inside the city. A monthly ZVV NetzPass for local zones or the ubiquitous SBB Halbtax (half-fare card at ~190 CHF/year) keeps typical monthly transit expenses between 85 and 150 CHF.',
+    peerCityComparison:
+      'Compared to London, gross salaries in Zurich are 30% to 50% higher, while effective income tax is nearly 15 percentage points lower, generating significantly higher absolute savings. Compared to Berlin, Zurich consumer prices are roughly 60% higher, but net take-home pay is more than double, resulting in superior global purchasing power.',
+    dataProvenance: 'OBSERVED',
+    primarySources: ['Eidgenössische Steuerverwaltung (ESTV)', 'Bundesamt für Statistik (BFS)', 'Statistisches Amt Kanton Zürich'],
+    lastUpdated: 'October 2026',
+  },
+  miami: {
+    cityId: 'miami',
+    cityName: 'Miami',
+    countryName: 'United States',
+    currency: 'USD',
+    typicalSalaryContext:
+      'Miami has transformed from a tourism- and hospitality-driven regional hub into a prominent destination for finance, wealth management, technology, and real estate. According to the US Bureau of Labor Statistics (OEWS) for the Miami-Fort Lauderdale-West Palm Beach metropolitan area, the median individual full-time wage sits around $44,000 to $48,000. Hospitality, logistics, and retail workers typically earn between $35,000 and $48,000. In contrast, corporate relocation packages in Brickell finance, legal counsel, fintech, and commercial real estate regularly offer $85,000 to $145,000 base salaries, with senior compensation surpassing $200,000.',
+    takeHomePayAnalysis:
+      'Florida’s greatest financial attraction is its constitutionally protected 0% personal state income tax. Miami workers pay only Federal Income Tax and mandatory FICA payroll withholdings (6.2% Social Security up to the wage base and 1.45% Medicare). On a $90,000 gross salary for a single filer claiming standard deductions in 2026, federal taxes total $10,970 (12.2%) and FICA is $6,885 (7.65%). Total statutory deductions equal $17,855 (19.8% effective tax rate), leaving $72,145 in annual net take-home pay—an impressive $6,012 per month in cash in your account.',
+    housingMarketContext:
+      'South Florida housing costs surged following corporate and individual inflows from the Northeast and California. The US Department of Housing and Urban Development (HUD) benchmarks the FY 2026 Fair Market Rent for a 1-bedroom apartment in the Miami-Miami Beach-Kendall area at $2,150 per month. In prime financial and coastal hubs like Brickell, Downtown, or Miami Beach, modern 1-bedrooms rent from $2,350 to $2,800. Walkable cultural enclaves like Edgewater and Coral Gables offer options between $2,050 and $2,400, while suburban areas like Doral, Kendall, and South Miami provide spacious units with parking from $1,850 to $2,150. Landlords typically apply standard 40x annual income screening (~$2,250/mo rent limit on $90k).',
+    everydayLivingCosts:
+      'Day-to-day consumer expenses in Miami are roughly 12% to 15% above the US national average, primarily driven by dining, entertainment, and utilities. Summer electric bills through Florida Power & Light (FPL) climb significantly between June and October due to central air conditioning, running $180 to $250 monthly for a 1-bedroom flat. Grocery costs at Publix, Trader Joe’s, or Whole Foods average $350 to $420 per month for a single adult.',
+    taxConsiderations:
+      'Because Florida levies 0% personal state income tax, there are no state or municipal tax returns to file at the end of the year. The state relies instead on a 6.0% state sales tax (plus a 1.0% Miami-Dade county discretionary surtax for a 7.0% total sales tax rate) and county property taxes. For out-of-state transplants arriving from New York City or California, this zero-tax advantage preserves an extra $5,000 to $9,000 in net cash annually on mid-to-high five-figure salaries.',
+    singleVsFamilyContext:
+      'A single professional earning $90,000 takes home $6,012/month and can comfortably lease an independent 1-bedroom in Edgewater or Coral Gables ($2,150/mo), cover car expenses, and still accumulate over $2,200 monthly in savings ($26,000+/year). For couples, joint federal tax filing provides modest relief, lifting take-home pay to ~$6,350/mo. For families with young children, private childcare or preschool in Miami-Dade runs $1,200 to $1,800 per month per child, and family-sized 2- or 3-bedroom rentals in desirable school districts (Pinecrest, Coral Gables) generally require combined earnings above $150,000.',
+    transportAndMobility:
+      'Unlike New York or London, Miami remains largely car-dependent outside the immediate Brickell and Downtown core (which is served by the free elevated Metromover). Owning an automobile is essential for most professionals. Florida has some of the highest personal auto insurance rates in the country, averaging $200 to $350 per month. Combined with car financing, fuel, and SunPass highway tolls (e.g., Dolphin Expressway, Palmetto, I-95 express lanes), monthly transport costs typically reach $500 to $650.',
+    peerCityComparison:
+      'Compared to New York City, a $90,000 salary in Miami yields roughly $580 more in net cash every single month due to zero state and local income tax, and median 1-bedroom rents are roughly $500 cheaper ($2,150 vs $2,655 HUD FMR). Compared to Austin (which also features 0% state income tax), Miami rental and auto insurance costs are roughly 15% to 20% higher, but coastal lifestyle and international airport connectivity provide distinct lifestyle value.',
+    dataProvenance: 'OBSERVED',
+    primarySources: ['US Bureau of Labor Statistics (OEWS)', 'US Department of Housing and Urban Development (HUD FMR)', 'Florida Department of Revenue', 'Internal Revenue Service (IRS)'],
+    lastUpdated: 'October 2026',
+  },
 };
 
 export function renderCityEditorialHtml(cityId: string): string {
