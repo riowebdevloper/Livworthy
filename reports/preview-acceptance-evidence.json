@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-11-07T07:17:09.425Z",
+  "tests": [
+    {
+      "gate": "Gate 1 - Mobile Visual Loading",
+      "passed": true,
+      "h1": "What is your salary really worth?",
+      "viewport": "390x844",
+      "horizontalOverflow": false,
+      "screenshot": "reports/screenshots/mobile-initial-load.png"
+    },
+    {
+      "gate": "Gate 2 - Cookie Controls & Consent Mode v2",
+      "passed": true,
+      "savedConsent": {
+        "analytics": true,
+        "marketing": true,
+        "timestamp": 1794035830859
+      },
+      "consentEventsCount": 1,
+      "screenshot": "reports/screenshots/cookie-banner.png"
+    },
+    {
+      "gate": "Gate 3 - Canonical Interactive Calculators",
+      "passed": true,
+      "routesVerified": [
+        "/compare",
+        "/salary-needed",
+        "/salary-after-tax"
+      ],
+      "reloadPersistence": true,
+      "screenshots": [
+        "reports/screenshots/calculator-compare.png",
+        "reports/screenshots/calculator-salary-needed.png",
+        "reports/screenshots/calculator-salary-after-tax.png"
+      ]
+    },
+    {
+      "gate": "Gate 4 - Primary Source Citations",
+      "passed": true,
+      "flTaxUrl": "https://www.floridarevenue.com/faq/Pages/FAQDetails.aspx?FAQID=1466",
+      "hudRentUrl": "https://www.huduser.gov/portal/datasets/fmr.html#data_2026",
+      "swissBsvUrl": "https://www.bsv.admin.ch/bsv/de/home/sozialversicherungen/bv/grundlagen-und-gesetze/grenzbetraege.html"
+    },
+    {
+      "gate": "Gate 5 - GA4 Measurement & Single Pageviews",
+      "passed": true,
+      "initialPageviewsObserved": 1,
+      "afterNavPageviewsObserved": 1
+    }
+  ]
+}

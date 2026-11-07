@@ -208,6 +208,7 @@ export function CookieConsentBanner() {
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  id="btn-cookie-cancel-preferences"
                   type="button"
                   onClick={() => setShowPreferences(false)}
                   className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white"
@@ -215,6 +216,7 @@ export function CookieConsentBanner() {
                   Cancel
                 </button>
                 <button
+                  id="btn-cookie-save-choices"
                   type="button"
                   onClick={handleSavePreferences}
                   className="px-5 py-2 text-xs sm:text-sm font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg transition-colors focus:ring-2 focus:ring-emerald-300"
