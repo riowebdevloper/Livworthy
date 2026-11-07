@@ -1018,41 +1018,67 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     currency: 'CHF',
     primaryKeyword: 'is 130k a good salary in Zurich',
     secondaryKeywords: [
+      'CHF 130K salary in Zurich and take-home pay',
+      'is 130k a good salary in Zurich',
       '130k salary Zurich',
-      '130k after tax Switzerland',
+      '130k chf after tax Switzerland',
       '130k take home Zurich',
       'is 130k enough in Zurich',
       'Zurich 130k budget',
-      'living in Zurich on 130k',
+      'living in Zurich on 130k chf',
+      'cost of living in Zurich 130k',
     ],
-    seoTitle: 'Is 130K CHF a Good Salary in Zurich in 2026? | LivWorthy',
+    seoTitle: 'Is CHF 130K a Good Salary in Zurich? 2026 Net Pay & Budget | LivWorthy',
     h1: 'Is 130,000 CHF a Good Salary in Zurich?',
     metaDescription:
-      'Detailed financial breakdown of a 130,000 CHF salary in Zurich. See net take-home pay after Swiss federal, cantonal, and municipal taxes, Kreis 4 rents, and monthly savings.',
+      'Is CHF 130K a good salary in Zurich? A 130,000 CHF salary yields 8,369 CHF/mo net (100,423 CHF/yr) after Swiss taxes. See real rent, Krankenkasse & budgets.',
     directAnswer:
-      'Yes, 130,000 CHF is a very strong professional salary in Zurich, comfortably exceeding the canton’s individual median worker earnings (~95,000 CHF) by over 35%. Under 2026 Swiss statutory tax law (Federal direct tax, Canton Zurich tax, Municipal tax, and mandatory AHV/IV/EO/ALV social security), a single earner takes home approximately 8,369 CHF per month (100,423 CHF annually), representing an effective tax rate of just 22.8%. With high-standard 1-bedroom apartments in Zurich leasing at ~2,250 CHF/month, single professionals retain over 4,000 CHF monthly in clean uncommitted savings.',
+      'Yes, 130,000 CHF is a very strong professional salary in Zurich, comfortably exceeding Canton Zurich’s individual median worker earnings (~95,000 CHF) by over 35%. Under 2026 Swiss statutory tax law (Federal direct tax, Canton Zurich tax, City of Zurich municipal tax, and mandatory AHV/IV/EO/ALV social security), a single earner takes home approximately 8,369 CHF per month (100,423 CHF annually), representing an effective tax rate of just 22.8%. With high-standard 1-bedroom apartments in Zurich leasing at ~2,250 CHF/month (BFS benchmark), single professionals retain over 4,000 CHF monthly in clean uncommitted savings.',
     sections: [
       {
         id: 'verdict',
-        h2: 'Is 130K CHF a good salary in Zurich?',
+        h2: 'Is CHF 130K a good salary in Zurich? (2026 Purchasing Power)',
         paragraphs: [
-          'In Switzerland’s financial capital, 130,000 CHF delivers world-class purchasing power. While nominal prices for dining, services, and mandatory health insurance (Krankenkasse) are among the highest globally, Switzerland’s moderate taxation and strong currency result in unmatched absolute savings.',
-          'At 130K CHF, an earner takes home over 8,300 CHF every month. After housing, mandatory health insurance, and gourmet dining, single professionals retain approximately 4,000 CHF (~$4,400 USD) each month for investing and travel, accumulating wealth at rates rarely possible elsewhere in Europe.',
+          'In Switzerland’s economic capital, 130,000 CHF delivers premier global purchasing power. While nominal prices for consumer services, dining, and healthcare are among the highest worldwide, Switzerland’s moderate direct taxation and the strength of the Swiss Franc generate unmatched absolute savings.',
+          'At 130,000 CHF, an earner takes home over 8,300 CHF every month. Even after independent housing in central Zurich, comprehensive private health insurance, and frequent dining out, single professionals retain approximately 4,000 to 4,200 CHF (~$4,500–$4,700 USD) each month for wealth accumulation and international travel—a capital accumulation velocity rarely matched anywhere else in Europe.',
         ],
       },
       {
         id: 'after-tax',
-        h2: 'How much is 130K CHF after tax in Zurich?',
+        h2: 'CHF 130K salary in Zurich and take-home pay (Three-Pillar Breakdown)',
         paragraphs: [
-          'Swiss taxation operates across three levels: Federal Direct Tax (Bundesteuer), Cantonal Tax (Staatssteuer), and Municipal Tax (Gemeindesteuer for the City of Zurich), alongside federal social security.',
-          'On 130,000 CHF for a single filer: Mandatory social contributions (AHV, IV, EO, ALV at ~6.4%) total ~8,320 CHF. Occupational pension (Pillar 2 / BVG, ~6%) accounts for ~7,800 CHF. Combined federal, cantonal, and municipal income taxes total ~13,457 CHF (~10.3%). Total statutory deductions equal 29,577 CHF (22.8% effective rate), leaving 100,423 CHF in net annual pay (8,369 CHF monthly).',
+          'The Swiss tax and social security architecture operates across three distinct statutory pillars:',
+          'On a 130,000 CHF gross salary for a single earner in the City of Zurich under 2026 schedules, statutory withholdings total 29,577 CHF (22.8% effective tax rate):',
+        ],
+        subsections: [
+          {
+            h3: 'Pillar 1: Federal Social Security AHV/IV/EO/ALV (6.4% / ~8,320 CHF)',
+            content: 'Mandatory federal social insurance comprising Old Age and Survivors Insurance (AHV 5.3%), Disability Insurance (IV), Income Compensation (EO), and Unemployment Insurance (ALV 1.1% on wages up to 148,200 CHF).',
+          },
+          {
+            h3: 'Pillar 2: Occupational Pension / BVG (~6.0% / ~7,800 CHF)',
+            content: 'Company pension fund contributions (Berufliche Vorsorge), matched equally by employers, funding tax-sheltered retirement capital.',
+          },
+          {
+            h3: 'Income Taxes: Federal, Cantonal & Municipal (~10.3% / ~13,457 CHF)',
+            content: 'Combines Federal Direct Tax (Direkte Bundessteuer), Canton Zurich state tax (Staatssteuer), and City of Zurich communal tax (Gemeindesteuer, applied via the municipal Steuerfuss of ~119%).',
+          },
+        ],
+      },
+      {
+        id: 'health-insurance',
+        h2: 'Mandatory Swiss Health Insurance (Krankenkasse LAMal)',
+        paragraphs: [
+          'A fundamental operational distinction of working in Switzerland: Basic health insurance (Krankenkasse / LAMal) is legally mandatory for all residents but is NEVER deducted from your paycheck by your employer.',
+          'Every resident must contract individually with an authorized health insurer (such as Swica, Helsana, CSS, or Sanitas) within three months of arrival. In Canton Zurich, standard adult premiums average between 350 and 450 CHF per month.',
+          'Residents can optimize premiums by choosing a higher annual deductible (Franchise of 2,500 CHF vs standard 300 CHF) and selecting alternative care models (Telmed or Family Doctor / Hausarzt model), reducing monthly premiums toward ~320–360 CHF.',
         ],
       },
       {
         id: 'monthly-budget',
         h2: 'Example monthly budget on 130K CHF in Zurich',
         paragraphs: [
-          'Here is the verified monthly expenditure model for a single professional living in Zurich under 2026 benchmarks:',
+          'Here is the verified monthly expenditure model for a single professional living in Zurich under latest 2026 benchmarks:',
         ],
         table: {
           headers: ['Budget Category', 'Monthly Amount', '% of Net Take-Home'],
@@ -1070,25 +1096,51 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
       },
       {
         id: 'neighborhoods',
-        h2: 'Where to live in Zurich on 130K CHF',
+        h2: 'Where to live in Zurich on 130K CHF: Neighborhood guide & rent',
         paragraphs: [
-          'With 8,369 CHF in monthly take-home pay, target rental budgets between 2,100 and 2,600 CHF/month provide access to premier districts across the city.',
-          'Kreis 4 and Kreis 5 feature trendy urban dining, arts venues, and proximity to Zurich HB with 1-bedrooms renting between 2,200 and 2,600 CHF. Seefeld and Enge offer Lake Zurich waterfront promenades and quiet prestige from 2,300 to 2,750 CHF. Oerlikon and Altstetten offer modern high-rises and rapid transit connections between 2,000 and 2,350 CHF.',
+          'Swiss landlords evaluate rental applicants using the 1/3 gross income rule (Drittelregel: gross monthly income should be at least 3× the gross rent). On 130,000 CHF (10,833 CHF/month gross), you qualify for apartments renting up to 3,600 CHF/month, granting access to nearly any 1- or 2-bedroom in Zurich.',
+          'Target rental districts across the metropolitan area include:',
+        ],
+        subsections: [
+          {
+            h3: 'Kreis 4 & 5 (Aussersihl & Zurich West / 2,200 – 2,600 CHF)',
+            content: 'Trendiest urban core quarters featuring converted industrial lofts, indie cafés, tech offices (Google, Swisscom), and vibrant nightlife.',
+          },
+          {
+            h3: 'Kreis 1, 2 & 8 (Altstadt, Enge & Seefeld / 2,400 – 3,100 CHF)',
+            content: 'Prestigious lakeside and historic districts along Lake Zurich and the Limmat, walking distance to banking headquarters and Belle Époque parks.',
+          },
+          {
+            h3: 'Kreis 6 & 10 (Unterstrass, Wipkingen & Höngg / 2,100 – 2,450 CHF)',
+            content: 'Quiet, leafy residential neighborhoods overlooking the city, popular with ETH and University of Zurich researchers and medical professionals.',
+          },
+          {
+            h3: 'Kreis 11 (Oerlikon) & Agglomeration (1,850 – 2,200 CHF)',
+            content: 'Modern high-rise districts and transit suburbs (Wallisellen, Dübendorf, Thalwil) offering spacious layouts and direct 10-minute S-Bahn links to Zurich HB.',
+          },
         ],
       },
       {
         id: 'household-scenarios',
         h2: 'Single earner vs couple on 130K CHF in Zurich',
         paragraphs: [
-          'For a single person, 130,000 CHF affords luxury living and annual savings of more than 50,000 CHF.',
-          'For a couple living on a single 130K CHF salary, finances are comfortable. Married tax splitting reduces cantonal and federal tax, increasing monthly net pay to roughly 8,850 CHF. With combined health insurance and groceries, a couple saves approximately 3,000 to 3,500 CHF monthly.',
+          'For a single person, 130,000 CHF affords luxury living, frequent European weekend trips, and annual savings exceeding 50,000 CHF.',
+          'For a couple living on a single 130K CHF salary, living standards remain very solid. Swiss married tax splitting reduces cantonal and direct federal income tax, boosting monthly take-home pay to roughly 8,850 CHF. With combined health insurance (~750 CHF/mo) and groceries, a couple still saves approximately 3,000 to 3,500 CHF each month.',
+        ],
+      },
+      {
+        id: 'pillar-3a',
+        h2: 'Tax optimization via Pillar 3a (Säule 3a)',
+        paragraphs: [
+          'Swiss residents affiliated with a Pillar 2 pension fund can contribute up to 7,056 CHF annually (2026 statutory ceiling) to a tax-deductible Pillar 3a account.',
+          'Every franc deposited into Pillar 3a is deducted directly from your taxable income on your cantonal and federal tax returns, generating approximately 1,500 to 1,800 CHF in immediate tax refunds for an earner at the 130,000 CHF threshold in the City of Zurich.',
         ],
       },
       {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically derived using LivWorthy’s statutory engine using Swiss Federal Tax Administration (ESTV) 2026 rates, Canton Zurich tax scales, and federal social insurance laws. Housing benchmarks reflect Bundesamt für Statistik (BFS) rental market surveys for Canton Zurich.',
+          'Calculations are deterministically derived using LivWorthy’s statutory engine using Swiss Federal Tax Administration (ESTV) 2026 rates, Canton Zurich tax scales, and federal social insurance laws (AHV/IV/EO/ALV). Housing benchmarks reflect Bundesamt für Statistik (BFS) rental market surveys for Canton Zurich.',
         ],
       },
     ],
@@ -1099,20 +1151,39 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
           'Yes, 130,000 CHF is a very strong salary in Zurich, well above the cantonal median (~95,000 CHF) and allowing independent housing, full health coverage, and over 4,000 CHF in monthly savings.',
       },
       {
-        question: 'What is 130K CHF after tax in Zurich?',
+        question: 'What is CHF 130K after tax in Zurich?',
         answer:
           'Under 2026 statutory rates, 130,000 CHF gross yields approximately 8,369 CHF per month (100,423 CHF annually) after federal, cantonal, and municipal taxes, plus social security and pension withholdings.',
       },
       {
         question: 'How much is mandatory health insurance in Zurich?',
         answer:
-          'Basic health insurance (Krankenkasse) is legally mandatory for all Swiss residents and is paid individually (not deducted from payroll). In Canton Zurich, standard adult premiums average 350 to 420 CHF per month.',
+          'Basic health insurance (Krankenkasse) is legally mandatory for all Swiss residents and is paid individually (not deducted from payroll). In Canton Zurich, standard adult premiums average 350 to 450 CHF per month.',
+      },
+      {
+        question: 'What is the 13th month salary in Switzerland?',
+        answer:
+          'Many Swiss employment contracts split annual compensation into 13 equal payments. On a 130,000 CHF salary, an earner receives 10,000 CHF gross (~7,725 CHF net) each month from January through November, plus an extra 10,000 CHF paycheck in December (~15,450 CHF total December net).',
+      },
+      {
+        question: 'How much can you save on 130K CHF in Zurich?',
+        answer:
+          'A single professional in Zurich renting an independent 1-bedroom apartment (2,250 CHF/mo) retains approximately 4,017 to 4,239 CHF per month in uncommitted savings—equivalent to over 50,000 CHF ($56,000+ USD) per year.',
+      },
+      {
+        question: 'Can a couple or family live on 130K CHF in Zurich?',
+        answer:
+          'Yes. Married tax splitting raises monthly net take-home pay to ~8,850 CHF. A couple can live comfortably and save 3,000+ CHF/mo. For families with toddlers, private daycare (KITA) runs 2,200 to 2,800 CHF/month per child, making finances tighter unless subsidized or dual-income.',
       },
     ],
     relatedLinks: [
-      { title: 'Berlin to Zurich Relocation Guide', url: '/relocation/berlin-to-zurich', description: 'Financial comparison moving from Germany to Switzerland.' },
-      { title: 'Global Salary Worth Index 2026', url: '/reports/global-salary-worth-index', description: 'Empirical international disposable income study.' },
-      { title: 'Switzerland Country Guide', url: '/countries/ch', description: 'Complete Swiss tax and cost overview.' },
+      { title: 'Zurich City Income & Cost Profile', url: '/cities/zurich', description: 'Comprehensive Zurich cost of living and tax intelligence.', category: 'city' },
+      { title: 'Berlin to Zurich Relocation Guide', url: '/relocation/berlin-to-zurich', description: 'Financial comparison moving from Germany to Switzerland.', category: 'comparison' },
+      { title: 'Is €80K a Good Salary in Berlin?', url: '/guides/berlin-80k', description: 'Compare Zurich earnings with Germany’s capital tech hub.', category: 'guide' },
+      { title: 'Is £75K a Good Salary in London?', url: '/guides/london-75k', description: 'Compare Zurich purchasing power with London financial packages.', category: 'guide' },
+      { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', description: 'Compare Swiss disposable savings with New York City.', category: 'guide' },
+      { title: 'Global Salary Worth Index 2026', url: '/reports/global-salary-worth-index', description: 'Empirical international disposable income study.', category: 'report' },
+      { title: 'Switzerland Country Profile', url: '/countries/ch', description: 'Complete Swiss tax schedules and cantonal multipliers.', category: 'city' },
     ],
     capabilityRequirements: { tax: true, col: true },
   },

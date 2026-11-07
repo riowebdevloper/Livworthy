@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > **Assessment Disclaimer:** Internal readiness assessment — not a prediction of AdSense approval.
-> Generated: 2026-11-07T01:30:44.852Z
+> Generated: 2026-11-07T01:51:15.782Z
 
 ---
 
@@ -12,10 +12,10 @@
 | :--- | :--- | :--- |
 | **TOTAL PUBLIC PAGES AUDITED** | `4224` | Comprehensive repository inventory |
 | **INDEXABLE BEFORE PRUNING** | `1897` | Historical baseline before quality gate |
-| **INDEXABLE AFTER QUALITY GATE** | `195` | Quality-gated indexable URLs |
-| **PAGES NOINDEXED** | `4029` | Protected with `noindex, follow` |
-| **REMOVED FROM SITEMAPS** | `1702` | Excluded from public XML sitemaps |
-| **SITEMAP URLS ON DISK** | `195` | 100% 200 OK, canonical, indexable |
+| **INDEXABLE AFTER QUALITY GATE** | `197` | Quality-gated indexable URLs |
+| **PAGES NOINDEXED** | `4027` | Protected with `noindex, follow` |
+| **REMOVED FROM SITEMAPS** | `1700` | Excluded from public XML sitemaps |
+| **SITEMAP URLS ON DISK** | `197` | 100% 200 OK, canonical, indexable |
 | **SITEMAP NOINDEX CONTRADICTIONS** | `0` | **0** (strictly enforced) |
 | **QUALITY GATE FAILURES** | `0` | **0** (all indexable pages pass gate) |
 | **PAGES STILL BLOCKED** | `0` | **0** (no unresolved blockers) |
@@ -27,13 +27,13 @@
 
 | Classification | Meaning | Count | Percentage of Indexable |
 | :--- | :--- | :--- | :--- |
-| **A — HIGH VALUE** | Useful, unique, complete, index-worthy | **116** | **59%** |
+| **A — HIGH VALUE** | Useful, unique, complete, index-worthy | **118** | **60%** |
 | **B — NEEDS IMPROVEMENT** | Good baseline; minor depth improvements possible | **25** | **13%** |
 | **C — THIN** | Low word count / insufficient depth | **0** | **0%** |
 | **D — DUPLICATIVE** | Similarity > 85% to peer templates | **0** | **0%** |
-| **E — UTILITY ONLY** | Interactive calculation tool without prose | **54** | **28%** |
+| **E — UTILITY ONLY** | Interactive calculation tool without prose | **54** | **27%** |
 | **F — INCOMPLETE** | Missing citations or required metadata | **0** | **0%** |
-| **G — NOINDEX** | Safely gated with `noindex, follow` | **4029** | N/A (non-indexable inventory) |
+| **G — NOINDEX** | Safely gated with `noindex, follow` | **4027** | N/A (non-indexable inventory) |
 
 ---
 
@@ -41,7 +41,7 @@
 
 | Locale | Total Pages | Indexable | Noindexed | A (High) | B (Baseline) | C (Thin) | D (Duplicate) | E (Utility) | F (Incomplete) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **EN** | 374 | 113 | 261 | 106 | 7 | **0** | 0 | 0 | **0** |
+| **EN** | 374 | 115 | 259 | 108 | 7 | **0** | 0 | 0 | **0** |
 | **ES** | 175 | 10 | 165 | 1 | 3 | **0** | 0 | 6 | **0** |
 | **FR** | 175 | 9 | 166 | 1 | 2 | **0** | 0 | 6 | **0** |
 | **AR** | 175 | 9 | 166 | 1 | 2 | **0** | 0 | 6 | **0** |

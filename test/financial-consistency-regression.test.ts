@@ -164,6 +164,59 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   console.log('  ✓ Berlin €80K numbers confirmed');
 }
 
+{
+  console.log('Test 8b: Zurich CHF 130K 2026 ESTV & Canton Zurich consistency');
+  const taxZH = TaxRegistry.calculate(
+    createMoney(130000, 'CHF'),
+    { filingStatus: 'single', taxYear: 2026, dependentsCount: 0 },
+    { countryId: 'CH', cityId: 'zurich', taxYear: 2026 }
+  );
+  assert.strictEqual(Math.round(toMajor(taxZH.netIncome)), 100423);
+  assert.strictEqual(Math.round(toMajor(taxZH.netIncome) / 12), 8369);
+  assert.strictEqual(Number((taxZH.effectiveTaxRate * 100).toFixed(1)), 22.8);
+
+  const guideZH = SALARY_GUIDES['zurich-130k'];
+  assert.ok(guideZH.lifestyleContext.includes('CHF 8,369'));
+  assert.ok(guideZH.lifestyleContext.includes('CHF 100,423/year'));
+  assert.ok(guideZH.lifestyleContext.includes('22.8%'));
+
+  const clusterZH = SEO_LANDING_PAGES['zurich-130k'];
+  assert.ok(clusterZH.directAnswer.includes('8,369 CHF per month'));
+  assert.ok(clusterZH.directAnswer.includes('100,423 CHF annually'));
+  assert.ok(clusterZH.directAnswer.includes('22.8%'));
+
+  const zhEditorial = VERIFIED_CITY_EDITORIAL['zurich'];
+  assert.ok(zhEditorial, 'zurich city editorial must exist');
+  assert.ok(zhEditorial.takeHomePayAnalysis.includes('8,369 CHF per month'));
+  console.log('  ✓ Zurich CHF 130K numbers & editorial confirmed');
+}
+
+{
+  console.log('Test 8c: Miami $90K 2026 Florida 0% State Tax consistency');
+  const taxMIA = TaxRegistry.calculate(
+    createMoney(90000, 'USD'),
+    { filingStatus: 'single', taxYear: 2026, dependentsCount: 0 },
+    { countryId: 'US', cityId: 'miami', regionId: 'US-FL', taxYear: 2026 }
+  );
+  assert.strictEqual(Math.round(toMajor(taxMIA.netIncome)), 72145);
+  assert.strictEqual(Math.round(toMajor(taxMIA.netIncome) / 12), 6012);
+  assert.strictEqual(Number((taxMIA.effectiveTaxRate * 100).toFixed(1)), 19.8);
+
+  const guideMIA = SALARY_GUIDES['miami-90k'];
+  assert.ok(guideMIA.lifestyleContext.includes('$6,012/month'));
+  assert.ok(guideMIA.lifestyleContext.includes('19.8%'));
+
+  const clusterMIA = SEO_LANDING_PAGES['miami-90k'];
+  assert.ok(clusterMIA.directAnswer.includes('$6,012 per month'));
+  assert.ok(clusterMIA.directAnswer.includes('$72,145 annually'));
+  assert.ok(clusterMIA.directAnswer.includes('19.8%'));
+
+  const miaEditorial = VERIFIED_CITY_EDITORIAL['miami'];
+  assert.ok(miaEditorial, 'miami city editorial must exist');
+  assert.ok(miaEditorial.takeHomePayAnalysis.includes('$6,012 per month'));
+  console.log('  ✓ Miami $90K numbers & editorial confirmed');
+}
+
 // 3. EMPIRICAL REPORTS SYNCHRONIZATION
 {
   console.log('Test 9: Report A: Global Salary Worth Index deterministic synchronization');

@@ -110,6 +110,18 @@ const CITY_CLUSTER_LINKS: Record<string, { title: string; url: string; badge: st
   singapore: [
     { title: 'Is S$120K a Good Salary in Singapore?', url: '/guides/singapore-120k', badge: 'Salary Guide' },
   ],
+  zurich: [
+    { title: 'Is CHF 130K a Good Salary in Zurich?', url: '/guides/zurich-130k', badge: 'Salary Guide' },
+    { title: 'Berlin to Zurich Relocation Guide', url: '/relocation/berlin-to-zurich', badge: 'Relocation' },
+    { title: 'Global Salary Worth Index 2026', url: '/reports/global-salary-worth-index', badge: 'Empirical Study' },
+    { title: 'Switzerland Country Profile', url: '/countries/ch', badge: 'Country Profile' },
+  ],
+  miami: [
+    { title: 'Is $90K a Good Salary in Miami?', url: '/guides/miami-90k', badge: 'Salary Guide' },
+    { title: 'Is $100K a Good Salary in Austin?', url: '/guides/austin-100k', badge: 'Salary Guide' },
+    { title: 'Is $100K a Good Salary in NYC?', url: '/guides/nyc-100k', badge: 'Salary Guide' },
+    { title: 'United States Country Profile', url: '/countries/us', badge: 'Country Profile' },
+  ],
 };
 
 export function runSeoGenerator() {
