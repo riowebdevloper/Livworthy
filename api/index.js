@@ -2675,15 +2675,15 @@ var EVIDENCE_SOURCES = {
     id: "us-fl-dor-tax-2026",
     organization: "Florida Department of Revenue",
     sourceType: "Government / Tax Authority",
-    canonicalReference: "Florida Constitution Article VII, Section 5 (Prohibition of Personal Income Tax on Individuals) & Florida Department of Revenue",
-    url: "https://floridarevenue.com/taxes/taxesfees/Pages/corporate.aspx",
+    canonicalReference: 'Florida Department of Revenue FAQ (FAQ ID 1466: "Do I have to file a personal income tax return in Florida?") & Florida Constitution Article VII, Section 5(a)',
+    url: "https://www.floridarevenue.com/faq/Pages/FAQDetails.aspx?FAQID=1466",
     jurisdiction: "State of Florida",
     reliabilityTier: "Tier 1",
     retrievedAt: "2025-10-01",
     effectiveDate: "2026-01-01",
     verifiedAt: "2026-01-10",
     verifiedBy: "Lead Financial Systems Engineer",
-    notes: "Constitutional guarantee of 0.0% individual state personal income tax on salaries and wages."
+    notes: "Official Florida Department of Revenue guidance confirming Florida has no personal income tax on individuals, substantiated by Florida Constitution Article VII, Section 5(a)."
   },
   "us-flhsmv-auto-2026": {
     id: "us-flhsmv-auto-2026",

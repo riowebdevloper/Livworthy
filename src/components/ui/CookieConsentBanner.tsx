@@ -95,15 +95,12 @@ export function CookieConsentBanner() {
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <h2 className="text-base sm:text-lg font-bold text-white tracking-wide">
-                Privacy, Cookie Transparency & Consent
+              <h2 className="text-sm font-bold text-white tracking-wide">
+                Privacy & Cookie Choices
               </h2>
             </div>
-            <p className="text-sm text-slate-300 leading-relaxed max-w-4xl">
-              LivWorthy uses strictly essential session storage for currency calculation states and
-              optional analytics to evaluate financial guide utility. In accordance with GDPR and
-              Google Consent Mode v2, third-party analytics and advertising cookies remain blocked
-              until you grant explicit permission. We never sell personal financial inputs.
+            <p className="text-xs text-slate-300 leading-tight">
+              Essential storage used for calculations. Analytics optional under GDPR & Consent Mode v2.
             </p>
           </div>
 
