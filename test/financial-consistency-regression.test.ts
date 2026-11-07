@@ -104,15 +104,15 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   for (const cat of expenseCategories) {
     const row = rows.find((r) => r[0] === cat.name);
     assert.ok(row, `Budget category "${cat.name}" must be present in table`);
-    const parsedAmount = parseInt(row[1].replace(/[$,]/g, ''), 10);
+    const parsedAmount = parseInt(String(row[1]).replace(/[$,]/g, ''), 10);
     assert.strictEqual(parsedAmount, cat.amount, `Amount for "${cat.name}" must match $${cat.amount}`);
     totalExpenses += parsedAmount;
     totalPct += cat.pct;
   }
 
-  const savingsRow = rows.find((r) => r[0].includes('Discretionary Savings'));
+  const savingsRow = rows.find((r) => String(r[0]).includes('Discretionary Savings'));
   assert.ok(savingsRow, 'Savings row must exist');
-  const savingsAmount = parseInt(savingsRow[1].replace(/[$,]/g, ''), 10);
+  const savingsAmount = parseInt(String(savingsRow[1]).replace(/[$,]/g, ''), 10);
   assert.strictEqual(savingsAmount, 1660, 'Savings amount must be exactly $1,660');
   totalPct += 28.1;
 
@@ -160,7 +160,7 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
 
   // Assert monthly budget rounding note in methodology
   const methodologySection = cluster.sections.find(s => s.id === 'methodology');
-  assert.ok(methodologySection?.paragraphs[1]?.includes('rounded monthly net take-home pay of $5,907'), 'Must cite rounded monthly net take-home pay of $5,907 convention');
+  assert.ok(methodologySection?.paragraphs?.[1]?.includes('rounded monthly net take-home pay of $5,907'), 'Must cite rounded monthly net take-home pay of $5,907 convention');
 
   console.log('  ✓ seo-clusters.ts nyc-100k confirmed');
 }
@@ -291,7 +291,7 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
 
   // Statutory Pillar 3a 2026 Limit Assertion: CHF 7,258 (BSV)
   assert.ok(zhEditorial.taxConsiderations.includes('7,258 CHF in 2026'), 'Zurich editorial must cite statutory 7,258 CHF Pillar 3a limit');
-  assert.ok(INTL_EXTENDED_CLUSTERS['zurich-130k'].sections.find(s => s.id === 'pillar-3a')?.paragraphs[0].includes('7,258 CHF'), 'Zurich guide must cite 7,258 CHF statutory limit');
+  assert.ok(INTL_EXTENDED_CLUSTERS['zurich-130k'].sections.find(s => s.id === 'pillar-3a')?.paragraphs?.[0]?.includes('7,258 CHF'), 'Zurich guide must cite 7,258 CHF statutory limit');
 
   // Assert Swiss Pillar 2 BVG age 35-44 illustrative statutory minimum qualifier
   const bvgSub = INTL_EXTENDED_CLUSTERS['zurich-130k'].sections.find(s => s.id === 'after-tax')?.subsections?.find(sub => sub.h3.includes('Pillar 2'));
@@ -303,13 +303,13 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   assert.ok(zhBudgetTable, 'Zurich budget table must exist');
   // 2250 (Rent) + 380 (Health) + 210 (Utilities) + 520 (Groceries) + 650 (Dining) + 120 (Transit) = 4,130 CHF expenses
   // Savings: 4,239 CHF -> 4,130 + 4,239 === 8,369 CHF
-  const zhRent = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Rent'))![1].replace(/[^0-9]/g, ''), 10);
-  const zhHealth = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Health Insurance'))![1].replace(/[^0-9]/g, ''), 10);
-  const zhUtil = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Utilities'))![1].replace(/[^0-9]/g, ''), 10);
-  const zhGroc = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Groceries'))![1].replace(/[^0-9]/g, ''), 10);
-  const zhDining = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Dining Out'))![1].replace(/[^0-9]/g, ''), 10);
-  const zhTransit = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Transport Pass'))![1].replace(/[^0-9]/g, ''), 10);
-  const zhSavings = parseInt(zhBudgetTable.rows.find(r => r[0].includes('Discretionary Savings'))![1].replace(/[^0-9]/g, ''), 10);
+  const zhRent = parseInt(String(zhBudgetTable.rows.find(r => String(r[0]).includes('Rent'))![1]).replace(/[^0-9]/g, ''), 10);
+  const zhHealth = parseInt(String(zhBudgetTable.rows.find(r => String(r[0]).includes('Health Insurance'))![1]).replace(/[^0-9]/g, ''), 10);
+  const zhUtil = parseInt(String(zhBudgetTable.rows.find(r => String(r[0]).includes('Utilities'))![1]).replace(/[^0-9]/g, ''), 10);
+  const zhGroc = parseInt(String(zhBudgetTable.rows.find(r => String(r[0]).includes('Groceries'))![1]).replace(/[^0-9]/g, ''), 10);
+  const zhDining = parseInt(String(zhBudgetTable.rows.find(r => String(r[0]).includes('Dining Out'))![1]).replace(/[^0-9]/g, ''), 10);
+  const zhTransit = parseInt(String(zhBudgetTable.rows.find(r => String(r[0]).includes('Transport Pass'))![1]).replace(/[^0-9]/g, ''), 10);
+  const zhSavings = parseInt(String(zhBudgetTable.rows.find(r => String(r[0]).includes('Discretionary Savings'))![1]).replace(/[^0-9]/g, ''), 10);
   const zhTotalExpenses = zhRent + zhHealth + zhUtil + zhGroc + zhDining + zhTransit;
   assert.strictEqual(zhTotalExpenses, 4130, 'Zurich monthly expenses must equal 4,130 CHF');
   assert.strictEqual(zhTotalExpenses + zhSavings, 8369, 'Zurich expenses (4,130) + savings (4,239) must equal 8,369 CHF net');
@@ -351,13 +351,13 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   assert.ok(miaBudgetTable, 'Miami budget table must exist');
   // Rent ($2,150) + Utilities ($220) + Auto ($520) + Groceries ($380) + Dining ($320) + Healthcare ($150) = $3,740
   // Savings: $2,272 -> $3,740 + $2,272 === $6,012
-  const miaRent = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Rent'))![1].replace(/[^0-9]/g, ''), 10);
-  const miaUtil = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Utilities'))![1].replace(/[^0-9]/g, ''), 10);
-  const miaAuto = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Auto'))![1].replace(/[^0-9]/g, ''), 10);
-  const miaGroc = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Groceries'))![1].replace(/[^0-9]/g, ''), 10);
-  const miaDining = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Dining'))![1].replace(/[^0-9]/g, ''), 10);
-  const miaHealth = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Healthcare'))![1].replace(/[^0-9]/g, ''), 10);
-  const miaSavings = parseInt(miaBudgetTable.rows.find(r => r[0].includes('Discretionary Savings'))![1].replace(/[^0-9]/g, ''), 10);
+  const miaRent = parseInt(String(miaBudgetTable.rows.find(r => String(r[0]).includes('Rent'))![1]).replace(/[^0-9]/g, ''), 10);
+  const miaUtil = parseInt(String(miaBudgetTable.rows.find(r => String(r[0]).includes('Utilities'))![1]).replace(/[^0-9]/g, ''), 10);
+  const miaAuto = parseInt(String(miaBudgetTable.rows.find(r => String(r[0]).includes('Auto'))![1]).replace(/[^0-9]/g, ''), 10);
+  const miaGroc = parseInt(String(miaBudgetTable.rows.find(r => String(r[0]).includes('Groceries'))![1]).replace(/[^0-9]/g, ''), 10);
+  const miaDining = parseInt(String(miaBudgetTable.rows.find(r => String(r[0]).includes('Dining'))![1]).replace(/[^0-9]/g, ''), 10);
+  const miaHealth = parseInt(String(miaBudgetTable.rows.find(r => String(r[0]).includes('Healthcare'))![1]).replace(/[^0-9]/g, ''), 10);
+  const miaSavings = parseInt(String(miaBudgetTable.rows.find(r => String(r[0]).includes('Discretionary Savings'))![1]).replace(/[^0-9]/g, ''), 10);
   const miaTotalExpenses = miaRent + miaUtil + miaAuto + miaGroc + miaDining + miaHealth;
   assert.strictEqual(miaTotalExpenses, 3740, 'Miami monthly expenses must equal $3,740');
   assert.strictEqual(miaTotalExpenses + miaSavings, 6012, 'Miami expenses ($3,740) + savings ($2,272) must equal $6,012 net');
@@ -491,7 +491,7 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   // Verify us-guides.ts citations
   for (const [key, cluster] of Object.entries(US_EXTENDED_CLUSTERS)) {
     const methodology = cluster.sections.find((s) => s.id === 'methodology');
-    if (methodology) {
+    if (methodology?.paragraphs?.[0]) {
       assert.ok(
         methodology.paragraphs[0].includes('IRS Rev. Proc. 2025-32'),
         `Cluster ${key} methodology must cite IRS Rev. Proc. 2025-32`
@@ -505,7 +505,7 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
 
   // Verify seo-clusters.ts nyc-100k methodology
   const nycMethodology = SEO_LANDING_PAGES['nyc-100k'].sections.find((s) => s.id === 'methodology');
-  assert.ok(nycMethodology?.paragraphs[0].includes('IRS Rev. Proc. 2025-32'), 'nyc-100k must cite IRS Rev. Proc. 2025-32');
+  assert.ok(nycMethodology?.paragraphs?.[0]?.includes('IRS Rev. Proc. 2025-32'), 'nyc-100k must cite IRS Rev. Proc. 2025-32');
   console.log('  ✓ All IRS statutory citations verified against official IRS Rev. Proc. 2025-32');
 }
 

@@ -2270,6 +2270,7 @@ function renderPageHtml(
     structuredData?: any;
     lang?: string;
     dir?: 'ltr' | 'rtl';
+    relativePath?: string;
   },
   isHomepage = false,
   criticalCss = ''
@@ -2291,10 +2292,18 @@ function renderPageHtml(
 
   // For static institutional and SEO pages without interactive app containers, strip the SPA module script bundle.
   // Retain the module script for interactive application pages that mount into #root (e.g. calculators and interactive hubs).
-  const isCanonicalToolPage = CORE_TOOL_SLUGS.some((slug) =>
-    page.relativePath === `${slug}/index.html` ||
-    new RegExp(`^[a-z]{2}\\/${slug}\\/index\\.html$`).test(page.relativePath)
-  );
+  const isCanonicalToolPage = CORE_TOOL_SLUGS.some((slug) => {
+    if (page.relativePath) {
+      if (
+        page.relativePath === `${slug}/index.html` ||
+        new RegExp(`^[a-z]{2}\\/${slug}\\/index\\.html$`).test(page.relativePath)
+      ) {
+        return true;
+      }
+    }
+    const pathname = page.canonicalUrl.replace(BASE_URL, '').replace(/^\/+|\/+$/g, '');
+    return pathname === slug || new RegExp(`^[a-z]{2}\\/${slug}$`).test(pathname);
+  });
   const isInteractivePage = isHomepage || isCanonicalToolPage || page.canonicalUrl.endsWith('/salary-after-tax/new-york');
   if (!isInteractivePage) {
     html = html.replace(/<script\s+type="module"[^>]*>.*?<\/script>\s*/gi, '');
