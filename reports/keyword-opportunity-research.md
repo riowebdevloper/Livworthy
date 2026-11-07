@@ -78,3 +78,4 @@ These narrower topics address high-intent user decision crossroads where standar
   - Health Insurance (LAMal): Paid out-of-pocket directly to insurers (~380 CHF/mo), not withheld from payroll.
   - **Capital Accumulation:** Clean uncommitted monthly surplus of **4,239 CHF** ($4,800+ USD), exceeding $50,000 annual wealth accumulation.
 - **Target URL:** Integrated into `/guides/zurich-130k#wealth-accumulation`.
+

@@ -58,3 +58,4 @@ export function clearRecentScenarios(): void {
     // Ignore errors
   }
 }
+

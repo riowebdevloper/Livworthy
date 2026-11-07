@@ -67,3 +67,4 @@ export const RecentScenariosBar: React.FC<RecentScenariosBarProps> = ({ onSelect
     </aside>
   );
 };
+

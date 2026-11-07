@@ -56,3 +56,4 @@ Each published guide must satisfy 14 core editorial criteria before indexation:
 - **Calculation Logic:** Deterministic mathematical execution governed by statutory tax adapters in `src/engines/tax/`. Zero generative AI math hallucinations.
 - **Authorship Disclosure:** Researched and edited by the LivWorthy Financial Research & Intelligence Team. Zero fabricated human personas, fictional credentials, or stock headshots.
 - **Verification Dates:** Every cited schedule is accompanied by its date of verification and authoritative agency canonical reference.
+
