@@ -13,7 +13,7 @@ import { LATEST_STATUTORY_TAX_YEAR } from '../src/engines/tax/tax-registry';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { SeoPageRenderer } from '../src/lib/seo-renderer';
 import { createLocalizedLongFormPages } from './localized-long-form-pages';
-import { createLocalizedToolPages } from './localized-tool-pages';
+import { createLocalizedToolPages, CORE_TOOL_SLUGS } from './localized-tool-pages';
 import { LONG_FORM_LOCALES } from '../src/lib/i18n/long-form';
 import { TIER_1_LOCALES } from '../src/lib/i18n';
 import {
@@ -2291,7 +2291,11 @@ function renderPageHtml(
 
   // For static institutional and SEO pages without interactive app containers, strip the SPA module script bundle.
   // Retain the module script for interactive application pages that mount into #root (e.g. calculators and interactive hubs).
-  const isInteractivePage = isHomepage || page.bodyContent.includes('id="root"') || page.canonicalUrl.endsWith('/salary-after-tax/new-york');
+  const isCanonicalToolPage = CORE_TOOL_SLUGS.some((slug) =>
+    page.relativePath === `${slug}/index.html` ||
+    new RegExp(`^[a-z]{2}\\/${slug}\\/index\\.html$`).test(page.relativePath)
+  );
+  const isInteractivePage = isHomepage || isCanonicalToolPage || page.canonicalUrl.endsWith('/salary-after-tax/new-york');
   if (!isInteractivePage) {
     html = html.replace(/<script\s+type="module"[^>]*>.*?<\/script>\s*/gi, '');
   }

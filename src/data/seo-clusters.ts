@@ -59,7 +59,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
           },
           {
             h3: '3. New York State Personal Income Tax ($4,860 / ~4.86% effective)',
-            content: 'Governed by NYS Tax Law § 601 (Form IT-2105-I single marginal brackets on $92,000 taxable income after the $8,000 NYS standard deduction: 3.90% to 5.90%, totaling $4,859.75).',
+            content: 'Governed by NYS Tax Law § 601 (Form IT-2105-I page 10 single marginal brackets on $92,000 taxable income after the $8,000 NYS standard deduction: 3.90% up to $8,500, 4.40% to $11,700, 5.15% to $13,900, 5.40% to $80,650, and 5.90% on the remainder, totaling $4,859.75 with zero supplemental recapture below the $107,650 statutory threshold).',
           },
           {
             h3: '4. New York City Resident Personal Income Tax ($3,441 / ~3.44% effective)',
@@ -169,7 +169,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         h2: 'Methodology and assumptions',
         paragraphs: [
           'All calculations are generated deterministically using the official LivWorthy statutory tax engine and baseline cost of living index. Tax computations reflect a single filer taking the standard deduction ($16,100) without employer retirement match or itemized deductions under IRS Rev. Proc. 2025-32, NYS Tax Law § 601 (IT-2105-I), and NYC Admin Code § 11-1701 for Tax Year 2026.',
-          'Cost of living estimates are benchmarked from verified municipal datasets including the US Department of Housing and Urban Development (HUD FY 2026 FMR) and Metropolitan Transportation Authority (MTA) OMNY fare capping.',
+          'Cost of living estimates are benchmarked from verified municipal datasets including the US Department of Housing and Urban Development (HUD FY 2026 FMR) and Metropolitan Transportation Authority (MTA) OMNY fare capping. Monthly budget allocations reconcile to the rounded monthly net take-home pay of $5,907 ($4,247 itemized expenses + $1,660 discretionary savings/buffer) derived from the exact statutory annual net of $70,879.16 ($5,906.60 monthly).',
         ],
       },
     ],

@@ -146,6 +146,22 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   assert.ok(!cluster.directAnswer.includes('$5,862'), 'Must not contain legacy $5,862');
   assert.ok(!cluster.directAnswer.includes('$70,340'), 'Must not contain legacy $70,340');
   assert.ok(!cluster.directAnswer.includes('$2,350'), 'Must not contain legacy $2,350');
+
+  // Assert exact Form IT-2105-I single-filer bracket sequence
+  const nysSection = cluster.sections.find(s => s.id === 'after-tax')?.subsections?.find(sub => sub.h3.includes('New York State'));
+  assert.ok(nysSection, 'NYS tax subsection must exist');
+  assert.ok(nysSection.content.includes('3.90% up to $8,500'), 'Must cite 3.90% up to $8,500');
+  assert.ok(nysSection.content.includes('4.40% to $11,700'), 'Must cite 4.40% to $11,700');
+  assert.ok(nysSection.content.includes('5.15% to $13,900'), 'Must cite 5.15% to $13,900');
+  assert.ok(nysSection.content.includes('5.40% to $80,650'), 'Must cite 5.40% to $80,650');
+  assert.ok(nysSection.content.includes('5.90% on the remainder'), 'Must cite 5.90% on the remainder');
+  assert.ok(nysSection.content.includes('$4,859.75'), 'Must cite exact $4,859.75');
+  assert.ok(nysSection.content.includes('$107,650'), 'Must cite $107,650 statutory threshold');
+
+  // Assert monthly budget rounding note in methodology
+  const methodologySection = cluster.sections.find(s => s.id === 'methodology');
+  assert.ok(methodologySection?.paragraphs[1]?.includes('rounded monthly net take-home pay of $5,907'), 'Must cite rounded monthly net take-home pay of $5,907 convention');
+
   console.log('  ✓ seo-clusters.ts nyc-100k confirmed');
 }
 
@@ -276,6 +292,11 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   // Statutory Pillar 3a 2026 Limit Assertion: CHF 7,258 (BSV)
   assert.ok(zhEditorial.taxConsiderations.includes('7,258 CHF in 2026'), 'Zurich editorial must cite statutory 7,258 CHF Pillar 3a limit');
   assert.ok(INTL_EXTENDED_CLUSTERS['zurich-130k'].sections.find(s => s.id === 'pillar-3a')?.paragraphs[0].includes('7,258 CHF'), 'Zurich guide must cite 7,258 CHF statutory limit');
+
+  // Assert Swiss Pillar 2 BVG age 35-44 illustrative statutory minimum qualifier
+  const bvgSub = INTL_EXTENDED_CLUSTERS['zurich-130k'].sections.find(s => s.id === 'after-tax')?.subsections?.find(sub => sub.h3.includes('Pillar 2'));
+  assert.ok(bvgSub?.content.includes('illustrative statutory-minimum employee deduction rate for age 35–44'), 'Must qualify BVG as illustrative statutory-minimum for age 35-44');
+  assert.ok(zhEditorial.takeHomePayAnalysis.includes('illustrative statutory-minimum employee deduction of 3,213 CHF for age 35–44'), 'Zurich editorial must qualify BVG age 35-44');
 
   // Zurich Budget Table Exact Reconciliation
   const zhBudgetTable = INTL_EXTENDED_CLUSTERS['zurich-130k'].sections.find(s => s.id === 'monthly-budget')?.table;

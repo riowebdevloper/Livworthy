@@ -200,9 +200,8 @@ test.describe('LivWorthy Financial Intelligence Platform Behavioral E2E Suite', 
     expect(page.url()).toMatch(/\/compare|tab=compare/);
 
     await page.reload();
-    const hasCompareView = await page.locator('#compare-view').isVisible().catch(() => false);
-    const hasCompareHeading = await page.locator('h1:has-text("Compare")').isVisible().catch(() => false);
-    expect(hasCompareView || hasCompareHeading).toBe(true);
+    await expect(page.locator('#compare-view')).toBeVisible();
+    await expect(page.locator('#compare-city-a-select')).toBeVisible();
   });
 
   test('10. MODALS & DRAWERS: Evidence, Methodology and Diagnostics remain accessible via footer and in-calculator controls', async ({ page }) => {
@@ -851,4 +850,78 @@ test.describe('404 Behavior — Unknown Routes', () => {
       await expect(page.locator('#tab-salary-worth')).not.toBeVisible();
     });
   }
+});
+
+// ============================================================
+// SUITE F — Canonical Interactive Calculator Routes
+// Direct Open, Reload, and Deep-Link User Interaction
+// ============================================================
+test.describe('Canonical Interactive Calculator Routes — Hydration & User Interaction', () => {
+  test('Direct visit to /compare mounts interactive CompareView and responds to user interaction', async ({ page }) => {
+    await page.goto('/compare');
+    await expect(page.locator('#compare-view')).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('#compare-city-a-select')).toBeVisible();
+    await expect(page.locator('#compare-city-b-select')).toBeVisible();
+
+    // Perform an actual user interaction: change City B to london
+    await page.selectOption('#compare-city-b-select', 'london');
+    await page.waitForTimeout(500);
+
+    // Verify comparison outcome is calculated and displayed
+    await expect(page.locator('#compare-view')).toContainText(/London/i);
+
+    // Verify reload retains the interactive calculator (not just a static heading)
+    await page.reload();
+    await expect(page.locator('#compare-view')).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('#compare-city-a-select')).toBeVisible();
+  });
+
+  test('Direct visit to /salary-needed mounts interactive SalaryNeededView and responds to reload', async ({ page }) => {
+    await page.goto('/salary-needed');
+    await expect(page.locator('#salary-needed-view')).toBeVisible({ timeout: 15000 });
+
+    await page.reload();
+    await expect(page.locator('#salary-needed-view')).toBeVisible({ timeout: 15000 });
+  });
+
+  test('Direct visit to /salary-after-tax mounts interactive SalaryAfterTaxView and responds to reload', async ({ page }) => {
+    await page.goto('/salary-after-tax');
+    await expect(page.locator('#salary-after-tax-view')).toBeVisible({ timeout: 15000 });
+
+    await page.reload();
+    await expect(page.locator('#salary-after-tax-view')).toBeVisible({ timeout: 15000 });
+  });
+
+  test('Direct visit to /cost-of-living mounts interactive CostOfLivingView and responds to reload', async ({ page }) => {
+    await page.goto('/cost-of-living');
+    await expect(page.locator('#cost-of-living-view')).toBeVisible({ timeout: 15000 });
+
+    await page.reload();
+    await expect(page.locator('#cost-of-living-view')).toBeVisible({ timeout: 15000 });
+  });
+
+  test('Direct visit to /job-offers mounts interactive JobOfferCompareView and responds to reload', async ({ page }) => {
+    await page.goto('/job-offers');
+    await expect(page.locator('#job-offer-compare-view')).toBeVisible({ timeout: 15000 });
+
+    await page.reload();
+    await expect(page.locator('#job-offer-compare-view')).toBeVisible({ timeout: 15000 });
+  });
+
+  test('Tab switching and browser Back/Forward preserve interactive views', async ({ page }) => {
+    await page.goto('/compare');
+    await expect(page.locator('#compare-view')).toBeVisible({ timeout: 15000 });
+
+    await page.click('#tab-salary-needed');
+    await expect(page.locator('#salary-needed-view')).toBeVisible({ timeout: 15000 });
+    expect(page.url()).toContain('/salary-needed');
+
+    await page.goBack();
+    await expect(page.locator('#compare-view')).toBeVisible({ timeout: 15000 });
+    expect(page.url()).toContain('/compare');
+
+    await page.goForward();
+    await expect(page.locator('#salary-needed-view')).toBeVisible({ timeout: 15000 });
+    expect(page.url()).toContain('/salary-needed');
+  });
 });

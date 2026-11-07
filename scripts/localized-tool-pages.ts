@@ -649,7 +649,7 @@ export function createLocalizedToolPages(baseUrl: string): ToolSeoPage[] {
               </div>
 
               <!-- Interactive Application Mounting Point -->
-              <div id="root" class="min-h-[400px]">
+              <div class="interactive-calculator-slot min-h-[400px]">
                 <div class="bg-white rounded-2xl border border-[#DCE3E0] p-6 sm:p-8 shadow-xs">
                   <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#F7F8F5] pb-4 mb-6 gap-2">
                     <div>

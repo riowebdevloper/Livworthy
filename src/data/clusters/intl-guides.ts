@@ -1057,7 +1057,7 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
           },
           {
             h3: 'Pillar 2: Occupational Pension / BVG (~2.5% / ~3,213 CHF employee deduction)',
-            content: 'Mandatory occupational pension fund contributions (Berufliche Vorsorge / BVG) on coordinated salary between the 26,460 CHF coordination deduction and 90,720 CHF ceiling (coordinated salary of 64,260 CHF at 5% employee statutory baseline), matched equally by employers.',
+            content: 'Mandatory occupational pension fund contributions (Berufliche Vorsorge / BVG) on coordinated salary between the 26,460 CHF coordination deduction and 90,720 CHF statutory ceiling (coordinated salary of 64,260 CHF). This reflects an illustrative statutory-minimum employee deduction rate for age 35–44 (5.0% employee contribution under BVG Art. 16, matched 50/50 by employers). Actual pension deductions depend on your employer’s pension fund plan regulations, supplementary coverage (Überobligatorium), and age bracket (7% for ages 25–34, 10% for 35–44, 15% for 45–54, 18% for 55–65).',
           },
           {
             h3: 'Income Taxes: Federal, Cantonal & Municipal (~13.9% / ~18,044 CHF)',
@@ -1140,7 +1140,7 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         id: 'methodology',
         h2: 'Methodology and primary source data',
         paragraphs: [
-          'Calculations are deterministically derived using LivWorthy’s statutory engine using Swiss Federal Tax Administration (ESTV) 2026 rates, Canton Zurich tax scales, and federal social insurance laws (AHV/IV/EO/ALV). Housing benchmarks reflect Bundesamt für Statistik (BFS) rental market surveys for Canton Zurich.',
+          'Calculations are deterministically derived using LivWorthy’s statutory engine using Swiss Federal Tax Administration (ESTV) 2026 rates, Canton Zurich tax scales, and federal social insurance laws (AHV/IV/EO/ALV). Pillar 2 pension deductions represent an illustrative statutory-minimum employee rate (5.0% on coordinated salary for age 35–44); actual net pay depends on your employer’s specific pension fund regulations. Housing benchmarks reflect Bundesamt für Statistik (BFS) rental market surveys for Canton Zurich.',
         ],
       },
     ],
