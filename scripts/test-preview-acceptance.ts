@@ -191,24 +191,28 @@ async function runAcceptanceSmokeTest() {
     await context.close();
   }
 
-  // --- GATE 5: GA4 Single Pageview Dispatch & Deduplication ---
+  // --- GATE 5: GA4 Single Pageview Dispatch & Virtual Navigation ---
   console.log('\n📊 GATE 5: Testing GA4 Single Pageview Dispatch & Virtual Navigation...');
   {
     const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
     const page = await context.newPage();
 
-    let pageviewCount = 0;
+    const collectRequests: string[] = [];
     page.on('request', (req) => {
       const url = req.url();
-      if (url.includes('google-analytics.com/g/collect') && (url.includes('en=page_view') || url.includes('v=2'))) {
-        pageviewCount++;
+      if (url.includes('google-analytics.com/g/collect') || url.includes('/g/collect')) {
+        collectRequests.push(url);
       }
     });
 
-    await page.goto('http://localhost:3355/', { waitUntil: 'load' });
+    await page.goto('http://localhost:3355/', { waitUntil: 'networkidle' });
     await page.waitForTimeout(1000);
 
-    const initialPv = pageviewCount;
+    // Initial pageview count from authoritative dataLayer
+    const initialPvCount = await page.evaluate(() => {
+      const dl = (window as any).dataLayer || [];
+      return dl.filter((item: any) => item[0] === 'event' && item[1] === 'page_view').length;
+    });
 
     // Navigate to /compare
     const compareTab = page.locator('#tab-compare');
@@ -217,16 +221,24 @@ async function runAcceptanceSmokeTest() {
       await page.waitForTimeout(1000);
     }
 
-    const afterNavPv = pageviewCount;
+    const postNavPvCount = await page.evaluate(() => {
+      const dl = (window as any).dataLayer || [];
+      return dl.filter((item: any) => item[0] === 'event' && item[1] === 'page_view').length;
+    });
 
-    const passed = initialPv >= 0; // Requests recorded without duplicate storming
+    // Strict validation: must have exactly 1 initial pageview on load, and exactly 2 after SPA navigation (never pass on 0)
+    const passed = initialPvCount === 1 && postNavPvCount === 2;
     evidenceReport.tests.push({
       gate: 'Gate 5 - GA4 Measurement & Single Pageviews',
-      passed: true,
-      initialPageviewsObserved: initialPv,
-      afterNavPageviewsObserved: afterNavPv,
+      passed,
+      initialPageviewsObserved: initialPvCount,
+      afterNavPageviewsObserved: postNavPvCount,
+      outboundCollectRequests: collectRequests.length,
     });
-    console.log(`  ✔ Gate 5 Result: PASS (Initial PV requests: ${initialPv}, After Virtual Nav: ${afterNavPv})`);
+    console.log(`  ✔ Gate 5 Result: ${passed ? 'PASS' : 'FAIL'} (Initial PV: ${initialPvCount}, After Virtual Nav: ${postNavPvCount}, Outbound Requests: ${collectRequests.length})`);
+    if (!passed) {
+      throw new Error(`GA4 pageview tracking assertion failed: expected 1 initial and 2 post-nav pageviews, got ${initialPvCount} and ${postNavPvCount}`);
+    }
     await context.close();
   }
 

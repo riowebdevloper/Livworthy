@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-07T07:17:09.425Z",
+  "timestamp": "2026-11-15T14:52:53.089Z",
   "tests": [
     {
       "gate": "Gate 1 - Mobile Visual Loading",
@@ -15,7 +15,7 @@
       "savedConsent": {
         "analytics": true,
         "marketing": true,
-        "timestamp": 1794035830859
+        "timestamp": 1794754375771
       },
       "consentEventsCount": 1,
       "screenshot": "reports/screenshots/cookie-banner.png"
@@ -46,7 +46,8 @@
       "gate": "Gate 5 - GA4 Measurement & Single Pageviews",
       "passed": true,
       "initialPageviewsObserved": 1,
-      "afterNavPageviewsObserved": 1
+      "afterNavPageviewsObserved": 2,
+      "outboundCollectRequests": 1
     }
   ]
 }
