@@ -367,11 +367,8 @@ function AppContent() {
     } catch {}
   };
 
-  // Dispatch single authoritative initial pageview on client load
-  useEffect(() => {
-    const title = TAB_TITLES[activeTab] || document.title;
-    trackPageView(window.location.pathname, title);
-  }, []);
+  // Initial pageview is dispatched authoritatively in index.html for all documents.
+  // Subsequent virtual pageviews are dispatched by handlePopState, handleSelectTab, and SPA navigation.
 
   // Track calculation interactions (debounced, and ONLY after meaningful user-initiated calculation changes)
   const calculationTimerRef = useRef<any>(null);
