@@ -803,10 +803,67 @@ export class SeoPageRenderer {
           </p>
         </div>
 
-        <!-- Calculator CTA Banner (hidden on dedicated interactive calculator pages) -->
+        <!-- Calculator CTA Banner & Contextual Interactive Journeys (hidden on dedicated interactive calculator pages) -->
         ${
           page.pageType === 'salary-after-tax' && page.cityId === 'nyc'
             ? ''
+            : page.pageType === 'salary-guide' && page.cityId
+            ? (() => {
+                const city = CITIES[page.cityId];
+                const cityName = city?.name || page.cityId;
+                const salaryTaxUrl = page.cityId === 'nyc' ? '/salary-after-tax/new-york' : `/salary-after-tax?city=${encodeURIComponent(page.cityId)}`;
+                const compareUrl =
+                  page.cityId === 'nyc'
+                    ? '/compare/new-york-vs-london'
+                    : page.cityId === 'zurich'
+                    ? '/relocation/berlin-to-zurich'
+                    : page.cityId === 'miami'
+                    ? '/compare?city=miami'
+                    : `/compare?city=${encodeURIComponent(page.cityId)}`;
+                const salaryNeededUrl = page.cityId === 'nyc' ? '/salary-needed/new-york' : `/salary-needed?city=${encodeURIComponent(page.cityId)}`;
+                const costOfLivingUrl = page.cityId === 'nyc' ? '/cost-of-living/new-york' : `/cities/${encodeURIComponent(page.cityId)}`;
+
+                return `
+        <section aria-label="Interactive Scenario Calculator" class="mt-6 p-5 sm:p-6 bg-[#102A2E] text-white rounded-2xl shadow-sm">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-700">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Interactive Scenario Calculator</span>
+              </div>
+              <h3 class="text-lg font-bold text-white mt-1">Test Your Own Numbers for ${escapeHtml(cityName)}</h3>
+              <p class="text-xs text-slate-300 mt-0.5">Customize your actual rent, pre-tax deductions, household size, or compare with other cities in real time.</p>
+            </div>
+            <a href="/salary-worth?city=${escapeHtml(page.cityId)}" class="px-5 py-2.5 bg-[#167D75] hover:bg-[#136660] text-white font-bold text-xs rounded-xl transition-colors whitespace-nowrap shadow-xs self-start sm:self-center">
+              Open Interactive Calculator →
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+            <a href="${salaryTaxUrl}" class="p-3.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 rounded-xl transition-all group block">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-teal-300">1. Take-Home Pay</div>
+              <div class="text-xs font-bold text-white group-hover:text-teal-200 mt-1">${escapeHtml(cityName)} Tax Calculator →</div>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Model statutory payroll taxes, pre-tax 401(k), and net pay per paycheck.</p>
+            </a>
+            <a href="${compareUrl}" class="p-3.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 rounded-xl transition-all group block">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-teal-300">2. City Comparison</div>
+              <div class="text-xs font-bold text-white group-hover:text-teal-200 mt-1">Compare Relocation Options →</div>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">See how ${escapeHtml(cityName)} take-home cash compares against other major capitals.</p>
+            </a>
+            <a href="${salaryNeededUrl}" class="p-3.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 rounded-xl transition-all group block">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-teal-300">3. Income Target</div>
+              <div class="text-xs font-bold text-white group-hover:text-teal-200 mt-1">Salary Needed Calculator →</div>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Reverse-calculate the gross income needed to hit your target savings rate.</p>
+            </a>
+            <a href="${costOfLivingUrl}" class="p-3.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 rounded-xl transition-all group block">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-teal-300">4. Cost Breakdown</div>
+              <div class="text-xs font-bold text-white group-hover:text-teal-200 mt-1">${escapeHtml(cityName)} Cost of Living →</div>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Detailed itemized costs for fair market rent, transit, groceries, and utilities.</p>
+            </a>
+          </div>
+        </section>
+                `;
+              })()
             : `
         <div class="mt-6 p-5 bg-[#102A2E] text-white rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
           <div>

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-15T14:52:53.089Z",
+  "timestamp": "2026-11-15T16:10:51.497Z",
   "tests": [
     {
       "gate": "Gate 1 - Mobile Visual Loading",
@@ -15,7 +15,7 @@
       "savedConsent": {
         "analytics": true,
         "marketing": true,
-        "timestamp": 1794754375771
+        "timestamp": 1794759054473
       },
       "consentEventsCount": 1,
       "screenshot": "reports/screenshots/cookie-banner.png"

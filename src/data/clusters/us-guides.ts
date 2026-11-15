@@ -589,7 +589,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     metaDescription:
       'Is $90K a good salary in Miami? A $90,000 salary yields $6,012/mo net ($72,145/yr) with 0% Florida state tax. See 2026 Miami-Dade rent, auto costs & budget.',
     directAnswer:
-      'Yes, $90,000 is a solid, comfortable compensation tier in Miami, comfortably exceeding the Miami-Dade County individual median worker earnings (~$44,000) by more than 2×. Benefiting from 0% Florida State personal income tax, a single earner takes home approximately $6,012 per month ($72,145 annually), representing an effective tax rate of just 19.8% (paid solely to Federal income tax and FICA). After baseline housing ($2,150/month [HUD Fair Market Rent](source:us-hud-miami-fmr-2026) in Miami-Dade) and essential living costs, single professionals retain approximately $2,272 to $2,400 monthly in clean uncommitted savings.',
+      'Yes, $90,000 is a solid, comfortable compensation tier in Miami, comfortably exceeding the Miami-Dade County individual median worker earnings (~$44,000) by more than 2×. Benefiting from 0% Florida State personal income tax under Article VII, Section 5 of the Florida Constitution, a single earner takes home approximately $6,012 per month ($72,145 annually or ~$2,775 bi-weekly), representing an effective tax rate of just 19.8% (paid solely to Federal income tax and FICA). Under standard 40× landlord screening, $90K qualifies for up to $2,250/month in rent. After baseline housing ($2,150/month [HUD Fair Market Rent](source:us-hud-miami-fmr-2026) in Miami-Dade) and essential living costs, single professionals retain approximately $2,272 to $2,400 monthly in clean uncommitted savings.',
     sections: [
       {
         id: 'verdict',
@@ -698,10 +698,32 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
       },
       {
         id: 'household-scenarios',
-        h2: 'Single earner vs couple on $90K in Miami',
+        h2: 'Single earner vs couple or family on $90K in Miami',
         paragraphs: [
           'For a single individual, $90,000 is more than sufficient for independent luxury living, vehicle ownership, and annual savings exceeding $25,000.',
-          'For a couple supported by a single $90K income, finances remain stable. Joint federal filing increases take-home pay to approximately $6,350/month. With shared 1-bedroom rent and dual groceries, a couple saves approximately $1,200 to $1,500 every month.',
+          'For a couple supported by a single $90K income, finances remain stable. Joint federal filing increases take-home pay to approximately $6,350/month. With shared 1-bedroom rent ($2,150) and dual food and healthcare overhead, a couple saves approximately $1,200 to $1,500 every month.',
+          'For families with children, childcare and private schooling are significant considerations. Full-time preschool and infant care in Miami-Dade typically costs between $1,000 and $1,600 per month, which tightens a solo $90K budget considerably, making family health insurance premiums and vehicle costs paramount.',
+        ],
+      },
+      {
+        id: 'emergency-fund',
+        h2: 'Emergency fund timeline: How fast can you build cash reserves in Miami?',
+        paragraphs: [
+          'With itemized baseline living expenses of $3,740/month (rent $2,150, car loan/insurance/gas $520, utilities/FPL $220, groceries $380, dining $320, healthcare $150), building a cash reserve protects against storm deductibles, vehicle repairs, and medical contingencies:',
+        ],
+        subsections: [
+          {
+            h3: '3-Month Living Expense Buffer ($11,220)',
+            content: 'Achieved in approximately 4.9 months on your steady monthly surplus cash flow of $2,272.',
+          },
+          {
+            h3: '6-Month Emergency Safety Net ($22,440)',
+            content: 'Fully funded in approximately 9.9 months of continuous saving.',
+          },
+          {
+            h3: 'Car-Free Advantage (Brickell / Downtown)',
+            content: 'Eliminating the $520/month vehicle expense cuts living costs to $3,220/month and boosts monthly savings to $2,792, reaching a 6-month reserve ($19,320) in less than 7 months.',
+          },
         ],
       },
       {
@@ -710,6 +732,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         paragraphs: [
           'A single earner living in an independent 1-bedroom apartment at the $2,150 HUD benchmark retains approximately $2,272 per month ($27,264 annually) in uncommitted discretionary cash flow.',
           'This surplus allows an earner to easily max out a Roth IRA ($7,000 in 2026), contribute $10,000+ to an employer 401(k), and maintain a robust emergency fund reserve.',
+          'To model custom payroll withholdings or explore how your take-home cash compares with California or New York, test your scenario in our [Miami Salary After Tax Calculator](/salary-after-tax?city=miami) or run a [Miami vs NYC Relocation Comparison](/compare?city=miami).',
         ],
       },
       {

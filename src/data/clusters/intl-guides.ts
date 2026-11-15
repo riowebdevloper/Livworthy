@@ -1033,7 +1033,7 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
     metaDescription:
       'Is CHF 130K a good salary in Zurich? A 130,000 CHF salary yields 8,369 CHF/mo net (100,423 CHF/yr) after Swiss taxes. See real rent, Krankenkasse & budgets.',
     directAnswer:
-      'Yes, 130,000 CHF is a very strong professional salary in Zurich, comfortably exceeding Canton Zurich’s individual median worker earnings (~95,000 CHF) by over 35%. Under 2026 Swiss statutory tax law ([Federal direct tax](source:ch-estv-tax-2026), Canton Zurich tax, City of Zurich municipal tax, and mandatory AHV/IV/EO/ALV social security), a single earner takes home approximately 8,369 CHF per month (100,423 CHF annually), representing an effective tax rate of just 22.8%. With high-standard 1-bedroom apartments in Zurich leasing at ~2,250 CHF/month ([BFS benchmark](source:ch-bfs-zurich-2024)), single professionals retain over 4,000 CHF monthly in clean uncommitted savings.',
+      'Yes, 130,000 CHF is a very strong professional salary in Zurich, comfortably exceeding Canton Zurich’s individual median worker earnings (~95,000 CHF) by over 35%. Under 2026 Swiss statutory tax law ([Federal direct tax](source:ch-estv-tax-2026), Canton Zurich tax, City of Zurich municipal tax, and mandatory AHV/IV/EO/ALV social security), a single earner takes home approximately 8,369 CHF per month (100,423 CHF annually), representing an effective tax rate of just 22.8% (or ~7,725 CHF/mo on standard 13-month employment contracts, plus a ~15,450 CHF net payout in December). Mandatory basic health insurance (Krankenkasse LAMal, ~380 CHF/mo) is not deducted from payroll and must be paid individually. With high-standard 1-bedroom apartments in Zurich leasing at ~2,250 CHF/month ([BFS benchmark](source:ch-bfs-zurich-2024)), single professionals retain over 4,000 CHF monthly in clean uncommitted savings.',
     sections: [
       {
         id: 'verdict',
@@ -1131,10 +1131,28 @@ export const INTL_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
       },
       {
         id: 'household-scenarios',
-        h2: 'Single earner vs couple on 130K CHF in Zurich',
+        h2: 'Single earner vs couple or family on 130K CHF in Zurich',
         paragraphs: [
-          'For a single person, 130,000 CHF affords luxury living, frequent European weekend trips, and annual savings exceeding 50,000 CHF.',
-          'For a couple living on a single 130K CHF salary, living standards remain very solid. Swiss married tax splitting reduces cantonal and direct federal income tax, boosting monthly take-home pay to roughly 8,850 CHF. With combined health insurance (~750 CHF/mo) and groceries, a couple still saves approximately 3,000 to 3,500 CHF each month.',
+          'For a single person, 130,000 CHF affords luxury living, independent lakeside or city-center housing, and annual capital accumulation exceeding 50,000 CHF.',
+          'For a married couple living on a single 130K CHF salary, living standards remain solid. Swiss married tax splitting reduces cantonal and direct federal income tax, boosting monthly net take-home pay to approximately 8,850 CHF. With combined health insurance (~750 CHF/mo) and groceries, a couple still saves approximately 3,000 to 3,500 CHF each month.',
+          'For families with young children, child care is the decisive budget variable. Private non-subsidized daycare (KITA) in Zurich costs between 2,200 and 2,800 CHF per month per child. A single 130K income supporting two children in KITA will see monthly savings reduced to near zero unless subsidized or supported by a second working parent.',
+        ],
+      },
+      {
+        id: 'emergency-fund',
+        h2: 'Emergency fund timeline: How fast can you build a safety buffer in Zurich?',
+        paragraphs: [
+          'With monthly baseline living expenses of 4,130 CHF (including rent 2,250 CHF, Krankenkasse 380 CHF, utilities 210 CHF, groceries 520 CHF, dining 650 CHF, and ZVV transit 120 CHF), building a cash cushion in Zurich happens remarkably fast:',
+        ],
+        subsections: [
+          {
+            h3: '3-Month Living Expense Buffer (12,390 CHF)',
+            content: 'Accumulated in under 3.0 months of disciplined saving on your monthly surplus cash flow of 4,239 CHF.',
+          },
+          {
+            h3: '6-Month Emergency Fund (24,780 CHF)',
+            content: 'Fully funded in just 5.8 months—one of the fastest capital accumulation timelines anywhere in the global developed world.',
+          },
         ],
       },
       {
