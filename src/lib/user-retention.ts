@@ -110,6 +110,7 @@ export function saveRecentScenario(item: Omit<StoredScenario, 'timestamp'>): voi
       ...filtered,
     ].slice(0, MAX_ITEMS);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent('livworthy:scenario-saved'));
   } catch {
     // Ignore storage quota or restrictive sandbox errors
   }
@@ -119,6 +120,7 @@ export function clearRecentScenarios(): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem(STORAGE_KEY);
+    window.dispatchEvent(new CustomEvent('livworthy:scenario-saved'));
   } catch {
     // Ignore errors
   }

@@ -31,7 +31,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
     metaDescription:
       'Is $100K enough to live in NYC? A $100,000 salary yields $5,907/mo ($70,879 net) after federal, NYS, NYC & FICA taxes. See real 2026 rent, budgets & savings.',
     directAnswer:
-      'Yes, $100,000 is enough to live comfortably as a single earner in New York City, placing you well above the citywide individual median worker income (~$65,000). However, because New York City residents pay four distinct statutory withholdings (Federal income tax, New York State income tax, NYC Resident Tax, and FICA payroll taxes), net take-home pay is $5,907 per month ($70,879 annually), an effective tax rate of 29.1%. Renting independently at the [HUD Fair Market Rent benchmark](source:us-hud-nyc-fmr-2026) ($2,655) leaves approximately $1,660 monthly for uncommitted savings, emergency funds, and discretionary spending. Sharing an apartment with a roommate ($1,400–$1,600 rent share) increases monthly uncommitted savings to over $2,700.',
+      'Yes, $100,000 is enough to live comfortably as a single earner in New York City, placing you well above the citywide individual median worker income (~$65,000). Under 2026 statutory tax schedules, net take-home pay is $5,907 per month ($70,879 annually or approximately $2,726 bi-weekly), an effective tax rate of 29.1% across Federal, NY State, NYC Resident, and FICA withholdings. On standard NYC 40× landlord screening, $100K qualifies for up to $2,500/month in rent. Renting independently at the [HUD Fair Market Rent benchmark](source:us-hud-nyc-fmr-2026) ($2,655) leaves approximately $1,660 monthly for uncommitted savings, emergency funds, and discretionary spending. Sharing a 2-bedroom with a roommate ($1,400–$1,600 rent share) increases monthly uncommitted savings to over $2,700.',
     sections: [
       {
         id: 'verdict',
@@ -81,7 +81,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
           },
           {
             h3: 'Semi-Monthly Paycheck (1st and 15th / 24 pay periods)',
-            content: 'Exactly $2,953.50 net per paycheck, arriving consistently twice per calendar month.',
+            content: 'Approximately $2,953 net per paycheck ($2,953.29 calculated from $70,879 net annually), arriving twice per calendar month (actual paychecks may vary slightly by cents due to employer payroll rounding).',
           },
           {
             h3: 'Weekly Paycheck (Every week / 52 pay periods)',
@@ -138,15 +138,34 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         paragraphs: [
           'The decision between living alone and sharing an apartment is the single largest determinant of wealth accumulation in New York City.',
           'Living alone in a 1-bedroom at the [HUD Fair Market Rent benchmark](source:us-hud-nyc-fmr-2026) ($2,655/mo) commits 45.0% of your take-home pay to rent, leaving $1,660/mo ($19,920/yr) for savings and emergencies.',
-          'Splitting a 2-bedroom apartment with a roommate ($1,500/mo rent share) reduces housing costs to 25.4% of net income and cuts utilities in half ($160 vs $320). This increases discretionary savings to **$2,975/mo** ($35,700/yr)—delivering an extra $15,780 in annual savings that can fully fund both a Roth IRA ($7,000) and substantial 401(k) contributions.',
+          'Splitting a 2-bedroom apartment with a roommate ($1,500/mo rent share) reduces housing costs to 25.4% of net income and cuts utilities in half ($160 vs $320). This increases discretionary savings to **$2,975/mo** ($35,700/yr)—delivering an extra $15,780 in annual savings that can fully fund both a traditional or Roth IRA ($7,500 in 2026 under IRS Notice 2024-80) and substantial 401(k) contributions.',
         ],
       },
       {
         id: 'single-vs-couple',
-        h2: 'Can one person live comfortably on $100K? Can a couple live on $100K?',
+        h2: 'Can one person live comfortably on $100K? Can a couple or family live on $100K in NYC?',
         paragraphs: [
-          'For a single person, $100,000 is more than adequate for comfortable living, provided housing costs stay below 40% of net income.',
-          'For a couple living on a single $100K income, finances become significantly tighter. While joint filing reduces federal and state tax liability slightly, dual living expenses and higher food, transit, and healthcare costs reduce monthly savings potential to under $700.',
+          'For a single earner, $100,000 provides genuine financial flexibility in New York City, enabling an independent 1-bedroom apartment in outer boroughs or comfortable roommate living with $1,660 to $2,700+ monthly in savings.',
+          'For a couple living on a single $100K income, the budget tightens considerably. While married filing jointly slightly lowers federal and NYS taxes, dual groceries, MTA transit passes, mobile plans, and healthcare copays increase living costs to ~$5,400/month, leaving a modest monthly buffer of $600 to $800.',
+          'For a family with a child, a single $100K income is under severe financial strain in NYC. Center-based infant and toddler care averages $1,800 to $2,600 per month across the five boroughs, which rapidly consumes the remaining disposable income unless subsidized or augmented by a second household earner.',
+        ],
+      },
+      {
+        id: 'emergency-fund',
+        h2: 'Emergency fund timeline: How fast can you build a financial safety buffer on $100K?',
+        paragraphs: [
+          'With living expenses averaging $4,247/month for a single renter in an independent 1-bedroom, maintaining a liquid cash reserve is vital against unexpected healthcare costs, tech layoffs, or lease transition fees.',
+          'Based on verified 2026 cash flow models, here is the realistic timeline to build emergency reserves on a $100K NYC salary:',
+        ],
+        subsections: [
+          {
+            h3: 'Solo Renter (Saving $1,660/mo at $2,655 HUD FMR)',
+            content: 'A 3-month baseline safety reserve ($12,741) requires approximately 7.7 months of continuous savings. Reaching a full 6-month emergency fund ($25,482) requires approximately 15.3 months of steady discipline.',
+          },
+          {
+            h3: 'Roommate Living (Saving $2,975/mo with $1,500 rent share)',
+            content: 'Lowering housing and utility overhead cuts monthly living expenses to ~$2,932. A 3-month reserve ($8,796) is achieved in just 3.0 months, and a full 6-month safety net ($17,592) takes less than 6.0 months.',
+          },
         ],
       },
       {
@@ -161,7 +180,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         h2: 'How much can you save on $100K in NYC?',
         paragraphs: [
           'A disciplined saver sharing an apartment ($1,400 rent share) can save over $2,400 monthly (nearly $30,000 annually). Living alone in a $2,655 Fair Market Rent apartment leaves approximately $1,660 per month for 401(k), IRA, and emergency fund contributions.',
-          'To model custom payroll withholdings with 401(k) or pre-tax health insurance deductions, test your scenario in our [NYC Salary After Tax Calculator](/salary-after-tax/new-york).',
+          'To model custom payroll withholdings with 401(k) or pre-tax health insurance deductions, test your scenario in our [NYC Salary After Tax Calculator](/salary-after-tax/new-york). To calculate the exact gross salary needed for your preferred neighborhood rent, explore the [Salary Needed to Live in NYC Tool](/salary-needed/new-york).',
         ],
       },
       {
@@ -197,7 +216,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       {
         question: 'What is $100K after tax in NYC per paycheck?',
         answer:
-          'On a bi-weekly schedule (26 pay periods per year), $100,000 in NYC yields approximately $2,726 net per paycheck. On a semi-monthly schedule (twice per month / 24 pay periods), net pay is exactly $2,953.50 per paycheck.',
+          'On a bi-weekly schedule (26 pay periods per year), $100,000 in NYC yields approximately $2,726 net per paycheck. On a semi-monthly schedule (twice per month / 24 pay periods), net pay is approximately $2,953 ($2,953.29 annualized) per paycheck, depending on employer payroll rounding and withholding selections.',
       },
       {
         question: 'Is $100K considered high income in NYC?',

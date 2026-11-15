@@ -398,8 +398,8 @@ const TIER1_TOOL_METADATA: Record<string, Record<CoreToolSlug, ToolMetadataEntry
   },
   zh: {
     'salary-worth': {
-      title: '我的薪水够用吗？实际购买力测算 | LivWorthy',
-      description: '计算扣除法定税费、公允租金和必要生活开支后，全球65座核心城市的真实可支配薪资与储蓄。',
+      title: '全球薪水购买力与税后结余测算 | LivWorthy',
+      description: '计算扣除各国法定税费、公允租金和必要生活开支后，全球65座核心城市的真实可支配薪资与储蓄。',
       h1: '我的薪水够用吗？薪资价值评估',
       lead: '核心摘要',
       passage: '薪资的真实购买力取决于扣除所得税、社保以及中位数房租后的实际结余。',
@@ -412,8 +412,8 @@ const TIER1_TOOL_METADATA: Record<string, Record<CoreToolSlug, ToolMetadataEntry
       passage: '逆向测算覆盖房租、生活成本并达到健康储蓄率所需的税前年薪与月薪基准。',
     },
     'salary-after-tax': {
-      title: '法定税后净收入与个税计算器 | LivWorthy',
-      description: '精确计算扣除法定个人所得税、社会保障金及各项扣除后的实际到手税后工资。',
+      title: '全球法定税后净收入与个税计算器 (2026到手薪资) | LivWorthy',
+      description: '权威测算美国、英国、瑞士等全球65城扣除法定个人所得税、社保金及各项扣除后的每月实际到手税后工资与真实可支配结余。',
       h1: '税后净收入计算器',
       lead: '法定个税直算',
       passage: '基于官方阶梯税率与法定社保标准，精确计算每月及每年实际可支配到手薪资。',

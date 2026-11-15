@@ -65,6 +65,18 @@ export function CookieConsentBanner() {
         ad_user_data: marketing ? 'granted' : 'denied',
         ad_personalization: marketing ? 'granted' : 'denied',
       });
+
+      // When analytics consent is explicitly granted, immediately dispatch a granted pageview
+      // so GA4 records this session under the newly created client/device ID.
+      if (analytics) {
+        try {
+          (window as any).gtag('event', 'page_view', {
+            page_path: window.location.pathname,
+            page_title: document.title,
+            page_location: window.location.href,
+          });
+        } catch {}
+      }
     }
 
     // Dispatch custom event for tag runners

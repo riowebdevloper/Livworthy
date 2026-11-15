@@ -1,4 +1,6 @@
 import assert from 'node:assert';
+import fs from 'node:fs';
+import path from 'node:path';
 import { SALARY_GUIDES } from '../src/data/salary-guides';
 import { SEO_LANDING_PAGES } from '../src/data/seo-clusters';
 import { VERIFIED_CITY_EDITORIAL } from '../src/data/city-editorial';
@@ -507,6 +509,33 @@ console.log('=== RUNNING FINANCIAL CONSISTENCY & ADSENSE QA REGRESSION SUITE ===
   const nycMethodology = SEO_LANDING_PAGES['nyc-100k'].sections.find((s) => s.id === 'methodology');
   assert.ok(nycMethodology?.paragraphs?.[0]?.includes('IRS Rev. Proc. 2025-32'), 'nyc-100k must cite IRS Rev. Proc. 2025-32');
   console.log('  ✓ All IRS statutory citations verified against official IRS Rev. Proc. 2025-32');
+}
+
+// 7. STATUTORY LIMITS & ARITHMETIC PRECISION INVARIANTS
+{
+  console.log('Test 14: Statutory Contribution Limits & Paycheck Arithmetic Precision Invariants');
+  const usGuidesContent = fs.readFileSync(path.resolve('src/data/clusters/us-guides.ts'), 'utf-8');
+  const seoClustersContent = fs.readFileSync(path.resolve('src/data/seo-clusters.ts'), 'utf-8');
+  const seoRendererContent = fs.readFileSync(path.resolve('src/lib/seo-renderer.ts'), 'utf-8');
+
+  // Assert 2026 IRA limits: $7,500 (IRS Notice 2024-80), never $7,000 in 2026
+  assert.ok(!usGuidesContent.includes('$7,000 in 2026'), 'us-guides.ts must not cite obsolete $7,000 for 2026');
+  assert.ok(usGuidesContent.includes('$7,500 in 2026'), 'us-guides.ts must cite statutory $7,500 for 2026');
+  assert.ok(!seoClustersContent.includes('Roth IRA ($7,000)'), 'seo-clusters.ts must not cite obsolete $7,000 limit');
+
+  // Assert NYC paycheck precision: Avoid false precision "$2,953.50" (math: $70,879 / 24 = $2,953.29)
+  assert.ok(!seoClustersContent.includes('$2,953.50'), 'seo-clusters.ts must never contain false precision $2,953.50');
+  assert.ok(seoClustersContent.includes('2,953.29'), 'seo-clusters.ts must cite exact $2,953.29 mathematical quotient');
+
+  // Assert Miami car-free and rideshare scenario reconciliation
+  assert.ok(usGuidesContent.includes('$2,642/month'), 'Miami guide must include $2,642/mo scenario accounting for $150 rideshare');
+  assert.ok(usGuidesContent.includes('$2,792/month'), 'Miami guide must include $2,792/mo scenario for transit-free living');
+
+  // Assert localized retirement terminology in seo-renderer.ts
+  assert.ok(seoRendererContent.includes('Pillar 2/3a'), 'seo-renderer.ts must support Swiss Pillar 2/3a wording');
+  assert.ok(seoRendererContent.includes('countryCode === \'US\''), 'seo-renderer.ts must restrict 401(k) wording to US');
+
+  console.log('  ✓ Statutory contribution limits ($7,500), exact paycheck quotient ($2,953.29), and localized retirement copy verified');
 }
 
 console.log('\n================================================================');

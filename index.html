@@ -96,17 +96,29 @@
       var cleanInitReferrer = sanitizeAnalyticsUrl(document.referrer);
       var cleanInitPath = sanitizeAnalyticsPath(window.location.pathname + window.location.search);
 
+      // Distinguish automated test and developer environments from genuine human visitors
+      var isTestTraffic = false;
+      try {
+        isTestTraffic = !!(
+          (typeof navigator !== 'undefined' && navigator.webdriver) ||
+          (window.location && window.location.hostname !== 'www.livworthy.com' && window.location.hostname !== 'livworthy.com') ||
+          (window.location && (window.location.search.indexOf('test=true') !== -1 || window.location.search.indexOf('livworthy_test=true') !== -1))
+        );
+      } catch (e) {}
+
       gtag('config', 'G-BQBKMVS7PN', {
         'send_page_view': false,
         'page_location': cleanInitLocation,
-        'page_referrer': cleanInitReferrer
+        'page_referrer': cleanInitReferrer,
+        'traffic_type': isTestTraffic ? 'test' : 'production'
       });
 
       // Dispatch single authoritative initial pageview on page load for all documents (prerendered SEO pages & SPA landing)
       gtag('event', 'page_view', {
         'page_path': cleanInitPath,
         'page_title': document.title,
-        'page_location': cleanInitLocation
+        'page_location': cleanInitLocation,
+        'traffic_type': isTestTraffic ? 'test' : 'production'
       });
 
       // Signal initial pageview completion to React SPA to prevent duplicate dispatch upon initial mount
@@ -115,12 +127,7 @@
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BQBKMVS7PN" fetchpriority="low"></script>
     <!-- Google Tag Manager (GTM-WRWRFQF8) -->
-    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WRWRFQF8"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    </script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WRWRFQF8" fetchpriority="low"></script>
 
     <!-- Google AdSense (Official Publisher Integration, governed by Consent Mode v2) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082698285506451" crossorigin="anonymous" fetchpriority="low"></script>

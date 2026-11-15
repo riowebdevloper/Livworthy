@@ -2425,6 +2425,74 @@ function renderPageHtml(
     }
   }
 
+  // Inject lightweight, dependency-free cookie consent banner on non-React static pages
+  // Ensures readers landing from Google Search on guides/cities can view choices and grant Consent Mode v2
+  if (!isInteractivePage) {
+    const staticConsentBanner = `
+    <!-- Static Fallback Cookie Consent Banner for Prerendered Content Pages -->
+    <div id="cookie-consent-banner" role="dialog" aria-live="polite" aria-label="Cookie and Privacy Preferences" class="fixed bottom-0 inset-x-0 z-50 p-4 sm:p-6 bg-slate-950/95 backdrop-blur-md border-t border-emerald-500/20 shadow-2xl text-slate-200 transition-all duration-300" style="display: none;">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex-1 space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <h2 class="text-sm font-bold text-white tracking-wide">Privacy &amp; Cookie Choices</h2>
+          </div>
+          <p class="text-xs text-slate-300">Essential storage used for calculations. Analytics optional under GDPR &amp; Consent Mode v2.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
+          <button id="btn-cookie-reject-all" type="button" class="px-4 py-2 text-xs sm:text-sm font-semibold text-slate-300 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 rounded-lg transition-colors cursor-pointer">Reject Non-Essential</button>
+          <button id="btn-cookie-accept-all" type="button" class="px-5 py-2 text-xs sm:text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 rounded-lg shadow-md transition-colors cursor-pointer">Accept All</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function() {
+        var STORAGE_KEY = 'livworthy_cookie_consent';
+        try {
+          var stored = localStorage.getItem(STORAGE_KEY);
+          if (!stored) {
+            var banner = document.getElementById('cookie-consent-banner');
+            if (banner) banner.style.display = 'block';
+          }
+        } catch (e) {}
+
+        function updateConsent(analytics, marketing) {
+          var consent = { analytics: analytics, marketing: marketing, timestamp: Date.now() };
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(consent)); } catch (e) {}
+          if (typeof window !== 'undefined' && window.gtag) {
+            window.gtag('consent', 'update', {
+              'analytics_storage': analytics ? 'granted' : 'denied',
+              'ad_storage': marketing ? 'granted' : 'denied',
+              'ad_user_data': marketing ? 'granted' : 'denied',
+              'ad_personalization': marketing ? 'granted' : 'denied'
+            });
+            if (analytics) {
+              try {
+                window.gtag('event', 'page_view', {
+                  'page_path': window.location.pathname,
+                  'page_title': document.title,
+                  'page_location': window.location.href
+                });
+              } catch (e) {}
+            }
+          }
+          try {
+            window.dispatchEvent(new CustomEvent('livworthy:consent-updated', { detail: consent }));
+          } catch (e) {}
+          var banner = document.getElementById('cookie-consent-banner');
+          if (banner) banner.style.display = 'none';
+        }
+
+        var btnAccept = document.getElementById('btn-cookie-accept-all');
+        if (btnAccept) btnAccept.addEventListener('click', function() { updateConsent(true, true); });
+        var btnReject = document.getElementById('btn-cookie-reject-all');
+        if (btnReject) btnReject.addEventListener('click', function() { updateConsent(false, false); });
+      })();
+    </script>
+    `;
+    html = html.replace('</body>', `${staticConsentBanner}\n  </body>`);
+  }
+
   return html;
 }
 

@@ -10,7 +10,14 @@ export const RecentScenariosBar: React.FC<RecentScenariosBarProps> = ({ onSelect
   const [scenarios, setScenarios] = useState<StoredScenario[]>([]);
 
   useEffect(() => {
-    setScenarios(getRecentScenarios());
+    const update = () => setScenarios(getRecentScenarios());
+    update();
+    window.addEventListener('livworthy:scenario-saved', update);
+    window.addEventListener('storage', update);
+    return () => {
+      window.removeEventListener('livworthy:scenario-saved', update);
+      window.removeEventListener('storage', update);
+    };
   }, []);
 
   if (scenarios.length === 0) return null;

@@ -367,11 +367,8 @@ function AppContent() {
     } catch {}
   };
 
-  // Dispatch single authoritative initial pageview on client load
-  useEffect(() => {
-    const title = TAB_TITLES[activeTab] || document.title;
-    trackPageView(window.location.pathname, title);
-  }, []);
+  // Initial pageview is dispatched authoritatively in index.html for all documents.
+  // Subsequent virtual pageviews are dispatched by handlePopState, handleSelectTab, and SPA navigation.
 
   // Track calculation interactions (debounced, and ONLY after meaningful user-initiated calculation changes)
   const calculationTimerRef = useRef<any>(null);
@@ -469,6 +466,13 @@ function AppContent() {
         colDate: outcome.colDate || outcome.costOfLiving?.datasetVersion,
       },
     });
+    saveRecentScenario({
+      id: `salary-worth-${outcome.scenario.location.id}`,
+      title: `${outcome.scenario.location.name} Salary Worth`,
+      url: `/salary-worth?city=${encodeURIComponent(outcome.scenario.location.id)}`,
+      tab: 'salary-worth',
+      cityName: outcome.scenario.location.name,
+    });
   }, []);
 
   const handleSalaryNeededResult = useCallback((result: SalaryNeededResult) => {
@@ -483,6 +487,13 @@ function AppContent() {
           colDate: result.outcomeWithRequiredSalary.colDate || result.outcomeWithRequiredSalary.costOfLiving?.datasetVersion,
         },
       });
+      saveRecentScenario({
+        id: `salary-needed-${result.outcomeWithRequiredSalary.scenario.location.id}`,
+        title: `${result.outcomeWithRequiredSalary.scenario.location.name} Income Target`,
+        url: `/salary-needed?city=${encodeURIComponent(result.outcomeWithRequiredSalary.scenario.location.id)}`,
+        tab: 'salary-needed',
+        cityName: result.outcomeWithRequiredSalary.scenario.location.name,
+      });
     }
   }, []);
 
@@ -494,7 +505,14 @@ function AppContent() {
         taxRuleVersion: isUnavailable ? undefined : tax.taxRuleVersion,
       },
     });
-  }, []);
+    saveRecentScenario({
+      id: `salary-after-tax-${scenario.location.id}`,
+      title: `${scenario.location.name} Take-Home Pay`,
+      url: `/salary-after-tax?city=${encodeURIComponent(scenario.location.id)}`,
+      tab: 'salary-after-tax',
+      cityName: scenario.location.name,
+    });
+  }, [scenario.location]);
 
   const handleColResult = useCallback((col: CostOfLivingResult) => {
     setCalculationMetadata({
@@ -503,7 +521,14 @@ function AppContent() {
         colDate: col.datasetVersion,
       },
     });
-  }, []);
+    saveRecentScenario({
+      id: `cost-of-living-${scenario.location.id}`,
+      title: `${scenario.location.name} Cost of Living`,
+      url: `/cost-of-living?city=${encodeURIComponent(scenario.location.id)}`,
+      tab: 'cost-of-living',
+      cityName: scenario.location.name,
+    });
+  }, [scenario.location]);
 
   const handleComparisonResult = useCallback((comp: ComparisonResult) => {
     const isTaxAUnavailable = comp.outcomeA.tax?.status === 'TAX_CALCULATION_UNAVAILABLE';
@@ -529,6 +554,14 @@ function AppContent() {
         taxRuleVersion,
         colDate: comp.outcomeA.colDate || comp.outcomeA.costOfLiving.datasetVersion,
       },
+    });
+
+    saveRecentScenario({
+      id: `compare-${comp.outcomeA.scenario.location.id}-vs-${comp.outcomeB.scenario.location.id}`,
+      title: `${comp.outcomeA.scenario.location.name} vs ${comp.outcomeB.scenario.location.name}`,
+      url: `/compare?city=${encodeURIComponent(comp.outcomeA.scenario.location.id)}`,
+      tab: 'compare',
+      cityName: comp.outcomeA.scenario.location.name,
     });
   }, []);
 
@@ -691,6 +724,7 @@ function AppContent() {
         {activeTab === 'salary-after-tax' && (
           <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-6 h-6 border-2 border-teal-700 border-t-transparent rounded-full animate-spin"></div></div>}>
             <SalaryAfterTaxView
+              initialCityId={scenario.location.id}
               onSwitchToSalaryWorthWithSalary={handleSwitchToSalaryWorthWithSalary}
               onOpenEvidence={() => setIsEvidenceOpen(true)}
               onCalculationResult={handleTaxResult}
@@ -701,6 +735,7 @@ function AppContent() {
         {activeTab === 'cost-of-living' && (
           <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-6 h-6 border-2 border-teal-700 border-t-transparent rounded-full animate-spin"></div></div>}>
             <CostOfLivingView
+              initialCityId={scenario.location.id}
               household={scenario.household}
               actualRentMajor={actualRentMajor}
               onUpdateRentOverride={handleUpdateRentOverride}

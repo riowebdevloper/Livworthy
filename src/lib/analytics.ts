@@ -147,6 +147,24 @@ export function getSanitizedLocation(): string {
 }
 
 /**
+ * Detects whether the current session is an automated test, headless runner, or development preview environment.
+ * Enables GA4 internal/developer data filters to separate test automation from real organic visitors.
+ */
+export function isTestTrafficEnvironment(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    return !!(
+      (typeof navigator !== 'undefined' && navigator.webdriver) ||
+      (window.location.hostname !== 'www.livworthy.com' && window.location.hostname !== 'livworthy.com') ||
+      window.location.search.includes('test=true') ||
+      window.location.search.includes('livworthy_test=true')
+    );
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Dispatches a virtual page_view event on client-side route transitions.
  * Enforces single authoritative SPA pageview tracking:
  * - Sanitizes URL location and path using the conservative allowlist.
@@ -182,6 +200,7 @@ export function trackPageView(pagePath: string, pageTitle?: string): boolean {
       page_path: sanitizedRelative,
       page_title: pageTitle || document.title,
       page_location: cleanLocation,
+      traffic_type: isTestTrafficEnvironment() ? 'test' : 'production',
     });
     return true;
   } catch {
@@ -205,6 +224,7 @@ export function trackCalculatorEngagement(
       calculator_name: toolName,
       interaction_type: action,
       page_location: getSanitizedLocation(),
+      traffic_type: isTestTrafficEnvironment() ? 'test' : 'production',
       ...params,
     });
   } catch {
@@ -232,6 +252,7 @@ export function trackCalculationOutcome(
       city_id: cityId,
       currency: currency,
       page_location: getSanitizedLocation(),
+      traffic_type: isTestTrafficEnvironment() ? 'test' : 'production',
     });
   } catch {
     // Fail silently

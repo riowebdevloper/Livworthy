@@ -9,19 +9,26 @@ import { LATEST_VERIFIED_TAX_YEAR, TAX_YEAR_OPTIONS, isFutureUnverifiedTaxYear }
 import { useI18n } from '../../context/I18nContext';
 
 interface SalaryAfterTaxViewProps {
+  initialCityId?: string;
   onSwitchToSalaryWorthWithSalary: (salaryMajor: number, cityId?: string) => void;
   onOpenEvidence: () => void;
   onCalculationResult?: (result: TaxResult) => void;
 }
 
 export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
+  initialCityId,
   onSwitchToSalaryWorthWithSalary,
   onOpenEvidence,
   onCalculationResult,
 }) => {
   const { dict, isRtl } = useI18n();
-  const [grossSalaryMajor, setGrossSalaryMajor] = useState<number>(100000);
-  const [selectedCityId, setSelectedCityId] = useState<string>('nyc');
+  const [selectedCityId, setSelectedCityId] = useState<string>(
+    initialCityId && CITIES[initialCityId] ? initialCityId : 'nyc'
+  );
+  const [grossSalaryMajor, setGrossSalaryMajor] = useState<number>(() => {
+    const loc = initialCityId && CITIES[initialCityId] ? CITIES[initialCityId] : CITIES.nyc;
+    return getDefaultSalaryForCurrency(loc.currency);
+  });
   const [filingStatus, setFilingStatus] = useState<FilingStatus>('single');
   const [taxYear, setTaxYear] = useState<number>(LATEST_VERIFIED_TAX_YEAR);
   const [payFrequency, setPayFrequency] = useState<'annual' | 'monthly' | 'biweekly'>('annual');
@@ -29,6 +36,14 @@ export const SalaryAfterTaxView: React.FC<SalaryAfterTaxViewProps> = ({
   const [verificationStatus, setVerificationStatus] = useState<string>('VERIFIED');
   const [isCalculating, setIsCalculating] = useState<boolean>(true);
   const [calcError, setCalcError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialCityId && CITIES[initialCityId] && initialCityId !== selectedCityId) {
+      setSelectedCityId(initialCityId);
+      const loc = CITIES[initialCityId];
+      setGrossSalaryMajor(getDefaultSalaryForCurrency(loc.currency));
+    }
+  }, [initialCityId]);
 
   const city = CITIES[selectedCityId] || CITIES.nyc;
   const currency = city.currency;
