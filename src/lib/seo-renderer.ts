@@ -811,17 +811,25 @@ export class SeoPageRenderer {
             ? (() => {
                 const city = CITIES[page.cityId];
                 const cityName = city?.name || page.cityId;
+                const countryCode = (city?.countryId || 'US').toUpperCase();
                 const salaryTaxUrl = page.cityId === 'nyc' ? '/salary-after-tax/new-york' : `/salary-after-tax?city=${encodeURIComponent(page.cityId)}`;
                 const compareUrl =
                   page.cityId === 'nyc'
                     ? '/compare/new-york-vs-london'
-                    : page.cityId === 'zurich'
-                    ? '/relocation/berlin-to-zurich'
-                    : page.cityId === 'miami'
-                    ? '/compare?city=miami'
                     : `/compare?city=${encodeURIComponent(page.cityId)}`;
                 const salaryNeededUrl = page.cityId === 'nyc' ? '/salary-needed/new-york' : `/salary-needed?city=${encodeURIComponent(page.cityId)}`;
-                const costOfLivingUrl = page.cityId === 'nyc' ? '/cost-of-living/new-york' : `/cities/${encodeURIComponent(page.cityId)}`;
+                const costOfLivingUrl = page.cityId === 'nyc' ? '/cost-of-living/new-york' : `/cost-of-living?city=${encodeURIComponent(page.cityId)}`;
+
+                const taxDeductionsDesc =
+                  page.cityId === 'zurich' || countryCode === 'CH'
+                    ? 'Model cantonal and federal income tax, Pillar 2/3a pension deductions, and net CHF take-home.'
+                    : countryCode === 'US'
+                    ? 'Model statutory federal/state payroll taxes, pre-tax 401(k), and net pay per paycheck.'
+                    : countryCode === 'GB'
+                    ? 'Model HMRC income tax, National Insurance, auto-enrolment pension, and net take-home.'
+                    : countryCode === 'AE'
+                    ? 'Model tax-free earnings, end-of-service gratuity estimates, and monthly disposable cash.'
+                    : 'Model statutory income taxes, mandatory pension/payroll deductions, and net take-home per paycheck.';
 
                 return `
         <section aria-label="Interactive Scenario Calculator" class="mt-6 p-5 sm:p-6 bg-[#102A2E] text-white rounded-2xl shadow-sm">
@@ -843,7 +851,7 @@ export class SeoPageRenderer {
             <a href="${salaryTaxUrl}" class="p-3.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 rounded-xl transition-all group block">
               <div class="text-[10px] font-bold uppercase tracking-wider text-teal-300">1. Take-Home Pay</div>
               <div class="text-xs font-bold text-white group-hover:text-teal-200 mt-1">${escapeHtml(cityName)} Tax Calculator →</div>
-              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Model statutory payroll taxes, pre-tax 401(k), and net pay per paycheck.</p>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">${escapeHtml(taxDeductionsDesc)}</p>
             </a>
             <a href="${compareUrl}" class="p-3.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 rounded-xl transition-all group block">
               <div class="text-[10px] font-bold uppercase tracking-wider text-teal-300">2. City Comparison</div>

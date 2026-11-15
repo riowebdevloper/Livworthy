@@ -242,6 +242,67 @@ async function runAcceptanceSmokeTest() {
     await context.close();
   }
 
+  // --- GATE 6: Contextual CTA Navigation & Preselected City Synchronization ---
+  console.log('\n🔗 GATE 6: Testing Contextual CTA Navigation & Preselected City Synchronization...');
+  {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const page = await context.newPage();
+
+    // 6a. Zurich Salary Guide CTA links & regional wording
+    await page.goto('http://localhost:3355/guides/zurich-130k', { waitUntil: 'load' });
+    const zurichTaxHref = await page.locator('section[aria-label="Interactive Scenario Calculator"] a[href*="salary-after-tax"]').first().getAttribute('href');
+    const zurichCompareHref = await page.locator('section[aria-label="Interactive Scenario Calculator"] a[href*="compare"]').first().getAttribute('href');
+    const zurichColHref = await page.locator('section[aria-label="Interactive Scenario Calculator"] a[href*="cost-of-living"]').first().getAttribute('href');
+    const zurichTaxSection = await page.locator('section[aria-label="Interactive Scenario Calculator"]').textContent();
+
+    const zurichPillarMentioned = zurichTaxSection?.includes('Pillar 2/3a') || false;
+    const zurich401kAbsent = !zurichTaxSection?.includes('401(k)');
+    const zurichCompareIsInteractive = zurichCompareHref === '/compare?city=zurich';
+
+    // 6b. Miami Salary Guide CTA links & 401(k) presence
+    await page.goto('http://localhost:3355/guides/miami-90k', { waitUntil: 'load' });
+    const miamiTaxSection = await page.locator('section[aria-label="Interactive Scenario Calculator"]').textContent();
+    const miami401kPresent = miamiTaxSection?.includes('401(k)') || false;
+
+    // 6c. Verify Preselected City on Interactive Tool Deep Links
+    await page.goto('http://localhost:3355/compare?city=zurich', { waitUntil: 'load' });
+    await page.waitForSelector('#compare-city-a-select', { timeout: 10000 });
+    const selectedCityA = await page.locator('#compare-city-a-select').inputValue();
+
+    await page.goto('http://localhost:3355/salary-after-tax?city=miami', { waitUntil: 'load' });
+    await page.waitForSelector('#tax-location-select', { timeout: 10000 });
+    const selectedTaxCity = await page.locator('#tax-location-select').inputValue();
+
+    await page.goto('http://localhost:3355/cost-of-living?city=zurich', { waitUntil: 'load' });
+    await page.waitForSelector('#col-city-select', { timeout: 10000 });
+    const selectedColCity = await page.locator('#col-city-select').inputValue();
+
+    const passed =
+      zurichPillarMentioned &&
+      zurich401kAbsent &&
+      zurichCompareIsInteractive &&
+      miami401kPresent &&
+      selectedCityA === 'zurich' &&
+      selectedTaxCity === 'miami' &&
+      selectedColCity === 'zurich';
+
+    evidenceReport.tests.push({
+      gate: 'Gate 6 - Contextual CTA Cards & Deep Link City Preselection',
+      passed,
+      zurichPillarMentioned,
+      zurich401kAbsent,
+      zurichCompareHref,
+      selectedCityA,
+      selectedTaxCity,
+      selectedColCity,
+    });
+    console.log(`  ✔ Gate 6 Result: ${passed ? 'PASS' : 'FAIL'} (Zurich Pillar: ${zurichPillarMentioned}, Compare: ${zurichCompareHref}, CityA: ${selectedCityA}, TaxCity: ${selectedTaxCity}, ColCity: ${selectedColCity})`);
+    if (!passed) {
+      throw new Error(`Gate 6 verification failed: Zurich Pillar: ${zurichPillarMentioned}, Compare: ${zurichCompareHref}, CityA: ${selectedCityA}, TaxCity: ${selectedTaxCity}, ColCity: ${selectedColCity}`);
+    }
+    await context.close();
+  }
+
   await browser.close();
   server.close();
 
@@ -262,8 +323,8 @@ async function runAcceptanceSmokeTest() {
   }
 
   mdReport += `\n## 2. Protected Preview Access & Verification Disclosure\n`;
-  mdReport += `- **Vercel Preview URL:** \`https://livworthy-gdqx56rxl-livworthy.vercel.app\`\n`;
-  mdReport += `- **Deployment State:** Deployment ID \`7617908442\` completed successfully with state \`success\`.\n`;
+  mdReport += `- **Vercel Preview URL:** \`https://livworthy-git-feat-organic-clicks-search-visib-fb790d-livworthy.vercel.app\`\n`;
+  mdReport += `- **Deployment State:** Deployment ID \`HMNnXHnwWkHeYTQbWPQj9LyaBnAN\` completed successfully with state \`Ready\`.\n`;
   mdReport += `- **Authentication Wall Notice:** The preview deployment is secured by Vercel Team SSO deployment protection (HTTP 302 to \`https://vercel.com/sso-api\`). Unauthenticated external tools cannot run automated Lighthouse against the preview URL directly. Full functional verification is executed on the identical production bundle using Playwright and CDP.\n\n`;
 
   fs.writeFileSync(path.resolve('reports/preview-acceptance-evidence.md'), mdReport, 'utf-8');

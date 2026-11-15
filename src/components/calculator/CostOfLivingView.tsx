@@ -8,6 +8,7 @@ import { LivingCostBreakdownCard } from './LivingCostBreakdownCard';
 import { useI18n } from '../../context/I18nContext';
 
 interface CostOfLivingViewProps {
+  initialCityId?: string;
   household: HouseholdProfile;
   actualRentMajor?: number;
   onUpdateRentOverride: (rent: number | undefined) => void;
@@ -17,6 +18,7 @@ interface CostOfLivingViewProps {
 }
 
 export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
+  initialCityId,
   household,
   actualRentMajor,
   onUpdateRentOverride,
@@ -25,10 +27,18 @@ export const CostOfLivingView: React.FC<CostOfLivingViewProps> = ({
   onCalculationResult,
 }) => {
   const { dict, isRtl } = useI18n();
-  const [selectedCityId, setSelectedCityId] = useState<string>('nyc');
+  const [selectedCityId, setSelectedCityId] = useState<string>(
+    initialCityId && CITIES[initialCityId] ? initialCityId : 'nyc'
+  );
   const [colResult, setColResult] = useState<CostOfLivingResult | null>(null);
   const [isCalculating, setIsCalculating] = useState<boolean>(true);
   const [calcError, setCalcError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialCityId && CITIES[initialCityId] && initialCityId !== selectedCityId) {
+      setSelectedCityId(initialCityId);
+    }
+  }, [initialCityId]);
 
   const city = CITIES[selectedCityId] || CITIES.nyc;
   const abortControllerRef = useRef<AbortController | null>(null);

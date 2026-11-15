@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-15T17:20:53.307Z",
+  "timestamp": "2026-11-15T18:11:33.125Z",
   "tests": [
     {
       "gate": "Gate 1 - Mobile Visual Loading",
@@ -15,7 +15,7 @@
       "savedConsent": {
         "analytics": true,
         "marketing": true,
-        "timestamp": 1794763255466
+        "timestamp": 1794766295733
       },
       "consentEventsCount": 1,
       "screenshot": "reports/screenshots/cookie-banner.png"
@@ -48,6 +48,16 @@
       "initialPageviewsObserved": 1,
       "afterNavPageviewsObserved": 2,
       "outboundCollectRequests": 1
+    },
+    {
+      "gate": "Gate 6 - Contextual CTA Cards & Deep Link City Preselection",
+      "passed": true,
+      "zurichPillarMentioned": true,
+      "zurich401kAbsent": true,
+      "zurichCompareHref": "/compare?city=zurich",
+      "selectedCityA": "zurich",
+      "selectedTaxCity": "miami",
+      "selectedColCity": "zurich"
     }
   ]
 }

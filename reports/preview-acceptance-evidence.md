@@ -1,7 +1,7 @@
 # LivWorthy — Release Acceptance & Preview Verification Report
 
 > **Evaluation Scope:** Authenticated and synthetic verification across production build release gates.
-> **Audit Timestamp:** 2026-11-15T17:20:53.307Z
+> **Audit Timestamp:** 2026-11-15T18:11:33.125Z
 
 ## 1. Release Acceptance Gate Summary
 
@@ -12,9 +12,10 @@
 | **Gate 3 - Canonical Interactive Calculators** | End-to-end browser execution | ✅ PASS | Verified in DOM |
 | **Gate 4 - Primary Source Citations** | End-to-end browser execution | ✅ PASS | https://www.floridarevenue.com/faq/Pages/FAQDetails.aspx?FAQID=1466 |
 | **Gate 5 - GA4 Measurement & Single Pageviews** | End-to-end browser execution | ✅ PASS | Verified in DOM |
+| **Gate 6 - Contextual CTA Cards & Deep Link City Preselection** | End-to-end browser execution | ✅ PASS | Verified in DOM |
 
 ## 2. Protected Preview Access & Verification Disclosure
-- **Vercel Preview URL:** `https://livworthy-gdqx56rxl-livworthy.vercel.app`
-- **Deployment State:** Deployment ID `7617908442` completed successfully with state `success`.
+- **Vercel Preview URL:** `https://livworthy-git-feat-organic-clicks-search-visib-fb790d-livworthy.vercel.app`
+- **Deployment State:** Deployment ID `HMNnXHnwWkHeYTQbWPQj9LyaBnAN` completed successfully with state `Ready`.
 - **Authentication Wall Notice:** The preview deployment is secured by Vercel Team SSO deployment protection (HTTP 302 to `https://vercel.com/sso-api`). Unauthenticated external tools cannot run automated Lighthouse against the preview URL directly. Full functional verification is executed on the identical production bundle using Playwright and CDP.
 

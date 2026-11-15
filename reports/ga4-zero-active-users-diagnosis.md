@@ -107,3 +107,4 @@ To ensure Google Analytics displays data accurately given the reality of Consent
 2. **Internal Traffic Data Filter:**
    - In **GA4 Admin > Data collection and modification > Data filters**:
    - Ensure the "Internal Traffic" filter is set to **Testing** or **Active**. Because our code now flags automated tests with `traffic_type: 'test'`, test runs will not pollute production reports.
+

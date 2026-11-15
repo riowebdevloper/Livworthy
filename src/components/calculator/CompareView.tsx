@@ -34,6 +34,13 @@ export const CompareView: React.FC<CompareViewProps> = ({
   const [isComparing, setIsComparing] = useState<boolean>(true);
   const [compareError, setCompareError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (initialScenarioA.location.id && initialScenarioA.location.id !== cityAId) {
+      setCityAId(initialScenarioA.location.id);
+      setSalaryAMajor(toMajor(initialScenarioA.compensation.baseSalary));
+    }
+  }, [initialScenarioA.location.id, initialScenarioA.compensation.baseSalary]);
+
   const cityA = CITIES[cityAId] || CITIES.nyc;
   const cityB = CITIES[cityBId] || CITIES.austin;
 

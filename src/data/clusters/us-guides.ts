@@ -722,7 +722,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
           },
           {
             h3: 'Car-Free Advantage (Brickell / Downtown)',
-            content: 'Eliminating the $520/month vehicle expense cuts living costs to $3,220/month and boosts monthly savings to $2,792, reaching a 6-month reserve ($19,320) in less than 7 months.',
+            content: 'Budgeting $150/month for occasional rideshare and transit reduces total living costs to $3,370/month and boosts monthly surplus cash flow from $2,272 to $2,642/month ($31,704 annually), reaching a 6-month reserve ($20,220) in approximately 7.7 months. If living completely transit-free within walking distance of work with $0 vehicle or rideshare expenses, monthly living costs drop to $3,220 and surplus rises to $2,792/month, funding a 6-month reserve ($19,320) in 6.9 months.',
           },
         ],
       },
@@ -731,7 +731,7 @@ export const US_EXTENDED_CLUSTERS: Record<string, SeoLandingPage> = {
         h2: 'How much can you save on $90K in Miami?',
         paragraphs: [
           'A single earner living in an independent 1-bedroom apartment at the $2,150 HUD benchmark retains approximately $2,272 per month ($27,264 annually) in uncommitted discretionary cash flow.',
-          'This surplus allows an earner to easily max out a Roth IRA ($7,000 in 2026), contribute $10,000+ to an employer 401(k), and maintain a robust emergency fund reserve.',
+          'This surplus allows an earner to easily max out a traditional or Roth IRA ($7,500 in 2026, or $8,600 for eligible age 50+ catch-up, subject to earned income and Roth modified AGI phase-outs per IRS Notice 2024-80 / Rev. Proc. 2025-32), contribute $10,000+ to an employer 401(k), and maintain a robust emergency fund reserve.',
           'To model custom payroll withholdings or explore how your take-home cash compares with California or New York, test your scenario in our [Miami Salary After Tax Calculator](/salary-after-tax?city=miami) or run a [Miami vs NYC Relocation Comparison](/compare?city=miami).',
         ],
       },

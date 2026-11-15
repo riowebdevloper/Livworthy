@@ -81,7 +81,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
           },
           {
             h3: 'Semi-Monthly Paycheck (1st and 15th / 24 pay periods)',
-            content: 'Exactly $2,953.50 net per paycheck, arriving consistently twice per calendar month.',
+            content: 'Approximately $2,953 net per paycheck ($2,953.29 calculated from $70,879 net annually), arriving twice per calendar month (actual paychecks may vary slightly by cents due to employer payroll rounding).',
           },
           {
             h3: 'Weekly Paycheck (Every week / 52 pay periods)',
@@ -138,7 +138,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
         paragraphs: [
           'The decision between living alone and sharing an apartment is the single largest determinant of wealth accumulation in New York City.',
           'Living alone in a 1-bedroom at the [HUD Fair Market Rent benchmark](source:us-hud-nyc-fmr-2026) ($2,655/mo) commits 45.0% of your take-home pay to rent, leaving $1,660/mo ($19,920/yr) for savings and emergencies.',
-          'Splitting a 2-bedroom apartment with a roommate ($1,500/mo rent share) reduces housing costs to 25.4% of net income and cuts utilities in half ($160 vs $320). This increases discretionary savings to **$2,975/mo** ($35,700/yr)—delivering an extra $15,780 in annual savings that can fully fund both a Roth IRA ($7,000) and substantial 401(k) contributions.',
+          'Splitting a 2-bedroom apartment with a roommate ($1,500/mo rent share) reduces housing costs to 25.4% of net income and cuts utilities in half ($160 vs $320). This increases discretionary savings to **$2,975/mo** ($35,700/yr)—delivering an extra $15,780 in annual savings that can fully fund both a traditional or Roth IRA ($7,500 in 2026 under IRS Notice 2024-80) and substantial 401(k) contributions.',
         ],
       },
       {
@@ -216,7 +216,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPage> = {
       {
         question: 'What is $100K after tax in NYC per paycheck?',
         answer:
-          'On a bi-weekly schedule (26 pay periods per year), $100,000 in NYC yields approximately $2,726 net per paycheck. On a semi-monthly schedule (twice per month / 24 pay periods), net pay is exactly $2,953.50 per paycheck.',
+          'On a bi-weekly schedule (26 pay periods per year), $100,000 in NYC yields approximately $2,726 net per paycheck. On a semi-monthly schedule (twice per month / 24 pay periods), net pay is approximately $2,953 ($2,953.29 annualized) per paycheck, depending on employer payroll rounding and withholding selections.',
       },
       {
         question: 'Is $100K considered high income in NYC?',
